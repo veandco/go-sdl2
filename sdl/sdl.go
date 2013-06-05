@@ -344,6 +344,28 @@ func DisableScreenSaver() {
 	C.SDL_DisableScreenSaver()
 }
 
+/* SDL_error.h */
+func GetError() string {
+	return (string) (C.GoString(C.SDL_GetError()))
+}
+
+func ClearError() {
+	C.SDL_ClearError()
+}
+
+func Error(code int) {
+	_code := (C.SDL_errorcode) (C.int(code))
+	C.SDL_Error(_code)
+}
+
+func OutOfMemory() {
+	Error(ENOMEM)
+}
+
+func Unsupported() {
+	Error(UNSUPPORTED)
+}
+
 /* SDL_timer.h */
 func Delay(ms uint32) {
 	_ms := (C.Uint32) (ms)

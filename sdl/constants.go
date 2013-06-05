@@ -15,6 +15,14 @@ const (
 	WINDOWPOS_UNDEFINED_MASK	= 0x1FFF0000
 	WINDOWPOS_UNDEFINED		= WINDOWPOS_UNDEFINED_MASK | 0
 
+	/* SDL_error.h */
+	ENOMEM				= 0x0
+	EFREAD				= 0x1
+	EFWRITE				= 0x2
+	EFSEEK				= 0x3
+	UNSUPPORTED			= 0x4
+	LASTERROR			= 0x5
+
 	/* SDL_video.h */
 	WINDOW_FULLSCREEN		= 0x00000001         /**< fullscreen window */
 	WINDOW_OPENGL			= 0x00000002             /**< window usable with OpenGL context */
