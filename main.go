@@ -9,6 +9,9 @@ func main() {
 	window := sdl.CreateWindow("Hello World!", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 				800, 600, sdl.WINDOW_SHOWN | sdl.WINDOW_OPENGL)
 	renderer := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
+	
+	renderer.SetDrawColor(255, 255, 255, 255)
+	renderer.DrawPoint(150, 300)
 
 	renderer.SetDrawColor(0, 0, 255, 255)
 	renderer.DrawLine(0, 0, 200, 200)
@@ -36,4 +39,5 @@ func main() {
 	renderer.Present()
 
 	sdl.Delay(1000)
+	sdl.Quit()
 }
