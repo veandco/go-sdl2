@@ -7,9 +7,8 @@ import (
 func main() {
 	sdl.Init(sdl.INIT_VIDEO)
 	window := sdl.CreateWindow("Hello World!", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
-				800, 600, sdl.WINDOW_SHOWN)
-	println(sdl.GetError())
-	sdl.Error(sdl.UNSUPPORTED)
+				800, 600, sdl.WINDOW_SHOWN | sdl.WINDOW_OPENGL)
+	renderer := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
 	println(sdl.GetError())
 	sdl.ClearError()
 
@@ -20,4 +19,9 @@ func main() {
 		println("Screensaver is disabled")
 	}
 
+	renderer.SetDrawColor(255, 0, 0, 255);
+	renderer.DrawLine(0, 0, 200, 200)
+	renderer.Present()
+
+	sdl.Delay(1000)
 }
