@@ -11,15 +11,15 @@ type DisplayMode struct {
 }
 
 type Point struct {
-	X int
-	Y int
+	X int32
+	Y int32
 }
 
 type Rect struct {
-	X int
-	Y int
-	W int
-	H int
+	X int32
+	Y int32
+	W int32
+	H int32
 }
 
 type WindowShaper struct {
