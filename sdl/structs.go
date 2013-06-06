@@ -231,5 +231,3 @@ type SW_YUVTexture struct {
 	Stretch *Surface
 	Display *Surface
 }
-
-type GLContext unsafe.Pointer

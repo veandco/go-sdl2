@@ -5,6 +5,8 @@ package sdl
 import "C"
 import "unsafe"
 
+type GLContext unsafe.Pointer
+
 /* SDL.h */
 func Init(flags uint32) int {
 	_flags := (C.Uint32) (flags)
