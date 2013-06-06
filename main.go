@@ -2,6 +2,7 @@ package main
 
 import (
 	"./sdl"
+	"fmt"
 )
 
 func main() {
@@ -9,7 +10,7 @@ func main() {
 	window := sdl.CreateWindow("Hello World!", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 				800, 600, sdl.WINDOW_SHOWN | sdl.WINDOW_OPENGL)
 	renderer := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
-	
+
 	renderer.SetDrawColor(255, 255, 255, 255)
 	renderer.DrawPoint(150, 300)
 
@@ -35,9 +36,21 @@ func main() {
 	rects = []sdl.Rect { {500, 300, 100, 100}, {200, 300, 200, 200} }
 	renderer.SetDrawColor(255, 0, 255, 255)
 	renderer.FillRects(&rects, 2)
-	
+
 	renderer.Present()
 
-	sdl.Delay(1000)
+	running := true
+	for running {
+		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
+			switch t := event.(type) {
+			case *sdl.QuitEvent:
+				running = false
+			case *sdl.MouseMotionEvent:
+				fmt.Printf("%d %d\n", t.X, t.Y)
+			}
+		}
+	}
+
+	sdl.DestroyWindow(window)
 	sdl.Quit()
 }

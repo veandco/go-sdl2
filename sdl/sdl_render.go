@@ -124,7 +124,7 @@ func (texture *Texture) Unlock() {
 
 func (renderer *Renderer) RenderTargetSupported() bool {
 	_renderer := (*C.SDL_Renderer) (unsafe.Pointer(renderer))
-	return (bool) (itob(int(C.SDL_RenderTargetSupported(_renderer))))
+	return C.SDL_RenderTargetSupported(_renderer) != 0
 }
 
 func (renderer *Renderer) SetRenderTarget(texture *Texture) int {

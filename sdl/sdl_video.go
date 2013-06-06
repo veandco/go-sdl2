@@ -91,6 +91,11 @@ func CreateWindowFrom(data unsafe.Pointer) *Window {
 	return (*Window) (unsafe.Pointer(C.SDL_CreateWindowFrom(data)))
 }
 
+func DestroyWindow(window *Window) {
+	_window := (*C.SDL_Window) (unsafe.Pointer(window))
+	C.SDL_DestroyWindow(_window)
+}
+
 func (window *Window) GetID() uint32 {
 	_window := (*C.SDL_Window) (unsafe.Pointer(window))
 	return (uint32) (C.SDL_GetWindowID(_window))
@@ -258,7 +263,7 @@ func (window *Window) SetGrab(grabbed bool) {
 
 func (window *Window) GetGrab() bool {
 	_window := (*C.SDL_Window) (unsafe.Pointer(window))
-	return (bool) (itob(int(C.SDL_GetWindowGrab(_window))))
+	return C.SDL_GetWindowGrab(_window) != 0
 }
 
 func (window *Window) SetBrightness(brightness float32) int {
@@ -291,7 +296,7 @@ func (window *Window) GetGammaRamp(red, green, blue *uint16) int {
 }
 
 func IsScreenSaverEnabled() bool {
-	return (bool) (itob(int(C.SDL_IsScreenSaverEnabled())))
+	return C.SDL_IsScreenSaverEnabled() != 0
 }
 
 func EnableScreenSaver() {
@@ -318,7 +323,7 @@ func GL_UnloadLibrary() {
 
 func GL_ExtensionSupported(extension string) bool {
 	_extension := (C.CString) (extension)
-	return (bool) (itob(int(C.SDL_GL_ExtensionSupported(_extension))))
+	return C.SDL_GL_ExtensionSupported(_extension) != 0
 }
 
 func GL_SetAttribute(attribute uint32, value int) int {
