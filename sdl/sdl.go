@@ -5,6 +5,18 @@ package sdl
 import "C"
 import "unsafe"
 
+const (
+	INIT_TIMER			= 0x00000001
+	INIT_AUDIO			= 0x00000010
+	INIT_VIDEO			= 0x00000020
+	INIT_JOYSTICK			= 0x00000200
+	INIT_HAPTIC			= 0x00001000
+	INIT_GAMECONTROLLER		= 0x00002000
+	INIT_NOPARACHUTE		= 0x00100000
+	INIT_EVERYTHING			= INIT_TIMER | INIT_AUDIO | INIT_VIDEO | INIT_JOYSTICK |
+					  INIT_HAPTIC | INIT_GAMECONTROLLER
+)
+
 func Init(flags uint32) int {
 	_flags := (C.Uint32) (flags)
 	return (int) (C.SDL_Init(_flags))

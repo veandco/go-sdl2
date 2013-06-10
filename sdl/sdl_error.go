@@ -3,6 +3,15 @@ package sdl
 // #include <SDL2/SDL.h>
 import "C"
 
+const (
+	ENOMEM				= 0x00000000
+	EFREAD				= 0x00000001
+	EFWRITE				= 0x00000002
+	EFSEEK				= 0x00000003
+	UNSUPPORTED			= 0x00000004
+	LASTERROR			= 0x00000005
+)
+
 func GetError() string {
 	return (string) (C.GoString(C.SDL_GetError()))
 }
