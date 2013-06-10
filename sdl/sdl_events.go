@@ -91,7 +91,6 @@ type CEvent struct {
 }
 
 type Scancode uint32
-type Keycode uint32
 type JoystickID int32
 type TouchID int64
 type FingerID int64
@@ -112,13 +111,6 @@ type WindowEvent struct {
 	padding3 uint8
 	Data1 int32
 	Data2 int32
-}
-
-type Keysym struct {
-	Scancode Scancode
-	Sym Keycode
-	Mod uint16
-	Unicode uint32
 }
 
 type KeyboardEvent struct {
