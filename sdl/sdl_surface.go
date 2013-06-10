@@ -90,8 +90,7 @@ func LoadBMP_RW(src *RWops, freesrc int) *Surface {
 }
 
 func LoadBMP(file string) *Surface {
-	_file := (C.CString) (file)
-	return (*Surface) (unsafe.Pointer(C.SDL_LoadBMP_RW(C.SDL_RWFromFile(_file, C.CString("rb")), 1)))
+	return (*Surface) (LoadBMP_RW(RWFromFile(file, "rb"), 1))
 }
 
 func (surface *Surface) SaveBMP_RW(dst *RWops, freedst int) int {
@@ -102,9 +101,7 @@ func (surface *Surface) SaveBMP_RW(dst *RWops, freedst int) int {
 }
 
 func (surface *Surface) SaveBMP(file string) int {
-	_surface := (*C.SDL_Surface) (unsafe.Pointer(surface))
-	_file := (C.CString) (file)
-	return (int) (C.SDL_SaveBMP_RW(_surface, C.SDL_RWFromFile(_file, C.CString("rb")), 1))
+	return (int) (surface.SaveBMP_RW(RWFromFile(file, "wb"), 1))
 }
 
 func (surface *Surface) SetRLE(flag int) int {
