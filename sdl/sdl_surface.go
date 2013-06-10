@@ -6,6 +6,13 @@ package sdl
 import "C"
 import "unsafe"
 
+const (
+	SWSURFACE	= 0
+	PREALLOC	= 0x00000001
+	RLEACCEL	= 0x00000002
+	DONTFREE	= 0x00000004
+)
+
 type Surface struct {
 	Flags uint32
 	Format PixelFormat
@@ -22,6 +29,10 @@ type Surface struct {
 }
 
 type blit C.SDL_blit
+
+func (surface *Surface) MustLock() bool {
+	return (surface.Flags & RLEACCEL) != 0
+}
 
 func CreateRGBSurface(flags uint32, width, height, depth int32,
 		Rmask, Gmask, Bmask, Amask uint32) *Surface {
@@ -165,4 +176,100 @@ func (surface *Surface) GetClipRect(rect *Rect) {
 	_surface := (*C.SDL_Surface) (unsafe.Pointer(surface))
 	_rect := (*C.SDL_Rect) (unsafe.Pointer(rect))
 	C.SDL_GetClipRect(_surface, _rect)
+}
+
+func (surface *Surface) Convert(fmt *PixelFormat, flags uint32) *Surface {
+	_surface := (*C.SDL_Surface) (unsafe.Pointer(surface))
+	_fmt := (*C.SDL_PixelFormat) (unsafe.Pointer(fmt))
+	_flags := (C.Uint32) (flags)
+	return (*Surface) (unsafe.Pointer(C.SDL_ConvertSurface(_surface, _fmt, _flags)))
+}
+
+func (surface *Surface) ConvertFormat(pixel_format uint32, flags uint32) *Surface {
+	_surface := (*C.SDL_Surface) (unsafe.Pointer(surface))
+	_pixel_format := (C.Uint32) (pixel_format)
+	_flags := (C.Uint32) (flags)
+	return (*Surface) (unsafe.Pointer(C.SDL_ConvertSurfaceFormat(_surface, _pixel_format, _flags)))
+}
+
+func ConvertPixels(width, height int, src_format uint32, src unsafe.Pointer, src_pitch int,
+		dst_format uint32, dst unsafe.Pointer, dst_pitch int) int {
+	_width := (C.int) (width)
+	_height := (C.int) (height)
+	_src_format := (C.Uint32) (src_format)
+	_src_pitch := (C.int) (src_pitch)
+	_dst_format := (C.Uint32) (dst_format)
+	_dst_pitch := (C.int) (dst_pitch)
+	return (int) (C.SDL_ConvertPixels(_width, _height, _src_format, src, _src_pitch, _dst_format, dst, _dst_pitch))
+}
+
+func (surface *Surface) FillRect(rect *Rect, color uint32) int {
+	_surface := (*C.SDL_Surface) (unsafe.Pointer(surface))
+	_rect := (*C.SDL_Rect) (unsafe.Pointer(rect))
+	_color := (C.Uint32) (color)
+	return (int) (C.SDL_FillRect(_surface, _rect, _color))
+}
+
+func (surface *Surface) FillRects(rects *Rect, count int, color uint32) int {
+	_surface := (*C.SDL_Surface) (unsafe.Pointer(surface))
+	_rects := (*C.SDL_Rect) (unsafe.Pointer(rects))
+	_count := (C.int) (count)
+	_color := (C.Uint32) (color)
+	return (int) (C.SDL_FillRects(_surface, _rects, _count, _color))
+}
+
+func (src *Surface) Blit(srcrect *Rect, dst *Surface, dstrect *Rect) int {
+	_src := (*C.SDL_Surface) (unsafe.Pointer(src))
+	_srcrect := (*C.SDL_Rect) (unsafe.Pointer(srcrect))
+	_dst := (*C.SDL_Surface) (unsafe.Pointer(dst))
+	_dstrect := (*C.SDL_Rect) (unsafe.Pointer(dstrect))
+	return (int) (C.SDL_BlitSurface(_src, _srcrect, _dst, _dstrect))
+}
+
+func (src *Surface) BlitScaled(srcrect *Rect, dst *Surface, dstrect *Rect) int {
+	_src := (*C.SDL_Surface) (unsafe.Pointer(src))
+	_srcrect := (*C.SDL_Rect) (unsafe.Pointer(srcrect))
+	_dst := (*C.SDL_Surface) (unsafe.Pointer(dst))
+	_dstrect := (*C.SDL_Rect) (unsafe.Pointer(dstrect))
+	return (int) (C.SDL_BlitScaled(_src, _srcrect, _dst, _dstrect))
+}
+
+func (src *Surface) UpperBlit(srcrect *Rect, dst *Surface, dstrect *Rect) int {
+	_src := (*C.SDL_Surface) (unsafe.Pointer(src))
+	_srcrect := (*C.SDL_Rect) (unsafe.Pointer(srcrect))
+	_dst := (*C.SDL_Surface) (unsafe.Pointer(dst))
+	_dstrect := (*C.SDL_Rect) (unsafe.Pointer(dstrect))
+	return (int) (C.SDL_UpperBlit(_src, _srcrect, _dst, _dstrect))
+}
+
+func (src *Surface) LowerBlit(srcrect *Rect, dst *Surface, dstrect *Rect) int {
+	_src := (*C.SDL_Surface) (unsafe.Pointer(src))
+	_srcrect := (*C.SDL_Rect) (unsafe.Pointer(srcrect))
+	_dst := (*C.SDL_Surface) (unsafe.Pointer(dst))
+	_dstrect := (*C.SDL_Rect) (unsafe.Pointer(dstrect))
+	return (int) (C.SDL_LowerBlit(_src, _srcrect, _dst, _dstrect))
+}
+
+func (src *Surface) SoftStretch(srcrect *Rect, dst *Surface, dstrect *Rect) int {
+	_src := (*C.SDL_Surface) (unsafe.Pointer(src))
+	_srcrect := (*C.SDL_Rect) (unsafe.Pointer(srcrect))
+	_dst := (*C.SDL_Surface) (unsafe.Pointer(dst))
+	_dstrect := (*C.SDL_Rect) (unsafe.Pointer(dstrect))
+	return (int) (C.SDL_SoftStretch(_src, _srcrect, _dst, _dstrect))
+}
+
+func (src *Surface) UpperBlitScaled(srcrect *Rect, dst *Surface, dstrect *Rect) int {
+	_src := (*C.SDL_Surface) (unsafe.Pointer(src))
+	_srcrect := (*C.SDL_Rect) (unsafe.Pointer(srcrect))
+	_dst := (*C.SDL_Surface) (unsafe.Pointer(dst))
+	_dstrect := (*C.SDL_Rect) (unsafe.Pointer(dstrect))
+	return (int) (C.SDL_UpperBlitScaled(_src, _srcrect, _dst, _dstrect))
+}
+
+func (src *Surface) LowerBlitScaled(srcrect *Rect, dst *Surface, dstrect *Rect) int {
+	_src := (*C.SDL_Surface) (unsafe.Pointer(src))
+	_srcrect := (*C.SDL_Rect) (unsafe.Pointer(srcrect))
+	_dst := (*C.SDL_Surface) (unsafe.Pointer(dst))
+	_dstrect := (*C.SDL_Rect) (unsafe.Pointer(dstrect))
+	return (int) (C.SDL_LowerBlitScaled(_src, _srcrect, _dst, _dstrect))
 }
