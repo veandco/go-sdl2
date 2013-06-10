@@ -1,5 +1,10 @@
 package sdl
 
+// #include <SDL2/SDL_blendmode.h>
+import "C"
+
+type BlendMode C.SDL_BlendMode
+
 const (
 	BLENDMODE_NONE			= 0x00000000     /**< No blending */
 	BLENDMODE_BLEND			= 0x00000001    /**< dst = (src * A) + (dst * (1-A)) */

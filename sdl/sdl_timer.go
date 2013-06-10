@@ -1,6 +1,6 @@
 package sdl
 
-// #include <SDL2/SDL.h>
+// #include <SDL2/SDL_timer.h>
 import "C"
 
 func Delay(ms uint32) {

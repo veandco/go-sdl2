@@ -37,21 +37,6 @@ type WindowUserData struct {
 	Next *WindowUserData
 }
 
-type Surface struct {
-	Flags uint32
-	Format PixelFormat
-	W int
-	H int
-	Pitch int
-	Pixels unsafe.Pointer
-	UserData unsafe.Pointer
-	Locked int
-	LockData unsafe.Pointer
-	ClipRect Rect
-	_map *[0]byte
-	RefCount int
-}
-
 type PixelFormat struct {
 	Format uint32
 	Palette *Palette
@@ -151,7 +136,7 @@ type Texture struct {
 	W int
 	H int
 	ModMode int
-	BlendMode uint32
+	BlendMode BlendMode
 	R uint8
 	G uint8
 	B uint8
@@ -211,7 +196,7 @@ type Renderer struct {
 	G uint8
 	B uint8
 	A uint8
-	BlendMode uint32
+	BlendMode BlendMode
 	DriverData unsafe.Pointer
 }
 
