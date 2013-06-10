@@ -326,6 +326,8 @@ type SysWMEvent struct {
 	msg unsafe.Pointer
 }
 
+type EventFilter C.SDL_EventFilter
+
 func PumpEvents() {
 	C.SDL_PumpEvents()
 }
