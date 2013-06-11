@@ -91,7 +91,6 @@ type CEvent struct {
 }
 
 type Scancode uint32
-type JoystickID int32
 
 type CommonEvent struct {
 	Type uint32
