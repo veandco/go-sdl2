@@ -1,7 +1,9 @@
 package sdl
 
-// #include <SDL2/SDL.h>
+// #include <SDL2/SDL_cpuinfo.h>
 import "C"
+
+const CACHELINE_SIZE = 128
 
 func GetCPUCount() int {
 	return (int) (C.SDL_GetCPUCount())
