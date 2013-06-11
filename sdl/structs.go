@@ -22,21 +22,6 @@ type Rect struct {
 	H int32
 }
 
-type WindowShaper struct {
-	Window *Window
-	UserX uint32
-	UserY uint32
-	Mode *uint
-	HasShape bool
-	DriverData unsafe.Pointer
-}
-
-type WindowUserData struct {
-	Name string
-	Data unsafe.Pointer
-	Next *WindowUserData
-}
-
 type PixelFormat struct {
 	Format uint32
 	Palette *Palette
@@ -71,33 +56,6 @@ type Color struct {
 	g uint8
 	b uint8
 	a uint8
-}
-
-type Window struct {
-	Magic unsafe.Pointer
-	Id uint32
-	Title string
-	X int
-	Y int
-	W int
-	H int
-	MinW int
-	Minh int
-	MaxW int
-	MaxH int
-	Flags uint32
-	Windowed Rect
-	FullscreenMode DisplayMode
-	Brightness float64
-	gamma *uint16
-	SavedGamma *uint16
-	Surface Surface
-	SurfaceValid bool
-	Shaper WindowShaper
-	Data WindowUserData
-	DriverData unsafe.Pointer
-	Prev *Window
-	Next *Window
 }
 
 type Version struct {

@@ -64,6 +64,7 @@ const (
 	GL_CONTEXT_RESET_ISOLATION_FLAG    = 0x0008
 )
 
+type Window C.SDL_Window
 type GLContext unsafe.Pointer
 
 func GetNumVideoDrivers() int {
