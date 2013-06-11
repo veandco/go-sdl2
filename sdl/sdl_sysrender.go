@@ -2,79 +2,6 @@ package sdl
 
 import "unsafe"
 
-type DisplayMode struct {
-	Format uint32
-	W int
-	H int
-	RefreshRate int
-	DriverData unsafe.Pointer
-}
-
-type Point struct {
-	X int32
-	Y int32
-}
-
-type Rect struct {
-	X int32
-	Y int32
-	W int32
-	H int32
-}
-
-type PixelFormat struct {
-	Format uint32
-	Palette *Palette
-	BitsPerPixels uint8
-	BytesPerPixel uint8
-	Padding [2]uint8
-	Rmask uint32
-	Gmask uint32
-	Bmask uint32
-	Amask uint32
-	Rloss uint8
-	Gloss uint8
-	Bloss uint8
-	Aloss uint8
-	Rshift uint8
-	Gshift uint8
-	Bshift uint8
-	Ashift uint8
-	RefCount int
-	next *PixelFormat
-}
-
-type Palette struct {
-	Ncolors int
-	Colors *Color
-	Version uint32
-	RefCount int
-}
-
-type Color struct {
-	r uint8
-	g uint8
-	b uint8
-	a uint8
-}
-
-type Version struct {
-	Major uint8
-	Minor uint8
-	Patch uint8
-}
-
-/* SDL_render.h */
-type RendererInfo struct {
-	Name string
-	Flags uint32
-	NumTextureFormats uint32
-	TextureFormats [16]int32
-	MaxTextureWidth int
-	MaxTextureHeight int
-}
-
-/* SDL_sysrender.h */
 type FPoint struct {
 	x float32
 	y float32
@@ -158,19 +85,4 @@ type Renderer struct {
 	DriverData unsafe.Pointer
 }
 
-/* SDL_yuv_sw_c.h */
-type SW_YUVTexture struct {
-	Format uint32
-	TargetFormat uint32
-	W int
-	H int
-	Pixels *uint8
-	ColorTab *int
-	Rgb2Pix *uint32
-	Display1X unsafe.Pointer
-	Display2x unsafe.Pointer
-	Pitches [3]uint16
-	Planes *[3]uint8
-	Stretch *Surface
-	Display *Surface
-}
+

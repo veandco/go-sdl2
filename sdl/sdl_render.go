@@ -23,6 +23,15 @@ const (
 	SDL_FLIP_VERTICAL		= 0x00000002
 )
 
+type RendererInfo struct {
+	Name string
+	Flags uint32
+	NumTextureFormats uint32
+	TextureFormats [16]int32
+	MaxTextureWidth int
+	MaxTextureHeight int
+}
+
 func GetNumRenderDrivers() int {
 	return (int) (C.SDL_GetNumRenderDrivers())
 }
