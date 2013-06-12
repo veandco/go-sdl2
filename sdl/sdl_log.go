@@ -2,7 +2,7 @@ package sdl
 
 // #include <SDL2/SDL_log.h>
 import "C"
-import "unsafe"
+// import "unsafe"
 
 const (
 	LOG_CATEGORY_APPLICATION	= iota
