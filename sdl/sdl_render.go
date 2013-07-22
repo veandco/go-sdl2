@@ -334,12 +334,12 @@ func (renderer *Renderer) Present() {
 	C.SDL_RenderPresent(_renderer)
 }
 
-func DestroyTexture(texture *Texture) {
+func (texture *Texture) Destroy() {
 	_texture := (*C.SDL_Texture) (unsafe.Pointer(texture))
 	C.SDL_DestroyTexture(_texture)
 }
 
-func DestroyRenderer(renderer *Renderer) {
+func (renderer *Renderer) Destroy() {
 	_renderer := (*C.SDL_Renderer) (unsafe.Pointer(renderer))
 	C.SDL_DestroyRenderer(_renderer)
 }

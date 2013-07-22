@@ -160,7 +160,7 @@ func CreateWindowFrom(data unsafe.Pointer) *Window {
 	return (*Window) (unsafe.Pointer(C.SDL_CreateWindowFrom(data)))
 }
 
-func DestroyWindow(window *Window) {
+func (window *Window) Destroy() {
 	_window := (*C.SDL_Window) (unsafe.Pointer(window))
 	C.SDL_DestroyWindow(_window)
 }
