@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./sdl"
+	"github.com/jackyb/go-sdl2/sdl"
 	"fmt"
 	"os"
 )
