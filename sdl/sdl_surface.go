@@ -16,8 +16,8 @@ const (
 type Surface struct {
 	Flags uint32
 	Format unsafe.Pointer
-	W int
-	H int
+	W int32
+	H int32
 	Pitch int
 	Pixels unsafe.Pointer
 	UserData unsafe.Pointer
