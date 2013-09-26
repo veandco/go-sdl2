@@ -274,6 +274,14 @@ func (src *Surface) LowerBlitScaled(srcrect *Rect, dst *Surface, dstrect *Rect) 
 	return (int) (C.SDL_LowerBlitScaled(_src, _srcrect, _dst, _dstrect))
 }
 
+func (surface *Surface) PixelNum() int {
+	return int(surface.W * surface.H)
+}
+
+func (surface *Surface) PixelSize() int {
+	return int(surface.Format.BytesPerPixel)
+}
+
 func (surface *Surface) Pixels() []byte {
 	var b []byte
 	length := int(surface.W * surface.H) * int(surface.Format.BytesPerPixel)
