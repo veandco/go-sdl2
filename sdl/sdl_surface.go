@@ -5,6 +5,7 @@ package sdl
 */
 import "C"
 import "unsafe"
+import "reflect"
 
 const (
 	SWSURFACE	= 0
@@ -19,7 +20,7 @@ type Surface struct {
 	W int32
 	H int32
 	Pitch int
-	Pixels unsafe.Pointer
+	pixels unsafe.Pointer // use Pixels() for access
 	UserData unsafe.Pointer
 	Locked int
 	LockData unsafe.Pointer
@@ -86,7 +87,8 @@ func (surface *Surface) Unlock() {
 func LoadBMP_RW(src *RWops, freesrc int) *Surface {
 	_src := (*C.SDL_RWops) (unsafe.Pointer(src))
 	_freesrc := (C.int) (freesrc)
-	return (*Surface) (unsafe.Pointer(C.SDL_LoadBMP_RW(_src, _freesrc)))
+	_surface := C.SDL_LoadBMP_RW(_src, _freesrc)
+	return (*Surface) (unsafe.Pointer(_surface))
 }
 
 func LoadBMP(file string) *Surface {
@@ -179,7 +181,8 @@ func (surface *Surface) Convert(fmt *PixelFormat, flags uint32) *Surface {
 	_surface := (*C.SDL_Surface) (unsafe.Pointer(surface))
 	_fmt := (*C.SDL_PixelFormat) (unsafe.Pointer(fmt))
 	_flags := (C.Uint32) (flags)
-	return (*Surface) (unsafe.Pointer(C.SDL_ConvertSurface(_surface, _fmt, _flags)))
+	_surface = C.SDL_ConvertSurface(_surface, _fmt, _flags)
+	return (*Surface) (unsafe.Pointer(_surface))
 }
 
 func (surface *Surface) ConvertFormat(pixel_format uint32, flags uint32) *Surface {
@@ -269,4 +272,14 @@ func (src *Surface) LowerBlitScaled(srcrect *Rect, dst *Surface, dstrect *Rect) 
 	_dst := (*C.SDL_Surface) (unsafe.Pointer(dst))
 	_dstrect := (*C.SDL_Rect) (unsafe.Pointer(dstrect))
 	return (int) (C.SDL_LowerBlitScaled(_src, _srcrect, _dst, _dstrect))
+}
+
+func (surface *Surface) Pixels() []byte {
+	var b []byte
+	length := int(surface.W * surface.H) * int(surface.Format.BytesPerPixel)
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+	sliceHeader.Cap = int(length)
+	sliceHeader.Len = int(length)
+	sliceHeader.Data = uintptr(surface.pixels)
+	return b
 }
