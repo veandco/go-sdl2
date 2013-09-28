@@ -30,10 +30,10 @@ type Palette struct {
 }
 
 type Color struct {
-	r uint8
-	g uint8
-	b uint8
-	a uint8
+	R uint8
+	G uint8
+	B uint8
+	A uint8
 }
 
 const (
