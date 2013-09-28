@@ -291,3 +291,7 @@ func (surface *Surface) Pixels() []byte {
 	sliceHeader.Data = uintptr(surface.pixels)
 	return b
 }
+
+func (surface *Surface) Data() unsafe.Pointer {
+	return surface.pixels
+}
