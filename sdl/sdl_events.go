@@ -109,7 +109,18 @@ type WindowEvent struct {
 	Data2 int32
 }
 
-type KeyboardEvent struct {
+type KeyDownEvent struct {
+	Type uint32
+	Timestamp uint32
+	WindowID uint32
+	State uint8
+	Repeat uint8
+	padding1 uint8
+	padding2 uint8
+	Keysym Keysym
+}
+
+type KeyUpEvent struct {
 	Type uint32
 	Timestamp uint32
 	WindowID uint32
@@ -366,8 +377,10 @@ func goEvent(cevent *CEvent) Event {
 		return (*WindowEvent) (unsafe.Pointer(cevent))
 	case SYSWMEVENT:
 		return (*SysWMEvent) (unsafe.Pointer(cevent))
-	case KEYDOWN, KEYUP:
-		return (*KeyboardEvent) (unsafe.Pointer(cevent))
+	case KEYDOWN:
+		return (*KeyDownEvent) (unsafe.Pointer(cevent))
+	case KEYUP:
+		return (*KeyUpEvent) (unsafe.Pointer(cevent))
 	case TEXTEDITING:
 		return (*TextEditingEvent) (unsafe.Pointer(cevent))
 	case TEXTINPUT:
