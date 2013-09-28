@@ -267,7 +267,7 @@ func (window *Window) GetMaximumSize(w *int, h *int) {
 
 func (window *Window) SetBordered(bordered bool) {
 	_window := (*C.SDL_Window) (unsafe.Pointer(window))
-	_bordered := (C.SDL_bool) (btoi(bordered))
+	_bordered := (C.SDL_bool) (Btoi(bordered))
 	C.SDL_SetWindowBordered(_window, _bordered)
 }
 
@@ -326,7 +326,7 @@ func (window *Window) UpdateSurfaceRects(rects *Rect, numrects int) int {
 
 func (window *Window) SetGrab(grabbed bool) {
 	_window := (*C.SDL_Window) (unsafe.Pointer(window))
-	_grabbed := (C.SDL_bool) (btoi(grabbed))
+	_grabbed := (C.SDL_bool) (Btoi(grabbed))
 	C.SDL_SetWindowGrab(_window, _grabbed)
 }
 

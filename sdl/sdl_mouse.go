@@ -58,7 +58,7 @@ func (window *Window) WarpMouseInWindow(x, y int) {
 }
 
 func SetRelativeMouseMode(enabled bool) int {
-	_enabled := (C.SDL_bool) (btoi(enabled))
+	_enabled := (C.SDL_bool) (Btoi(enabled))
 	return (int) (C.SDL_SetRelativeMouseMode(_enabled))
 }
 
