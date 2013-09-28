@@ -278,7 +278,7 @@ func (surface *Surface) PixelNum() int {
 	return int(surface.W * surface.H)
 }
 
-func (surface *Surface) PixelSize() int {
+func (surface *Surface) BytesPerPixel() int {
 	return int(surface.Format.BytesPerPixel)
 }
 
