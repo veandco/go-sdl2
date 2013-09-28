@@ -42,13 +42,11 @@ func GetRenderDriverInfo(index int, info *RendererInfo) int {
 	return (int) (C.SDL_GetRenderDriverInfo(_index, _info))
 }
 
-func CreateWindowAndRenderer(width int, height int, windowFlags uint32, window **Window, renderer **Renderer) int {
-	_width := (C.int) (width)
-	_height := (C.int) (height)
-	_windowFlags := (C.Uint32) (windowFlags)
-	_window := (**C.SDL_Window) (unsafe.Pointer(window))
-	_renderer := (**C.SDL_Renderer) (unsafe.Pointer(renderer))
-	return (int) (C.SDL_CreateWindowAndRenderer(_width, _height, _windowFlags, _window, _renderer))
+func CreateWindowAndRenderer(w, h int, flags uint32) (*Window, *Renderer) {
+	var window *C.SDL_Window
+	var renderer *C.SDL_Renderer
+	C.SDL_CreateWindowAndRenderer(C.int(w), C.int(h), C.Uint32(flags), &window, &renderer)
+	return (*Window) (unsafe.Pointer(window)), (*Renderer) (unsafe.Pointer(renderer))
 }
 
 func CreateRenderer(window *Window, index int, flags uint32) *Renderer {
