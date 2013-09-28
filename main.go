@@ -131,7 +131,7 @@ func testEvents() {
 				fmt.Printf("[%d ms] MouseButton\tid:%d\tx:%d\ty:%d\tbutton:%d\tstate:%d\n", t.Timestamp, t.Which, t.X, t.Y, t.Button, t.State)
 			case *sdl.MouseWheelEvent:
 				fmt.Printf("[%d ms] MouseWheel\tid:%d\tx:%d\ty:%d\n", t.Timestamp, t.Which, t.X, t.Y)
-			case *sdl.KeyboardEvent:
+			case *sdl.KeyUpEvent:
 				fmt.Printf("[%d ms] Keyboard\tsym:%c\tmodifiers:%d\tstate:%d\trepeat:%d\n", t.Timestamp, t.Keysym.Sym, t.Keysym.Mod, t.State, t.Repeat)
 			}
 		}
