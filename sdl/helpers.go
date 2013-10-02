@@ -30,12 +30,15 @@ func U8To32Array(buf []byte) []uint32 {
         return ret
 }
 
-func Endian() {
+func Endian() int {
 	var x uint32 = 0x01020304
+	var t int
 	switch *(*byte)(unsafe.Pointer(&x)) {
 	case 0x01:
-		return sdl.BIG_ENDIAN
+		t = BIG_ENDIAN
 	case 0x04:
-		return sdl.LIL_ENDIAN
+		t = LIL_ENDIAN
 	}
+
+	return t
 }
