@@ -1,0 +1,27 @@
+SDL
+===
+[coming soon]
+
+
+SDL_image
+=========
+
+
+SDL_mixer
+=========
+
+not implemented
+---------------
+* GetNumChunkDecoders()
+* GetChunkDecoder()
+* GetNumMusicDecoders()
+* GetMusicDecoder()
+* SetPostMix()
+* HookMusic()
+* HookMusicFinished()
+* GetMusicHookData()
+* ChannelFinished()
+* RegisterEffect()
+* UnregisterEffect()
+* UnregisterAllEffects()
+* EachSoundFont()
