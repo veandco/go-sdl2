@@ -32,6 +32,12 @@ const (
 	MODPLUG
 )
 
+const DEFAULT_FREQUENCY = 22050
+const DEFAULT_FORMAT = sdl.AUDIO_S16LSB
+const DEFAULT_CHANNELS = 2
+const DEFAULT_CHUNKSIZE = 2
+const MAX_VOLUME = 128
+
 const CHANNEL_POST = -2
 const EFFECTSMAXSPEED = "MIX_EFFECTSMAXSPEED"
 
@@ -183,7 +189,7 @@ func GroupNewer(tag int) int {
 	return (int) (C.Mix_GroupNewer(_tag))
 }
 
-func PlayChannelTimed(channel int, chunk *Chunk, loops, ticks int) bool {
+func (chunk *Chunk) PlayTimed(channel, loops, ticks int) bool {
 	_channel := (C.int) (channel)
 	_chunk := (*C.Mix_Chunk) (unsafe.Pointer(chunk))
 	_loops := (C.int) (loops)
@@ -191,27 +197,27 @@ func PlayChannelTimed(channel int, chunk *Chunk, loops, ticks int) bool {
 	return int(C.Mix_PlayChannelTimed(_channel, _chunk, _loops, _ticks)) == 0
 }
 
-func PlayChannel(channel int, chunk *Chunk, loops int) bool {
+func (chunk *Chunk) PlayChannel(channel, loops int) bool {
 	_channel := (C.int) (channel)
 	_chunk := (*C.Mix_Chunk) (unsafe.Pointer(chunk))
 	_loops := (C.int) (loops)
 	return int(C.Mix_PlayChannelTimed(_channel, _chunk, _loops, -1)) == 0
 }
 
-func PlayMusic(music *Music, loops int) bool {
+func (music *Music) Play(loops int) bool {
 	_music := (*C.Mix_Music) (unsafe.Pointer(music))
 	_loops := (C.int) (loops)
 	return int(C.Mix_PlayMusic(_music, _loops)) == 0
 }
 
-func FadeInMusic(music *Music, loops, ms int) bool {
+func (music *Music) FadeIn(loops, ms int) bool {
 	_music := (*C.Mix_Music) (unsafe.Pointer(music))
 	_loops := (C.int) (loops)
 	_ms := (C.int) (ms)
 	return int(C.Mix_FadeInMusic(_music, _loops, _ms)) == 0
 }
 
-func FadeInMusicPos(music *Music, loops, ms int, position float64) bool {
+func (music *Music) FadeInPos(loops, ms int, position float64) bool {
 	_music := (*C.Mix_Music) (unsafe.Pointer(music))
 	_loops := (C.int) (loops)
 	_ms := (C.int) (ms)
@@ -219,7 +225,7 @@ func FadeInMusicPos(music *Music, loops, ms int, position float64) bool {
 	return int(C.Mix_FadeInMusicPos(_music, _loops, _ms, _position)) == 0
 }
 
-func FadeInChannel(channel int, chunk *Chunk, loops, ms, ticks int ) bool {
+func (chunk *Chunk) FadeIn(channel, loops, ms, ticks int ) bool {
 	_channel := (C.int) (channel)
 	_chunk := (*C.Mix_Chunk) (unsafe.Pointer(chunk))
 	_loops := (C.int) (loops)
@@ -227,7 +233,7 @@ func FadeInChannel(channel int, chunk *Chunk, loops, ms, ticks int ) bool {
 	return int(C.Mix_FadeInChannelTimed(_channel, _chunk, _loops, _ms, -1)) == 0
 }
 
-func FadeInChannelTimed(channel int, chunk *Chunk, loops, ms, ticks int) bool {
+func (chunk *Chunk) FadeInTimed(channel, loops, ms, ticks int) bool {
 	_channel := (C.int) (channel)
 	_chunk := (*C.Mix_Chunk) (unsafe.Pointer(chunk))
 	_loops := (C.int) (loops)
@@ -237,19 +243,19 @@ func FadeInChannelTimed(channel int, chunk *Chunk, loops, ms, ticks int) bool {
 			_ticks)) == 0
 }
 
-func Volume(channel, volume int) int {
+func SetVolume(channel, volume int) int {
 	_channel := (C.int) (channel)
 	_volume := (C.int) (volume)
 	return (int) (C.Mix_Volume(_channel, _volume))
 }
 
-func VolumeChunk(chunk *Chunk, volume int) int {
+func (chunk *Chunk) SetVolume(volume int) int {
 	_chunk := (*C.Mix_Chunk) (unsafe.Pointer(chunk))
 	_volume := (C.int) (volume)
 	return (int) (C.Mix_VolumeChunk(_chunk, _volume))
 }
 
-func VolumeMusic(volume int) int {
+func SetMusicVolume(volume int) int {
 	_volume := (C.int) (volume)
 	return (int) (C.Mix_VolumeMusic(_volume))
 }
@@ -341,7 +347,7 @@ func Playing(channel int) bool {
 	return int(C.Mix_Playing(_channel)) > 0
 }
 
-func PlayingMusic() bool {
+func MusicPlaying() bool {
 	return int(C.Mix_PlayingMusic()) > 0
 }
 
