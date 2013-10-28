@@ -1,4 +1,6 @@
-//package main
+// author: hardbootm@gmail.com
+//
+// package main
 
 import (
 	"fmt"

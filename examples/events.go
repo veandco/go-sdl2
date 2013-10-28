@@ -1,4 +1,6 @@
-//package main
+// author: aqiank@gmail.com (Jacky Boen)
+//
+// package main
 
 import (
 	"github.com/jackyb/go-sdl2/sdl"
