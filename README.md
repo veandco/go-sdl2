@@ -1,6 +1,11 @@
 SDL2 binding for Go
 ===================
-Don't use the code yet! It's very incomplete and possibly horrible! Seriously!
+go-sdl2 is a straightforward Go wrapper for SDL2.
+
+Contributors
+============
+* aqiank@gmail.com (Jacky Boen)
+* hardbootm@gmail.com
 
 Documentation
 =============
