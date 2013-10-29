@@ -14,13 +14,12 @@ development files (unfortunately, no SDL2_mixer yet):
 
 Installation
 ============
-To get just the SDL2 binding, type:  
-`go get -v github.com/jackyb/go-sdl2/sdl`
+To get the bindings, type:  
+`go get -v github.com/jackyb/go-sdl2/sdl`  
+`go get -v github.com/jackyb/go-sdl2/sdl_mixer`  
+`go get -v github.com/jackyb/go-sdl2/sdl_image`
 
-If you wish to get SDL2_mixer and SDL2_image bindings as well, type:  
-`go get -v github.com/jackyb/go-sdl2/sdl_mixer github.com/jackyb/go-sdl2/sdl_image`
-
-If you use Bash, you can type this to get the whole package:  
+or type this if you use Bash terminal:  
 `go get -v github.com/jackyb/go-sdl2/sdl{,_mixer,_image}`
 
 Documentation
