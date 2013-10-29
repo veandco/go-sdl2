@@ -22,6 +22,28 @@ To get the bindings, type:
 or type this if you use Bash terminal:  
 `go get -v github.com/jackyb/go-sdl2/sdl{,_mixer,_image}`
 
+Example
+=======
+	package main
+
+	import "github.com/jackyb/go-sdl2/sdl"
+
+	func main() {
+		window := sdl.CreateWindow("test", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
+				800, 600, sdl.WINDOW_SHOWN)
+		surface := window.GetSurface()
+
+		rect := sdl.Rect { 0, 0, 200, 200 }
+		surface.FillRect(&rect, 0xffff0000)
+		window.UpdateSurface()
+
+		sdl.Delay(1000)
+		window.Destroy()
+	}
+
+
+For more complete examples, see inside the _examples_ folder.
+
 Documentation
 =============
 For now, take a look at http://godoc.org/github.com/jackyb/go-sdl2/sdl.
