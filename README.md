@@ -1,6 +1,10 @@
 SDL2 binding for Go
 ===================
-go-sdl2 is a straightforward Go wrapper for SDL2.
+go-sdl2 is a straightforward Go wrapper for SDL2.  
+  
+Where makes sense, it'll use methods instead of functions (such as
+window.UpdateSurface() or surface.Free() instead of
+sdl.UpdateWindowSurface(window) or sdl.FreeSurface(surface)).
 
 Requirements
 ============
