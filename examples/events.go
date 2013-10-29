@@ -1,4 +1,4 @@
-// author: aqiank@gmail.com (Jacky Boen)
+// author: Jacky Boen
 //
 // package main
 
