@@ -12,9 +12,9 @@ Requirements
 * [SDL2_mixer (optional)](http://www.libsdl.org/projects/SDL_mixer/)
 * [SDL2_image (optional)](http://www.libsdl.org/projects/SDL_image/)
 
-On __Fedora Linux__, you can type this command to install SDL2 and SDL2_image
-development files (unfortunately, no SDL2_mixer yet):  
-`yum install SDL2-devel SDL2_image-devel`
+On __Fedora 20__, you can run this command to install all the development
+files:  
+`yum install SDL2{,_mixer,_image}-devel`
 
 On __Arch Linux__, type:  
 `pacman -S sdl2{,mixer,image}`
