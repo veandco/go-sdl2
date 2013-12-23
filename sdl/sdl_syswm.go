@@ -15,7 +15,11 @@ const (
     SYSWM_UIKIT
 )
 
-type SysWMInfo C.SDL_SysWMinfo
+type SysWMInfo struct {
+	Version	  Version
+	Subsystem uint32
+	dummy	  [32]byte
+}
 
 func (window *Window) GetWMInfo(info *SysWMInfo) bool {
 	_window := (*C.SDL_Window) (unsafe.Pointer(window))
