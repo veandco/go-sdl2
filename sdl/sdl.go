@@ -3,7 +3,6 @@ package sdl
 // #cgo LDFLAGS: -lSDL2
 // #include <SDL2/SDL.h>
 import "C"
-import "unsafe"
 
 const (
 	INIT_TIMER			= 0x00000001
@@ -39,19 +38,6 @@ func QuitSubSystem(flags uint32) {
 func WasInit(flags uint32) uint32 {
 	_flags := (C.Uint32) (flags)
 	return (uint32) (C.SDL_WasInit(_flags))
-}
-
-func GetVersion(v *Version) {
-	version := (*C.SDL_version) (unsafe.Pointer(v))
-	C.SDL_GetVersion(version)
-}
-
-func GetRevision() string {
-	return (string) (C.GoString(C.SDL_GetRevision()))
-}
-
-func GetRevisionNumber() int {
-	return (int) (C.SDL_GetRevisionNumber())
 }
 
 func GetPlatform() string {
