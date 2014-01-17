@@ -3,6 +3,7 @@ package sdl
 // #include <SDL2/SDL_keyboard.h>
 import "C"
 import "unsafe"
+import "reflect"
 
 type Keysym struct {
 	Scancode Scancode
@@ -15,9 +16,14 @@ func GetKeyboardFocus() *Window {
 	return (*Window) (unsafe.Pointer(C.SDL_GetKeyboardFocus()))
 }
 
-func GetKeyboardState(numkeys *int) *uint8 {
-	_numkeys := (*C.int) (unsafe.Pointer(numkeys))
-	return (*uint8) (unsafe.Pointer(C.SDL_GetKeyboardState(_numkeys)))
+func GetKeyboardState() []uint8 {
+	var numkeys C.int
+	start := C.SDL_GetKeyboardState(&numkeys)
+	sh := reflect.SliceHeader{}
+	sh.Len = int(numkeys)
+	sh.Cap = int(numkeys)
+	sh.Data = uintptr(unsafe.Pointer(start))
+	return *(*[]uint8)(unsafe.Pointer(&sh))
 }
 
 func SetModState(modstate Keymod) {
