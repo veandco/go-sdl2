@@ -310,6 +310,8 @@ type OSEvent struct {
 	Timestamp uint32
 }
 
+type ClipboardEvent struct {}
+
 type UserEvent struct {
 	Type uint32
 	Timestamp uint32
@@ -419,6 +421,8 @@ func goEvent(cevent *CEvent) Event {
 		return (*QuitEvent) (unsafe.Pointer(cevent))
 	case USEREVENT:
 		return (*UserEvent) (unsafe.Pointer(cevent))
+	case CLIPBOARDUPDATE:
+		return (*ClipboardEvent) (unsafe.Pointer(cevent))
 	}
 
 	panic(fmt.Errorf("Unknown event type: %v", cevent.Type))
