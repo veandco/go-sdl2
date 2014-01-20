@@ -37,13 +37,17 @@ func main() {
 			case *sdl.QuitEvent:
 				running = false
 			case *sdl.MouseMotionEvent:
-				fmt.Printf("[%d ms] MouseMotion\tid:%d\tx:%d\ty:%d\txrel:%d\tyrel:%d\n", t.Timestamp, t.Which, t.X, t.Y, t.XRel, t.YRel)
+				fmt.Printf("[%d ms] MouseMotion\ttype:%d\tid:%d\tx:%d\ty:%d\txrel:%d\tyrel:%d\n",
+					   t.Timestamp, t.Type, t.Which, t.X, t.Y, t.XRel, t.YRel)
 			case *sdl.MouseButtonEvent:
-				fmt.Printf("[%d ms] MouseButton\tid:%d\tx:%d\ty:%d\tbutton:%d\tstate:%d\n", t.Timestamp, t.Which, t.X, t.Y, t.Button, t.State)
+				fmt.Printf("[%d ms] MouseButton\ttype:%d\tid:%d\tx:%d\ty:%d\tbutton:%d\tstate:%d\n",
+					   t.Timestamp, t.Type, t.Which, t.X, t.Y, t.Button, t.State)
 			case *sdl.MouseWheelEvent:
-				fmt.Printf("[%d ms] MouseWheel\tid:%d\tx:%d\ty:%d\n", t.Timestamp, t.Which, t.X, t.Y)
+				fmt.Printf("[%d ms] MouseWheel\ttype:%d\tid:%d\tx:%d\ty:%d\n",
+					   t.Timestamp, t.Type, t.Which, t.X, t.Y)
 			case *sdl.KeyUpEvent:
-				fmt.Printf("[%d ms] Keyboard\tsym:%c\tmodifiers:%d\tstate:%d\trepeat:%d\n", t.Timestamp, t.Keysym.Sym, t.Keysym.Mod, t.State, t.Repeat)
+				fmt.Printf("[%d ms] Keyboard\ttype:%d\tsym:%c\tmodifiers:%d\tstate:%d\trepeat:%d\n",
+					   t.Timestamp, t.Type, t.Keysym.Sym, t.Keysym.Mod, t.State, t.Repeat)
 			}
 		}
 	}
