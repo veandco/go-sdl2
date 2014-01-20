@@ -310,7 +310,10 @@ type OSEvent struct {
 	Timestamp uint32
 }
 
-type ClipboardEvent struct {}
+type ClipboardEvent struct {
+	Type uint32
+	Timestamp uint32
+}
 
 type UserEvent struct {
 	Type uint32
