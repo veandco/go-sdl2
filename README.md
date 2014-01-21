@@ -59,6 +59,7 @@ Contributors
 ============
 * [Jacky Boen](https://github.com/jackyb)
 * [HardWareGuy](https://github.com/HardWareGuy)
+* [akovaski](https://github.com/akovaski)
 
 License
 =======
