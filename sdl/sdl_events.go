@@ -443,8 +443,13 @@ func WaitEventTimeout(event *Event, timeout int) int {
 }
 
 func WaitEvent(event *Event) int {
-	_event := (*C.SDL_Event) (unsafe.Pointer(event))
-	return (int) (C.SDL_WaitEvent(_event))
+	var cevent CEvent
+	ok := (int) (C.SDL_WaitEvent((*C.SDL_Event)(unsafe.Pointer(&cevent))))
+	if ok == 0 {
+		return ok
+	}
+	*event = goEvent(&cevent)
+	return ok
 }
 
 func PushEvent(event *Event) int {
