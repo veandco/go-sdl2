@@ -336,8 +336,8 @@ func PumpEvents() {
 	C.SDL_PumpEvents()
 }
 
-func PeepEvents(events *Event, numevents int, action, minType, maxType uint32) int {
-	_events := (*C.SDL_Event) (unsafe.Pointer(events))
+func PeepEvents(events []Event, numevents int, action, minType, maxType uint32) int {
+	_events := (*C.SDL_Event) (unsafe.Pointer(cEvent(&events[0])))
 	_numevents := (C.int) (numevents)
 	_action := (C.SDL_eventaction) (action)
 	_mintype := (C.Uint32) (minType)
@@ -436,25 +436,28 @@ func cEvent(event Event) *CEvent {
 	return (*CEvent) (unsafe.Pointer(evv.UnsafeAddr()))
 }
 
-func WaitEventTimeout(event *Event, timeout int) int {
-	_event := (*C.SDL_Event) (unsafe.Pointer(event))
+func WaitEventTimeout(timeout int) Event {
+	var cevent = new(CEvent)
 	_timeout := (C.int) (timeout)
-	return (int) (C.SDL_WaitEventTimeout(_event, _timeout))
-}
-
-func WaitEvent(event *Event) int {
-	var cevent CEvent
-	ok := (int) (C.SDL_WaitEvent((*C.SDL_Event)(unsafe.Pointer(&cevent))))
+	ok := (int) (C.SDL_WaitEventTimeout((*C.SDL_Event)(unsafe.Pointer(cevent)), _timeout))
 	if ok == 0 {
-		return ok
+		return nil
 	}
-	*event = goEvent(&cevent)
-	return ok
+	return goEvent(cevent)
 }
 
-func PushEvent(event *Event) int {
-	_event := (*C.SDL_Event) (unsafe.Pointer(event))
-	return (int) (C.SDL_PushEvent(_event))
+func WaitEvent() Event {
+	var cevent = new(CEvent)
+	ok := (int) (C.SDL_WaitEvent((*C.SDL_Event)(unsafe.Pointer(cevent))))
+	if ok == 0 {
+		return nil
+	}
+	return goEvent(cevent)
+}
+
+func PushEvent(event *Event) bool {
+	_event := cEvent(event)
+	return C.SDL_PushEvent((*C.SDL_Event)(unsafe.Pointer(_event))) == 1
 }
 
 /* TODO: implement SDL_EventFilter functions */
