@@ -436,28 +436,30 @@ func cEvent(event Event) *CEvent {
 	return (*CEvent) (unsafe.Pointer(evv.UnsafeAddr()))
 }
 
-func WaitEventTimeout(timeout int) Event {
-	var cevent = new(CEvent)
+func WaitEventTimeout(event *Event, timeout int) bool {
+	var cevent CEvent
 	_timeout := (C.int) (timeout)
-	ok := (int) (C.SDL_WaitEventTimeout((*C.SDL_Event)(unsafe.Pointer(cevent)), _timeout))
+	ok := (int) (C.SDL_WaitEventTimeout((*C.SDL_Event)(unsafe.Pointer(&cevent)), _timeout))
 	if ok == 0 {
-		return nil
+		return false
 	}
-	return goEvent(cevent)
+	*event = goEvent(&cevent)
+	return true
 }
 
-func WaitEvent() Event {
-	var cevent = new(CEvent)
-	ok := (int) (C.SDL_WaitEvent((*C.SDL_Event)(unsafe.Pointer(cevent))))
+func WaitEvent(event *Event) bool {
+	var cevent CEvent
+	ok := (int) (C.SDL_WaitEvent((*C.SDL_Event)(unsafe.Pointer(&cevent))))
 	if ok == 0 {
-		return nil
+		return false
 	}
-	return goEvent(cevent)
+	*event = goEvent(&cevent)
+	return true
 }
 
-func PushEvent(event *Event) bool {
+func PushEvent(event *Event) int {
 	_event := cEvent(event)
-	return C.SDL_PushEvent((*C.SDL_Event)(unsafe.Pointer(_event))) == 1
+	return (int) (C.SDL_PushEvent((*C.SDL_Event)(unsafe.Pointer(_event))))
 }
 
 /* TODO: implement SDL_EventFilter functions */
