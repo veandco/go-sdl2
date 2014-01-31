@@ -457,9 +457,9 @@ func WaitEvent(event *Event) bool {
 	return true
 }
 
-func PushEvent(event *Event) bool {
+func PushEvent(event *Event) int {
 	_event := cEvent(event)
-	return C.SDL_PushEvent((*C.SDL_Event)(unsafe.Pointer(_event))) == 1
+	return (int) (C.SDL_PushEvent((*C.SDL_Event)(unsafe.Pointer(_event))))
 }
 
 /* TODO: implement SDL_EventFilter functions */
