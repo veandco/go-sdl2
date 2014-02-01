@@ -1,4 +1,4 @@
-// This program creates an SDL window and renderer and takes in events using sdl.PeepEvents
+// This program creates an SDL window and renderer and pushes UserEvents using PeepEvents
 package main
 
 import (
