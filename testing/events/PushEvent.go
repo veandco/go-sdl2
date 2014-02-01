@@ -39,7 +39,7 @@ func main() {
 			lastPushTime = sdl.GetTicks()
 			pEvent := sdl.UserEvent{sdl.USEREVENT, sdl.GetTicks(), window.GetID(), 1331, nil, nil}
 			
-			retVal := sdl.PushEvent(pEvent) // Here's where the event is actually pushed
+			retVal := sdl.PushEvent(&pEvent) // Here's where the event is actually pushed
 			
 			switch retVal {
 				case 1:
