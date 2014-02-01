@@ -4,7 +4,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/jackyb/go-sdl2/sdl"
+	"../../sdl"
 	"os"
 )
 
@@ -32,7 +32,7 @@ func main() {
 
 	running = true
 	for running {
-		event = sdl.WaitEventTimeout(1000) // wait here until an event is in the event queue
+		sdl.WaitEventTimeout(&event, 1000) // wait here until an event is in the event queue
 		if event == nil {
 			fmt.Println("WaitEventTimeout timed out")
 			continue

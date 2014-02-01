@@ -3,7 +3,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/jackyb/go-sdl2/sdl"
+	"../../sdl"
 	"os"
 )
 
@@ -31,8 +31,7 @@ func main() {
 
 	running = true
 	for running {
-		event = sdl.WaitEvent() // wait here until an event is in the event queue
-		
+		sdl.WaitEvent(&event) // wait here until an event is in the event queue
 		switch t := event.(type) {
 		case *sdl.QuitEvent:
 			running = false
