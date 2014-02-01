@@ -433,7 +433,8 @@ func goEvent(cevent *CEvent) Event {
 
 func cEvent(event Event) *CEvent {
 	evv := reflect.ValueOf(event)
-	return (*CEvent) (unsafe.Pointer(evv.UnsafeAddr()))
+	p := evv.Elem()
+	return (*CEvent) (unsafe.Pointer(p.UnsafeAddr()))
 }
 
 func WaitEventTimeout(event *Event, timeout int) bool {
@@ -460,7 +461,7 @@ func WaitEvent(event *Event) bool {
 }
 
 func PushEvent(event Event) int {
-	_event := (*C.SDL_Event) (unsafe.Pointer(cEvent(&event)))
+	_event := (*C.SDL_Event) (unsafe.Pointer(cEvent(event)))
 	return (int) (C.SDL_PushEvent(_event))
 }
 
