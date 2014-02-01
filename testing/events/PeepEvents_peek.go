@@ -30,7 +30,6 @@ func main() {
 	}
 	
 	var peepArray []sdl.Event = make([]sdl.Event, 5)
-	_ = peepArray
 
 	running = true
 	for running {
