@@ -459,8 +459,8 @@ func WaitEvent(event *Event) bool {
 	return true
 }
 
-func PushEvent(event *Event) int {
-	_event := (*C.SDL_Event) (unsafe.Pointer(cEvent(event)))
+func PushEvent(event Event) int {
+	_event := (*C.SDL_Event) (unsafe.Pointer(cEvent(&event)))
 	return (int) (C.SDL_PushEvent(_event))
 }
 
