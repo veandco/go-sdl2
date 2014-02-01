@@ -9,6 +9,7 @@ import (
 
 var winTitle string = "Go-SDL2 TestWaitEvent"
 var winWidth, winHeight int = 800, 600
+const pushTime uint32 = 1000 // number of milliseconds between event pushes
 
 func main() {
 	var window *sdl.Window
@@ -29,17 +30,21 @@ func main() {
 		os.Exit(2)
 	}
 	
-	var peepArray []sdl.Event = make([]sdl.Event, 5)
+	var peepArray []sdl.Event = make([]sdl.Event, 2)
+	peepArray[0] = &sdl.UserEvent{sdl.USEREVENT, sdl.GetTicks(), window.GetID(), 1331, nil, nil}
+	peepArray[1] = &sdl.UserEvent{sdl.USEREVENT, sdl.GetTicks(), window.GetID(), 10101, nil, nil}
 
 	running = true
+	lastPushTime := sdl.GetTicks()
 	for running {
-		sdl.PumpEvents()
-		numEventsRetrieved := sdl.PeepEvents(peepArray, len(peepArray), sdl.PEEKEVENT, sdl.FIRSTEVENT, sdl.LASTEVENT)
-		if numEventsRetrieved < 0 {
-			fmt.Printf("PeepEvents error: %s\n", sdl.GetError())
-		} else {
-			for i := 0; i < numEventsRetrieved; i++ {
-				fmt.Printf("Event Peeked Value: %v\n", peepArray[i]) // primitive printing of event
+		if lastPushTime + pushTime < sdl.GetTicks() {
+			lastPushTime = sdl.GetTicks()
+			sdl.PumpEvents()
+			numEventsHandled := sdl.PeepEvents(peepArray, len(peepArray), sdl.ADDEVENT, sdl.FIRSTEVENT, sdl.LASTEVENT)
+			if numEventsHandled < 0 {
+				fmt.Printf("PeepEvents error: %s\n", sdl.GetError())
+			} else {
+				fmt.Printf("Successful push of %d events\n", numEventsHandled)
 			}
 		}
 		
@@ -59,6 +64,8 @@ func main() {
 			case *sdl.KeyUpEvent:
 				fmt.Printf("[%d ms] Keyboard\ttype:%d\tsym:%c\tmodifiers:%d\tstate:%d\trepeat:%d\n",
 					t.Timestamp, t.Type, t.Keysym.Sym, t.Keysym.Mod, t.State, t.Repeat)
+			case *sdl.UserEvent:
+				fmt.Printf("[%d ms] UserEvent\tcode:%d\n", t.Timestamp, t.Code)
 			}
 		}
 		sdl.Delay(1000/30)
