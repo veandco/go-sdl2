@@ -438,8 +438,9 @@ func cEvent(event Event) *CEvent {
 
 func WaitEventTimeout(event *Event, timeout int) bool {
 	var cevent CEvent
+	_event := (*C.SDL_Event) (unsafe.Pointer(&cevent))
 	_timeout := (C.int) (timeout)
-	ok := (int) (C.SDL_WaitEventTimeout((*C.SDL_Event)(unsafe.Pointer(&cevent)), _timeout))
+	ok := (int) (C.SDL_WaitEventTimeout(_event, _timeout))
 	if ok == 0 {
 		return false
 	}
@@ -449,7 +450,8 @@ func WaitEventTimeout(event *Event, timeout int) bool {
 
 func WaitEvent(event *Event) bool {
 	var cevent CEvent
-	ok := (int) (C.SDL_WaitEvent((*C.SDL_Event)(unsafe.Pointer(&cevent))))
+	_event := (*C.SDL_Event) (unsafe.Pointer(&cevent))
+	ok := (int) (C.SDL_WaitEvent(_event))
 	if ok == 0 {
 		return false
 	}
@@ -458,8 +460,8 @@ func WaitEvent(event *Event) bool {
 }
 
 func PushEvent(event *Event) int {
-	_event := cEvent(event)
-	return (int) (C.SDL_PushEvent((*C.SDL_Event)(unsafe.Pointer(_event))))
+	_event := (*C.SDL_Event) (unsafe.Pointer(cEvent(event)))
+	return (int) (C.SDL_PushEvent(_event))
 }
 
 /* TODO: implement SDL_EventFilter functions */
