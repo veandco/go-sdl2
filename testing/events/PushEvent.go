@@ -3,7 +3,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/jackyb/go-sdl2/sdl"
+	"../../sdl"
 	"os"
 )
 
@@ -33,14 +33,14 @@ func main() {
 	running = true
 	lastPushTime := sdl.GetTicks()
 	for running {
-	
+
 		// Push a UserEvent every second
 		if lastPushTime + pushTime < sdl.GetTicks() {
 			lastPushTime = sdl.GetTicks()
 			pEvent := &sdl.UserEvent{sdl.USEREVENT, sdl.GetTicks(), window.GetID(), 1331, nil, nil}
-			
+
 			retVal := sdl.PushEvent(pEvent) // Here's where the event is actually pushed
-			
+
 			switch retVal {
 				case 1:
 					fmt.Println("PushEvent returned success")
@@ -50,7 +50,7 @@ func main() {
 					fmt.Printf("PushEvent returned error: %s\n", sdl.GetError)
 			}
 		}
-		
+
 		for event = sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 			switch t := event.(type) {
 			case *sdl.QuitEvent:
