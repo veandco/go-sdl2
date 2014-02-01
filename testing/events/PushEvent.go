@@ -35,7 +35,7 @@ func main() {
 	for running {
 	
 		// Push a UserEvent every second
-		if lastPushTime + pushTime > sdl.GetTicks() {
+		if lastPushTime + pushTime < sdl.GetTicks() {
 			lastPushTime = sdl.GetTicks()
 			pEvent := sdl.UserEvent{sdl.USEREVENT, sdl.GetTicks(), window.GetID(), 1331, nil, nil}
 			
@@ -47,7 +47,7 @@ func main() {
 				case 0:
 					fmt.Println("PushEvent returned filtered")
 				case -1:
-					fmt.Printf("PushEvent returned error: %s", sdl.GetError)
+					fmt.Printf("PushEvent returned error: %s\n", sdl.GetError)
 			}
 		}
 		
@@ -71,6 +71,7 @@ func main() {
 				fmt.Printf("[%d ms] UserEvent\tcode:%d\n", t.Timestamp, t.Code)
 			}
 		}
+		sdl.Delay(1000/30)
 	}
 
 	renderer.Destroy()
