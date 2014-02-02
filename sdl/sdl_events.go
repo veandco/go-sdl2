@@ -337,12 +337,28 @@ func PumpEvents() {
 }
 
 func PeepEvents(events []Event, numevents int, action, minType, maxType uint32) int {
-	_events := (*C.SDL_Event) (unsafe.Pointer(cEvent(&events[0])))
+	var _events []CEvent = make([]CEvent, numevents)
+	
+	if action == ADDEVENT { // the contents of _events matter if they are to be added
+		for i := 0; i < numevents; i++ {
+			_events[i] = *cEvent(events[i])
+		}
+	}
+	
+	_pevents := (*C.SDL_Event) (unsafe.Pointer(&_events[0]))
 	_numevents := (C.int) (numevents)
 	_action := (C.SDL_eventaction) (action)
 	_mintype := (C.Uint32) (minType)
 	_maxtype := (C.Uint32) (maxType)
-	return (int) (C.SDL_PeepEvents(_events, _numevents, _action, _mintype, _maxtype))
+	
+	retVal := (int) (C.SDL_PeepEvents(_pevents, _numevents, _action, _mintype, _maxtype))
+	
+	if action != ADDEVENT { // put events into slice, events unchanged if action = ADDEVENT
+		for i := 0; i < retVal; i++ {
+			events[i] = goEvent(&_events[i])
+		}
+	}
+	return retVal
 }
 
 func HasEvent(type_ uint32) bool {
