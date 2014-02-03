@@ -39,7 +39,8 @@ func OpenFont(file string, size int) (*Font,error) {
 
 func (f *Font) RenderText_Solid(text string, color sdl.Color) *sdl.Surface {
 	_text := (C.CString) (text)
-	_color := (*C.SDL_Color) (unsafe.Pointer(&color))
-	surface := (*sdl.Surface) (unsafe.Pointer(C.TTF_RenderText_Solid(f.f, _text, *_color)))
+	// _color := (*C.SDL_Color) (unsafe.Pointer(&color))
+	_c := C.SDL_Color{C.Uint8(color.R), C.Uint8(color.G), C.Uint8(color.B), C.Uint8(color.A)}
+	surface := (*sdl.Surface) (unsafe.Pointer(C.TTF_RenderText_Solid(f.f, _text, _c)))
 	return surface
 }
