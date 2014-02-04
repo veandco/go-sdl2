@@ -38,10 +38,9 @@ type Color struct {
 
 func (c Color) Uint32() uint32 {
 	var v uint32
-	v |= uint32(c.R) << 24
-	v |= uint32(c.G) << 16
-	v |= uint32(c.B) << 8
-	v |= uint32(c.A)
+	v |= uint32(c.R) << 16
+	v |= uint32(c.G) << 8
+	v |= uint32(c.B)
 	return v
 }
 
