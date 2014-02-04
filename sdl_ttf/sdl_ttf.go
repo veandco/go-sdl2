@@ -58,9 +58,10 @@ func (f *Font) RenderText_Blended(text string, color sdl.Color) *sdl.Surface {
 
 func (f *Font) RenderText_Shaded(text string, fg, bg sdl.Color) *sdl.Surface {
 	_text := C.CString(text)
-	_fg := C.SDL_Color{C.Uint8(fg.R), C.Uint8(fg.G), C.Uint8(fg.B), C.Uint8(fg.A)}
-	_bg := C.SDL_Color{C.Uint8(bg.R), C.Uint8(bg.G), C.Uint8(bg.B), C.Uint8(bg.A)}
+	_fg := fg.ToCStruct()
+	_bg := bg.ToCStruct()
 	surface := (*sdl.Surface) (unsafe.Pointer(C.TTF_RenderText_Shaded(f.f, _text, _fg, _bg)))
+	C.free(_text)
 	return surface
 }
 

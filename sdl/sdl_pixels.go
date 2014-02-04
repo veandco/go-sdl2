@@ -1,5 +1,9 @@
 package sdl
 
+// #cgo LDFLAGS: -lSDL2
+// #include <SDL2/SDL.h>
+import "C"
+
 type PixelFormat struct {
 	Format uint32
 	Palette *Palette
@@ -42,6 +46,10 @@ func (c Color) Uint32() uint32 {
 	v |= uint32(c.G) << 8
 	v |= uint32(c.B)
 	return v
+}
+
+func (c Color) ToCStruct() C.SDL_Color {
+	return C.SDL_Color{C.Uint8(c.R), C.Uint8(c.G), C.Uint8(c.B), C.Uint8(c.A)}
 }
 
 const (
