@@ -31,6 +31,7 @@ func OpenFont(file string, size int) (*Font,error) {
 	_file := (C.CString) (file)
 	_size := (C.int) (size)
 	f := (*C.TTF_Font) (C.TTF_OpenFont(_file, _size))
+	C.free(unsafe.Pointer(_file))
 	if f == nil {
 		return nil,GetError()
 	}
@@ -38,9 +39,12 @@ func OpenFont(file string, size int) (*Font,error) {
 }
 
 func (f *Font) RenderText_Solid(text string, color sdl.Color) *sdl.Surface {
-	_text := (C.CString) (text)
-	// _color := (*C.SDL_Color) (unsafe.Pointer(&color))
+	_text := C.CString(text)
 	_c := C.SDL_Color{C.Uint8(color.R), C.Uint8(color.G), C.Uint8(color.B), C.Uint8(color.A)}
 	surface := (*sdl.Surface) (unsafe.Pointer(C.TTF_RenderText_Solid(f.f, _text, _c)))
 	return surface
+}
+
+func (f *Font) Close() {
+	C.TTF_CloseFont(f.f)
 }

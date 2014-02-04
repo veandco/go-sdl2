@@ -36,6 +36,15 @@ type Color struct {
 	A uint8
 }
 
+func (c Color) Uint32() uint32 {
+	var v uint32
+	v |= uint32(c.R) << 24
+	v |= uint32(c.G) << 16
+	v |= uint32(c.B) << 8
+	v |= uint32(c.A)
+	return v
+}
+
 const (
     PIXELTYPE_UNKNOWN = iota
     PIXELTYPE_INDEX1
