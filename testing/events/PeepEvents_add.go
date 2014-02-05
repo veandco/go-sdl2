@@ -40,7 +40,7 @@ func main() {
 		if lastPushTime + pushTime < sdl.GetTicks() {
 			lastPushTime = sdl.GetTicks()
 			sdl.PumpEvents()
-			numEventsHandled := sdl.PeepEvents(peepArray, len(peepArray), sdl.ADDEVENT, sdl.FIRSTEVENT, sdl.LASTEVENT)
+			numEventsHandled := sdl.PeepEvents(peepArray, sdl.ADDEVENT, sdl.FIRSTEVENT, sdl.LASTEVENT)
 			if numEventsHandled < 0 {
 				fmt.Printf("PeepEvents error: %s\n", sdl.GetError())
 			} else {
