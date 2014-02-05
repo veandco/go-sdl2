@@ -453,27 +453,25 @@ func cEvent(event Event) *CEvent {
 	return (*CEvent) (unsafe.Pointer(p.UnsafeAddr()))
 }
 
-func WaitEventTimeout(event *Event, timeout int) bool {
+func WaitEventTimeout(timeout int) Event {
 	var cevent CEvent
 	_event := (*C.SDL_Event) (unsafe.Pointer(&cevent))
 	_timeout := (C.int) (timeout)
 	ok := (int) (C.SDL_WaitEventTimeout(_event, _timeout))
 	if ok == 0 {
-		return false
+		return nil
 	}
-	*event = goEvent(&cevent)
-	return true
+	return goEvent(&cevent)
 }
 
-func WaitEvent(event *Event) bool {
+func WaitEvent() Event {
 	var cevent CEvent
 	_event := (*C.SDL_Event) (unsafe.Pointer(&cevent))
 	ok := (int) (C.SDL_WaitEvent(_event))
 	if ok == 0 {
-		return false
+		return nil
 	}
-	*event = goEvent(&cevent)
-	return true
+	return goEvent(&cevent)
 }
 
 func PushEvent(event Event) int {

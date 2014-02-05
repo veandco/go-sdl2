@@ -31,7 +31,7 @@ func main() {
 
 	running = true
 	for running {
-		sdl.WaitEvent(&event) // wait here until an event is in the event queue
+		event = sdl.WaitEvent() // wait here until an event is in the event queue
 		switch t := event.(type) {
 		case *sdl.QuitEvent:
 			running = false
