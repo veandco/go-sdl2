@@ -2,6 +2,7 @@ package sdl
 
 // #include <SDL2/SDL_error.h>
 import "C"
+import "errors"
 
 const (
 	ENOMEM				= 0x00000000
@@ -12,8 +13,12 @@ const (
 	LASTERROR			= 0x00000005
 )
 
-func GetError() string {
-	return (string) (C.GoString(C.SDL_GetError()))
+func GetError() error {
+	_c_err := C.SDL_GetError()
+	if _c_err == nil {
+		return nil
+	}
+	return errors.New(C.GoString(_c_err))
 }
 
 func ClearError() {
