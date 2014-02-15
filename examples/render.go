@@ -1,6 +1,6 @@
 // author: Jacky Boen
-//
-// package main
+
+package main
 
 import (
 	"github.com/jackyb/go-sdl2/sdl"

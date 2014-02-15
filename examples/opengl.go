@@ -1,6 +1,6 @@
 // author: HardWareGuy
-//
-// package main
+
+package main
 
 import (
 	"fmt"
