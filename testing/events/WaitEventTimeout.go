@@ -4,7 +4,7 @@ package main
 
 import (
 	"fmt"
-	"../../sdl"
+	"github.com/jackyb/go-sdl2/sdl"
 	"os"
 )
 

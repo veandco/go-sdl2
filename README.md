@@ -11,13 +11,15 @@ Requirements
 * [SDL2](http://libsdl.org/download-2.0.php)
 * [SDL2_mixer (optional)](http://www.libsdl.org/projects/SDL_mixer/)
 * [SDL2_image (optional)](http://www.libsdl.org/projects/SDL_image/)
+* [SDL2_ttf (optional)](http://www.libsdl.org/projects/SDL_ttf/)
+
 
 On __Fedora 20__, you can run this command to install all the development
 files:  
-`yum install SDL2{,_mixer,_image}-devel`
+`yum install SDL2{,_mixer,_image,_ttf}-devel`
 
 On __Arch Linux__, type:  
-`pacman -S sdl2{,mixer,image}`
+`pacman -S sdl2{,_mixer,_image,_ttf}`
 
 Installation
 ============
@@ -25,9 +27,10 @@ To get the bindings, type:
 `go get -v github.com/jackyb/go-sdl2/sdl`  
 `go get -v github.com/jackyb/go-sdl2/sdl_mixer`  
 `go get -v github.com/jackyb/go-sdl2/sdl_image`
+`go get -v github.com/jackyb/go-sdl2/sdl_ttf`
 
 or type this if you use Bash terminal:  
-`go get -v github.com/jackyb/go-sdl2/sdl{,_mixer,_image}`
+`go get -v github.com/jackyb/go-sdl2/sdl{,_mixer,_image,_ttf}`
 
 Example
 =======
