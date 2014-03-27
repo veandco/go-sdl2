@@ -34,7 +34,7 @@ func main() {
 	running = true
 	for running {
 		sdl.PumpEvents()
-		numEventsRetrieved := sdl.PeepEvents(peepArray, len(peepArray), sdl.PEEKEVENT, sdl.FIRSTEVENT, sdl.LASTEVENT)
+		numEventsRetrieved := sdl.PeepEvents(peepArray, sdl.PEEKEVENT, sdl.FIRSTEVENT, sdl.LASTEVENT)
 		if numEventsRetrieved < 0 {
 			fmt.Printf("PeepEvents error: %s\n", sdl.GetError())
 		} else {

@@ -32,7 +32,7 @@ func main() {
 
 	running = true
 	for running {
-		sdl.WaitEventTimeout(&event, 1000) // wait here until an event is in the event queue
+		event = sdl.WaitEventTimeout(1000) // wait here until an event is in the event queue
 		if event == nil {
 			fmt.Println("WaitEventTimeout timed out")
 			continue

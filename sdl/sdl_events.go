@@ -336,17 +336,17 @@ func PumpEvents() {
 	C.SDL_PumpEvents()
 }
 
-func PeepEvents(events []Event, numevents int, action, minType, maxType uint32) int {
-	var _events []CEvent = make([]CEvent, numevents)
+func PeepEvents(events []Event, action, minType, maxType uint32) int {
+	var _events []CEvent = make([]CEvent, len(events))
 	
 	if action == ADDEVENT { // the contents of _events matter if they are to be added
-		for i := 0; i < numevents; i++ {
+		for i := 0; i < len(events); i++ {
 			_events[i] = *cEvent(events[i])
 		}
 	}
 	
 	_pevents := (*C.SDL_Event) (unsafe.Pointer(&_events[0]))
-	_numevents := (C.int) (numevents)
+	_numevents := (C.int) (len(events))
 	_action := (C.SDL_eventaction) (action)
 	_mintype := (C.Uint32) (minType)
 	_maxtype := (C.Uint32) (maxType)
@@ -453,27 +453,25 @@ func cEvent(event Event) *CEvent {
 	return (*CEvent) (unsafe.Pointer(p.UnsafeAddr()))
 }
 
-func WaitEventTimeout(event *Event, timeout int) bool {
+func WaitEventTimeout(timeout int) Event {
 	var cevent CEvent
 	_event := (*C.SDL_Event) (unsafe.Pointer(&cevent))
 	_timeout := (C.int) (timeout)
 	ok := (int) (C.SDL_WaitEventTimeout(_event, _timeout))
 	if ok == 0 {
-		return false
+		return nil
 	}
-	*event = goEvent(&cevent)
-	return true
+	return goEvent(&cevent)
 }
 
-func WaitEvent(event *Event) bool {
+func WaitEvent() Event {
 	var cevent CEvent
 	_event := (*C.SDL_Event) (unsafe.Pointer(&cevent))
 	ok := (int) (C.SDL_WaitEvent(_event))
 	if ok == 0 {
-		return false
+		return nil
 	}
-	*event = goEvent(&cevent)
-	return true
+	return goEvent(&cevent)
 }
 
 func PushEvent(event Event) int {
