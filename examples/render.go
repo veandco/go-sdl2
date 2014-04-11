@@ -39,7 +39,7 @@ func main() {
 
 	points = []sdl.Point { {0, 0}, {100, 300}, {100, 300}, {200, 0} }
 	renderer.SetDrawColor(255, 255, 0, 255)
-	renderer.DrawLines(&points, 4)
+	renderer.DrawLines(&points)
 
 	rect = sdl.Rect { 300, 0, 200, 200 }
 	renderer.SetDrawColor(255, 0, 0, 255)
@@ -47,7 +47,7 @@ func main() {
 
 	rects = []sdl.Rect { {400, 400, 100, 100}, {550, 350, 200, 200} }
 	renderer.SetDrawColor(0, 255, 255, 255)
-	renderer.DrawRects(&rects, 2)
+	renderer.DrawRects(&rects)
 
 	rect = sdl.Rect { 250, 250, 200, 200 }
 	renderer.SetDrawColor(0, 255, 0, 255)
@@ -55,7 +55,7 @@ func main() {
 
 	rects = []sdl.Rect { {500, 300, 100, 100}, {200, 300, 200, 200} }
 	renderer.SetDrawColor(255, 0, 255, 255)
-	renderer.FillRects(&rects, 2)
+	renderer.FillRects(&rects)
 
 	renderer.Present()
 
