@@ -251,10 +251,10 @@ func (renderer *Renderer) DrawPoint(x, y int) int {
 	return (int) (C.SDL_RenderDrawPoint(_renderer, _x, _y))
 }
 
-func (renderer *Renderer) DrawPoints(points *[]Point) int {
+func (renderer *Renderer) DrawPoints(points []Point) int {
 	_renderer := (*C.SDL_Renderer) (unsafe.Pointer(renderer))
-	_points := (*C.SDL_Point) (unsafe.Pointer(&(*points)[0]))
-	_count := (C.int) (len(*points))
+	_points := (*C.SDL_Point) (unsafe.Pointer(&points[0]))
+	_count := (C.int) (len(points))
 	return (int) (C.SDL_RenderDrawPoints(_renderer, _points, _count))
 }
 
@@ -267,10 +267,10 @@ func (renderer *Renderer) DrawLine(x1, y1, x2, y2 int) int {
 	return (int) (C.SDL_RenderDrawLine(_renderer, _x1, _y1, _x2, _y2))
 }
 
-func (renderer *Renderer) DrawLines(points *[]Point) int {
+func (renderer *Renderer) DrawLines(points []Point) int {
 	_renderer := (*C.SDL_Renderer) (unsafe.Pointer(renderer))
-	_points := (*C.SDL_Point) (unsafe.Pointer(&(*points)[0]))
-	_count := (C.int) (len(*points))
+	_points := (*C.SDL_Point) (unsafe.Pointer(&points[0]))
+	_count := (C.int) (len(points))
 	return (int) (C.SDL_RenderDrawLines(_renderer, _points, _count))
 }
 
@@ -280,10 +280,10 @@ func (renderer *Renderer) DrawRect(rect *Rect) int {
 	return (int) (C.SDL_RenderDrawRect(_renderer, _rect))
 }
 
-func (renderer *Renderer) DrawRects(rects *[]Rect) int {
+func (renderer *Renderer) DrawRects(rects []Rect) int {
 	_renderer := (*C.SDL_Renderer) (unsafe.Pointer(renderer))
-	_rects := (*C.SDL_Rect) (unsafe.Pointer(&(*rects)[0]))
-	_count := (C.int) (len(*rects))
+	_rects := (*C.SDL_Rect) (unsafe.Pointer(&rects[0]))
+	_count := (C.int) (len(rects))
 	return (int) (C.SDL_RenderDrawRects(_renderer, _rects, _count))
 }
 
@@ -293,10 +293,10 @@ func (renderer *Renderer) FillRect(rect *Rect) int {
 	return (int) (C.SDL_RenderFillRect(_renderer, _rect))
 }
 
-func (renderer *Renderer) FillRects(rects *[]Rect) int {
+func (renderer *Renderer) FillRects(rects []Rect) int {
 	_renderer := (*C.SDL_Renderer) (unsafe.Pointer(renderer))
-	_rects := (*C.SDL_Rect) (unsafe.Pointer(&(*rects)[0]))
-	_count := (C.int) (len(*rects))
+	_rects := (*C.SDL_Rect) (unsafe.Pointer(&rects[0]))
+	_count := (C.int) (len(rects))
 	return (int) (C.SDL_RenderFillRects(_renderer, _rects, _count))
 }
 
