@@ -1,6 +1,8 @@
 package mix
 
-//#cgo LDFLAGS: -lSDL2 -lSDL2_mixer
+//#cgo !linux,freebsd LDFLAGS: -lSDL2 -lSDL2_mixer
+//#cgo !windows pkg-config: sdl2
+//#cgo !windows LDFLAGS: -lSDL2_mixer
 //#include <SDL2/SDL_mixer.h>
 import "C"
 import "unsafe"
