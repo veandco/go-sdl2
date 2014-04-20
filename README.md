@@ -65,6 +65,8 @@ Contributors
 * [akovaski](https://github.com/akovaski)
 * [whyrusleeping](https://github.com/whyrusleeping)
 * [ccll](https://github.com/ccll)
+* [krux02](https://github.com/krux02)
+* [marcusva](https://github.com/markusva)
 
 License
 =======
