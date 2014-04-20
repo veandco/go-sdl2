@@ -48,3 +48,12 @@ func HasSSE41() bool {
 func HasSSE42() bool {
 	return C.SDL_HasSSE42() > 0
 }
+
+func GetSystemRAM() int {
+	return (int) (C.SDL_GetSystemRAM())
+}
+
+func HasAVX() bool {
+	return C.SDL_HasAVX() > 0
+}
+
