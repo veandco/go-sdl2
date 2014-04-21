@@ -7,7 +7,7 @@ import "unsafe"
 
 func SetClipboardText(text string) int {
 	_text := C.CString(text)
-	defer C.SDL_free(unsafe.Pointer(_text))
+	defer C.free(unsafe.Pointer(_text))
 	return (int)(C.SDL_SetClipboardText(_text))
 }
 
