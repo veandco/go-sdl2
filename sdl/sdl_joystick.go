@@ -52,14 +52,14 @@ func (joystick *Joystick) GetGUID() JoystickGUID {
 func JoystickGetGUIDString(guid JoystickGUID, pszGUID string, cbGUID int) {
 	_guid := (C.SDL_JoystickGUID)(guid)
 	_pszGUID := C.CString(pszGUID)
-	defer C.SDL_free(unsafe.Pointer(_pszGUID))
+	defer C.free(unsafe.Pointer(_pszGUID))
 	_cbGUID := (C.int)(cbGUID)
 	C.SDL_JoystickGetGUIDString(_guid, _pszGUID, _cbGUID)
 }
 
 func JoystickGetGUIDFromString(pchGUID string) JoystickGUID {
 	_pchGUID := C.CString(pchGUID)
-	defer C.SDL_free(unsafe.Pointer(_pchGUID))
+	defer C.free(unsafe.Pointer(_pchGUID))
 	return (JoystickGUID)(C.SDL_JoystickGetGUIDFromString(_pchGUID))
 }
 
