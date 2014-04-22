@@ -1,6 +1,7 @@
 package sdl
 
 // #include <SDL2/SDL_cpuinfo.h>
+// #include "misc.h"
 import "C"
 
 const CACHELINE_SIZE = 128
@@ -50,10 +51,10 @@ func HasSSE42() bool {
 }
 
 func GetSystemRAM() int {
-	return (int) (C.SDL_GetSystemRAM())
+	return (int) (C._SDL_GetSystemRAM())
 }
 
 func HasAVX() bool {
-	return C.SDL_HasAVX() > 0
+	return C._SDL_HasAVX() > 0
 }
 
