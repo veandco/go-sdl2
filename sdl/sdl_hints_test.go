@@ -2,17 +2,9 @@ package sdl
 
 import "testing"
 
-func setup () {
-	Init(INIT_EVERYTHING)
-}
-
-func quit () {
-	Quit()
-}
-
 func TestSetHintWithPriority(t *testing.T) {
-	setup()
-	defer quit()
+	Init(INIT_EVERYTHING)
+	defer Quit()
 
 	if !SetHintWithPriority("TEST", "32", HINT_DEFAULT) {
 		t.Errorf("return value for SetHintWithPriority('TEST', '32', HINT_DEFAULT) is wrong")
@@ -36,8 +28,8 @@ func TestSetHintWithPriority(t *testing.T) {
 }
 
 func TestGetSetHint(t *testing.T) {
-	setup()
-	defer quit()
+	Init(INIT_EVERYTHING)
+	defer Quit()
 
 	if !SetHint("TEST", "32") {
 		t.Errorf("return value for SetHint('TEST', '32') is wrong")
@@ -54,8 +46,8 @@ func TestGetSetHint(t *testing.T) {
 }
 
 func TestClearHints(t *testing.T) {
-	setup()
-	defer quit()
+	Init(INIT_EVERYTHING)
+	defer Quit()
 
 	if !SetHint("TEST", "32") {
 		t.Errorf("return value for SetHint('TEST', '32') is wrong")
