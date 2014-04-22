@@ -1,0 +1,21 @@
+package sdl
+
+// #include <SDL2/SDL_filesystem.h>
+import "C"
+import "unsafe"
+
+func GetBasePath() string {
+	_val := C.SDL_GetBasePath()
+	defer C.SDL_free(unsafe.Pointer(_val))
+	return C.GoString(_val)
+}
+
+func GetPrefPath(org, app string) string {
+	_org := C.CString(org)
+	_app := C.CString(app)
+	defer C.free(unsafe.Pointer(_org))
+	defer C.free(unsafe.Pointer(_app))
+	_val := C.SDL_GetPrefPath(_org, _app)
+	defer C.free(unsafe.Pointer(_val))
+	return C.GoString(_val)
+}
