@@ -2,8 +2,14 @@ package mix
 
 //#cgo LDFLAGS: -lSDL2 -lSDL2_mixer
 //#include <SDL2/SDL_mixer.h>
+//
+//extern void callPostMixFunction(void *udata, Uint8* stream, int length);
+//extern void callHookMusic(void *udata, Uint8* stream, int length);
+//extern void callHookMusicFinished();
+//extern void callChannelFinished(int channel);
 import "C"
 import "unsafe"
+import "reflect"
 import "github.com/jackyb/go-sdl2/sdl"
 
 type Chunk struct {
@@ -387,3 +393,88 @@ func GetChunk(channel int) *Chunk {
 func CloseAudio() {
 	C.Mix_CloseAudio()
 }
+
+func GetNumChunkDecoders() int {
+	return int(C.Mix_GetNumChunkDecoders())
+}
+
+func GetChunkDecoder(index int) string {
+	return C.GoString(C.Mix_GetChunkDecoder(C.int(index)))
+}
+
+func GetNumMusicDecoders() int {
+	return int(C.Mix_GetNumMusicDecoders())
+}
+
+func GetMusicDecoder(index int) string {
+	return C.GoString(C.Mix_GetMusicDecoder(C.int(index)))
+}
+
+//export callPostMixFunction
+func callPostMixFunction(udata unsafe.Pointer, stream *C.Uint8, length C.int) {
+	var slice []uint8
+	header := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
+	header.Data = uintptr(unsafe.Pointer(stream))
+	header.Len = int(length)
+	header.Cap = int(length)
+	postMixFunc(slice)
+}
+
+var postMixFunc func([]uint8)
+
+func SetPostMix(mix_func func([]uint8)) {
+	postMixFunc = mix_func
+	C.Mix_SetPostMix((*[0]byte)(C.callPostMixFunction), nil)
+}
+
+//export callHookMusic
+func callHookMusic(udata unsafe.Pointer, stream *C.Uint8, length C.int) {
+	var slice []uint8
+	header := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
+	header.Data = uintptr(unsafe.Pointer(stream))
+	header.Len = int(length)
+	header.Cap = int(length)
+	hookMusicFunc(slice)
+}
+
+var hookMusicFunc func([]uint8)
+
+func HookMusic(music_func func([]uint8)) {
+	hookMusicFunc = music_func
+	C.Mix_HookMusic((*[0]byte)(C.callHookMusic), nil)
+}
+
+//export callHookMusicFinished
+func callHookMusicFinished() {
+	hookMusicFinishedFunc()
+}
+
+var hookMusicFinishedFunc func()
+
+func HookMusicFinished(musicFinished func()) {
+	hookMusicFinishedFunc = musicFinished
+	C.Mix_HookMusicFinished((*[0]byte)(C.callHookMusicFinished))
+}
+
+// GetMusicHookData
+// data is not required, so never set and to need for this function
+
+//export callChannelFinished
+func callChannelFinished(channel C.int) {
+	channelFinishedFunc(int(channel))
+}
+
+var channelFinishedFunc func(int)
+
+func ChannelFinished(channelFinished func(int)) {
+	channelFinishedFunc = channelFinished
+	C.Mix_ChannelFinished((*[0]byte)(C.callChannelFinished))
+}
+
+/*
+* TODO
+* RegisterEffect()
+* UnregisterEffect()
+* UnregisterAllEffects()
+* EachSoundFont()
+ */
