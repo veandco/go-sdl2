@@ -7,6 +7,8 @@ package mix
 //extern void callHookMusic(void *udata, Uint8* stream, int length);
 //extern void callHookMusicFinished();
 //extern void callChannelFinished(int channel);
+//extern void callEffectFunc(int channel, void *stream, int len, void *udata);
+//extern void callEffectDone(int channel, void *udata);
 import "C"
 import "unsafe"
 import "reflect"
@@ -471,9 +473,39 @@ func ChannelFinished(channelFinished func(int)) {
 	C.Mix_ChannelFinished((*[0]byte)(C.callChannelFinished))
 }
 
+type EffectFuncT func(channel int, stream []byte)
+type EffectDoneT func(channel int)
+
+var allEffectFunc []EffectFuncT
+var allEffectDone []EffectDoneT
+
+//export callEffectFunc
+func callEffectFunc(channel C.int, stream unsafe.Pointer, length C.int, udata unsafe.Pointer) {
+	index := int(uintptr(udata))
+	var slice []byte
+	header := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
+	header.Data = uintptr(stream)
+	header.Len = int(length)
+	header.Cap = int(length)
+	allEffectFunc[index](int(channel), slice)
+}
+
+//export callEffectDone
+func callEffectDone(channel C.int, udata unsafe.Pointer) {
+	index := int(uintptr(udata))
+	allEffectDone[index](int(channel))
+}
+
+func RegisterEffect(channel int, f EffectFuncT, d EffectDoneT) {
+	index := len(allEffectFunc)
+	allEffectFunc = append(allEffectFunc, f)
+	allEffectDone = append(allEffectDone, d)
+	C.Mix_RegisterEffect(C.int(channel), (*[0]byte)(C.callEffectFunc), (*[0]byte)(C.callEffectDone), unsafe.Pointer(uintptr(index)))
+}
+
+//int Mix_RegisterEffect(int chan, Mix_EffectFunc_t f, Mix_EffectDone_t d, void *arg)
 /*
 * TODO
-* RegisterEffect()
 * UnregisterEffect()
 * UnregisterAllEffects()
 * EachSoundFont()
