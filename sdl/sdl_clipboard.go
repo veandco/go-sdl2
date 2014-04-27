@@ -1,7 +1,6 @@
 package sdl
 
-// #include <SDL2/SDL_stdinc.h>
-// #include <SDL2/SDL_clipboard.h>
+// #include <SDL2/SDL.h>
 import "C"
 import "unsafe"
 

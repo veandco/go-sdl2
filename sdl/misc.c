@@ -1,9 +1,5 @@
 #include "misc.h"
 
-#if (SDL_MAJOR_VERSION >= 2 && SDL_MINOR_VERSION >= 0 && SDL_PATCHLEVEL >= 1)
-#include <SDL2/SDL_filesystem.h>
-#endif
-
 int _SDL_GetSystemRAM()
 {
 #if (SDL_MAJOR_VERSION >= 2 && SDL_MINOR_VERSION >= 0 && SDL_PATCHLEVEL >= 1)
