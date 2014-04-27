@@ -1,6 +1,5 @@
 package sdl
 
-// #include <SDL2/SDL_filesystem.h>
 // #include "misc.h"
 import "C"
 import "unsafe"
