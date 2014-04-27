@@ -1,6 +1,6 @@
 package sdl
 
-// #include <SDL2/SDL_cpuinfo.h>
+// #include <SDL2/SDL.h>
 // #include "misc.h"
 import "C"
 

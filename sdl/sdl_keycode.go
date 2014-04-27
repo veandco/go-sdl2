@@ -1,6 +1,6 @@
 package sdl
 
-// #include <SDL2/SDL_keycode.h>
+// #include <SDL2/SDL.h>
 import "C"
 
 const K_SCANCODE_MASK = 1 << 30

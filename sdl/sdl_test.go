@@ -36,3 +36,14 @@ func TestInitQuit(t *testing.T) {
 	}
 	Quit()
 }
+
+func TestGetPlatform(t *testing.T) {
+	goos := runtime.GOOS
+	value := GetPlatform()
+	if ((goos == "linux" && value != "Linux") ||
+		(goos == "freebsd" && value != "FreeBSD") ||
+		(goos == "windows" && value != "Windows") ||
+		(goos == "darwin" && value != "Mac OS X")) {
+		t.Errorf("platform mismatch: '%s' != '%s'", goos, value)
+	}
+}

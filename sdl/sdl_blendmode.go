@@ -1,6 +1,6 @@
 package sdl
 
-// #include <SDL2/SDL_blendmode.h>
+// #include <SDL2/SDL.h>
 import "C"
 
 type BlendMode C.SDL_BlendMode

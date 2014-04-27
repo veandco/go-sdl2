@@ -1,8 +1,9 @@
 package mix
 
-//#cgo !linux,freebsd LDFLAGS: -lSDL2 -lSDL2_mixer
-//#cgo !windows pkg-config: sdl2
-//#cgo !windows LDFLAGS: -lSDL2_mixer
+//#cgo windows LDFLAGS: -lSDL2 -lSDL2_mixer
+//#cgo linux freebsd pkg-config: sdl2
+//#cgo linux freebsd LDFLAGS: -lSDL2_mixer
+//#include <stdlib.h>
 //#include <SDL2/SDL_mixer.h>
 //
 //extern void callPostMixFunction(void *udata, Uint8* stream, int length);

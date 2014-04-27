@@ -1,7 +1,7 @@
 package sdl
 
 /*
-#include <SDL2/SDL_rwops.h>
+#include <SDL2/SDL.h>
 static Sint64 RWsize(SDL_RWops *ctx)
 {
 	return ctx->size(ctx);

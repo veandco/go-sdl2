@@ -1,6 +1,5 @@
 package sdl
 
-// #cgo LDFLAGS: -lSDL2
 // #include <SDL2/SDL.h>
 import "C"
 

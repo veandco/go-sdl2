@@ -1,6 +1,6 @@
 package sdl
 
-// #include <SDL2/SDL_joystick.h>
+// #include <SDL2/SDL.h>
 import "C"
 import "unsafe"
 
