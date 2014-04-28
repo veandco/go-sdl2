@@ -12,16 +12,15 @@ SDL_mixer
 
 not implemented
 ---------------
-* GetNumChunkDecoders()
-* GetChunkDecoder()
-* GetNumMusicDecoders()
-* GetMusicDecoder()
+* UnregisterEffect()
+
+test required (no trivial wrappers)
+-----------------------------------
+
 * SetPostMix()
 * HookMusic()
 * HookMusicFinished()
-* GetMusicHookData()
 * ChannelFinished()
 * RegisterEffect()
-* UnregisterEffect()
 * UnregisterAllEffects()
 * EachSoundFont()

@@ -9,6 +9,7 @@ package mix
 //extern void callChannelFinished(int channel);
 //extern void callEffectFunc(int channel, void *stream, int len, void *udata);
 //extern void callEffectDone(int channel, void *udata);
+//extern int callEachSoundFont(char* str, void* udata);
 import "C"
 import "unsafe"
 import "reflect"
@@ -476,6 +477,7 @@ func ChannelFinished(channelFinished func(int)) {
 type EffectFuncT func(channel int, stream []byte)
 type EffectDoneT func(channel int)
 
+// not perfect yet, since these slices are never freed of any data
 var allEffectFunc []EffectFuncT
 var allEffectDone []EffectDoneT
 
@@ -496,17 +498,34 @@ func callEffectDone(channel C.int, udata unsafe.Pointer) {
 	allEffectDone[index](int(channel))
 }
 
-func RegisterEffect(channel int, f EffectFuncT, d EffectDoneT) {
+func RegisterEffect(channel int, f EffectFuncT, d EffectDoneT) int {
+	//the user data pointer is not required, because go has proper closures
 	index := len(allEffectFunc)
+	//since go functions can't be cast to C function pointers (yet), we have a workaround here.
 	allEffectFunc = append(allEffectFunc, f)
 	allEffectDone = append(allEffectDone, d)
-	C.Mix_RegisterEffect(C.int(channel), (*[0]byte)(C.callEffectFunc), (*[0]byte)(C.callEffectDone), unsafe.Pointer(uintptr(index)))
+	return int(C.Mix_RegisterEffect(C.int(channel), (*[0]byte)(C.callEffectFunc), (*[0]byte)(C.callEffectDone), unsafe.Pointer(uintptr(index))))
 }
 
-//int Mix_RegisterEffect(int chan, Mix_EffectFunc_t f, Mix_EffectDone_t d, void *arg)
+// that we use the same function pointer for all functions definitely makes a problem when we want to remove it again
 /*
-* TODO
-* UnregisterEffect()
-* UnregisterAllEffects()
-* EachSoundFont()
- */
+func UnregisterEffect(channel int, f EffectFuncT) int {
+	panic("TODO implement this function")
+}
+*/
+
+func UnregisterAllEffects(channel int) int {
+	return int(C.Mix_UnregisterAllEffects(C.int(channel)))
+}
+
+//export callEachSoundFont
+func callEachSoundFont(str *C.char, udata unsafe.Pointer) C.int {
+	return C.int(eachSoundFontFunc(C.GoString(str)))
+}
+
+var eachSoundFontFunc func(string) int
+
+func EachSoundFont(function func(string) int) int {
+	eachSoundFontFunc = function
+	return int(C.Mix_EachSoundFont((*[0]byte)(C.callEachSoundFont), nil))
+}
