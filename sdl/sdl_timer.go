@@ -1,6 +1,6 @@
 package sdl
 
-// #include <SDL2/SDL_timer.h>
+// #include <SDL2/SDL.h>
 import "C"
 
 func GetTicks() uint32 {

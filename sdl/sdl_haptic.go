@@ -1,6 +1,6 @@
 package sdl
 
-// #include <SDL2/SDL_haptic.h>
+// #include <SDL2/SDL.h>
 import "C"
 import "unsafe"
 

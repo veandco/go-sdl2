@@ -1,6 +1,6 @@
 package sdl
 
-// #include <SDL2/SDL_gesture.h>
+// #include <SDL2/SDL.h>
 import "C"
 import "unsafe"
 

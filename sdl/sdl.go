@@ -1,6 +1,7 @@
 package sdl
 
-// #cgo LDFLAGS: -lSDL2
+// #cgo windows LDFLAGS: -lSDL2
+// #cgo linux freebsd pkg-config: sdl2
 // #include <SDL2/SDL.h>
 import "C"
 

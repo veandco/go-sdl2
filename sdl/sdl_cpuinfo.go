@@ -1,16 +1,17 @@
 package sdl
 
-// #include <SDL2/SDL_cpuinfo.h>
+// #include <SDL2/SDL.h>
+// #include "misc.h"
 import "C"
 
 const CACHELINE_SIZE = 128
 
 func GetCPUCount() int {
-	return (int) (C.SDL_GetCPUCount())
+	return (int)(C.SDL_GetCPUCount())
 }
 
 func GetCPUCacheLineSize() int {
-	return (int) (C.SDL_GetCPUCacheLineSize())
+	return (int)(C.SDL_GetCPUCacheLineSize())
 }
 
 func HasRDTSC() bool {
@@ -47,4 +48,12 @@ func HasSSE41() bool {
 
 func HasSSE42() bool {
 	return C.SDL_HasSSE42() > 0
+}
+
+func GetSystemRAM() int {
+	return (int) (C._SDL_GetSystemRAM())
+}
+
+func HasAVX() bool {
+	return C._SDL_HasAVX() > 0
 }

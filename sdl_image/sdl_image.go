@@ -1,6 +1,9 @@
 package img
 
-//#cgo LDFLAGS: -lSDL2_image
+//#cgo linux freebsd pkg-config: sdl2
+//#cgo linux freebsd LDFLAGS: -lSDL2_image
+//#cgo windows LDFLAGS: -lSDL2 -lSDL2_image
+//#include <stdlib.h>
 //#include <SDL2/SDL_image.h>
 import "C"
 import "unsafe"

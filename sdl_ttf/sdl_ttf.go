@@ -1,6 +1,9 @@
 package ttf
 
-//#cgo LDFLAGS: -lSDL2 -lSDL2_ttf
+//#cgo windows LDFLAGS: -lSDL2 -lSDL2_ttf
+//#cgo linux freebsd pkg-config: sdl2
+//#cgo linux freebsd LDFLAGS: -lSDL2_ttf
+//#include <stdlib.h>
 //#include <SDL2/SDL_ttf.h>
 //void Do_TTF_SetError(const char *str) {
 //    TTF_SetError(str);
