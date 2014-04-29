@@ -1,10 +1,6 @@
 SDL2 binding for Go
 ===================
-go-sdl2 is a straightforward Go wrapper for SDL2.  
-  
-Where makes sense, it'll use methods instead of functions (such as
-window.UpdateSurface() or surface.Free() instead of
-sdl.UpdateWindowSurface(window) or sdl.FreeSurface(surface)).
+go-sdl2 is SDL2 wrapped for Go users. It enables interoperability between Go and the SDL2 library which is written in C. That means the original SDL2 installation is required for this to work.
 
 Requirements
 ============
@@ -62,15 +58,19 @@ For more complete examples, see inside the _examples_ folder.
 
 Documentation
 =============
-For now, take a look at http://godoc.org/github.com/jackyb/go-sdl2/sdl.
+For now, take a look at http://godoc.org/github.com/jackyb/go-sdl2/sdl. A full-featured website will be created once we hit a stable point.
 
+Notes
+=====
+A standalone Go SDL2 library _is_ being considered (read: figured out). That means users should be able to just go get go-sdl2 and compile it without the original C library. That could mean faster build times, more 'idiomatic' Go code, and hopefully more people interested in using and contributing to go-sdl2!
+ 
 Contributors
 ============
 * [Jacky Boen](https://github.com/jackyb)
 * [HardWareGuy](https://github.com/HardWareGuy)
 * [akovaski](https://github.com/akovaski)
-* [whyrusleeping](https://github.com/whyrusleeping)
-* [ccll](https://github.com/ccll)
+* [Jeromy Johnson](https://github.com/whyrusleeping)
+* [Cai Lei](https://github.com/ccll)
 * [krux02](https://github.com/krux02)
 * [marcusva](https://github.com/marcusva)
 
