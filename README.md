@@ -73,6 +73,7 @@ Contributors
 * [Cai Lei](https://github.com/ccll)
 * [krux02](https://github.com/krux02)
 * [marcusva](https://github.com/marcusva)
+* [Tom Murray](https://github.com/TomMurray)
 
 License
 =======
