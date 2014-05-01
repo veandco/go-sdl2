@@ -8,7 +8,7 @@ package img
 //#if defined(__APPLE__)
 //#include <SDL2_image/SDL_image.h>
 //#else
-//#include <SDL2/SDL2_image.h>
+//#include <SDL2/SDL_image.h>
 //#endif
 import "C"
 import "unsafe"
