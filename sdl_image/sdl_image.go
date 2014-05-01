@@ -2,10 +2,14 @@ package img
 
 //#cgo linux freebsd pkg-config: sdl2
 //#cgo linux freebsd LDFLAGS: -lSDL2_image
-//#cgo darwin LDFLAGS: -lSDL2 -lSDL2_image
+//#cgo darwin LDFLAGS: -framework SDL2 -framework SDL2_image
 //#cgo windows LDFLAGS: -lSDL2 -lSDL2_image
 //#include <stdlib.h>
+//#if defined(__APPLE__)
+//#include <SDL2_image/SDL_image.h>
+//#else
 //#include <SDL2/SDL_image.h>
+//#endif
 import "C"
 import "unsafe"
 import "github.com/jackyb/go-sdl2/sdl"
