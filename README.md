@@ -23,7 +23,7 @@ On __Fedora 20 and above__, type:
 On __Arch Linux__, type:  
 `pacman -S sdl2{,_mixer,_image,_ttf}`
 
-For Max OS X, download the dmg files from the libsdl.org website and drag each framework into /Library/Frameworks
+For Max OS X, download the development library dmg files from libsdl.org and drag each framework into /Library/Frameworks
 
 Installation
 ============
