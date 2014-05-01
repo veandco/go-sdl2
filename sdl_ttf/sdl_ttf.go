@@ -1,11 +1,15 @@
 package ttf
 
 //#cgo windows LDFLAGS: -lSDL2 -lSDL2_ttf
-//#cgo darwin LDFLAGS: -lSDL2 -lSDL2_ttf
+//#cgo darwin LDFLAGS: -framework SDL2 -framework SDL2_ttf
 //#cgo linux freebsd pkg-config: sdl2
 //#cgo linux freebsd LDFLAGS: -lSDL2_ttf
 //#include <stdlib.h>
+//#if defined(__APPLE__)
+//#include <SDL2_ttf/SDL_ttf.h>
+//#else
 //#include <SDL2/SDL_ttf.h>
+//#endif
 //void Do_TTF_SetError(const char *str) {
 //    TTF_SetError(str);
 //}
