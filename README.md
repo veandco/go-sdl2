@@ -76,6 +76,7 @@ Contributors
 * [krux02](https://github.com/krux02)
 * [marcusva](https://github.com/marcusva)
 * [Tom Murray](https://github.com/TomMurray)
+* [Ian Davis](https://github.com/iand)
 
 License
 =======
