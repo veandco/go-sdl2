@@ -36,6 +36,9 @@ To get the bindings, type:
 or type this if you use Bash terminal:  
 `go get -v github.com/jackyb/go-sdl2/sdl{,_mixer,_image,_ttf}`
 
+__Note__: If you didn't use the previous commands or use 'go install', you will experience long
+compilation time because Go doesn't keep the built binaries unless you install them.
+
 Example
 =======
 	package main
