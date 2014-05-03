@@ -7,13 +7,17 @@ import "unsafe"
 const (
 	MAJOR_VERSION = C.SDL_MAJOR_VERSION
 	MINOR_VERSION = C.SDL_MINOR_VERSION
-	PATCHLEVEL = C.SDL_PATCHLEVEL
+	PATCHLEVEL    = C.SDL_PATCHLEVEL
 )
 
 type Version struct {
 	Major uint8
 	Minor uint8
 	Patch uint8
+}
+
+func (v *Version) cptr() *C.SDL_version {
+    return (*C.SDL_version)(unsafe.Pointer(v))
 }
 
 func VERSION(version *Version) {
@@ -23,7 +27,7 @@ func VERSION(version *Version) {
 }
 
 func VERSIONNUM(x, y, z int) int {
-	return (x * 1000 + y * 100 + z)
+	return (x*1000 + y*100 + z)
 }
 
 func COMPILEDVERSION() int {
@@ -35,14 +39,13 @@ func VERSION_ATLEAST(x, y, z int) bool {
 }
 
 func GetVersion(v *Version) {
-	version := (*C.SDL_version) (unsafe.Pointer(v))
-	C.SDL_GetVersion(version)
+	C.SDL_GetVersion(v.cptr())
 }
 
 func GetRevision() string {
-	return (string) (C.GoString(C.SDL_GetRevision()))
+	return (string)(C.GoString(C.SDL_GetRevision()))
 }
 
 func GetRevisionNumber() int {
-	return (int) (C.SDL_GetRevisionNumber())
+	return (int)(C.SDL_GetRevisionNumber())
 }

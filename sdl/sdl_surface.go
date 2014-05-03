@@ -31,63 +31,55 @@ type Surface struct {
 
 type blit C.SDL_blit
 
+func (surface *Surface) cptr() *C.SDL_Surface {
+	return (*C.SDL_Surface)(unsafe.Pointer(surface))
+}
+
 func (surface *Surface) MustLock() bool {
 	return (surface.Flags & RLEACCEL) != 0
 }
 
-func CreateRGBSurface(flags uint32, width, height, depth int32,
-	Rmask, Gmask, Bmask, Amask uint32) *Surface {
-	_flags := (C.Uint32)(flags)
-	_width := (C.int)(width)
-	_height := (C.int)(height)
-	_depth := (C.int)(depth)
-	_Rmask := (C.Uint32)(Rmask)
-	_Gmask := (C.Uint32)(Gmask)
-	_Bmask := (C.Uint32)(Bmask)
-	_Amask := (C.Uint32)(Amask)
-	return (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurface(_flags, _width, _height,
-		_depth, _Rmask, _Gmask, _Bmask, _Amask)))
+func CreateRGBSurface(flags uint32, width, height, depth int32, Rmask, Gmask, Bmask, Amask uint32) *Surface {
+	return (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurface(C.Uint32(flags),
+                                                            C.int(width),
+                                                            C.int(height),
+                                                            C.int(depth),
+                                                            C.Uint32(Rmask),
+                                                            C.Uint32(Gmask),
+                                                            C.Uint32(Bmask),
+                                                            C.Uint32(Amask))))
 }
 
-func CreateRGBSurfaceFrom(pixels unsafe.Pointer, width, height, depth, pitch int32,
-	Rmask, Gmask, Bmask, Amask uint32) *Surface {
-	_width := (C.int)(width)
-	_height := (C.int)(height)
-	_depth := (C.int)(depth)
-	_pitch := (C.int)(pitch)
-	_Rmask := (C.Uint32)(Rmask)
-	_Gmask := (C.Uint32)(Gmask)
-	_Bmask := (C.Uint32)(Bmask)
-	_Amask := (C.Uint32)(Amask)
-	return (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurfaceFrom(pixels, _width, _height,
-		_depth, _pitch, _Rmask, _Gmask, _Bmask, _Amask)))
+func CreateRGBSurfaceFrom(pixels unsafe.Pointer, width, height, depth, pitch int, Rmask, Gmask, Bmask, Amask uint32) *Surface {
+	return (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurfaceFrom(pixels,
+                                                                C.int(width),
+                                                                C.int(height),
+                                                                C.int(depth),
+                                                                C.int(pitch),
+                                                                C.Uint32(Rmask),
+                                                                C.Uint32(Gmask),
+                                                                C.Uint32(Bmask),
+                                                                C.Uint32(Amask))))
 }
 
 func (surface *Surface) Free() {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	C.SDL_FreeSurface(_surface)
+	C.SDL_FreeSurface(surface.cptr())
 }
 
 func (surface *Surface) SetPalette(palette *Palette) int {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_palette := (*C.SDL_Palette)(unsafe.Pointer(palette))
-	return (int)(C.SDL_SetSurfacePalette(_surface, _palette))
+	return int(C.SDL_SetSurfacePalette(surface.cptr(), palette.cptr()))
 }
 
 func (surface *Surface) Lock() {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	C.SDL_LockSurface(_surface)
+	C.SDL_LockSurface(surface.cptr())
 }
 
 func (surface *Surface) Unlock() {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	C.SDL_UnlockSurface(_surface)
+	C.SDL_UnlockSurface(surface.cptr())
 }
 
-func LoadBMP_RW(src *RWops, freesrc int) *Surface {
-	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	_freesrc := (C.int)(freesrc)
-	_surface := C.SDL_LoadBMP_RW(_src, _freesrc)
+func LoadBMP_RW(src *RWops, freeSrc int) *Surface {
+    _surface := C.SDL_LoadBMP_RW(src.cptr(), C.int(freeSrc))
 	return (*Surface)(unsafe.Pointer(_surface))
 }
 
@@ -95,187 +87,115 @@ func LoadBMP(file string) *Surface {
 	return (*Surface)(LoadBMP_RW(RWFromFile(file, "rb"), 1))
 }
 
-func (surface *Surface) SaveBMP_RW(dst *RWops, freedst int) int {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_dst := (*C.SDL_RWops)(unsafe.Pointer(dst))
-	_freedst := (C.int)(freedst)
-	return (int)(C.SDL_SaveBMP_RW(_surface, _dst, _freedst))
+func (surface *Surface) SaveBMP_RW(dst *RWops, freeDst int) int {
+	return int(C.SDL_SaveBMP_RW(surface.cptr(), dst.cptr(), C.int(freeDst)))
 }
 
 func (surface *Surface) SaveBMP(file string) int {
-	return (int)(surface.SaveBMP_RW(RWFromFile(file, "wb"), 1))
+	return int(surface.SaveBMP_RW(RWFromFile(file, "wb"), 1))
 }
 
 func (surface *Surface) SetRLE(flag int) int {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_flag := (C.int)(flag)
-	return (int)(C.SDL_SetSurfaceRLE(_surface, _flag))
+	return int(C.SDL_SetSurfaceRLE(surface.cptr(), C.int(flag)))
 }
 
 func (surface *Surface) SetColorKey(flag int, key uint32) int {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_flag := (C.int)(flag)
-	_key := (C.Uint32)(key)
-	return (int)(C.SDL_SetColorKey(_surface, _flag, _key))
+	return int(C.SDL_SetColorKey(surface.cptr(), C.int(flag), C.Uint32(key)))
 }
 
 func (surface *Surface) GetColorKey() (key uint32, status int) {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
 	_key := (*C.Uint32)(unsafe.Pointer(&key))
-	status = (int)(C.SDL_GetColorKey(_surface, _key))
+	status = int(C.SDL_GetColorKey(surface.cptr(), _key))
 	return key, status
 }
 
 func (surface *Surface) SetColorMod(r, g, b uint8) int {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_r := (C.Uint8)(r)
-	_g := (C.Uint8)(g)
-	_b := (C.Uint8)(b)
-	return (int)(C.SDL_SetSurfaceColorMod(_surface, _r, _g, _b))
+	return int(C.SDL_SetSurfaceColorMod(surface.cptr(), C.Uint8(r), C.Uint8(g), C.Uint8(b)))
 }
 
 func (surface *Surface) GetColorMod() (r, g, b uint8, status int) {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
 	_r := (*C.Uint8)(unsafe.Pointer(&r))
 	_g := (*C.Uint8)(unsafe.Pointer(&g))
 	_b := (*C.Uint8)(unsafe.Pointer(&b))
-	status = (int)(C.SDL_GetSurfaceColorMod(_surface, _r, _g, _b))
+	status = int(C.SDL_GetSurfaceColorMod(surface.cptr(), _r, _g, _b))
 	return r, g, b, status
 }
 
 func (surface *Surface) SetAlphaMod(alpha uint8) int {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_alpha := (C.Uint8)(alpha)
-	return (int)(C.SDL_SetSurfaceAlphaMod(_surface, _alpha))
+	return int(C.SDL_SetSurfaceAlphaMod(surface.cptr(), C.Uint8(alpha)))
 }
 
 func (surface *Surface) GetAlphaMod() (alpha uint8, status int) {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
 	_alpha := (*C.Uint8)(unsafe.Pointer(&alpha))
-	status = (int)(C.SDL_GetSurfaceAlphaMod(_surface, _alpha))
+	status = int(C.SDL_GetSurfaceAlphaMod(surface.cptr(), _alpha))
 	return alpha, status
 }
 
-func (surface *Surface) SetBlendMode(blendMode BlendMode) int {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_blendMode := (C.SDL_BlendMode)(blendMode)
-	return (int)(C.SDL_SetSurfaceBlendMode(_surface, _blendMode))
+func (surface *Surface) SetBlendMode(bm BlendMode) int {
+	return int(C.SDL_SetSurfaceBlendMode(surface.cptr(), bm.c()))
 }
 
-func (surface *Surface) GetBlendMode() (blendMode BlendMode, status int) {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_blendMode := (*C.SDL_BlendMode)(unsafe.Pointer(&blendMode))
-	status = (int)(C.SDL_GetSurfaceBlendMode(_surface, _blendMode))
-	return blendMode, status
+func (surface *Surface) GetBlendMode() (bm BlendMode, status int) {
+	status = int(C.SDL_GetSurfaceBlendMode(surface.cptr(), bm.cptr()))
+	return bm, status
 }
 
 func (surface *Surface) SetClipRect(rect *Rect) bool {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_rect := (*C.SDL_Rect)(unsafe.Pointer(rect))
-	return C.SDL_SetClipRect(_surface, _rect) > 0
+	return C.SDL_SetClipRect(surface.cptr(), rect.cptr()) > 0
 }
 
 func (surface *Surface) GetClipRect(rect *Rect) {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_rect := (*C.SDL_Rect)(unsafe.Pointer(rect))
-	C.SDL_GetClipRect(_surface, _rect)
+	C.SDL_GetClipRect(surface.cptr(), rect.cptr())
 }
 
 func (surface *Surface) Convert(fmt *PixelFormat, flags uint32) *Surface {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_fmt := (*C.SDL_PixelFormat)(unsafe.Pointer(fmt))
-	_flags := (C.Uint32)(flags)
-	_surface = C.SDL_ConvertSurface(_surface, _fmt, _flags)
+	_surface := C.SDL_ConvertSurface(surface.cptr(), fmt.cptr(), C.Uint32(flags))
 	return (*Surface)(unsafe.Pointer(_surface))
 }
 
-func (surface *Surface) ConvertFormat(pixel_format uint32, flags uint32) *Surface {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_pixel_format := (C.Uint32)(pixel_format)
-	_flags := (C.Uint32)(flags)
-	return (*Surface)(unsafe.Pointer(C.SDL_ConvertSurfaceFormat(_surface, _pixel_format, _flags)))
+func (surface *Surface) ConvertFormat(pixelFormat uint32, flags uint32) *Surface {
+	return (*Surface)(unsafe.Pointer(C.SDL_ConvertSurfaceFormat(surface.cptr(), C.Uint32(pixelFormat), C.Uint32(flags))))
 }
 
-func ConvertPixels(width, height int, src_format uint32, src unsafe.Pointer, src_pitch int,
-	dst_format uint32, dst unsafe.Pointer, dst_pitch int) int {
-	_width := (C.int)(width)
-	_height := (C.int)(height)
-	_src_format := (C.Uint32)(src_format)
-	_src_pitch := (C.int)(src_pitch)
-	_dst_format := (C.Uint32)(dst_format)
-	_dst_pitch := (C.int)(dst_pitch)
-	return (int)(C.SDL_ConvertPixels(_width, _height, _src_format, src, _src_pitch, _dst_format, dst, _dst_pitch))
+func ConvertPixels(width, height int, srcFormat uint32, src unsafe.Pointer, srcPitch int,
+	dstFormat uint32, dst unsafe.Pointer, dstPitch int) int {
+	return int(C.SDL_ConvertPixels(C.int(width), C.int(height), C.Uint32(srcFormat), src, C.int(srcPitch), C.Uint32(dstFormat), dst, C.int(dstPitch)))
 }
 
 func (surface *Surface) FillRect(rect *Rect, color uint32) int {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_rect := (*C.SDL_Rect)(unsafe.Pointer(rect))
-	_color := (C.Uint32)(color)
-	return (int)(C.SDL_FillRect(_surface, _rect, _color))
+	return int(C.SDL_FillRect(surface.cptr(), rect.cptr(), C.Uint32(color)))
 }
 
-func (surface *Surface) FillRects(rects *Rect, count int, color uint32) int {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_rects := (*C.SDL_Rect)(unsafe.Pointer(rects))
-	_count := (C.int)(count)
-	_color := (C.Uint32)(color)
-	return (int)(C.SDL_FillRects(_surface, _rects, _count, _color))
+func (surface *Surface) FillRects(rects []Rect, color uint32) int {
+	return int(C.SDL_FillRects(surface.cptr(), rects[0].cptr(), C.int(len(rects)), C.Uint32(color)))
 }
 
-func (src *Surface) Blit(srcrect *Rect, dst *Surface, dstrect *Rect) int {
-	_src := (*C.SDL_Surface)(unsafe.Pointer(src))
-	_srcrect := (*C.SDL_Rect)(unsafe.Pointer(srcrect))
-	_dst := (*C.SDL_Surface)(unsafe.Pointer(dst))
-	_dstrect := (*C.SDL_Rect)(unsafe.Pointer(dstrect))
-	return (int)(C.SDL_BlitSurface(_src, _srcrect, _dst, _dstrect))
+func (src *Surface) Blit(srcRect *Rect, dst *Surface, dstRect *Rect) int {
+	return int(C.SDL_BlitSurface(src.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr()))
 }
 
-func (src *Surface) BlitScaled(srcrect *Rect, dst *Surface, dstrect *Rect) int {
-	_src := (*C.SDL_Surface)(unsafe.Pointer(src))
-	_srcrect := (*C.SDL_Rect)(unsafe.Pointer(srcrect))
-	_dst := (*C.SDL_Surface)(unsafe.Pointer(dst))
-	_dstrect := (*C.SDL_Rect)(unsafe.Pointer(dstrect))
-	return (int)(C.SDL_BlitScaled(_src, _srcrect, _dst, _dstrect))
+func (src *Surface) BlitScaled(srcRect *Rect, dst *Surface, dstRect *Rect) int {
+	return int(C.SDL_BlitScaled(src.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr()))
 }
 
-func (src *Surface) UpperBlit(srcrect *Rect, dst *Surface, dstrect *Rect) int {
-	_src := (*C.SDL_Surface)(unsafe.Pointer(src))
-	_srcrect := (*C.SDL_Rect)(unsafe.Pointer(srcrect))
-	_dst := (*C.SDL_Surface)(unsafe.Pointer(dst))
-	_dstrect := (*C.SDL_Rect)(unsafe.Pointer(dstrect))
-	return (int)(C.SDL_UpperBlit(_src, _srcrect, _dst, _dstrect))
+func (src *Surface) UpperBlit(srcRect *Rect, dst *Surface, dstRect *Rect) int {
+	return int(C.SDL_UpperBlit(src.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr()))
 }
 
-func (src *Surface) LowerBlit(srcrect *Rect, dst *Surface, dstrect *Rect) int {
-	_src := (*C.SDL_Surface)(unsafe.Pointer(src))
-	_srcrect := (*C.SDL_Rect)(unsafe.Pointer(srcrect))
-	_dst := (*C.SDL_Surface)(unsafe.Pointer(dst))
-	_dstrect := (*C.SDL_Rect)(unsafe.Pointer(dstrect))
-	return (int)(C.SDL_LowerBlit(_src, _srcrect, _dst, _dstrect))
+func (src *Surface) LowerBlit(srcRect *Rect, dst *Surface, dstRect *Rect) int {
+	return int(C.SDL_LowerBlit(src.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr()))
 }
 
-func (src *Surface) SoftStretch(srcrect *Rect, dst *Surface, dstrect *Rect) int {
-	_src := (*C.SDL_Surface)(unsafe.Pointer(src))
-	_srcrect := (*C.SDL_Rect)(unsafe.Pointer(srcrect))
-	_dst := (*C.SDL_Surface)(unsafe.Pointer(dst))
-	_dstrect := (*C.SDL_Rect)(unsafe.Pointer(dstrect))
-	return (int)(C.SDL_SoftStretch(_src, _srcrect, _dst, _dstrect))
+func (src *Surface) SoftStretch(srcRect *Rect, dst *Surface, dstRect *Rect) int {
+	return int(C.SDL_SoftStretch(src.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr()))
 }
 
-func (src *Surface) UpperBlitScaled(srcrect *Rect, dst *Surface, dstrect *Rect) int {
-	_src := (*C.SDL_Surface)(unsafe.Pointer(src))
-	_srcrect := (*C.SDL_Rect)(unsafe.Pointer(srcrect))
-	_dst := (*C.SDL_Surface)(unsafe.Pointer(dst))
-	_dstrect := (*C.SDL_Rect)(unsafe.Pointer(dstrect))
-	return (int)(C.SDL_UpperBlitScaled(_src, _srcrect, _dst, _dstrect))
+func (src *Surface) UpperBlitScaled(srcRect *Rect, dst *Surface, dstRect *Rect) int {
+	return int(C.SDL_UpperBlitScaled(src.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr()))
 }
 
-func (src *Surface) LowerBlitScaled(srcrect *Rect, dst *Surface, dstrect *Rect) int {
-	_src := (*C.SDL_Surface)(unsafe.Pointer(src))
-	_srcrect := (*C.SDL_Rect)(unsafe.Pointer(srcrect))
-	_dst := (*C.SDL_Surface)(unsafe.Pointer(dst))
-	_dstrect := (*C.SDL_Rect)(unsafe.Pointer(dstrect))
-	return (int)(C.SDL_LowerBlitScaled(_src, _srcrect, _dst, _dstrect))
+func (src *Surface) LowerBlitScaled(srcRect *Rect, dst *Surface, dstRect *Rect) int {
+	return int(C.SDL_LowerBlitScaled(src.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr()))
 }
 
 func (surface *Surface) PixelNum() int {

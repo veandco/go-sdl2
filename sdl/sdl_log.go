@@ -2,10 +2,9 @@ package sdl
 
 // #include <SDL2/SDL.h>
 import "C"
-// import "unsafe"
 
 const (
-	LOG_CATEGORY_APPLICATION	= iota
+	LOG_CATEGORY_APPLICATION = iota
 	LOG_CATEGORY_ERROR
 	LOG_CATEGORY_ASSERT
 	LOG_CATEGORY_SYSTEM
@@ -39,20 +38,20 @@ const (
 
 type LogPriority C.SDL_LogPriority
 
-func LogSetAllPriority(priority LogPriority) {
-	_priority := (C.SDL_LogPriority) (priority)
-	C.SDL_LogSetAllPriority(_priority)
+func (p LogPriority) c() C.SDL_LogPriority {
+    return C.SDL_LogPriority(p)
 }
 
-func LogSetPriority(category int, priority LogPriority) {
-	_category := (C.int) (category)
-	_priority := (C.SDL_LogPriority) (priority)
-	C.SDL_LogSetPriority(_category, _priority)
+func LogSetAllPriority(p LogPriority) {
+	C.SDL_LogSetAllPriority(p.c())
+}
+
+func LogSetPriority(category int, p LogPriority) {
+	C.SDL_LogSetPriority(C.int(category), p.c())
 }
 
 func LogGetPriority(category int) LogPriority {
-	_category := (C.int) (category)
-	return (LogPriority) (C.SDL_LogGetPriority(_category))
+	return LogPriority(C.SDL_LogGetPriority(C.int(category)))
 }
 
 func LogResetPriorities() {

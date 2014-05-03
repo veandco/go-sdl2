@@ -5,7 +5,7 @@ import "C"
 import "unsafe"
 
 const (
-	HAPTIC_CONSTANT	= 1 << iota
+	HAPTIC_CONSTANT = 1 << iota
 	HAPTIC_SINE
 	HAPTIC_SQUARE
 	HAPTIC_TRIANGLE
@@ -21,11 +21,10 @@ const (
 	HAPTIC_AUTOCENTER
 	HAPTIC_STATUS
 	HAPTIC_PAUSE
-
 )
 
 const (
-	HAPTIC_POLAR		= iota
+	HAPTIC_POLAR = iota
 	HAPTIC_CARTESION
 	HAPTIC_SPHERICAL
 )
@@ -36,240 +35,208 @@ type Haptic C.SDL_Haptic
 
 type HapticDirection struct {
 	Type byte
-	dir [3]int32
+	dir  [3]int32
 }
 
 type HapticConstant struct {
-	Type uint16
-	Direction HapticDirection
-	Length uint32
-	Delay uint16
-	Button uint16
-	Interval uint16
-	Level int16
+	Type         uint16
+	Direction    HapticDirection
+	Length       uint32
+	Delay        uint16
+	Button       uint16
+	Interval     uint16
+	Level        int16
 	AttackLength uint16
-	AttackLevel uint16
-	FadeLength uint16
-	FadeLevel uint16
+	AttackLevel  uint16
+	FadeLength   uint16
+	FadeLevel    uint16
 }
 
 type HapticPeriodic struct {
-	Type uint16
-	Direction HapticDirection
-	Length uint32
-	Delay uint16
-	Button uint16
-	Interval uint16
-	Period uint16
-	Magnitude int16
-	Offset int16
-	Phase uint16
+	Type         uint16
+	Direction    HapticDirection
+	Length       uint32
+	Delay        uint16
+	Button       uint16
+	Interval     uint16
+	Period       uint16
+	Magnitude    int16
+	Offset       int16
+	Phase        uint16
 	AttackLength uint16
-	AttackLevel uint16
-	FadeLength uint16
-	FadeLevel uint16
+	AttackLevel  uint16
+	FadeLength   uint16
+	FadeLevel    uint16
 }
 
 type HapticCondition struct {
-	Type uint16
-	Direction HapticDirection
-	Length uint32
-	Delay uint16
-	Button uint16
-	Interval uint16
-	RightSat [3]uint16
-	LeftSat [3]uint16
+	Type       uint16
+	Direction  HapticDirection
+	Length     uint32
+	Delay      uint16
+	Button     uint16
+	Interval   uint16
+	RightSat   [3]uint16
+	LeftSat    [3]uint16
 	RightCoeff [3]int16
-	LeftCoeff [3]int16
-	Deadband [3]uint16
-	Center [3]int16
+	LeftCoeff  [3]int16
+	Deadband   [3]uint16
+	Center     [3]int16
 }
 
 type HapticRamp struct {
-	Type uint16
-	Direction HapticDirection
-	Length uint32
-	Delay uint16
-	Button uint16
-	Interval uint16
-	Start int16
-	End int16
+	Type         uint16
+	Direction    HapticDirection
+	Length       uint32
+	Delay        uint16
+	Button       uint16
+	Interval     uint16
+	Start        int16
+	End          int16
 	AttackLength uint16
-	AttackLevel uint16
-	FadeLength uint16
-	FadeLevel uint16
+	AttackLevel  uint16
+	FadeLength   uint16
+	FadeLevel    uint16
 }
 
 type HapticCustom struct {
-	Type uint16
-	Direction HapticDirection
-	Length uint32
-	Delay uint16
-	Button uint16
-	Interval uint16
-	Channels uint8
-	Period uint16
-	Samples uint16
-	Data *uint16
+	Type         uint16
+	Direction    HapticDirection
+	Length       uint32
+	Delay        uint16
+	Button       uint16
+	Interval     uint16
+	Channels     uint8
+	Period       uint16
+	Samples      uint16
+	Data         *uint16
 	AttackLength uint16
-	AttackLevel uint16
-	FadeLength uint16
-	FadeLevel uint16
+	AttackLevel  uint16
+	FadeLength   uint16
+	FadeLevel    uint16
 }
 
-type HapticEffect interface {}
+type HapticEffect interface{}
+
+func (h *Haptic) cptr() *C.SDL_Haptic {
+    return (*C.SDL_Haptic)(unsafe.Pointer(h))
+}
 
 func NumHaptics() int {
-	return (int) (C.SDL_NumHaptics())
+	return int(C.SDL_NumHaptics())
 }
 
-func HapticName(device_index int) string {
-	_device_index := (C.int) (device_index)
-	return (C.GoString) (C.SDL_HapticName(_device_index))
+func HapticName(index int) string {
+	return (C.GoString)(C.SDL_HapticName(C.int(index)))
 }
 
-func HapticOpen(device_index int) *Haptic {
-	_device_index := (C.int) (device_index)
-	return (*Haptic) (unsafe.Pointer(C.SDL_HapticOpen(_device_index)))
+func HapticOpen(index int) *Haptic {
+	return (*Haptic)(unsafe.Pointer(C.SDL_HapticOpen(C.int(index))))
 }
 
-func HapticOpened(device_index int) int {
-	_device_index := (C.int) (device_index)
-	return (int) (C.SDL_HapticOpened(_device_index))
+func HapticOpened(index int) int {
+	return int(C.SDL_HapticOpened(C.int(index)))
 }
 
-func HapticIndex(haptic *Haptic) int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	return (int) (C.SDL_HapticIndex(_haptic))
+func HapticIndex(h *Haptic) int {
+	return int(C.SDL_HapticIndex(h.cptr()))
 }
 
 func MouseIsHaptic() int {
-	return (int) (C.SDL_MouseIsHaptic())
+	return int(C.SDL_MouseIsHaptic())
 }
 
 func HapticOpenFromMouse() *Haptic {
-	return (*Haptic) (unsafe.Pointer(C.SDL_HapticOpenFromMouse()))
+	return (*Haptic)(unsafe.Pointer(C.SDL_HapticOpenFromMouse()))
 }
 
-func JoystickIsHaptic(joystick *Joystick) int {
-	_joystick := (*C.SDL_Joystick) (joystick)
-	return (int) (C.SDL_JoystickIsHaptic(_joystick))
+func JoystickIsHaptic(joy *Joystick) int {
+	return int(C.SDL_JoystickIsHaptic(joy.cptr()))
 }
 
-func HapticOpenFromJoystick(joystick *Joystick) *Haptic {
-	_joystick := (*C.SDL_Joystick) (joystick)
-	return (*Haptic) (unsafe.Pointer(C.SDL_HapticOpenFromJoystick(_joystick)))
+func HapticOpenFromJoystick(joy *Joystick) *Haptic {
+	return (*Haptic)(unsafe.Pointer(C.SDL_HapticOpenFromJoystick(joy.cptr())))
 }
 
-func (haptic *Haptic) Close() {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	C.SDL_HapticClose(_haptic)
+func (h *Haptic) Close() {
+	C.SDL_HapticClose(h.cptr())
 }
 
-func (haptic *Haptic) NumEffects() int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	return (int) (C.SDL_HapticNumEffects(_haptic))
+func (h *Haptic) NumEffects() int {
+	return int(C.SDL_HapticNumEffects(h.cptr()))
 }
 
-func (haptic *Haptic) NumEffectsPlaying() int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	return (int) (C.SDL_HapticNumEffectsPlaying(_haptic))
+func (h *Haptic) NumEffectsPlaying() int {
+	return int(C.SDL_HapticNumEffectsPlaying(h.cptr()))
 }
 
-func (haptic *Haptic) Query() uint {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	return (uint) (C.SDL_HapticQuery(_haptic))
+func (h *Haptic) Query() uint {
+	return uint(C.SDL_HapticQuery(h.cptr()))
 }
 
-func (haptic *Haptic) EffectSupported(effect *HapticEffect) int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	_effect := (*C.SDL_HapticEffect) (unsafe.Pointer(effect))
-	return (int) (C.SDL_HapticEffectSupported(_haptic, _effect))
+func (h *Haptic) EffectSupported(he *HapticEffect) int {
+    _he := (*C.SDL_HapticEffect)(unsafe.Pointer(he))
+	return int(C.SDL_HapticEffectSupported(h.cptr(), _he))
 }
 
-func (haptic *Haptic) NewEffect(effect *HapticEffect) int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	_effect := (*C.SDL_HapticEffect) (unsafe.Pointer(effect))
-	return (int) (C.SDL_HapticNewEffect(_haptic, _effect))
+func (h *Haptic) NewEffect(he *HapticEffect) int {
+    _he := (*C.SDL_HapticEffect)(unsafe.Pointer(he))
+	return int(C.SDL_HapticNewEffect(h.cptr(), _he))
 }
 
-func (haptic *Haptic) UpdateEffect(effect int, data *HapticEffect) int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	_effect := (C.int) (effect)
-	_data := (*C.SDL_HapticEffect) (unsafe.Pointer(data))
-	return (int) (C.SDL_HapticUpdateEffect(_haptic, _effect, _data))
+func (h *Haptic) UpdateEffect(effect int, data *HapticEffect) int {
+    _data := (*C.SDL_HapticEffect)(unsafe.Pointer(data))
+	return int(C.SDL_HapticUpdateEffect(h.cptr(), C.int(effect), _data))
 }
 
-func (haptic *Haptic) RunEffect(effect int, iterations uint32) int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	_effect := (C.int) (effect)
-	_iterations := (C.Uint32) (iterations)
-	return (int) (C.SDL_HapticRunEffect(_haptic, _effect, _iterations))
+func (h *Haptic) RunEffect(effect int, iterations uint32) int {
+	return int(C.SDL_HapticRunEffect(h.cptr(), C.int(effect), C.Uint32(iterations)))
 }
 
-func (haptic *Haptic) StopEffect(effect int) int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	_effect := (C.int) (effect)
-	return (int) (C.SDL_HapticStopEffect(_haptic, _effect))
+func (h *Haptic) StopEffect(effect int) int {
+	return int(C.SDL_HapticStopEffect(h.cptr(), C.int(effect)))
 }
 
-func (haptic *Haptic) DestroyEffect(effect int) {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	_effect := (C.int) (effect)
-	C.SDL_HapticDestroyEffect(_haptic, _effect)
+func (h *Haptic) DestroyEffect(effect int) {
+	C.SDL_HapticDestroyEffect(h.cptr(), C.int(effect))
 }
 
-func (haptic *Haptic) GetEffectStatus(effect int) int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	_effect := (C.int) (effect)
-	return (int) (C.SDL_HapticGetEffectStatus(_haptic, _effect))
+func (h *Haptic) GetEffectStatus(effect int) int {
+	return int(C.SDL_HapticGetEffectStatus(h.cptr(), C.int(effect)))
 }
 
-func (haptic *Haptic) SetGain(gain int) int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	_gain := (C.int) (gain)
-	return (int) (C.SDL_HapticSetGain(_haptic, _gain))
+func (h *Haptic) SetGain(gain int) int {
+	return int(C.SDL_HapticSetGain(h.cptr(), C.int(gain)))
 }
 
-func (haptic *Haptic) SetAutocenter(autocenter int) int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	_autocenter := (C.int) (autocenter)
-	return (int) (C.SDL_HapticSetAutocenter(_haptic, _autocenter))
+func (h *Haptic) SetAutocenter(autocenter int) int {
+	return int(C.SDL_HapticSetAutocenter(h.cptr(), C.int(autocenter)))
 }
 
-func (haptic *Haptic) Pause() int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	return (int) (C.SDL_HapticPause(_haptic))
+func (h *Haptic) Pause() int {
+	return int(C.SDL_HapticPause(h.cptr()))
 }
 
-func (haptic *Haptic) Unpause() int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	return (int) (C.SDL_HapticUnpause(_haptic))
+func (h *Haptic) Unpause() int {
+	return int(C.SDL_HapticUnpause(h.cptr()))
 }
 
-func (haptic *Haptic) StopAll() int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	return (int) (C.SDL_HapticStopAll(_haptic))
+func (h *Haptic) StopAll() int {
+	return int(C.SDL_HapticStopAll(h.cptr()))
 }
 
-func (haptic *Haptic) RumbleSupported() int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	return (int) (C.SDL_HapticRumbleSupported(_haptic))
+func (h *Haptic) RumbleSupported() int {
+	return int(C.SDL_HapticRumbleSupported(h.cptr()))
 }
 
-func (haptic *Haptic) RumbleInit() int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	return (int) (C.SDL_HapticRumbleInit(_haptic))
+func (h *Haptic) RumbleInit() int {
+	return int(C.SDL_HapticRumbleInit(h.cptr()))
 }
 
-func (haptic *Haptic) RumblePlay(strength float32, length uint32) int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	_strength := (C.float) (strength)
-	_length := (C.Uint32) (length)
-	return (int) (C.SDL_HapticRumblePlay(_haptic, _strength, _length))
+func (h *Haptic) RumblePlay(strength float32, length uint32) int {
+	return int(C.SDL_HapticRumblePlay(h.cptr(), C.float(strength), C.Uint32(length)))
 }
 
-func (haptic *Haptic) RumbleStop() int {
-	_haptic := (*C.SDL_Haptic) (unsafe.Pointer(haptic))
-	return (int) (C.SDL_HapticRumbleStop(_haptic))
+func (h *Haptic) RumbleStop() int {
+	return int(C.SDL_HapticRumbleStop(h.cptr()))
 }

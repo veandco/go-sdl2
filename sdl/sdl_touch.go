@@ -9,28 +9,28 @@ const TOUCH_MOUSEID = C.SDL_TOUCH_MOUSEID
 type TouchID C.SDL_TouchID
 type FingerID C.SDL_FingerID
 type Finger struct {
-	Id FingerID
-	X float32
-	Y float32
+	Id       FingerID
+	X        float32
+	Y        float32
 	Pressure float32
 }
 
+func (t TouchID) c() C.SDL_TouchID {
+    return C.SDL_TouchID(t)
+}
+
 func GetNumTouchDevices() int {
-	return (int) (C.SDL_GetNumTouchDevices())
+	return int(C.SDL_GetNumTouchDevices())
 }
 
 func GetTouchDevice(index int) TouchID {
-	_index := (C.int) (index)
-	return (TouchID) (C.SDL_GetTouchDevice(_index))
+	return TouchID(C.SDL_GetTouchDevice(C.int(index)))
 }
 
-func GetNumTouchFingers(touchId TouchID) int {
-	_touchId := (C.SDL_TouchID) (touchId)
-	return (int) (C.SDL_GetNumTouchFingers(_touchId))
+func GetNumTouchFingers(t TouchID) int {
+	return int(C.SDL_GetNumTouchFingers(t.c()))
 }
 
-func GetTouchFinger(touchId TouchID, index int) *Finger {
-	_touchId := (C.SDL_TouchID) (touchId)
-	_index := (C.int) (index)
-	return (*Finger) (unsafe.Pointer(C.SDL_GetTouchFinger(_touchId, _index)))
+func GetTouchFinger(t TouchID, index int) *Finger {
+	return (*Finger)(unsafe.Pointer(C.SDL_GetTouchFinger(t.c(), C.int(index))))
 }

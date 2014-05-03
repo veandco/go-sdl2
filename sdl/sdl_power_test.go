@@ -12,7 +12,7 @@ func TestGetPowerInfo(t *testing.T) {
 		strstate = "Battery charging"
 	} else if state == POWERSTATE_NO_BATTERY {
 		strstate = "No battery"
-	} else if state == POWERSTATE_ON_BATTERY   {
+	} else if state == POWERSTATE_ON_BATTERY {
 		strstate = "On battery"
 	}
 	if seconds != -1 {

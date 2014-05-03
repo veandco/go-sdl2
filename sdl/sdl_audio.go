@@ -90,8 +90,24 @@ type AudioCVT struct {
 	FilterIndex int
 }
 
+func (fmt AudioFormat) c() C.SDL_AudioFormat {
+    return C.SDL_AudioFormat(fmt)
+}
+
+func (id AudioDeviceID) c() C.SDL_AudioDeviceID {
+    return C.SDL_AudioDeviceID(id)
+}
+
+func (as *AudioSpec) cptr() *C.SDL_AudioSpec {
+    return (*C.SDL_AudioSpec)(unsafe.Pointer(as))
+}
+
+func (cvt *AudioCVT) cptr() *C.SDL_AudioCVT {
+    return (*C.SDL_AudioCVT)(unsafe.Pointer(cvt))
+}
+
 func (format AudioFormat) BitSize() uint8 {
-	return (uint8)(format & AUDIO_MASK_BITSIZE)
+	return uint8(format & AUDIO_MASK_BITSIZE)
 }
 
 func (format AudioFormat) IsFloat() bool {
@@ -119,18 +135,17 @@ func (format AudioFormat) IsUnsigned() bool {
 }
 
 func GetNumAudioDrivers() int {
-	return (int)(C.SDL_GetNumAudioDrivers())
+	return int(C.SDL_GetNumAudioDrivers())
 }
 
 func GetAudioDriver(index int) string {
-	_index := (C.int)(index)
-	return (string)(C.GoString(C.SDL_GetAudioDriver(_index)))
+	return string(C.GoString(C.SDL_GetAudioDriver(C.int(index))))
 }
 
-func AudioInit(driver_name string) int {
-	_driver_name := C.CString(driver_name)
-	defer C.free(unsafe.Pointer(_driver_name))
-	return (int)(C.SDL_AudioInit(_driver_name))
+func AudioInit(driverName string) int {
+	_driverName := C.CString(driverName)
+	defer C.free(unsafe.Pointer(_driverName))
+	return int(C.SDL_AudioInit(_driverName))
 }
 
 func AudioQuit() {
@@ -138,34 +153,25 @@ func AudioQuit() {
 }
 
 func GetCurrentAudioDriver() string {
-	return (string)(C.GoString(C.SDL_GetCurrentAudioDriver()))
+	return string(C.GoString(C.SDL_GetCurrentAudioDriver()))
 }
 
 func OpenAudio(desired, obtained *AudioSpec) int {
-	_desired := (*C.SDL_AudioSpec)(unsafe.Pointer(desired))
-	_obtained := (*C.SDL_AudioSpec)(unsafe.Pointer(obtained))
-	return (int)(C.SDL_OpenAudio(_desired, _obtained))
+	return int(C.SDL_OpenAudio(desired.cptr(), obtained.cptr()))
 }
 
-func GetNumAudioDevices(iscapture int) int {
-	_iscapture := (C.int)(iscapture)
-	return (int)(C.SDL_GetNumAudioDevices(_iscapture))
+func GetNumAudioDevices(isCapture int) int {
+	return int(C.SDL_GetNumAudioDevices(C.int(isCapture)))
 }
 
-func GetAudioDeviceName(index, iscapture int) string {
-	_index := (C.int)(index)
-	_iscapture := (C.int)(iscapture)
-	return (string)(C.GoString(C.SDL_GetAudioDeviceName(_index, _iscapture)))
+func GetAudioDeviceName(index, isCapture int) string {
+	return string(C.GoString(C.SDL_GetAudioDeviceName(C.int(index), C.int(isCapture))))
 }
 
-func OpenAudioDevice(device string, iscapture int, desired, obtained *AudioSpec, allowed_changes int) int {
+func OpenAudioDevice(device string, isCapture int, desired, obtained *AudioSpec, allowedChanges int) int {
 	_device := C.CString(device)
 	defer C.free(unsafe.Pointer(_device))
-	_iscapture := (C.int)(iscapture)
-	_desired := (*C.SDL_AudioSpec)(unsafe.Pointer(desired))
-	_obtained := (*C.SDL_AudioSpec)(unsafe.Pointer(obtained))
-	_allowed_changes := (C.int)(allowed_changes)
-	return (int)(C.SDL_OpenAudioDevice(_device, _iscapture, _desired, _obtained, _allowed_changes))
+	return int(C.SDL_OpenAudioDevice(_device, C.int(isCapture), desired.cptr(), obtained.cptr(), C.int(allowedChanges)))
 }
 
 func GetAudioStatus() AudioStatus {
@@ -173,80 +179,57 @@ func GetAudioStatus() AudioStatus {
 }
 
 func GetAudioDeviceStatus(dev AudioDeviceID) AudioStatus {
-	_dev := (C.SDL_AudioDeviceID)(dev)
-	return (AudioStatus)(C.SDL_GetAudioDeviceStatus(_dev))
+	return (AudioStatus)(C.SDL_GetAudioDeviceStatus(dev.c()))
 }
 
-func PauseAudio(pause_on int) {
-	_pause_on := (C.int)(pause_on)
-	C.SDL_PauseAudio(_pause_on)
+func PauseAudio(pauseOn int) {
+	C.SDL_PauseAudio(C.int(pauseOn))
 }
 
-func PauseAudioDevice(dev AudioDeviceID, pause_on int) {
-	_dev := (C.SDL_AudioDeviceID)(dev)
-	_pause_on := (C.int)(pause_on)
-	C.SDL_PauseAudioDevice(_dev, _pause_on)
+func PauseAudioDevice(dev AudioDeviceID, pauseOn int) {
+	C.SDL_PauseAudioDevice(dev.c(), C.int(pauseOn))
 }
 
-func LoadWAV_RW(src *RWops, freesrc int, spec *AudioSpec, audio_buf **uint8, audio_len *uint32) *AudioSpec {
-	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	_freesrc := (C.int)(freesrc)
-	_spec := (*C.SDL_AudioSpec)(unsafe.Pointer(spec))
-	_audio_buf := (**C.Uint8)(unsafe.Pointer(audio_buf))
-	_audio_len := (*C.Uint32)(unsafe.Pointer(audio_len))
-	return (*AudioSpec)(unsafe.Pointer(C.SDL_LoadWAV_RW(_src, _freesrc, _spec, _audio_buf, _audio_len)))
+func LoadWAV_RW(src *RWops, freeSrc int, spec *AudioSpec, audioBuf **uint8, audioLen *uint32) *AudioSpec {
+	_audioBuf := (**C.Uint8)(unsafe.Pointer(audioBuf))
+	_audioLen := (*C.Uint32)(unsafe.Pointer(audioLen))
+	return (*AudioSpec)(unsafe.Pointer(C.SDL_LoadWAV_RW(src.cptr(), C.int(freeSrc), spec.cptr(), _audioBuf, _audioLen)))
 }
 
-func LoadWAV(file string, spec *AudioSpec, audio_buf **uint8, audio_len *uint32) *AudioSpec {
+func LoadWAV(file string, spec *AudioSpec, audioBuf **uint8, audioLen *uint32) *AudioSpec {
 	_file := C.CString(file)
-	defer C.free(unsafe.Pointer(_file))
 	_rb := C.CString("rb")
+	defer C.free(unsafe.Pointer(_file))
 	defer C.free(unsafe.Pointer(_rb))
-	_spec := (*C.SDL_AudioSpec)(unsafe.Pointer(spec))
-	_audio_buf := (**C.Uint8)(unsafe.Pointer(audio_buf))
-	_audio_len := (*C.Uint32)(unsafe.Pointer(audio_len))
-	return (*AudioSpec)(unsafe.Pointer(C.SDL_LoadWAV_RW(C.SDL_RWFromFile(_file, _rb),
-		1, _spec, _audio_buf, _audio_len)))
+	_audioBuf := (**C.Uint8)(unsafe.Pointer(audioBuf))
+	_audioLen := (*C.Uint32)(unsafe.Pointer(audioLen))
+	return (*AudioSpec)(unsafe.Pointer(C.SDL_LoadWAV_RW(C.SDL_RWFromFile(_file, _rb), 1, spec.cptr(), _audioBuf, _audioLen)))
 }
 
-func FreeWAV(audio_buf *uint8) {
-	_audio_buf := (*C.Uint8)(unsafe.Pointer(audio_buf))
-	C.SDL_FreeWAV(_audio_buf)
+func FreeWAV(audioBuf *uint8) {
+	_audioBuf := (*C.Uint8)(unsafe.Pointer(audioBuf))
+	C.SDL_FreeWAV(_audioBuf)
 }
 
-func BuildAudioCVT(cvt *AudioCVT, src_format AudioFormat, src_channels uint8, src_rate int,
-	dst_format AudioFormat, dst_channels uint8, dst_rate int) int {
-	_cvt := (*C.SDL_AudioCVT)(unsafe.Pointer(cvt))
-	_src_format := (C.SDL_AudioFormat)(src_format)
-	_src_channels := (C.Uint8)(src_channels)
-	_src_rate := (C.int)(src_rate)
-	_dst_format := (C.SDL_AudioFormat)(dst_format)
-	_dst_channels := (C.Uint8)(dst_channels)
-	_dst_rate := (C.int)(dst_rate)
-	return (int)(C.SDL_BuildAudioCVT(_cvt, _src_format, _src_channels, _src_rate,
-		_dst_format, _dst_channels, _dst_rate))
+func BuildAudioCVT(cvt *AudioCVT, srcFormat AudioFormat, srcChannels uint8, srcRate int, dstFormat AudioFormat, dstChannels uint8, dstRate int) int {
+	return int(C.SDL_BuildAudioCVT(cvt.cptr(), srcFormat.c(), C.Uint8(srcChannels), C.int(srcRate), dstFormat.c(), C.Uint8(dstChannels), C.int(dstRate)))
 }
 
 func ConvertAudio(cvt *AudioCVT) int {
 	_cvt := (*C.SDL_AudioCVT)(unsafe.Pointer(cvt))
-	return (int)(C.SDL_ConvertAudio(_cvt))
+	return int(C.SDL_ConvertAudio(_cvt))
 }
 
 func MixAudio(dst, src *uint8, len_ uint32, volume int) {
 	_dst := (*C.Uint8)(unsafe.Pointer(dst))
 	_src := (*C.Uint8)(unsafe.Pointer(src))
-	_len := (C.Uint32)(len_)
-	_volume := (C.int)(volume)
-	C.SDL_MixAudio(_dst, _src, _len, _volume)
+	C.SDL_MixAudio(_dst, _src, C.Uint32(len_), C.int(volume))
 }
 
 func MixAudioFormat(dst, src *uint8, format AudioFormat, len_ uint32, volume int) {
 	_dst := (*C.Uint8)(unsafe.Pointer(dst))
 	_src := (*C.Uint8)(unsafe.Pointer(src))
-	_format := (C.SDL_AudioFormat)(format)
-	_len := (C.Uint32)(len_)
-	_volume := (C.int)(volume)
-	C.SDL_MixAudioFormat(_dst, _src, _format, _len, _volume)
+	C.SDL_MixAudioFormat(_dst, _src, format.c(), C.Uint32(len_), C.int(volume))
 }
 
 func LockAudio() {
@@ -254,8 +237,7 @@ func LockAudio() {
 }
 
 func LockAudioDevice(dev AudioDeviceID) {
-	_dev := (C.SDL_AudioDeviceID)(dev)
-	C.SDL_LockAudioDevice(_dev)
+	C.SDL_LockAudioDevice(dev.c())
 }
 
 func UnlockAudio() {
@@ -263,8 +245,7 @@ func UnlockAudio() {
 }
 
 func UnlockAudioDevice(dev AudioDeviceID) {
-	_dev := (C.SDL_AudioDeviceID)(dev)
-	C.SDL_UnlockAudioDevice(_dev)
+	C.SDL_UnlockAudioDevice(dev.c())
 }
 
 func CloseAudio() {
@@ -272,13 +253,12 @@ func CloseAudio() {
 }
 
 func CloseAudioDevice(dev AudioDeviceID) {
-	_dev := (C.SDL_AudioDeviceID)(dev)
-	C.SDL_UnlockAudioDevice(_dev)
+	C.SDL_UnlockAudioDevice(dev.c())
 }
 
 /*
 func AudioDeviceConnected(dev AudioDeviceID) int {
 	_dev := (C.SDL_AudioDeviceID) (dev)
-	return (int) (C.SDL_AudioDeviceConnected(_dev))
+	return int (C.SDL_AudioDeviceConnected(_dev))
 }
 */

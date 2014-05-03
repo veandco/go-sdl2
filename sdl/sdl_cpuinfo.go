@@ -7,11 +7,11 @@ import "C"
 const CACHELINE_SIZE = 128
 
 func GetCPUCount() int {
-	return (int)(C.SDL_GetCPUCount())
+	return int(C.SDL_GetCPUCount())
 }
 
 func GetCPUCacheLineSize() int {
-	return (int)(C.SDL_GetCPUCacheLineSize())
+	return int(C.SDL_GetCPUCacheLineSize())
 }
 
 func HasRDTSC() bool {
@@ -51,7 +51,7 @@ func HasSSE42() bool {
 }
 
 func GetSystemRAM() int {
-	return (int) (C._SDL_GetSystemRAM())
+	return int(C._SDL_GetSystemRAM())
 }
 
 func HasAVX() bool {

@@ -48,50 +48,54 @@ type GameControllerButton C.SDL_GameControllerButton
 type GameController C.SDL_GameController
 type GameControllerButtonBind C.SDL_GameControllerButtonBind
 
+func (ctrl *GameController) cptr() *C.SDL_GameController {
+    return (*C.SDL_GameController)(unsafe.Pointer(ctrl))
+}
+
+func (axis GameControllerAxis) c() C.SDL_GameControllerAxis {
+    return C.SDL_GameControllerAxis(axis)
+}
+
+func (btn GameControllerButton) c() C.SDL_GameControllerButton {
+    return C.SDL_GameControllerButton(btn)
+}
+
 func GameControllerAddMapping(mappingString string) int {
 	_mappingString := C.CString(mappingString)
 	defer C.free(unsafe.Pointer(_mappingString))
-	return (int)(C.SDL_GameControllerAddMapping(_mappingString))
+	return int(C.SDL_GameControllerAddMapping(_mappingString))
 }
 
 func GameControllerMappingForGUID(guid JoystickGUID) string {
-	_guid := (C.SDL_JoystickGUID)(guid)
-	return (C.GoString)(C.SDL_GameControllerMappingForGUID(_guid))
+	return C.GoString(C.SDL_GameControllerMappingForGUID(guid.c()))
 }
 
-func GameControllerMapping(gamecontroller *GameController) string {
-	_gamecontroller := (*C.SDL_GameController)(gamecontroller)
-	return (C.GoString)(C.SDL_GameControllerMapping(_gamecontroller))
+func GameControllerMapping(ctrl *GameController) string {
+	return C.GoString(C.SDL_GameControllerMapping(ctrl.cptr()))
 }
 
-func IsGameController(joystick_index int) bool {
-	_joystick_index := (C.int)(joystick_index)
-	return C.SDL_IsGameController(_joystick_index) > 0
+func IsGameController(index int) bool {
+	return C.SDL_IsGameController(C.int(index)) > 0
 }
 
-func GameControllerNameForIndex(joystick_index int) string {
-	_joystick_index := (C.int)(joystick_index)
-	return (C.GoString)(C.SDL_GameControllerNameForIndex(_joystick_index))
+func GameControllerNameForIndex(index int) string {
+	return C.GoString(C.SDL_GameControllerNameForIndex(C.int(index)))
 }
 
-func GameControllerOpen(joystick_index int) *GameController {
-	_joystick_index := (C.int)(joystick_index)
-	return (*GameController)(unsafe.Pointer(C.SDL_GameControllerOpen(_joystick_index)))
+func GameControllerOpen(index int) *GameController {
+	return (*GameController)(unsafe.Pointer(C.SDL_GameControllerOpen(C.int(index))))
 }
 
-func (gamecontroller *GameController) GetAttached() bool {
-	_gamecontroller := (*C.SDL_GameController)(unsafe.Pointer(gamecontroller))
-	return C.SDL_GameControllerGetAttached(_gamecontroller) > 0
+func (ctrl *GameController) GetAttached() bool {
+	return C.SDL_GameControllerGetAttached(ctrl.cptr()) > 0
 }
 
-func (gamecontroller *GameController) GetJoystick() *Joystick {
-	_gamecontroller := (*C.SDL_GameController)(unsafe.Pointer(gamecontroller))
-	return (*Joystick)(unsafe.Pointer(C.SDL_GameControllerGetJoystick(_gamecontroller)))
+func (ctrl *GameController) GetJoystick() *Joystick {
+	return (*Joystick)(unsafe.Pointer(C.SDL_GameControllerGetJoystick(ctrl.cptr())))
 }
 
 func GameControllerEventState(state int) int {
-	_state := (C.int)(state)
-	return (int)(C.SDL_GameControllerEventState(_state))
+	return int(C.SDL_GameControllerEventState(C.int(state)))
 }
 
 func GameControllerUpdate() {
@@ -101,50 +105,39 @@ func GameControllerUpdate() {
 func GameControllerGetAxisFromString(pchString string) GameControllerAxis {
 	_pchString := C.CString(pchString)
 	defer C.free(unsafe.Pointer(_pchString))
-	return (GameControllerAxis)(C.SDL_GameControllerGetAxisFromString(_pchString))
+	return GameControllerAxis(C.SDL_GameControllerGetAxisFromString(_pchString))
 }
 
 func GameControllerGetStringForAxis(axis GameControllerAxis) string {
-	_axis := (C.SDL_GameControllerAxis)(axis)
-	return (C.GoString)(C.SDL_GameControllerGetStringForAxis(_axis))
+	return C.GoString(C.SDL_GameControllerGetStringForAxis(axis.c()))
 }
 
-func (gamecontroller *GameController) GetBindForAxis(axis GameControllerAxis) GameControllerButtonBind {
-	_gamecontroller := (*C.SDL_GameController)(gamecontroller)
-	_axis := (C.SDL_GameControllerAxis)(axis)
-	return (GameControllerButtonBind)(C.SDL_GameControllerGetBindForAxis(_gamecontroller, _axis))
+func (ctrl *GameController) GetBindForAxis(axis GameControllerAxis) GameControllerButtonBind {
+	return GameControllerButtonBind(C.SDL_GameControllerGetBindForAxis(ctrl.cptr(), axis.c()))
 }
 
-func (gamecontroller *GameController) GetAxis(axis GameControllerAxis) int16 {
-	_gamecontroller := (*C.SDL_GameController)(gamecontroller)
-	_axis := (C.SDL_GameControllerAxis)(axis)
-	return (int16)(C.SDL_GameControllerGetAxis(_gamecontroller, _axis))
+func (ctrl *GameController) GetAxis(axis GameControllerAxis) int16 {
+	return int16(C.SDL_GameControllerGetAxis(ctrl.cptr(), axis.c()))
 }
 
 func GameControllerGetButtonFromString(pchString string) GameControllerButton {
 	_pchString := C.CString(pchString)
 	defer C.free(unsafe.Pointer(_pchString))
-	return (GameControllerButton)(C.SDL_GameControllerGetButtonFromString(_pchString))
+	return GameControllerButton(C.SDL_GameControllerGetButtonFromString(_pchString))
 }
 
-func GameControllerGetStringForButton(button GameControllerButton) string {
-	_button := (C.SDL_GameControllerButton)(button)
-	return (C.GoString)(C.SDL_GameControllerGetStringForButton(_button))
+func GameControllerGetStringForButton(btn GameControllerButton) string {
+	return C.GoString(C.SDL_GameControllerGetStringForButton(btn.c()))
 }
 
-func (gamecontroller *GameController) GetBindForButton(button GameControllerButton) GameControllerButtonBind {
-	_gamecontroller := (*C.SDL_GameController)(gamecontroller)
-	_button := (C.SDL_GameControllerButton)(button)
-	return (GameControllerButtonBind)(C.SDL_GameControllerGetBindForButton(_gamecontroller, _button))
+func (ctrl *GameController) GetBindForButton(btn GameControllerButton) GameControllerButtonBind {
+	return GameControllerButtonBind(C.SDL_GameControllerGetBindForButton(ctrl.cptr(), btn.c()))
 }
 
-func (gamecontroller *GameController) GetButton(button GameControllerButton) byte {
-	_gamecontroller := (*C.SDL_GameController)(gamecontroller)
-	_button := (C.SDL_GameControllerButton)(button)
-	return (byte)(C.SDL_GameControllerGetButton(_gamecontroller, _button))
+func (ctrl *GameController) GetButton(btn GameControllerButton) byte {
+	return byte(C.SDL_GameControllerGetButton(ctrl.cptr(), btn.c()))
 }
 
-func (gamecontroller *GameController) Close() {
-	_gamecontroller := (*C.SDL_GameController)(gamecontroller)
-	C.SDL_GameControllerClose(_gamecontroller)
+func (ctrl *GameController) Close() {
+	C.SDL_GameControllerClose(ctrl.cptr())
 }

@@ -10,6 +10,7 @@ const (
 	POWERSTATE_CHARGING
 	POWERSTATE_CHARGED
 )
+
 type PowerState C.SDL_PowerState
 
 func GetPowerInfo() (int, int, int) {

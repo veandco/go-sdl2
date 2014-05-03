@@ -32,6 +32,14 @@ const (
 type Cursor C.SDL_Cursor
 type SystemCursor C.SDL_SystemCursor
 
+func (c *Cursor) cptr() *C.SDL_Cursor {
+    return (*C.SDL_Cursor)(unsafe.Pointer(c))
+}
+
+func (c SystemCursor) c() C.SDL_SystemCursor {
+    return C.SDL_SystemCursor(c)
+}
+
 func GetMouseFocus() *Window {
 	return (*Window)(unsafe.Pointer(C.SDL_GetMouseFocus()))
 }
@@ -49,46 +57,33 @@ func GetRelativeMouseState() (x, y int, state uint32) {
 }
 
 func (window *Window) WarpMouseInWindow(x, y int) {
-	_window := (*C.SDL_Window)(unsafe.Pointer(window))
-	_x := (C.int)(x)
-	_y := (C.int)(y)
-	C.SDL_WarpMouseInWindow(_window, _x, _y)
+	C.SDL_WarpMouseInWindow(window.cptr(), C.int(x), C.int(y))
 }
 
 func SetRelativeMouseMode(enabled bool) int {
-	_enabled := (C.SDL_bool)(Btoi(enabled))
-	return (int)(C.SDL_SetRelativeMouseMode(_enabled))
+	return int(C.SDL_SetRelativeMouseMode(C.SDL_bool(Btoi(enabled))))
 }
 
 func GetRelativeMouseMode() bool {
 	return C.SDL_GetRelativeMouseMode() > 0
 }
 
-func CreateCursor(data, mask *uint8, w, h, hot_x, hot_y int) *Cursor {
+func CreateCursor(data, mask *uint8, w, h, hotX, hotY int) *Cursor {
 	_data := (*C.Uint8)(unsafe.Pointer(data))
 	_mask := (*C.Uint8)(unsafe.Pointer(mask))
-	_w := (C.int)(w)
-	_h := (C.int)(h)
-	_hot_x := (C.int)(hot_x)
-	_hot_y := (C.int)(hot_y)
-	return (*Cursor)(C.SDL_CreateCursor(_data, _mask, _w, _h, _hot_x, _hot_y))
+	return (*Cursor)(C.SDL_CreateCursor(_data, _mask, C.int(w), C.int(h), C.int(hotX), C.int(hotY)))
 }
 
-func CreateColorCursor(surface *Surface, hot_x, hot_y int) *Cursor {
-	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_hot_x := (C.int)(hot_x)
-	_hot_y := (C.int)(hot_y)
-	return (*Cursor)(C.SDL_CreateColorCursor(_surface, _hot_x, _hot_y))
+func CreateColorCursor(surface *Surface, hotX, hotY int) *Cursor {
+	return (*Cursor)(C.SDL_CreateColorCursor(surface.cptr(), C.int(hotX), C.int(hotY)))
 }
 
 func CreateSystemCursor(id SystemCursor) *Cursor {
-	_id := (C.SDL_SystemCursor)(id)
-	return (*Cursor)(C.SDL_CreateSystemCursor(_id))
+	return (*Cursor)(C.SDL_CreateSystemCursor(id.c()))
 }
 
 func SetCursor(cursor *Cursor) {
-	_cursor := (*C.SDL_Cursor)(cursor)
-	C.SDL_SetCursor(_cursor)
+	C.SDL_SetCursor(cursor.cptr())
 }
 
 func GetCursor() *Cursor {
@@ -100,13 +95,11 @@ func GetDefaultCursor() *Cursor {
 }
 
 func FreeCursor(cursor *Cursor) {
-	_cursor := (*C.SDL_Cursor)(cursor)
-	C.SDL_FreeCursor(_cursor)
+	C.SDL_FreeCursor(cursor.cptr())
 }
 
 func ShowCursor(toggle int) int {
-	_toggle := (C.int)(toggle)
-	return (int)(C.SDL_ShowCursor(_toggle))
+	return int(C.SDL_ShowCursor(C.int(toggle)))
 }
 
 func Button(flag uint32) uint32 {

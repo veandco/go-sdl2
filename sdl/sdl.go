@@ -24,8 +24,7 @@ const (
 )
 
 func Init(flags uint32) int {
-	_flags := (C.Uint32)(flags)
-	return (int)(C.SDL_Init(_flags))
+	return int(C.SDL_Init(C.Uint32(flags)))
 }
 
 func Quit() {
@@ -33,20 +32,17 @@ func Quit() {
 }
 
 func InitSubSystem(flags uint32) int {
-	_flags := (C.Uint32)(flags)
-	return (int)(C.SDL_InitSubSystem(_flags))
+	return int(C.SDL_InitSubSystem(C.Uint32(flags)))
 }
 
 func QuitSubSystem(flags uint32) {
-	_flags := (C.Uint32)(flags)
-	C.SDL_QuitSubSystem(_flags)
+	C.SDL_QuitSubSystem(C.Uint32(flags))
 }
 
 func WasInit(flags uint32) uint32 {
-	_flags := (C.Uint32)(flags)
-	return (uint32)(C.SDL_WasInit(_flags))
+	return uint32(C.SDL_WasInit(C.Uint32(flags)))
 }
 
 func GetPlatform() string {
-	return (string)(C.GoString(C.SDL_GetPlatform()))
+	return string(C.GoString(C.SDL_GetPlatform()))
 }

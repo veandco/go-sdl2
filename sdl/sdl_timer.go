@@ -16,6 +16,6 @@ func GetPerformanceFrequency() uint64 {
 }
 
 func Delay(ms uint32) {
-	_ms := (C.Uint32) (ms)
-	C.SDL_Delay(C.Uint32(_ms));
+	_ms := (C.Uint32)(ms)
+	C.SDL_Delay(C.Uint32(_ms))
 }
