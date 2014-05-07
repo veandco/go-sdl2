@@ -28,13 +28,13 @@ For Mac OS X, download the development library dmg files from libsdl.org and dra
 Installation
 ============
 To get the bindings, type:  
-`go get -v github.com/jackyb/go-sdl2/sdl`  
-`go get -v github.com/jackyb/go-sdl2/sdl_mixer`  
-`go get -v github.com/jackyb/go-sdl2/sdl_image`  
-`go get -v github.com/jackyb/go-sdl2/sdl_ttf`
+`go get -v github.com/veandco/go-sdl2/sdl`  
+`go get -v github.com/veandco/go-sdl2/sdl_mixer`  
+`go get -v github.com/veandco/go-sdl2/sdl_image`  
+`go get -v github.com/veandco/go-sdl2/sdl_ttf`
 
 or type this if you use Bash terminal:  
-`go get -v github.com/jackyb/go-sdl2/sdl{,_mixer,_image,_ttf}`
+`go get -v github.com/veandco/go-sdl2/sdl{,_mixer,_image,_ttf}`
 
 __Note__: If you didn't use the previous commands or use 'go install', you will experience long
 compilation time because Go doesn't keep the built binaries unless you install them.
@@ -43,7 +43,7 @@ Example
 =======
 	package main
 
-	import "github.com/jackyb/go-sdl2/sdl"
+	import "github.com/veandco/go-sdl2/sdl"
 
 	func main() {
 		window := sdl.CreateWindow("test", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
@@ -63,7 +63,7 @@ For more complete examples, see inside the _examples_ folder.
 
 Documentation
 =============
-For now, take a look at http://godoc.org/github.com/jackyb/go-sdl2/sdl. A full-featured website will be created once we hit a stable point.
+For now, take a look at http://godoc.org/github.com/veandco/go-sdl2/sdl. A full-featured website will be created once we hit a stable point.
 
 Notes
 =====

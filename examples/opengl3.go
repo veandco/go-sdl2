@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	gl "github.com/chsc/gogl/gl33"
-	"github.com/jackyb/go-sdl2/sdl"
+	"github.com/veandco/go-sdl2/sdl"
 	"math"
 	"runtime"
 	"time"

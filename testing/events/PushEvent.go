@@ -3,7 +3,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/jackyb/go-sdl2/sdl"
+	"github.com/veandco/go-sdl2/sdl"
 	"os"
 )
 
