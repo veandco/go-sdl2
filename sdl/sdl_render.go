@@ -24,7 +24,15 @@ const (
 )
 
 type RendererInfo struct {
-	Name              string
+	Name string
+	RendererInfoData
+}
+type cRendererInfo struct {
+	Name *C.char
+	RendererInfoData
+}
+
+type RendererInfoData struct {
 	Flags             uint32
 	NumTextureFormats uint32
 	TextureFormats    [16]int32
@@ -38,8 +46,12 @@ func (info *RendererInfo) cptr() *C.SDL_RendererInfo {
 	return (*C.SDL_RendererInfo)(unsafe.Pointer(info))
 }
 
+func (info *cRendererInfo) cptr() *C.SDL_RendererInfo {
+	return (*C.SDL_RendererInfo)(unsafe.Pointer(info))
+}
+
 func (flip RendererFlip) c() C.SDL_RendererFlip {
-    return C.SDL_RendererFlip(flip)
+	return C.SDL_RendererFlip(flip)
 }
 
 func GetNumRenderDrivers() int {
@@ -47,7 +59,14 @@ func GetNumRenderDrivers() int {
 }
 
 func GetRenderDriverInfo(index int, info *RendererInfo) int {
-	return int(C.SDL_GetRenderDriverInfo(C.int(index), info.cptr()))
+	var cinfo cRendererInfo
+	ret := int(C.SDL_GetRenderDriverInfo(C.int(index), cinfo.cptr()))
+
+	info.RendererInfoData = cinfo.RendererInfoData
+	// No need to free, it's done by DestroyRenderer
+	info.Name = C.GoString(cinfo.Name)
+
+	return ret
 }
 
 func CreateWindowAndRenderer(w, h int, flags uint32) (*Window, *Renderer) {
@@ -70,7 +89,14 @@ func (window *Window) GetRenderer() *Renderer {
 }
 
 func (renderer *Renderer) GetRendererInfo(info *RendererInfo) int {
-	return int(C.SDL_GetRendererInfo(renderer.cptr(), info.cptr()))
+	var cinfo cRendererInfo
+	ret := int(C.SDL_GetRendererInfo(renderer.cptr(), cinfo.cptr()))
+
+	info.RendererInfoData = cinfo.RendererInfoData
+	// No need to free, it's done by DestroyRenderer
+	info.Name = C.GoString(cinfo.Name)
+
+	return ret
 }
 
 func (renderer *Renderer) GetRendererOutputSize() (w, h int, status int) {
