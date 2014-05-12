@@ -80,6 +80,7 @@ Contributors
 * [marcusva](https://github.com/marcusva)
 * [Tom Murray](https://github.com/TomMurray)
 * [Ian Davis](https://github.com/iand)
+* [hschendel](https://github.com/hschendel)
 
 License
 =======
