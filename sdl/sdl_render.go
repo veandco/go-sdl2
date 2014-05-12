@@ -5,22 +5,22 @@ import "C"
 import "unsafe"
 
 const (
-	RENDERER_SOFTWARE      = 0x00000001
-	RENDERER_ACCELERATED   = 0x00000002
-	RENDERER_PRESENTVSYNC  = 0x00000004
-	RENDERER_TARGETTEXTURE = 0x00000008
+	RENDERER_SOFTWARE      = C.SDL_RENDERER_SOFTWARE
+	RENDERER_ACCELERATED   = C.SDL_RENDERER_ACCELERATED
+	RENDERER_PRESENTVSYNC  = C.SDL_RENDERER_PRESENTVSYNC
+	RENDERER_TARGETTEXTURE = C.SDL_RENDERER_TARGETTEXTURE
 
-	TEXTUREACCESS_STATIC    = 0x00000001
-	TEXTUREACCESS_STREAMING = 0x00000002
-	TEXTUREACCESS_TARGET    = 0x00000003
+	TEXTUREACCESS_STATIC    = C.SDL_TEXTUREACCESS_STATIC
+	TEXTUREACCESS_STREAMING = C.SDL_TEXTUREACCESS_STREAMING
+	TEXTUREACCESS_TARGET    = C.SDL_TEXTUREACCESS_TARGET
 
-	TEXTUREMODULATE_NONE  = 0x00000000
-	TEXTUREMODULATE_COLOR = 0x00000001
-	TEXTUREMODULATE_ALPHA = 0x00000002
+	TEXTUREMODULATE_NONE  = C.SDL_TEXTUREMODULATE_NONE
+	TEXTUREMODULATE_COLOR = C.SDL_TEXTUREMODULATE_COLOR
+	TEXTUREMODULATE_ALPHA = C.SDL_TEXTUREMODULATE_ALPHA
 
-	SDL_FLIP_NONE       = 0x00000000
-	SDL_FLIP_HORIZONTAL = 0x00000001
-	SDL_FLIP_VERTICAL   = 0x00000002
+	FLIP_NONE       = C.SDL_FLIP_NONE
+	FLIP_HORIZONTAL = C.SDL_FLIP_HORIZONTAL
+	FLIP_VERTICAL   = C.SDL_FLIP_VERTICAL
 )
 
 type RendererInfo struct {
@@ -107,7 +107,7 @@ func (renderer *Renderer) GetRendererOutputSize() (w, h int, status int) {
 }
 
 func CreateTexture(renderer *Renderer, format uint32, access int, w int, h int) *Texture {
-	_format := (C.Uint32)(format)
+	_format := C.Uint32(format)
 	_access := C.int(access)
 	_w := C.int(w)
 	_h := C.int(h)
@@ -127,9 +127,9 @@ func QueryTexture(texture *Texture, format *uint32, access *int, w *int, h *int)
 }
 
 func (texture *Texture) SetColorMod(r uint8, g uint8, b uint8) int {
-	_r := (C.Uint8)(r)
-	_g := (C.Uint8)(g)
-	_b := (C.Uint8)(b)
+	_r := C.Uint8(r)
+	_g := C.Uint8(g)
+	_b := C.Uint8(b)
 	return int(C.SDL_SetTextureColorMod(texture.cptr(), _r, _g, _b))
 }
 
@@ -157,7 +157,7 @@ func (texture *Texture) Lock(rect *Rect, pixels unsafe.Pointer, pitch *int) int 
 }
 
 func (texture *Texture) Unlock() {
-	(C.SDL_UnlockTexture(texture.cptr()))
+	C.SDL_UnlockTexture(texture.cptr())
 }
 
 func (renderer *Renderer) RenderTargetSupported() bool {
@@ -193,8 +193,8 @@ func (renderer *Renderer) GetClipRect(rect *Rect) {
 }
 
 func (renderer *Renderer) SetScale(scaleX, scaleY float32) int {
-	_scaleX := (C.float)(scaleX)
-	_scaleY := (C.float)(scaleY)
+	_scaleX := C.float(scaleX)
+	_scaleY := C.float(scaleY)
 	return int(C.SDL_RenderSetScale(renderer.cptr(), _scaleX, _scaleY))
 }
 
@@ -206,10 +206,10 @@ func (renderer *Renderer) GetScale() (scaleX, scaleY float32) {
 }
 
 func (renderer *Renderer) SetDrawColor(r, g, b, a uint8) int {
-	_r := (C.Uint8)(r)
-	_g := (C.Uint8)(g)
-	_b := (C.Uint8)(b)
-	_a := (C.Uint8)(a)
+	_r := C.Uint8(r)
+	_g := C.Uint8(g)
+	_b := C.Uint8(b)
+	_a := C.Uint8(a)
 	return int(C.SDL_SetRenderDrawColor(renderer.cptr(), _r, _g, _b, _a))
 }
 
