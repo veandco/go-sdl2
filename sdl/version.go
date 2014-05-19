@@ -21,9 +21,9 @@ func (v *Version) cptr() *C.SDL_version {
 }
 
 func VERSION(version *Version) {
-	version.Major = C.SDL_MAJOR_VERSION
-	version.Minor = C.SDL_MINOR_VERSION
-	version.Patch = C.SDL_PATCHLEVEL
+	version.Major = MAJOR_VERSION
+	version.Minor = MINOR_VERSION
+	version.Patch = PATCHLEVEL
 }
 
 func VERSIONNUM(x, y, z int) int {

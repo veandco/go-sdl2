@@ -4,7 +4,7 @@ package sdl
 // #include "misc.h"
 import "C"
 
-const CACHELINE_SIZE = 128
+const CACHELINE_SIZE = C.SDL_CACHELINE_SIZE
 
 func GetCPUCount() int {
 	return int(C.SDL_GetCPUCount())
