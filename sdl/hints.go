@@ -1,6 +1,15 @@
 package sdl
 
-// #include <SDL2/SDL.h>
+/*
+#include <SDL2/SDL.h>
+
+#if (SDL_MAJOR_VERSION >= 2 && SDL_MINOR_VERSION >= 0 && SDL_PATCHLEVEL < 3)
+#define SDL_HINT_WINRT_PRIVACY_POLICY_URL ""
+#define SDL_HINT_WINRT_PRIVACY_POLICY_LABEL ""
+#define SDL_HINT_WINRT_HANDLE_BACK_BUTTON ""
+#define SDL_HINT_RENDER_DIRECT3D11_DEBUG ""
+#endif
+*/
 import "C"
 import "unsafe"
 
