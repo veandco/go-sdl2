@@ -4,8 +4,6 @@ SDL
 log.go
 ------
 * SDL_LogMessageV()
-* SDL_LogGetOutputFunction()
-* SDL_LogSetOutputFunction()
 
 
 SDL_image
