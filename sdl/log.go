@@ -2,6 +2,7 @@ package sdl
 
 /*
 #include <SDL2/SDL.h>
+#include "log.h"
 
 static inline _SDL_Log(const char *fmt)
 {
@@ -172,4 +173,41 @@ func LogMessage(cat int, pri LogPriority, str string, args ...interface{}) {
 	defer C.free(unsafe.Pointer(cstr))
 
 	C._SDL_LogMessage(C.int(cat), C.SDL_LogPriority(pri), cstr)
+}
+
+type LogOutputFunction func(data interface{}, cat int, pri LogPriority, message string)
+
+type logOutputFunctionCtx struct {
+    f LogOutputFunction
+        d interface{}
+}
+
+// Yissakhar Z. Beck (DeedleFake)'s implementation
+//
+//export logOutputFunction
+func logOutputFunction(data unsafe.Pointer, cat C.int, pri C.SDL_LogPriority, message *C.char) {
+    ctx := (*logOutputFunctionCtx)(data)
+
+    ctx.f(ctx.d, int(cat), LogPriority(pri), C.GoString(message))
+}
+
+var (
+    logOutputFunctionCache LogOutputFunction
+    logOutputDataCache interface{}
+)
+
+func LogGetOutputFunction() (LogOutputFunction, interface{}) {
+    return logOutputFunctionCache, logOutputDataCache
+}
+
+func LogSetOutputFunction(f LogOutputFunction, data interface{}) {
+    ctx := &logOutputFunctionCtx{
+            f: f,
+            d: data,
+    }
+
+    C.LogSetOutputFunction(unsafe.Pointer(ctx))
+
+    logOutputFunctionCache = f
+    logOutputDataCache = data
 }
