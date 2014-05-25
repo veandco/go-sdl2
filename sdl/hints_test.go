@@ -2,26 +2,31 @@ package sdl
 
 import "testing"
 
+const (
+    TIMER_RESOLUTION = "32"
+    DRIVER = "software"
+)
+
 func TestSetHintWithPriority(t *testing.T) {
 	Init(INIT_EVERYTHING)
 	defer Quit()
 
-	if !SetHintWithPriority("TEST", "32", HINT_DEFAULT) {
-		t.Errorf("return value for SetHintWithPriority('TEST', '32', HINT_DEFAULT) is wrong")
+	if !SetHintWithPriority(HINT_TIMER_RESOLUTION, TIMER_RESOLUTION, HINT_DEFAULT) {
+		t.Errorf("return value for SetHintWithPriority(HINT_TIMER_RESOLUTION, TIMER_RESOLUTION, HINT_DEFAULT) is wrong")
 	}
-	if GetHint("TEST") != "32" {
+	if GetHint(HINT_TIMER_RESOLUTION) != TIMER_RESOLUTION {
 		t.Errorf("SetHintWithPriority() did not set value properly")
 	}
-	if !SetHintWithPriority("TEST", "abc", HINT_NORMAL) {
-		t.Errorf("return value for SetHintWithPriority('TEST', 'abc', HINT_NORMAL) is wrong")
+	if !SetHintWithPriority(HINT_RENDER_DRIVER, DRIVER, HINT_NORMAL) {
+		t.Errorf("return value for SetHintWithPriority(HINT_RENDER_DRIVER, 'software', HINT_NORMAL) is wrong")
 	}
-	if GetHint("TEST") != "abc" {
+	if GetHint(HINT_RENDER_DRIVER) != DRIVER {
 		t.Errorf("SetHintWithPriority() [HINT_NORMAL] did not set value properly")
 	}
-	if SetHintWithPriority("TEST", "xyz", HINT_DEFAULT) {
-		t.Errorf("return value for SetHintWithPriority('TEST', 'xyz', HINT_DEFAULT) is wrong")
+	if SetHintWithPriority(HINT_RENDER_DRIVER, DRIVER, HINT_DEFAULT) {
+		t.Errorf("return value for SetHintWithPriority(HINT_RENDER_DRIVER, DRIVER, HINT_DEFAULT) is wrong")
 	}
-	if GetHint("TEST") != "abc" {
+	if GetHint(HINT_RENDER_DRIVER) != DRIVER {
 		t.Errorf("SetHintWithPriority() [HINT_DEFAULT] did not set value properly")
 	}
 
@@ -31,16 +36,17 @@ func TestGetSetHint(t *testing.T) {
 	Init(INIT_EVERYTHING)
 	defer Quit()
 
-	if !SetHint("TEST", "32") {
-		t.Errorf("return value for SetHint('TEST', '32') is wrong")
+	if !SetHint(HINT_TIMER_RESOLUTION, TIMER_RESOLUTION) {
+		t.Errorf("return value for SetHint(HINT_TIMER_RESOLUTION, RESOLUTION) is wrong")
 	}
-	if GetHint("TEST") != "32" {
-		t.Errorf("return value for GetHint('TEST') is wrong")
+	if GetHint(HINT_TIMER_RESOLUTION) != TIMER_RESOLUTION {
+		t.Errorf("return value for GetHint(HINT_TIMER_RESOLUTION) is wrong")
 	}
-	if !SetHint(HINT_RENDER_DRIVER, "dummy") {
-		t.Errorf("return value for SetHint(HINT_RENDER_DRIVER, 'dummy') is wrong")
+
+	if !SetHint(HINT_RENDER_DRIVER, DRIVER) {
+		t.Errorf("return value for SetHint(HINT_RENDER_DRIVER, DRIVER) is wrong")
 	}
-	if GetHint(HINT_RENDER_DRIVER) != "dummy" {
+	if GetHint(HINT_RENDER_DRIVER) != DRIVER {
 		t.Errorf("return value for GetHint(HINT_RENDER_DRIVER) is wrong")
 	}
 }
@@ -49,14 +55,14 @@ func TestClearHints(t *testing.T) {
 	Init(INIT_EVERYTHING)
 	defer Quit()
 
-	if !SetHint("TEST", "32") {
-		t.Errorf("return value for SetHint('TEST', '32') is wrong")
+	if !SetHint(HINT_TIMER_RESOLUTION, TIMER_RESOLUTION) {
+		t.Errorf("return value for SetHint(HINT_TIMER_RESOLUTION, TIMER_RESOLUTION) is wrong")
 	}
-	if GetHint("TEST") != "32" {
-		t.Errorf("return value for GetHint('TEST') is wrong")
+	if GetHint(HINT_TIMER_RESOLUTION) != TIMER_RESOLUTION {
+		t.Errorf("return value for GetHint(HINT_TIMER_RESOLUTION) is wrong")
 	}
 	ClearHints()
-	if GetHint("TEST") != "" {
-		t.Errorf("return value for GetHint('TEST') after ClearHints() is wrong")
+	if GetHint(HINT_TIMER_RESOLUTION) != "" {
+		t.Errorf("return value for GetHint(HINT_TIMER_RESOLUTION) after ClearHints() is wrong")
 	}
 }

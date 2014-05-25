@@ -30,10 +30,20 @@ static int RWclose(SDL_RWops *ctx)
 import "C"
 import "unsafe"
 
+/* RWops Types */
 const (
-	RW_SEEK_SET = 0
-	RW_SEEK_CUR = 1
-	RW_SEEK_END = 2
+    RWOPS_UNKNOWN   = 0
+    RWOPS_WINFILE   = 1
+    RWOPS_STDFILE   = 2
+    RWOPS_JNIFILE   = 3
+    RWOPS_MEMORY    = 4
+    RWOPS_MEMORY_RO = 5
+)
+
+const (
+	RW_SEEK_SET = C.RW_SEEK_SET
+	RW_SEEK_CUR = C.RW_SEEK_CUR
+	RW_SEEK_END = C.RW_SEEK_END
 )
 
 type RWops C.SDL_RWops

@@ -1,6 +1,9 @@
 package sdl
 
+// #include <SDL2/SDL.h>
+import "C"
+
 const (
-	LIL_ENDIAN = 1234
-	BIG_ENDIAN = 4321
+	LIL_ENDIAN = C.SDL_LIL_ENDIAN
+	BIG_ENDIAN = C.SDL_BIG_ENDIAN
 )
