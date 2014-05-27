@@ -1,9 +1,18 @@
 SDL
 ===
 
-log.go
-------
-* SDL_LogMessageV()
+events.go
+---------
+* SetEventFilter()
+* GetEventFilter()
+* AddEventWatch()
+* DelEventWatch()
+* FilterEvents()
+
+hints.go
+--------
+* AddHintCallback()
+* DelHintCallback()
 
 
 SDL_image
