@@ -4,7 +4,7 @@ package sdl
 #include <SDL2/SDL.h>
 
 static inline char* _SDL_GetBasePath() {
-#if  (SDL_MAJOR_VERSION >= 2 && SDL_MINOR_VERSION >= 0 && SDL_PATCHLEVEL >= 1)
+#if  (SDL_VERSION_ATLEAST(2,0,1))
     return SDL_GetBasePath();
 #else
     return NULL;
@@ -13,7 +13,7 @@ static inline char* _SDL_GetBasePath() {
 
 static inline char* _SDL_GetPrefPath(const char *org, const char *app)
 {
-#if  (SDL_MAJOR_VERSION >= 2 && SDL_MINOR_VERSION >= 0 && SDL_PATCHLEVEL >= 1)
+#if  (SDL_VERSION_ATLEAST(2,0,1))
     return SDL_GetPrefPath(org, app);
 #else
     return NULL;

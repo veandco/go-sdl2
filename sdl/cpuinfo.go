@@ -5,7 +5,7 @@ package sdl
 
 static inline int _SDL_GetSystemRAM()
 {
-#if (SDL_MAJOR_VERSION >= 2 && SDL_MINOR_VERSION >= 0 && SDL_PATCHLEVEL >= 1)
+#if (SDL_VERSION_ATLEAST(2,0,1))
     return SDL_GetSystemRAM();
 #else
     return 0;
@@ -14,7 +14,7 @@ static inline int _SDL_GetSystemRAM()
 
 static inline SDL_bool _SDL_HasAVX()
 {
-#if (SDL_MAJOR_VERSION >= 2 && SDL_MINOR_VERSION >= 0 && SDL_PATCHLEVEL >= 2)
+#if (SDL_VERSION_ATLEAST(2,0,2))
     return SDL_HasAVX();
 #else
     return SDL_FALSE;
