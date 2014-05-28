@@ -82,6 +82,7 @@ Contributors
 * [Tom Murray](https://github.com/TomMurray)
 * [Ian Davis](https://github.com/iand)
 * [hschendel](https://github.com/hschendel)
+* [Bastien Dejean](https://github.com/baskerville)
 
 License
 =======
