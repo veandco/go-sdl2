@@ -12,6 +12,7 @@ package img
 //#endif
 import "C"
 import "unsafe"
+import "errors"
 import "github.com/veandco/go-sdl2/sdl"
 
 const (
@@ -32,6 +33,14 @@ func Init(flags int) int {
 
 func Quit() {
 	C.IMG_Quit()
+}
+
+func GetError() error {
+	e := C.IMG_GetError()
+	if e == nil {
+		return nil
+	}
+	return errors.New(C.GoString(e))
 }
 
 func LoadTyped_RW(src *sdl.RWops, freesrc int, type_ string) *sdl.Surface {
