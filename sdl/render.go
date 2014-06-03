@@ -137,6 +137,13 @@ func (texture *Texture) SetAlphaMod(alpha uint8) int {
 	return int(C.SDL_SetTextureAlphaMod(texture.cptr(), C.Uint8(alpha)))
 }
 
+func (texture *Texture) GetAlphaMod() (alpha uint8, status int) {
+	_alpha := (*C.Uint8)(unsafe.Pointer(&alpha))
+	status = int(C.SDL_GetTextureAlphaMod(texture.cptr(), _alpha))
+	return alpha, status
+}
+
+
 func (texture *Texture) SetBlendMode(bm BlendMode) int {
 	return int(C.SDL_SetTextureBlendMode(texture.cptr(), bm.c()))
 }
