@@ -1,7 +1,13 @@
 package sdl
 
-// #include <SDL2/SDL.h>
-// #include <SDL2/SDL_syswm.h>
+/*
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_syswm.h>
+#if !(SDL_VERSION_ATLEAST(2,0,2))
+#define SDL_SYSWM_WAYLAND SDL_SYSWM_UNKNOWN
+#define SDL_SYSWM_MIR SDL_SYSWM_UNKNOWN
+#endif
+*/
 import "C"
 import "unsafe"
 
