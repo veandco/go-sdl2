@@ -1,10 +1,16 @@
 package sdl
 
-// #include <SDL2/SDL.h>
+/*
+#include <SDL2/SDL.h>
+#include "events.h"
+*/
 import "C"
 import "unsafe"
 import "reflect"
 import "fmt"
+
+var filterCallback EventFilter
+var filterData interface{}
 
 const (
 	FIRSTEVENT              = C.SDL_FIRSTEVENT
@@ -327,7 +333,7 @@ type SysWMEvent struct {
 	msg       unsafe.Pointer
 }
 
-type EventFilter C.SDL_EventFilter
+type EventFilter func(userdata interface{}, event Event) int
 type EventAction C.SDL_eventaction
 
 func (action EventAction) c() C.SDL_eventaction {
@@ -469,7 +475,33 @@ func PushEvent(event Event) int {
 	return int(C.SDL_PushEvent(_event))
 }
 
-/* TODO: implement SDL_EventFilter functions */
+//export goFilter
+func goFilter(userdata interface{}, e Event) int {
+	a := reflect.ValueOf(&userdata).Elem()
+	b := a.InterfaceData()[1]
+	c := (*CEvent) (unsafe.Pointer(b))
+	return filterCallback(filterData, goEvent(c))
+}
+
+func SetEventFilter(filter EventFilter, userdata interface{}) {
+	filterCallback = filter
+	filterData = userdata
+
+	C._SDL_SetEventFilter(nil)
+}
+
+func GetEventFilter() (EventFilter, interface{}) {
+	return filterCallback, filterData
+}
+
+func AddEventWatch(filter EventFilter, userdata interface{}) {
+}
+
+func DelEventWatch(filter EventFilter, userdata interface{}) {
+}
+
+func FilterEvents(filter EventFilter, userdata interface{}) {
+}
 
 func EventState(type_ uint32, state int) uint8 {
 	return uint8(C.SDL_EventState(C.Uint32(type_), C.int(state)))
