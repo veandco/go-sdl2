@@ -3,8 +3,8 @@
 package main
 
 import (
-	"github.com/veandco/go-sdl2/sdl"
 	"fmt"
+	"github.com/veandco/go-sdl2/sdl"
 	"os"
 )
 
@@ -18,16 +18,16 @@ func main() {
 	var running bool
 
 	window = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
-			winWidth, winHeight, sdl.WINDOW_SHOWN)
+		winWidth, winHeight, sdl.WINDOW_SHOWN)
 	if window == nil {
-		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", sdl.GetError());
-		os.Exit(1);
+		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", sdl.GetError())
+		os.Exit(1)
 	}
 
 	renderer = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
 	if renderer == nil {
-		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", sdl.GetError());
-		os.Exit(2);
+		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", sdl.GetError())
+		os.Exit(2)
 	}
 
 	running = true
@@ -38,16 +38,16 @@ func main() {
 				running = false
 			case *sdl.MouseMotionEvent:
 				fmt.Printf("[%d ms] MouseMotion\ttype:%d\tid:%d\tx:%d\ty:%d\txrel:%d\tyrel:%d\n",
-					   t.Timestamp, t.Type, t.Which, t.X, t.Y, t.XRel, t.YRel)
+					t.Timestamp, t.Type, t.Which, t.X, t.Y, t.XRel, t.YRel)
 			case *sdl.MouseButtonEvent:
 				fmt.Printf("[%d ms] MouseButton\ttype:%d\tid:%d\tx:%d\ty:%d\tbutton:%d\tstate:%d\n",
-					   t.Timestamp, t.Type, t.Which, t.X, t.Y, t.Button, t.State)
+					t.Timestamp, t.Type, t.Which, t.X, t.Y, t.Button, t.State)
 			case *sdl.MouseWheelEvent:
 				fmt.Printf("[%d ms] MouseWheel\ttype:%d\tid:%d\tx:%d\ty:%d\n",
-					   t.Timestamp, t.Type, t.Which, t.X, t.Y)
+					t.Timestamp, t.Type, t.Which, t.X, t.Y)
 			case *sdl.KeyUpEvent:
 				fmt.Printf("[%d ms] Keyboard\ttype:%d\tsym:%c\tmodifiers:%d\tstate:%d\trepeat:%d\n",
-					   t.Timestamp, t.Type, t.Keysym.Sym, t.Keysym.Mod, t.State, t.Repeat)
+					t.Timestamp, t.Type, t.Keysym.Sym, t.Keysym.Mod, t.State, t.Repeat)
 			}
 		}
 	}
