@@ -3,11 +3,12 @@ package sdl
 // #include <SDL2/SDL.h>
 import "C"
 import "unsafe"
+import "encoding/binary"
 
 const (
 	CONTROLLER_BINDTYPE_NONE = C.SDL_CONTROLLER_BINDTYPE_NONE
 	CONTROLLER_BINDTYPE_BUTTON = C.SDL_CONTROLLER_BINDTYPE_BUTTON
-    CONTROLLER_BINDTYPE_AXIS = C.SDL_CONTROLLER_BINDTYPE_AXIS
+	CONTROLLER_BINDTYPE_AXIS = C.SDL_CONTROLLER_BINDTYPE_AXIS
 	CONTROLLER_BINDTYPE_HAT = C.SDL_CONTROLLER_BINDTYPE_HAT
 )
 
@@ -140,4 +141,28 @@ func (ctrl *GameController) GetButton(btn GameControllerButton) byte {
 
 func (ctrl *GameController) Close() {
 	C.SDL_GameControllerClose(ctrl.cptr())
+}
+
+func (bind *GameControllerButtonBind) Type() int {
+	return int(bind.bindType)
+}
+
+func (bind *GameControllerButtonBind) Button() int {
+	val, _ := binary.Varint(bind.value[:4])
+	return int(val)
+}
+
+func (bind *GameControllerButtonBind) Axis() int {
+	val, _ := binary.Varint(bind.value[:4])
+	return int(val)
+}
+
+func (bind *GameControllerButtonBind) Hat() int {
+	val, _ := binary.Varint(bind.value[:4])
+	return int(val)
+}
+
+func (bind *GameControllerButtonBind) HatMask() int {
+	val, _ := binary.Varint(bind.value[4:8])
+	return int(val)
 }
