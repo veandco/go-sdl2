@@ -2,7 +2,6 @@ package sdl
 
 /*
 #include <SDL2/SDL.h>
-#include "events.h"
 */
 import "C"
 import "unsafe"
@@ -475,6 +474,7 @@ func PushEvent(event Event) int {
 	return int(C.SDL_PushEvent(_event))
 }
 
+/*
 //export goFilter
 func goFilter(userdata interface{}, e Event) int {
 	a := reflect.ValueOf(&userdata).Elem()
@@ -502,6 +502,7 @@ func DelEventWatch(filter EventFilter, userdata interface{}) {
 
 func FilterEvents(filter EventFilter, userdata interface{}) {
 }
+*/
 
 func EventState(type_ uint32, state int) uint8 {
 	return uint8(C.SDL_EventState(C.Uint32(type_), C.int(state)))
