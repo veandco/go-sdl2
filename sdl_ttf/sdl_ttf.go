@@ -180,3 +180,11 @@ func (f *Font) FaceFamilyName() string {
 	C.free(unsafe.Pointer(_fname))
 	return fname
 }
+
+func (f *Font) SizeText(text string) (w, h int) {
+	_text := C.CString(text)
+	defer C.free(unsafe.Pointer(_text))
+	var _w, _h C.int
+	C.TTF_SizeText(f.f, _text, &_w, &_h)
+	return int(_w), int(_h)
+}
