@@ -14,7 +14,7 @@ package ttf
 //    TTF_SetError(str);
 //}
 import "C"
-import "github.com/veandco/go-sdl2/sdl"
+import "github.com/gonutz/go-sdl2/sdl"
 import "unsafe"
 import "errors"
 
@@ -91,6 +91,17 @@ func OpenFontIndex(file string, size int, index int) (*Font, error) {
 	_size := (C.int)(size)
 	_index := (C.long)(index)
 	f := (*C.TTF_Font)(C.TTF_OpenFontIndex(_file, _size, _index))
+
+	if f == nil {
+		return nil, GetError()
+	}
+	return &Font{f}, nil
+}
+
+func OpenFontRW(rw *sdl.RWops, size int) (*Font, error) {
+	_rw := (*C.SDL_RWops)(unsafe.Pointer(rw))
+	_size := (C.int)(size)
+	f := (*C.TTF_Font)(C.TTF_OpenFontRW(_rw, 0, _size))
 
 	if f == nil {
 		return nil, GetError()
@@ -179,4 +190,12 @@ func (f *Font) FaceFamilyName() string {
 	fname := C.GoString(_fname)
 	C.free(unsafe.Pointer(_fname))
 	return fname
+}
+
+func (f *Font) SizeText(text string) (w, h int) {
+	_text := C.CString(text)
+	defer C.free(unsafe.Pointer(_text))
+	var _w, _h C.int
+	C.TTF_SizeText(f.f, _text, &_w, &_h)
+	return int(_w), int(_h)
 }
