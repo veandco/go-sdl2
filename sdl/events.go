@@ -438,6 +438,8 @@ func goEvent(cevent *CEvent) Event {
 		return (*UserEvent)(unsafe.Pointer(cevent))
 	case CLIPBOARDUPDATE:
 		return (*ClipboardEvent)(unsafe.Pointer(cevent))
+	default:
+		return (*CommonEvent)(unsafe.Pointer(cevent))
 	}
 
 	panic(fmt.Errorf("Unknown event type: %v", cevent.Type))
