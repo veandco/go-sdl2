@@ -14,7 +14,7 @@ package ttf
 //    TTF_SetError(str);
 //}
 import "C"
-import "github.com/veandco/go-sdl2/sdl"
+import "github.com/gonutz/go-sdl2/sdl"
 import "unsafe"
 import "errors"
 
@@ -99,11 +99,14 @@ func OpenFontIndex(file string, size int, index int) (*Font, error) {
 }
 
 func OpenFontRW(rw *sdl.RWops, size int) (*Font, error) {
-	f := (*C.TTF_Font)(C.TTF_OpenFontRW(rw, 0, (C.int)(size))
+	_rw := (*C.SDL_RWops)(unsafe.Pointer(rw))
+	_size := (C.int)(size)
+	f := (*C.TTF_Font)(C.TTF_OpenFontRW(_rw, 0, _size))
+
 	if f == nil {
 		return nil, GetError()
 	}
-	return &Font(f), nil
+	return &Font{f}, nil
 }
 
 func (f *Font) RenderText_Solid(text string, color sdl.Color) *sdl.Surface {
