@@ -2,6 +2,10 @@ package sdl
 
 /*
 #include <SDL2/SDL.h>
+
+#if !SDL_VERSION_ATLEAST(2,0,2)
+#define SDL_RENDER_TARGETS_RESET (0x2000)
+#endif
 */
 import "C"
 import "unsafe"
