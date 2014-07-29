@@ -6,7 +6,6 @@ package sdl
 import "C"
 import "unsafe"
 import "reflect"
-import "fmt"
 
 var filterCallback EventFilter
 var filterData interface{}
@@ -439,8 +438,7 @@ func goEvent(cevent *CEvent) Event {
 	case CLIPBOARDUPDATE:
 		return (*ClipboardEvent)(unsafe.Pointer(cevent))
 	}
-
-	panic(fmt.Errorf("Unknown event type: %v", cevent.Type))
+	return nil
 }
 
 func cEvent(event Event) *CEvent {
