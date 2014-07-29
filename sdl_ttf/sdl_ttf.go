@@ -98,6 +98,14 @@ func OpenFontIndex(file string, size int, index int) (*Font, error) {
 	return &Font{f}, nil
 }
 
+func OpenFontRW(rw *sdl.RWops, size int) (*Font, error) {
+	f := (*C.TTF_Font)(C.TTF_OpenFontRW(rw, 0, (C.int)(size))
+	if f == nil {
+		return nil, GetError()
+	}
+	return &Font(f), nil
+}
+
 func (f *Font) RenderText_Solid(text string, color sdl.Color) *sdl.Surface {
 	_text := C.CString(text)
 	defer C.free(unsafe.Pointer(_text))
