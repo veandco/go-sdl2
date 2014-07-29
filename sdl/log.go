@@ -4,42 +4,42 @@ package sdl
 #include <SDL2/SDL.h>
 #include "log.h"
 
-static inline _SDL_Log(const char *fmt)
+static inline void _SDL_Log(const char *fmt)
 {
     SDL_Log(fmt);
 }
 
-static inline _SDL_LogVerbose(int category, const char *fmt)
+static inline void _SDL_LogVerbose(int category, const char *fmt)
 {
     SDL_LogVerbose(category, fmt);
 }
 
-static inline _SDL_LogDebug(int category, const char *fmt)
+static inline void _SDL_LogDebug(int category, const char *fmt)
 {
     SDL_LogDebug(category, fmt);
 }
 
-static inline _SDL_LogInfo(int category, const char *fmt)
+static inline void _SDL_LogInfo(int category, const char *fmt)
 {
     SDL_LogInfo(category, fmt);
 }
 
-static inline _SDL_LogWarn(int category, const char *fmt)
+static inline void _SDL_LogWarn(int category, const char *fmt)
 {
     SDL_LogWarn(category, fmt);
 }
 
-static inline _SDL_LogError(int category, const char *fmt)
+static inline void _SDL_LogError(int category, const char *fmt)
 {
     SDL_LogError(category, fmt);
 }
 
-static inline _SDL_LogCritical(int category, const char *fmt)
+static inline void _SDL_LogCritical(int category, const char *fmt)
 {
     SDL_LogCritical(category, fmt);
 }
 
-static inline _SDL_LogMessage(int category, SDL_LogPriority priority, const char *fmt)
+static inline void _SDL_LogMessage(int category, SDL_LogPriority priority, const char *fmt)
 {
     SDL_LogCritical(category, fmt);
 }
