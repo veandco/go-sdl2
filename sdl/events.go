@@ -70,14 +70,17 @@ const (
 	/* Drag and drop events */
 	DROPFILE = C.SDL_DROPFILE
 
+	/* Render events */
+	RENDER_TARGETS_RESET = C.SDL_RENDER_TARGETS_RESET
+
 	USEREVENT = C.SDL_USEREVENT
 	LASTEVENT = C.SDL_LASTEVENT
 )
 
 const (
-	ADDEVENT = C.SDL_ADDEVENT
+	ADDEVENT  = C.SDL_ADDEVENT
 	PEEKEVENT = C.SDL_PEEKEVENT
-	GETEVENT = C.SDL_PEEKEVENT
+	GETEVENT  = C.SDL_PEEKEVENT
 )
 
 const (
@@ -302,6 +305,11 @@ type DropEvent struct {
 	file      unsafe.Pointer
 }
 
+type RenderEvent struct {
+	Type      uint32
+	Timestamp uint32
+}
+
 type QuitEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -336,7 +344,7 @@ type EventFilter func(userdata interface{}, event Event) int
 type EventAction C.SDL_eventaction
 
 func (action EventAction) c() C.SDL_eventaction {
-    return C.SDL_eventaction(action)
+	return C.SDL_eventaction(action)
 }
 
 func PumpEvents() {
@@ -432,6 +440,8 @@ func goEvent(cevent *CEvent) Event {
 		return (*MultiGestureEvent)(unsafe.Pointer(cevent))
 	case DROPFILE:
 		return (*DropEvent)(unsafe.Pointer(cevent))
+	case RENDER_TARGETS_RESET:
+		return (*RenderEvent)(unsafe.Pointer(cevent))
 	case QUIT:
 		return (*QuitEvent)(unsafe.Pointer(cevent))
 	case USEREVENT:
