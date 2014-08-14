@@ -354,8 +354,7 @@ type EventFilter interface {
 }
 
 type eventFilterFuncContext struct {
-	filterFunc func(interface{}, Event) bool
-	userdata   interface{}
+	filterFunc func(Event) bool
 }
 
 type filterEventsContext struct {
@@ -506,7 +505,7 @@ func PushEvent(event Event) int {
 }
 
 func (ef *eventFilterFuncContext) FilterEvent(e Event) bool {
-	return ef.filterFunc(ef.userdata, e)
+	return ef.filterFunc(e)
 }
 
 func wrapEventFilterCallback(filter EventFilter, e *C.SDL_Event) C.int {
@@ -550,8 +549,8 @@ func goSetEventFilterCallback(data unsafe.Pointer, e *C.SDL_Event) C.int {
 	return wrapEventFilterCallback(eventFilterCache, e)
 }
 
-func SetEventFilterFunc(filterFunc func(interface{}, Event) bool, userdata interface{}) {
-	SetEventFilter(&eventFilterFuncContext{filterFunc, userdata})
+func SetEventFilterFunc(filterFunc func(Event) bool) {
+	SetEventFilter(&eventFilterFuncContext{filterFunc})
 }
 
 func GetEventFilter() EventFilter {
@@ -567,8 +566,8 @@ func FilterEvents(filter EventFilter) {
 	C.filterEvents(unsafe.Pointer(&context))
 }
 
-func FilterEventsFunc(filterFunc func(interface{}, Event) bool, userdata interface{}) {
-	FilterEvents(&eventFilterFuncContext{filterFunc, userdata})
+func FilterEventsFunc(filterFunc func(Event) bool) {
+	FilterEvents(&eventFilterFuncContext{filterFunc})
 }
 
 //export goFilterEventsCallback
