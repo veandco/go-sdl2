@@ -146,7 +146,7 @@ func TestGetEventFilterNilOnStartup(t *testing.T) {
 	}
 }
 
-func TestEventFilterFuncQ(t *testing.T) {
+func TestFilterEventsFuncQ(t *testing.T) {
 	Init(INIT_EVERYTHING)
 	defer Quit()
 
