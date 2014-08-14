@@ -3,11 +3,8 @@ SDL
 
 events.go
 ---------
-* SetEventFilter()
-* GetEventFilter()
 * AddEventWatch()
 * DelEventWatch()
-* FilterEvents()
 
 hints.go
 --------
