@@ -1,12 +1,17 @@
 #include "_cgo_export.h"
 #include "events.h"
 
-void setGoEventFilter()
+void setEventFilter()
 {
-    SDL_SetEventFilter((SDL_EventFilter)goEventFilter, NULL);
+    SDL_SetEventFilter((SDL_EventFilter)goSetEventFilterCallback, NULL);
 }
 
-void clearGoEventFilter()
+void clearEventFilter()
 {
     SDL_SetEventFilter(NULL, NULL);
+}
+
+void filterEvents(void *userdata)
+{
+	SDL_FilterEvents((SDL_EventFilter)goFilterEventsCallback, userdata);
 }

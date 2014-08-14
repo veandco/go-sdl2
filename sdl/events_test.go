@@ -15,7 +15,7 @@ func TestPushEvent(t *testing.T) {
 
 	PushEvent(&in)
 
-	out, ok := WaitEvent().(*UserEvent)
+	out, ok := PollEvent().(*UserEvent)
 	if !ok {
 		t.Errorf("Failed to cast event to *UserEvent")
 	}
@@ -30,7 +30,7 @@ func (s *simpleTestFilter) FilterEvent(e Event) bool {
 	return true
 }
 
-func TestEventFilterGetsSet(t *testing.T) {
+func TestSetGetEventFilter(t *testing.T) {
 	Init(INIT_EVERYTHING)
 	defer Quit()
 
@@ -56,11 +56,48 @@ func TestEventFilterGetsSet(t *testing.T) {
 	}
 }
 
-func TestEventFilter(t *testing.T) {
+func TestSetEventFilterFuncUserData(t *testing.T) {
 	Init(INIT_EVERYTHING)
 	defer Quit()
 
-	filterFunc := func(e Event) bool {
+	data := int(42)
+	SetEventFilterFunc(func(userdata interface{}, e Event) bool {
+		i, ok := userdata.(int)
+		if !ok {
+			t.Errorf("Failed to cast userdata to int")
+		}
+		if i != data {
+			t.Errorf("Expected userdata to be %d but was %d", data, i)
+		}
+
+		return true
+	}, data)
+
+	in := UserEvent{Type: USEREVENT, Code: 42}
+	PushEvent(&in)
+	WaitEvent()
+}
+
+func countEventsInQ(wait bool) int {
+	var e Event
+	if wait {
+		e = WaitEvent()
+	} else {
+		e = PollEvent()
+	}
+
+	count := 0
+	for ; e != nil; e = PollEvent() {
+		count++
+	}
+	return count
+}
+
+func TestSetEventFilter(t *testing.T) {
+	Init(INIT_EVERYTHING)
+	defer Quit()
+
+	filterFunc := func(_ interface{}, e Event) bool {
 		ue, ok := e.(*UserEvent)
 		if !ok {
 			return false
@@ -68,7 +105,7 @@ func TestEventFilter(t *testing.T) {
 
 		return ue.Code == 42
 	}
-	SetEventFilterFunc(filterFunc)
+	SetEventFilterFunc(filterFunc, nil)
 
 	ins := []*UserEvent{
 		&UserEvent{Type: USEREVENT, Code: 42},
@@ -78,36 +115,80 @@ func TestEventFilter(t *testing.T) {
 	expectedOutCount := 0
 	for _, in := range ins {
 		PushEvent(in)
-		if filterFunc(in) {
+		if filterFunc(nil, in) {
 			expectedOutCount++
 		}
 	}
 
-	outCount := 0
-	for out := WaitEvent(); out != nil; out = PollEvent() {
-		outCount++
-	}
+	outCount := countEventsInQ(false)
 
 	if outCount != expectedOutCount {
 		t.Errorf("Expected %d events to pass but got %d.", expectedOutCount, outCount)
 	}
 }
 
-func TestEventFilterNilOnStartup(t *testing.T) {
+func TestGetEventFilterNilOnStartup(t *testing.T) {
 	Init(INIT_EVERYTHING)
 	defer Quit()
 
 	if GetEventFilter() != nil {
 		t.Errorf("Event filter should be nil on startup.")
 	}
-	SetEventFilterFunc(func(e Event) bool {
+	SetEventFilterFunc(func(_ interface{}, _ Event) bool {
 		return true
-	})
+	}, nil)
 
 	Quit()
 	Init(INIT_EVERYTHING)
 
 	if GetEventFilter() != nil {
 		t.Errorf("Event filter should be nil on startup.")
+	}
+}
+
+func TestEventFilterFuncQ(t *testing.T) {
+	Init(INIT_EVERYTHING)
+	defer Quit()
+
+	ins := []*UserEvent{
+		&UserEvent{Type: USEREVENT, Code: 42},
+		&UserEvent{Type: USEREVENT, Code: 41},
+	}
+	data := int(42)
+
+	filterFunc := func(userdata interface{}, e Event) bool {
+		i, ok := userdata.(int)
+		if !ok {
+			t.Errorf("Failed to cast userdata to int")
+			return false
+		}
+		if i != data {
+			t.Errorf("Expected userdata to be %d but was %d", data, i)
+			return false
+		}
+
+		ue, ok := e.(*UserEvent)
+		if !ok {
+			t.Errorf("Failed to cast event to *UserEvent")
+			return false
+		}
+
+		return ue.Code == int32(i)
+	}
+
+	expectedOutCount := 0
+	for _, in := range ins {
+		PushEvent(in)
+		if filterFunc(data, in) {
+			expectedOutCount++
+		}
+	}
+
+	FilterEventsFunc(filterFunc, data)
+
+	outCount := countEventsInQ(false)
+
+	if outCount != expectedOutCount {
+		t.Errorf("Expected %d events to pass but got %d.", expectedOutCount, outCount)
 	}
 }

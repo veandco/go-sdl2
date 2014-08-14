@@ -349,6 +349,19 @@ type SysWMEvent struct {
 
 type EventAction C.SDL_eventaction
 
+type EventFilter interface {
+	FilterEvent(e Event) bool
+}
+
+type eventFilterFuncContext struct {
+	filterFunc func(interface{}, Event) bool
+	userdata   interface{}
+}
+
+type filterEventsContext struct {
+	filter EventFilter
+}
+
 func (action EventAction) c() C.SDL_eventaction {
 	return C.SDL_eventaction(action)
 }
@@ -492,14 +505,19 @@ func PushEvent(event Event) int {
 	return int(C.SDL_PushEvent(_event))
 }
 
-type EventFilter interface {
-	FilterEvent(e Event) bool
+func (ef *eventFilterFuncContext) FilterEvent(e Event) bool {
+	return ef.filterFunc(ef.userdata, e)
 }
 
-type eventFilterFunc func(e Event) bool
+func wrapEventFilterCallback(filter EventFilter, e *C.SDL_Event) C.int {
+	gev := goEvent((*CEvent)(unsafe.Pointer(e)))
+	result := filter.FilterEvent(gev)
 
-func (ef eventFilterFunc) FilterEvent(e Event) bool {
-	return ef(e)
+	if result {
+		return C.SDL_TRUE
+	} else {
+		return C.SDL_FALSE
+	}
 }
 
 func SetEventFilter(filter EventFilter) {
@@ -509,46 +527,54 @@ func SetEventFilter(filter EventFilter) {
 	}
 
 	if eventFilterCache == nil && filter != nil {
-		// We had no event filter before and do now; lets set goEventFilter()
-		// as the event filter.
-		C.setGoEventFilter()
+		// We had no event filter before and do now; lets set
+		// goSetEventFilterCallback() as the event filter.
+		C.setEventFilter()
 	} else if eventFilterCache != nil && filter == nil {
 		// We had an event filter before, but no longer do, lets clear the
 		// event filter
-		C.clearGoEventFilter()
+		C.clearEventFilter()
 	}
 
 	eventFilterCache = filter
 }
 
-//export goEventFilter
-func goEventFilter(data unsafe.Pointer, e *C.SDL_Event) C.int {
+//export goSetEventFilterCallback
+func goSetEventFilterCallback(data unsafe.Pointer, e *C.SDL_Event) C.int {
 	if eventFilterCache == nil {
 		// This should never happen... but just in case, pretend like there is
 		// no filter (i.e. always let the event pass)
 		return C.SDL_TRUE
 	}
 
-	gev := goEvent((*CEvent)(unsafe.Pointer(e)))
-	result := eventFilterCache.FilterEvent(gev)
+	return wrapEventFilterCallback(eventFilterCache, e)
+}
 
-	if result {
-		return C.SDL_TRUE
-	} else {
-		return C.SDL_FALSE
-	}
+func SetEventFilterFunc(filterFunc func(interface{}, Event) bool, userdata interface{}) {
+	SetEventFilter(&eventFilterFuncContext{filterFunc, userdata})
+}
+
+func GetEventFilter() EventFilter {
+	return eventFilterCache
 }
 
 func isCEventFilterSet() bool {
 	return C.SDL_GetEventFilter(nil, nil) == C.SDL_TRUE
 }
 
-func SetEventFilterFunc(filterFunc func(e Event) bool) {
-	SetEventFilter(eventFilterFunc(filterFunc))
+func FilterEvents(filter EventFilter) {
+	context := filterEventsContext{filter}
+	C.filterEvents(unsafe.Pointer(&context))
 }
 
-func GetEventFilter() EventFilter {
-	return eventFilterCache
+func FilterEventsFunc(filterFunc func(interface{}, Event) bool, userdata interface{}) {
+	FilterEvents(&eventFilterFuncContext{filterFunc, userdata})
+}
+
+//export goFilterEventsCallback
+func goFilterEventsCallback(userdata unsafe.Pointer, e *C.SDL_Event) C.int {
+	context := (*filterEventsContext)(userdata)
+	return wrapEventFilterCallback(context.filter, e)
 }
 
 func EventState(type_ uint32, state int) uint8 {
