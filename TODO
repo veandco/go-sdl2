@@ -1,11 +1,6 @@
 SDL
 ===
 
-events.go
----------
-* AddEventWatch()
-* DelEventWatch()
-
 hints.go
 --------
 * AddHintCallback()

@@ -13,5 +13,15 @@ void clearEventFilter()
 
 void filterEvents(void *userdata)
 {
-	SDL_FilterEvents((SDL_EventFilter)goFilterEventsCallback, userdata);
+	SDL_FilterEvents((SDL_EventFilter)goEventFilterCallback, userdata);
+}
+
+void addEventWatch(void *userdata)
+{
+	SDL_AddEventWatch((SDL_EventFilter)goEventFilterCallback, userdata);
+}
+
+void delEventWatch(void *userdata)
+{
+	SDL_DelEventWatch((SDL_EventFilter)goEventFilterCallback, userdata);
 }

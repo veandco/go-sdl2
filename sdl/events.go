@@ -15,7 +15,7 @@ import "fmt"
 
 var (
 	eventFilterCache  EventFilter
-	eventWatchesCache map[uintptr]EventFilter
+	eventWatchesCache map[EventWatchHandle]*eventFilterCallbackContext = make(map[EventWatchHandle]*eventFilterCallbackContext)
 )
 
 const (
@@ -353,13 +353,13 @@ type EventFilter interface {
 	FilterEvent(e Event) bool
 }
 
-type eventFilterFuncContext struct {
-	filterFunc func(Event) bool
-}
+type eventFilterFunc func(Event) bool
 
-type filterEventsContext struct {
+type eventFilterCallbackContext struct {
 	filter EventFilter
 }
+
+type EventWatchHandle uintptr
 
 func (action EventAction) c() C.SDL_eventaction {
 	return C.SDL_eventaction(action)
@@ -504,8 +504,37 @@ func PushEvent(event Event) int {
 	return int(C.SDL_PushEvent(_event))
 }
 
-func (ef *eventFilterFuncContext) FilterEvent(e Event) bool {
-	return ef.filterFunc(e)
+func (ef eventFilterFunc) FilterEvent(e Event) bool {
+	return ef(e)
+}
+
+func (e *eventFilterCallbackContext) handle() EventWatchHandle {
+	return EventWatchHandle(unsafe.Pointer(e))
+}
+
+func (e *eventFilterCallbackContext) cptr() unsafe.Pointer {
+	return unsafe.Pointer(e)
+}
+
+//export goSetEventFilterCallback
+func goSetEventFilterCallback(data unsafe.Pointer, e *C.SDL_Event) C.int {
+	// No check for eventFilterCache != nil. Why? because it should never be
+	// nil since the callback is set/unset based on the last filter being nil
+	// /non-nil. If there is an issue, then it should panic here so we can
+	// figure out why that is.
+
+	return wrapEventFilterCallback(eventFilterCache, e)
+}
+
+//export goEventFilterCallback
+func goEventFilterCallback(userdata unsafe.Pointer, e *C.SDL_Event) C.int {
+	// same sort of reasoning with goSetEventFilterCallback, userdata should
+	// always be non-nil and represent a valid eventFilterCallbackContext. If
+	// it doesn't a panic will let us know that there something wrong and the
+	// problem can be fixed.
+
+	context := (*eventFilterCallbackContext)(userdata)
+	return wrapEventFilterCallback(context.filter, e)
 }
 
 func wrapEventFilterCallback(filter EventFilter, e *C.SDL_Event) C.int {
@@ -538,19 +567,8 @@ func SetEventFilter(filter EventFilter) {
 	eventFilterCache = filter
 }
 
-//export goSetEventFilterCallback
-func goSetEventFilterCallback(data unsafe.Pointer, e *C.SDL_Event) C.int {
-	if eventFilterCache == nil {
-		// This should never happen... but just in case, pretend like there is
-		// no filter (i.e. always let the event pass)
-		return C.SDL_TRUE
-	}
-
-	return wrapEventFilterCallback(eventFilterCache, e)
-}
-
 func SetEventFilterFunc(filterFunc func(Event) bool) {
-	SetEventFilter(&eventFilterFuncContext{filterFunc})
+	SetEventFilter(eventFilterFunc(filterFunc))
 }
 
 func GetEventFilter() EventFilter {
@@ -562,18 +580,32 @@ func isCEventFilterSet() bool {
 }
 
 func FilterEvents(filter EventFilter) {
-	context := filterEventsContext{filter}
-	C.filterEvents(unsafe.Pointer(&context))
+	context := &eventFilterCallbackContext{filter}
+	C.filterEvents(context.cptr())
 }
 
 func FilterEventsFunc(filterFunc func(Event) bool) {
-	FilterEvents(&eventFilterFuncContext{filterFunc})
+	FilterEvents(eventFilterFunc(filterFunc))
 }
 
-//export goFilterEventsCallback
-func goFilterEventsCallback(userdata unsafe.Pointer, e *C.SDL_Event) C.int {
-	context := (*filterEventsContext)(userdata)
-	return wrapEventFilterCallback(context.filter, e)
+func AddEventWatch(filter EventFilter) EventWatchHandle {
+	context := &eventFilterCallbackContext{filter}
+	C.addEventWatch(context.cptr())
+	eventWatchesCache[context.handle()] = context
+	return context.handle()
+}
+
+func AddEventWatchFunc(filterFunc func(Event) bool) EventWatchHandle {
+	return AddEventWatch(eventFilterFunc(filterFunc))
+}
+
+func DelEventWatch(handle EventWatchHandle) {
+	context, ok := eventWatchesCache[handle]
+	if !ok {
+		return
+	}
+	delete(eventWatchesCache, context.handle())
+	C.delEventWatch(context.cptr())
 }
 
 func EventState(type_ uint32, state int) uint8 {

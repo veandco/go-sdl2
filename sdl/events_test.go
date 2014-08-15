@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestPushEvent(t *testing.T) {
+func TestEventsPushEvent(t *testing.T) {
 	Init(INIT_EVERYTHING)
 	defer Quit()
 
@@ -30,7 +30,7 @@ func (s *simpleTestFilter) FilterEvent(e Event) bool {
 	return true
 }
 
-func TestSetGetEventFilter(t *testing.T) {
+func TestEventsSetGetEventFilter(t *testing.T) {
 	Init(INIT_EVERYTHING)
 	defer Quit()
 
@@ -71,11 +71,15 @@ func countEventsInQ(wait bool) int {
 	return count
 }
 
-func TestSetEventFilter(t *testing.T) {
+func TestEventsSetEventFilter(t *testing.T) {
 	Init(INIT_EVERYTHING)
 	defer Quit()
 
-	filterFunc := func(e Event) bool {
+	filterFunc := func(e Event, log bool) bool {
+		if log {
+			t.Log("TestSetEventFilter received", e)
+		}
+
 		ue, ok := e.(*UserEvent)
 		if !ok {
 			return false
@@ -83,7 +87,7 @@ func TestSetEventFilter(t *testing.T) {
 
 		return ue.Code == 42
 	}
-	SetEventFilterFunc(filterFunc)
+	SetEventFilterFunc(func(e Event) bool { return filterFunc(e, true) })
 
 	ins := []*UserEvent{
 		&UserEvent{Type: USEREVENT, Code: 42},
@@ -93,7 +97,7 @@ func TestSetEventFilter(t *testing.T) {
 	expectedOutCount := 0
 	for _, in := range ins {
 		PushEvent(in)
-		if filterFunc(in) {
+		if filterFunc(in, false) {
 			expectedOutCount++
 		}
 	}
@@ -105,7 +109,7 @@ func TestSetEventFilter(t *testing.T) {
 	}
 }
 
-func TestGetEventFilterNilOnStartup(t *testing.T) {
+func TestEventsGetEventFilterNilOnStartup(t *testing.T) {
 	Init(INIT_EVERYTHING)
 	defer Quit()
 
@@ -124,7 +128,7 @@ func TestGetEventFilterNilOnStartup(t *testing.T) {
 	}
 }
 
-func TestFilterEventsFuncQ(t *testing.T) {
+func TestEventsFilterEventsFuncQ(t *testing.T) {
 	Init(INIT_EVERYTHING)
 	defer Quit()
 
@@ -133,10 +137,13 @@ func TestFilterEventsFuncQ(t *testing.T) {
 		&UserEvent{Type: USEREVENT, Code: 41},
 	}
 
-	filterFunc := func(e Event) bool {
+	filterFunc := func(e Event, log bool) bool {
+		if log {
+			t.Log("TestEventsFilterEventsFuncQ received", e)
+		}
+
 		ue, ok := e.(*UserEvent)
 		if !ok {
-			t.Errorf("Failed to cast event to *UserEvent")
 			return false
 		}
 
@@ -146,16 +153,87 @@ func TestFilterEventsFuncQ(t *testing.T) {
 	expectedOutCount := 0
 	for _, in := range ins {
 		PushEvent(in)
-		if filterFunc(in) {
+		if filterFunc(in, false) {
 			expectedOutCount++
 		}
 	}
 
-	FilterEventsFunc(filterFunc)
+	FilterEventsFunc(func(e Event) bool { return filterFunc(e, true) })
 
 	outCount := countEventsInQ(false)
 
 	if outCount != expectedOutCount {
 		t.Errorf("Expected %d events to pass but got %d.", expectedOutCount, outCount)
+	}
+}
+
+func TestEventsAddEventWatch(t *testing.T) {
+	Init(INIT_EVERYTHING)
+	defer Quit()
+
+	in := UserEvent{
+		Type: USEREVENT,
+		Code: 42,
+	}
+
+	out := Event(nil)
+	watch := func(e Event) bool {
+		t.Log("TestAddEventWatch received", e)
+		out = e
+		return true
+	}
+
+	AddEventWatchFunc(watch)
+	PushEvent(&in)
+
+	if out == nil {
+		t.Errorf("Event from event watch was nil but expected it to be non-nil.")
+	}
+
+	outue, ok := out.(*UserEvent)
+	if !ok {
+		t.Errorf("Failed to cast event to *UserEvent")
+	}
+	if outue.Code != in.Code {
+		t.Errorf("Expected event code %d but got %d", in.Code, outue.Code)
+	}
+}
+
+func TestEventsEventWatchClearOnStartup(t *testing.T) {
+	Init(INIT_EVERYTHING)
+
+	AddEventWatchFunc(func(_ Event) bool {
+		return true
+	})
+
+	Quit()
+
+	if len(eventWatchesCache) != 0 {
+		t.Errorf("Expected go event watches cache to be cleared but it contains %d contexts", len(eventWatchesCache))
+	}
+}
+
+func TestEventsAddDelEventWatch(t *testing.T) {
+	Init(INIT_EVERYTHING)
+	defer Quit()
+
+	in := UserEvent{
+		Type: USEREVENT,
+		Code: 42,
+	}
+
+	out := Event(nil)
+	watch := func(e Event) bool {
+		t.Log("TestAddDelEventWatch received", e)
+		out = e
+		return true
+	}
+
+	handle := AddEventWatchFunc(watch)
+	DelEventWatch(handle)
+	PushEvent(&in)
+
+	if out != nil {
+		t.Errorf("Event was received from event watch after it had been removed.")
 	}
 }

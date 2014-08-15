@@ -4,5 +4,7 @@
 extern void setEventFilter();
 extern void clearEventFilter();
 extern void filterEvents(void *userdata);
+extern void addEventWatch(void *userdata);
+extern void delEventWatch(void *userdata);
 
 #endif
