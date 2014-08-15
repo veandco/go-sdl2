@@ -29,6 +29,11 @@ func Init(flags uint32) int {
 
 func Quit() {
 	C.SDL_Quit()
+
+	eventFilterCache = nil
+	for k, _ := range eventWatchesCache {
+		delete(eventWatchesCache, k)
+	}
 }
 
 func InitSubSystem(flags uint32) int {
