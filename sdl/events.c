@@ -3,12 +3,12 @@
 
 void setEventFilter()
 {
-    SDL_SetEventFilter((SDL_EventFilter)goSetEventFilterCallback, NULL);
+	SDL_SetEventFilter((SDL_EventFilter)goSetEventFilterCallback, NULL);
 }
 
 void clearEventFilter()
 {
-    SDL_SetEventFilter(NULL, NULL);
+	SDL_SetEventFilter(NULL, NULL);
 }
 
 void filterEvents(void *userdata)
