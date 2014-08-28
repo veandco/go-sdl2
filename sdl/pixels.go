@@ -154,3 +154,113 @@ func (p *Palette) cptr() *C.SDL_Palette {
     return (*C.SDL_Palette)(unsafe.Pointer(p))
 }
 
+/*
+ * the following code is modified version of the code from bitbucket.org/dooots/go-sdl2
+ */
+
+// GetPixelFormatName gets the human readable name of a pixel format
+func GetPixelFormatName(format uint) string {
+	return C.GoString(C.SDL_GetPixelFormatName(C.Uint32(format)))
+}
+
+// PixelFormatEnumToMasks converts format into a bpp and RGBA masks.
+func PixelFormatEnumToMasks(format uint) (bpp int, rmask, gmask, bmask, amask uint32, err error) {
+	result := C.SDL_PixelFormatEnumToMasks(C.Uint32(format), (*C.int)(unsafe.Pointer(&bpp)),
+		(*C.Uint32)(&rmask), (*C.Uint32)(&gmask), (*C.Uint32)(&bmask),
+		(*C.Uint32)(&amask))
+	if result == C.SDL_FALSE {
+		err = GetError()
+	}
+	return
+}
+
+// MasksTouint converts a bpp and RGBA masks to a uint.
+func MasksToPixelFormatEnum(bpp int, rmask, gmask, bmask, amask uint32) uint {
+	return uint(C.SDL_MasksToPixelFormatEnum(C.int(bpp), C.Uint32(rmask), C.Uint32(gmask),
+		C.Uint32(bmask), C.Uint32(amask)))
+}
+
+// AllocFormat creates a PixelFormat structure from a uint.
+func AllocFormat(format uint) (*PixelFormat, error) {
+	r := (*PixelFormat)(unsafe.Pointer(C.SDL_AllocFormat(C.Uint32(format))))
+	if r == nil {
+		return nil, GetError()
+	}
+	return r, nil
+}
+
+// Free frees a PixelFormat created by AllocFormat.
+func (format *PixelFormat) Free() {
+	C.SDL_FreeFormat((*C.SDL_PixelFormat)(unsafe.Pointer(format)))
+}
+
+// AllocPalette create a palette structure with the specified number of color
+// entries.
+func AllocPalette(ncolors int) (*Palette, error) {
+	r := (*Palette)(unsafe.Pointer(C.SDL_AllocPalette(C.int(ncolors))))
+	if r == nil {
+		return nil, GetError()
+	}
+	return r, nil
+}
+
+// SetPalette sets the palette for format.
+func (format *PixelFormat) SetPalette(palette *Palette) error {
+	r := C.SDL_SetPixelFormatPalette((*C.SDL_PixelFormat)(unsafe.Pointer(format)),
+		(*C.SDL_Palette)(unsafe.Pointer(palette)))
+	if r != 0 {
+		return GetError()
+	}
+	return nil
+}
+
+// SetColors sets a range of colors in a palette.
+func (palette *Palette) SetColors(colors []Color) error {
+	var ptr *C.SDL_Color
+	if len(colors) > 0 {
+		ptr = (*C.SDL_Color)(unsafe.Pointer(&colors[0]))
+	}
+
+	r := C.SDL_SetPaletteColors((*C.SDL_Palette)(unsafe.Pointer(palette)),
+		ptr, 0, C.int(len(colors)))
+	if r != 0 {
+		return GetError()
+	}
+	return nil
+}
+
+// Free frees a palette created with AllocPalette.
+func (palette *Palette) Free() {
+	C.SDL_FreePalette((*C.SDL_Palette)(unsafe.Pointer(palette)))
+}
+
+// MapRGB maps an RGB triple to an opaque pixel value for a given pixel format.
+func MapRGB(format *PixelFormat, r, g, b uint8) uint32 {
+	return uint32(C.SDL_MapRGB((*C.SDL_PixelFormat)(unsafe.Pointer(format)),
+		C.Uint8(r), C.Uint8(g), C.Uint8(b)))
+}
+
+// MapRGBA maps an RGBA quadruple to a pixel value for a given pixel format.
+func MapRGBA(format *PixelFormat, r, g, b, a uint8) uint32 {
+	return uint32(C.SDL_MapRGBA((*C.SDL_PixelFormat)(unsafe.Pointer(format)),
+		C.Uint8(r), C.Uint8(g), C.Uint8(b), C.Uint8(a)))
+}
+
+// GetRGB gets the RGB components from a pixel of the specified format.
+func GetRGB(pixel uint32, format *PixelFormat) (r, g, b uint8) {
+	C.SDL_GetRGB(C.Uint32(pixel), (*C.SDL_PixelFormat)(unsafe.Pointer(format)),
+		(*C.Uint8)(&r), (*C.Uint8)(&g), (*C.Uint8)(&b))
+	return
+}
+
+// GetRGBA gets the RGBA components from a pixel of the specified format.
+func GetRGBA(pixel uint32, format *PixelFormat) (r, g, b, a uint8) {
+	C.SDL_GetRGBA(C.Uint32(pixel), (*C.SDL_PixelFormat)(unsafe.Pointer(format)),
+		(*C.Uint8)(&r), (*C.Uint8)(&g), (*C.Uint8)(&b), (*C.Uint8)(&a))
+	return
+}
+
+// CalculateGammaRamp calculates a 256 entry gamma ramp for a gamma value.
+func CalculateGammaRamp(gamma float32, ramp *[256]uint16) {
+	C.SDL_CalculateGammaRamp(C.float(gamma), (*C.Uint16)(unsafe.Pointer(&ramp[0])))
+}
