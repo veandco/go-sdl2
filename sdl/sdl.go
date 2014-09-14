@@ -1,7 +1,8 @@
 package sdl
 
+// #cgo darwin CFLAGS: -I/opt/local/include/
 // #cgo windows LDFLAGS: -lSDL2
-// #cgo darwin LDFLAGS: -framework SDL2
+// #cgo darwin LDFLAGS: -L/opt/local/lib/ -lSDL2
 // #cgo linux freebsd pkg-config: sdl2
 // #include <SDL2/SDL.h>
 import "C"
