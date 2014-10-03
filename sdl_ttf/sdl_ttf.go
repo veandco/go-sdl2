@@ -1,10 +1,8 @@
 package ttf
 
-//#cgo darwin CFLAGS: -I/opt/local/include/
 //#cgo windows LDFLAGS: -lSDL2 -lSDL2_ttf
-//#cgo darwin LDFLAGS: -L/opt/local/lib/ -lSDL2 -lSDL2_ttf
-//#cgo linux freebsd pkg-config: sdl2
-//#cgo linux freebsd LDFLAGS: -lSDL2_ttf
+//#cgo linux freebsd darwin pkg-config: sdl2
+//#cgo linux freebsd darwin LDFLAGS: -lSDL2_ttf
 //#include <stdlib.h>
 //#include <SDL2/SDL_ttf.h>
 //void Do_TTF_SetError(const char *str) {
