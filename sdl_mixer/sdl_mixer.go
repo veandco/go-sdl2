@@ -1,15 +1,10 @@
 package mix
 
 //#cgo windows LDFLAGS: -lSDL2 -lSDL2_mixer
-//#cgo darwin LDFLAGS: -framework SDL2 -framework SDL2_mixer
-//#cgo linux freebsd pkg-config: sdl2
-//#cgo linux freebsd LDFLAGS: -lSDL2_mixer
+//#cgo linux freebsd darwin pkg-config: sdl2
+//#cgo linux freebsd darwin LDFLAGS: -lSDL2_mixer
 //#include <stdlib.h>
-//#if defined(__APPLE__)
-//#include <SDL2_mixer/SDL_mixer.h>
-//#else
 //#include <SDL2/SDL_mixer.h>
-//#endif
 //
 //extern void callPostMixFunction(void *udata, Uint8* stream, int length);
 //extern void callHookMusic(void *udata, Uint8* stream, int length);
