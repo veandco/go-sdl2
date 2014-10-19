@@ -118,7 +118,7 @@ func (renderer *Renderer) CreateTextureFromSurface(surface *Surface) *Texture {
 	return (*Texture)(unsafe.Pointer(C.SDL_CreateTextureFromSurface(renderer.cptr(), surface.cptr())))
 }
 
-func QueryTexture(texture *Texture, format *uint32, access *int, w *int, h *int) int {
+func (texture *Texture) Query(format *uint32, access *int, w *int, h *int) int {
 	_format := (*C.Uint32)(unsafe.Pointer(access))
 	_access := (*C.int)(unsafe.Pointer(access))
 	_w := (*C.int)(unsafe.Pointer(w))
