@@ -85,6 +85,7 @@ Contributors
 * [Ian Davis](https://github.com/iand)
 * [hschendel](https://github.com/hschendel)
 * [Bastien Dejean](https://github.com/baskerville)
+* [Pirmin Fix](https://github.com/PirminFix)
 
 License
 =======
