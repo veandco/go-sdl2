@@ -106,7 +106,7 @@ func (renderer *Renderer) GetRendererOutputSize() (w, h int, status int) {
 	return
 }
 
-func CreateTexture(renderer *Renderer, format uint32, access int, w int, h int) *Texture {
+func (renderer *Renderer) CreateTexture(format uint32, access int, w int, h int) *Texture {
 	_format := C.Uint32(format)
 	_access := C.int(access)
 	_w := C.int(w)
