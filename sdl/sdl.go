@@ -2,7 +2,7 @@ package sdl
 
 // #cgo windows LDFLAGS: -lSDL2
 // #cgo linux freebsd darwin pkg-config: sdl2
-// #include <SDL2/SDL.h>
+// #include <SDL.h>
 import "C"
 
 const (
