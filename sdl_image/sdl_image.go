@@ -38,38 +38,58 @@ func GetError() error {
 	return errors.New(C.GoString(e))
 }
 
-func LoadTyped_RW(src *sdl.RWops, freesrc int, type_ string) *sdl.Surface {
+func LoadTyped_RW(src *sdl.RWops, freesrc int, type_ string) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
 	_freesrc := (C.int)(freesrc)
 	_type := C.CString(type_)
 	defer C.free(unsafe.Pointer(_type))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadTyped_RW(_src, _freesrc, _type)))
+	_surface := C.IMG_LoadTyped_RW(_src, _freesrc, _type)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func Load(file string) *sdl.Surface {
+func Load(file string) (*sdl.Surface, error) {
 	_file := C.CString(file)
 	defer C.free(unsafe.Pointer(_file))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_Load(_file)))
+	_surface := C.IMG_Load(_file)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func Load_RW(src *sdl.RWops, freesrc int) *sdl.Surface {
+func Load_RW(src *sdl.RWops, freesrc int) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
 	_freesrc := (C.int)(freesrc)
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_Load_RW(_src, _freesrc)))
+	_surface := C.IMG_Load_RW(_src, _freesrc)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadTexture(renderer *sdl.Renderer, file string) *sdl.Texture {
+func LoadTexture(renderer *sdl.Renderer, file string) (*sdl.Texture, error) {
 	_renderer := (*C.SDL_Renderer)(unsafe.Pointer(renderer))
 	_file := C.CString(file)
 	defer C.free(unsafe.Pointer(_file))
-	return (*sdl.Texture)(unsafe.Pointer(C.IMG_LoadTexture(_renderer, _file)))
+	_surface := C.IMG_LoadTexture(_renderer, _file)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Texture)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadTexture_RW(renderer *sdl.Renderer, src *sdl.RWops, freesrc int) *sdl.Texture {
+func LoadTexture_RW(renderer *sdl.Renderer, src *sdl.RWops, freesrc int) (*sdl.Texture, error) {
 	_renderer := (*C.SDL_Renderer)(unsafe.Pointer(renderer))
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
 	_freesrc := (C.int)(freesrc)
-	return (*sdl.Texture)(unsafe.Pointer(C.IMG_LoadTexture_RW(_renderer, _src, _freesrc)))
+	_surface := C.IMG_LoadTexture_RW(_renderer, _src, _freesrc)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Texture)(unsafe.Pointer(_surface)), nil
 }
 
 func IsICO(src *sdl.RWops) bool {
@@ -142,97 +162,169 @@ func IsWEBP(src *sdl.RWops) bool {
 	return int(C.IMG_isWEBP(_src)) > 0
 }
 
-func LoadICO_RW(src *sdl.RWops) *sdl.Surface {
+func LoadICO_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadICO_RW(_src)))
+	_surface := C.IMG_LoadICO_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadCUR_RW(src *sdl.RWops) *sdl.Surface {
+func LoadCUR_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadCUR_RW(_src)))
+	_surface := C.IMG_LoadCUR_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadBMP_RW(src *sdl.RWops) *sdl.Surface {
+func LoadBMP_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadBMP_RW(_src)))
+	_surface := C.IMG_LoadBMP_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadGIF_RW(src *sdl.RWops) *sdl.Surface {
+func LoadGIF_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadGIF_RW(_src)))
+	_surface := C.IMG_LoadGIF_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadJPG_RW(src *sdl.RWops) *sdl.Surface {
+func LoadJPG_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadJPG_RW(_src)))
+	_surface := C.IMG_LoadJPG_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadLBM_RW(src *sdl.RWops) *sdl.Surface {
+func LoadLBM_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadLBM_RW(_src)))
+	_surface := C.IMG_LoadLBM_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadPCX_RW(src *sdl.RWops) *sdl.Surface {
+func LoadPCX_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadPCX_RW(_src)))
+	_surface := C.IMG_LoadPCX_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadPNG_RW(src *sdl.RWops) *sdl.Surface {
+func LoadPNG_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadPNG_RW(_src)))
+	_surface := C.IMG_LoadPNG_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadPNM_RW(src *sdl.RWops) *sdl.Surface {
+func LoadPNM_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadPNM_RW(_src)))
+	_surface := C.IMG_LoadPNM_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadTGA_RW(src *sdl.RWops) *sdl.Surface {
+func LoadTGA_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadTGA_RW(_src)))
+	_surface := C.IMG_LoadTGA_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadTIF_RW(src *sdl.RWops) *sdl.Surface {
+func LoadTIF_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadTIF_RW(_src)))
+	_surface := C.IMG_LoadTIF_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadXCF_RW(src *sdl.RWops) *sdl.Surface {
+func LoadXCF_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadXCF_RW(_src)))
+	_surface :=C.IMG_LoadXCF_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadXPM_RW(src *sdl.RWops) *sdl.Surface {
+func LoadXPM_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadXPM_RW(_src)))
+	_surface := C.IMG_LoadXPM_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadXV_RW(src *sdl.RWops) *sdl.Surface {
+func LoadXV_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadXV_RW(_src)))
+	_surface := C.IMG_LoadXV_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadWEBP_RW(src *sdl.RWops) *sdl.Surface {
+func LoadWEBP_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_LoadWEBP_RW(_src)))
+	_surface := C.IMG_LoadWEBP_RW(_src)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func ReadXPMFromArray(xpm string) *sdl.Surface {
+func ReadXPMFromArray(xpm string) (*sdl.Surface, error) {
 	_xpm := C.CString(xpm)
 	C.free(unsafe.Pointer(_xpm))
-	return (*sdl.Surface)(unsafe.Pointer(C.IMG_ReadXPMFromArray(&_xpm)))
+	_surface := C.IMG_ReadXPMFromArray(&_xpm)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
 }
 
-func SavePNG(surface *sdl.Surface, file string) int {
+func SavePNG(surface *sdl.Surface, file string) error {
 	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
 	_file := C.CString(file)
 	C.free(unsafe.Pointer(_file))
-	return int(C.IMG_SavePNG(_surface, _file))
+	_ret := C.IMG_SavePNG(_surface, _file)
+	if _ret < 0 {
+		return GetError()
+	}
+	return nil
 }
 
-func SavePNG_RW(surface *sdl.Surface, dst *sdl.RWops, freedst int) int {
+func SavePNG_RW(surface *sdl.Surface, dst *sdl.RWops, freedst int) error {
 	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
 	_dst := (*C.SDL_RWops)(unsafe.Pointer(dst))
 	_freedst := (C.int)(freedst)
-	return int(C.IMG_SavePNG_RW(_surface, _dst, _freedst))
+	_ret := C.IMG_SavePNG_RW(_surface, _dst, _freedst)
+	if _ret < 0 {
+		return GetError()
+	}
+	return nil
 }

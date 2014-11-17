@@ -174,15 +174,22 @@ func (window *Window) GetPixelFormat() uint32 {
 	return (uint32)(C.SDL_GetWindowPixelFormat(window.cptr()))
 }
 
-func CreateWindow(title string, x int, y int, w int, h int, flags uint32) *Window {
+func CreateWindow(title string, x int, y int, w int, h int, flags uint32) (*Window, error) {
 	_title := C.CString(title)
 	defer C.free(unsafe.Pointer(_title))
 	var _window = C.SDL_CreateWindow(_title, C.int(x), C.int(y), C.int(w), C.int(h), C.Uint32(flags))
-	return (*Window)(unsafe.Pointer(_window))
+	if _window == nil {
+		return nil, GetError()
+	}
+	return (*Window)(unsafe.Pointer(_window)), nil
 }
 
-func CreateWindowFrom(data unsafe.Pointer) *Window {
-	return (*Window)(unsafe.Pointer(C.SDL_CreateWindowFrom(data)))
+func CreateWindowFrom(data unsafe.Pointer) (*Window, error) {
+	_window := C.SDL_CreateWindowFrom(data)
+	if _window == nil {
+		return nil, GetError()
+	}
+	return (*Window)(unsafe.Pointer(_window)), nil
 }
 
 func (window *Window) Destroy() {
@@ -193,8 +200,12 @@ func (window *Window) GetID() uint32 {
 	return (uint32)(C.SDL_GetWindowID(window.cptr()))
 }
 
-func GetWindowFromID(id uint32) *Window {
-	return (*Window)(unsafe.Pointer((C.SDL_GetWindowFromID(C.Uint32(id)))))
+func GetWindowFromID(id uint32) (*Window, error) {
+	_window := C.SDL_GetWindowFromID(C.Uint32(id))
+	if _window == nil {
+		return nil, GetError()
+	}
+	return (*Window)(unsafe.Pointer((_window))), nil
 }
 
 func (window *Window) GetFlags() uint32 {
