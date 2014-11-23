@@ -91,6 +91,7 @@ Contributors
 * [hschendel](https://github.com/hschendel)
 * [Bastien Dejean](https://github.com/baskerville)
 * [Pirmin Fix](https://github.com/PirminFix)
+* [Robert Lillack](https://github.com/roblillack)
 
 License
 =======
