@@ -1,6 +1,6 @@
 package sdl
 
-// #include <SDL.h>
+// #include "sdl.h"
 import "C"
 
 type GestureID C.SDL_GestureID

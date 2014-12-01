@@ -4,7 +4,7 @@ package img
 //#cgo linux freebsd darwin LDFLAGS: -lSDL2_image
 //#cgo windows LDFLAGS: -lSDL2 -lSDL2_image
 //#include <stdlib.h>
-//#include <SDL2/SDL_image.h>
+//#include "sdl_image.h"
 import "C"
 import "unsafe"
 import "errors"

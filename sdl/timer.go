@@ -1,6 +1,6 @@
 package sdl
 
-// #include <SDL.h>
+// #include "sdl.h"
 import "C"
 
 func GetTicks() uint32 {

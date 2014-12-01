@@ -1,7 +1,7 @@
 package sdl
 
 /*
-#include <SDL.h>
+#include "sdl.h"
 
 static inline char* _SDL_GetBasePath() {
 #if  (SDL_VERSION_ATLEAST(2,0,1))

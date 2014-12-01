@@ -1,7 +1,7 @@
 package sdl
 
 /*
-#include <SDL.h>
+#include "sdl.h"
 #include <SDL2/SDL_syswm.h>
 #if !(SDL_VERSION_ATLEAST(2,0,2))
 #define SDL_SYSWM_WAYLAND SDL_SYSWM_UNKNOWN

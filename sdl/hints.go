@@ -1,7 +1,7 @@
 package sdl
 
 /*
-#include <SDL.h>
+#include "sdl.h"
 
 #if !(SDL_VERSION_ATLEAST(2,0,3))
 #define SDL_HINT_WINRT_PRIVACY_POLICY_URL ""

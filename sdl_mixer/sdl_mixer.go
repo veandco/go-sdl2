@@ -4,7 +4,7 @@ package mix
 //#cgo linux freebsd darwin pkg-config: sdl2
 //#cgo linux freebsd darwin LDFLAGS: -lSDL2_mixer
 //#include <stdlib.h>
-//#include <SDL2/SDL_mixer.h>
+//#include "sdl_mixer.h" 
 //
 //extern void callPostMixFunction(void *udata, Uint8* stream, int length);
 //extern void callHookMusic(void *udata, Uint8* stream, int length);
