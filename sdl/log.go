@@ -107,7 +107,7 @@ func Log(str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_Log(cstr)
 }
@@ -116,7 +116,7 @@ func LogVerbose(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_LogVerbose(C.int(cat), cstr)
 }
@@ -125,7 +125,7 @@ func LogDebug(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_LogDebug(C.int(cat), cstr)
 }
@@ -134,7 +134,7 @@ func LogInfo(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_LogInfo(C.int(cat), cstr)
 }
@@ -143,7 +143,7 @@ func LogWarn(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_LogWarn(C.int(cat), cstr)
 }
@@ -152,7 +152,7 @@ func LogError(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_LogError(C.int(cat), cstr)
 }
@@ -161,7 +161,7 @@ func LogCritical(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_LogCritical(C.int(cat), cstr)
 }
@@ -170,7 +170,7 @@ func LogMessage(cat int, pri LogPriority, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_LogMessage(C.int(cat), C.SDL_LogPriority(pri), cstr)
 }
