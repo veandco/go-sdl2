@@ -87,6 +87,10 @@ func GameControllerOpen(index int) *GameController {
 	return (*GameController)(unsafe.Pointer(C.SDL_GameControllerOpen(C.int(index))))
 }
 
+func (ctrl *GameController) Name() string {
+	return C.GoString(C.SDL_GameControllerName(ctrl.cptr()))
+}
+
 func (ctrl *GameController) GetAttached() bool {
 	return C.SDL_GameControllerGetAttached(ctrl.cptr()) > 0
 }
