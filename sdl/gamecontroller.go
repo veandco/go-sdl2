@@ -63,7 +63,7 @@ func (btn GameControllerButton) c() C.SDL_GameControllerButton {
 
 func GameControllerAddMapping(mappingString string) int {
 	_mappingString := C.CString(mappingString)
-	defer C.free(unsafe.Pointer(_mappingString))
+	defer C.SDL_free(unsafe.Pointer(_mappingString))
 	return int(C.SDL_GameControllerAddMapping(_mappingString))
 }
 
@@ -87,6 +87,10 @@ func GameControllerOpen(index int) *GameController {
 	return (*GameController)(unsafe.Pointer(C.SDL_GameControllerOpen(C.int(index))))
 }
 
+func (ctrl *GameController) Name() string {
+	return C.GoString(C.SDL_GameControllerName(ctrl.cptr()))
+}
+
 func (ctrl *GameController) GetAttached() bool {
 	return C.SDL_GameControllerGetAttached(ctrl.cptr()) > 0
 }
@@ -105,7 +109,7 @@ func GameControllerUpdate() {
 
 func GameControllerGetAxisFromString(pchString string) GameControllerAxis {
 	_pchString := C.CString(pchString)
-	defer C.free(unsafe.Pointer(_pchString))
+	defer C.SDL_free(unsafe.Pointer(_pchString))
 	return GameControllerAxis(C.SDL_GameControllerGetAxisFromString(_pchString))
 }
 
@@ -123,7 +127,7 @@ func (ctrl *GameController) GetAxis(axis GameControllerAxis) int16 {
 
 func GameControllerGetButtonFromString(pchString string) GameControllerButton {
 	_pchString := C.CString(pchString)
-	defer C.free(unsafe.Pointer(_pchString))
+	defer C.SDL_free(unsafe.Pointer(_pchString))
 	return GameControllerButton(C.SDL_GameControllerGetButtonFromString(_pchString))
 }
 

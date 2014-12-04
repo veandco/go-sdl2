@@ -56,7 +56,7 @@ func GetError() error {
 
 func SetError(err string) {
 	_err := C.CString(err)
-	defer C.free(unsafe.Pointer(_err))
+	defer C.SDL_free(unsafe.Pointer(_err))
 	C.Do_TTF_SetError(_err)
 }
 
@@ -70,7 +70,7 @@ func ByteSwappedUnicode(swap bool) {
 
 func OpenFont(file string, size int) (*Font, error) {
 	_file := C.CString(file)
-	defer C.free(unsafe.Pointer(_file))
+	defer C.SDL_free(unsafe.Pointer(_file))
 	_size := (C.int)(size)
 	f := (*C.TTF_Font)(C.TTF_OpenFont(_file, _size))
 
@@ -82,7 +82,7 @@ func OpenFont(file string, size int) (*Font, error) {
 
 func OpenFontIndex(file string, size int, index int) (*Font, error) {
 	_file := C.CString(file)
-	defer C.free(unsafe.Pointer(_file))
+	defer C.SDL_free(unsafe.Pointer(_file))
 	_size := (C.int)(size)
 	_index := (C.long)(index)
 	f := (*C.TTF_Font)(C.TTF_OpenFontIndex(_file, _size, _index))
@@ -95,7 +95,7 @@ func OpenFontIndex(file string, size int, index int) (*Font, error) {
 
 func (f *Font) RenderText_Solid(text string, color sdl.Color) *sdl.Surface {
 	_text := C.CString(text)
-	defer C.free(unsafe.Pointer(_text))
+	defer C.SDL_free(unsafe.Pointer(_text))
 	_c := C.SDL_Color{C.Uint8(color.R), C.Uint8(color.G), C.Uint8(color.B), C.Uint8(color.A)}
 	surface := (*sdl.Surface)(unsafe.Pointer(C.TTF_RenderText_Solid(f.f, _text, _c)))
 	return surface
@@ -103,7 +103,7 @@ func (f *Font) RenderText_Solid(text string, color sdl.Color) *sdl.Surface {
 
 func (f *Font) RenderText_Shaded(text string, fg, bg sdl.Color) *sdl.Surface {
 	_text := C.CString(text)
-	defer C.free(unsafe.Pointer(_text))
+	defer C.SDL_free(unsafe.Pointer(_text))
 	_fg := C.SDL_Color{C.Uint8(fg.R), C.Uint8(fg.G), C.Uint8(fg.B), C.Uint8(fg.A)}
 	_bg := C.SDL_Color{C.Uint8(bg.R), C.Uint8(bg.G), C.Uint8(bg.B), C.Uint8(bg.A)}
 	surface := (*sdl.Surface)(unsafe.Pointer(C.TTF_RenderText_Shaded(f.f, _text, _fg, _bg)))
@@ -112,7 +112,7 @@ func (f *Font) RenderText_Shaded(text string, fg, bg sdl.Color) *sdl.Surface {
 
 func (f *Font) RenderText_Blended(text string, color sdl.Color) *sdl.Surface {
 	_text := C.CString(text)
-	defer C.free(unsafe.Pointer(_text))
+	defer C.SDL_free(unsafe.Pointer(_text))
 	_c := C.SDL_Color{C.Uint8(color.R), C.Uint8(color.G), C.Uint8(color.B), C.Uint8(color.A)}
 	surface := (*sdl.Surface)(unsafe.Pointer(C.TTF_RenderText_Blended(f.f, _text, _c)))
 	return surface
@@ -172,6 +172,6 @@ func (f *Font) FaceIsFixedWidth() bool {
 func (f *Font) FaceFamilyName() string {
 	_fname := C.TTF_FontFaceFamilyName(f.f)
 	fname := C.GoString(_fname)
-	C.free(unsafe.Pointer(_fname))
+	C.SDL_free(unsafe.Pointer(_fname))
 	return fname
 }

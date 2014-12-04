@@ -55,8 +55,8 @@ func (rw *RWops) cptr() *C.SDL_RWops {
 func RWFromFile(file, mode string) *RWops {
 	_file := C.CString(file)
 	_mode := C.CString(mode)
-	defer C.free(unsafe.Pointer(_file))
-	defer C.free(unsafe.Pointer(_mode))
+	defer C.SDL_free(unsafe.Pointer(_file))
+	defer C.SDL_free(unsafe.Pointer(_mode))
 	return (*RWops)(unsafe.Pointer(C.SDL_RWFromFile(_file, _mode)))
 }
 

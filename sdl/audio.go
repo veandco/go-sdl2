@@ -133,7 +133,7 @@ func GetAudioDriver(index int) string {
 
 func AudioInit(driverName string) int {
 	_driverName := C.CString(driverName)
-	defer C.free(unsafe.Pointer(_driverName))
+	defer C.SDL_free(unsafe.Pointer(_driverName))
 	return int(C.SDL_AudioInit(_driverName))
 }
 
@@ -159,7 +159,7 @@ func GetAudioDeviceName(index, isCapture int) string {
 
 func OpenAudioDevice(device string, isCapture int, desired, obtained *AudioSpec, allowedChanges int) int {
 	_device := C.CString(device)
-	defer C.free(unsafe.Pointer(_device))
+	defer C.SDL_free(unsafe.Pointer(_device))
 	return int(C.SDL_OpenAudioDevice(_device, C.int(isCapture), desired.cptr(), obtained.cptr(), C.int(allowedChanges)))
 }
 
@@ -188,8 +188,8 @@ func LoadWAV_RW(src *RWops, freeSrc int, spec *AudioSpec, audioBuf **uint8, audi
 func LoadWAV(file string, spec *AudioSpec, audioBuf **uint8, audioLen *uint32) *AudioSpec {
 	_file := C.CString(file)
 	_rb := C.CString("rb")
-	defer C.free(unsafe.Pointer(_file))
-	defer C.free(unsafe.Pointer(_rb))
+	defer C.SDL_free(unsafe.Pointer(_file))
+	defer C.SDL_free(unsafe.Pointer(_rb))
 	_audioBuf := (**C.Uint8)(unsafe.Pointer(audioBuf))
 	_audioLen := (*C.Uint32)(unsafe.Pointer(audioLen))
 	return (*AudioSpec)(unsafe.Pointer(C.SDL_LoadWAV_RW(C.SDL_RWFromFile(_file, _rb), 1, spec.cptr(), _audioBuf, _audioLen)))
