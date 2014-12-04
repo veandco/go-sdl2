@@ -1,7 +1,7 @@
 package sdl
 
 /*
-#include "sdl.h"
+#include "sdl_wrapper.h"
 
 static inline int _SDL_GetSystemRAM()
 {

@@ -1,6 +1,6 @@
 package sdl
 
-// #include "sdl.h"
+// #include "sdl_wrapper.h"
 import "C"
 import "unsafe"
 import "reflect"

@@ -1,7 +1,7 @@
 package sdl
 
 /*
-#include "sdl.h"
+#include "sdl_wrapper.h"
 #include "events.h"
 
 #if !SDL_VERSION_ATLEAST(2,0,2)
