@@ -4,7 +4,7 @@ package ttf
 //#cgo linux freebsd darwin pkg-config: sdl2
 //#cgo linux freebsd darwin LDFLAGS: -lSDL2_ttf
 //#include <stdlib.h>
-//#include "sdl_ttf.h"
+//#include "sdl_ttf_wrapper.h"
 //void Do_TTF_SetError(const char *str) {
 //    TTF_SetError(str);
 //}
