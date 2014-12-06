@@ -31,6 +31,8 @@ func main() {
 		os.Exit(2)
 	}
 
+	renderer.Clear()
+
 	renderer.SetDrawColor(255, 255, 255, 255)
 	renderer.DrawPoint(150, 300)
 
