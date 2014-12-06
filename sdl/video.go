@@ -122,7 +122,6 @@ func GetVideoDriver(index int) string {
 
 func VideoInit(driverName string) int {
 	_driverName := C.CString(driverName)
-	defer C.SDL_free(unsafe.Pointer(_driverName))
 	return int(C.SDL_VideoInit(_driverName))
 }
 
@@ -176,7 +175,6 @@ func (window *Window) GetPixelFormat() uint32 {
 
 func CreateWindow(title string, x int, y int, w int, h int, flags uint32) (*Window, error) {
 	_title := C.CString(title)
-	defer C.SDL_free(unsafe.Pointer(_title))
 	var _window = C.SDL_CreateWindow(_title, C.int(x), C.int(y), C.int(w), C.int(h), C.Uint32(flags))
 	if _window == nil {
 		return nil, GetError()
@@ -214,7 +212,6 @@ func (window *Window) GetFlags() uint32 {
 
 func (window *Window) SetTitle(title string) {
 	_title := C.CString(title)
-	defer C.SDL_free(unsafe.Pointer(_title)) // sdl creates it's own copy, so this one can be freed
 	C.SDL_SetWindowTitle(window.cptr(), _title)
 }
 
@@ -228,13 +225,11 @@ func (window *Window) SetIcon(icon *Surface) {
 
 func (window *Window) SetData(name string, userdata unsafe.Pointer) unsafe.Pointer {
 	_name := C.CString(name)
-	defer C.SDL_free(unsafe.Pointer(_name))
 	return unsafe.Pointer(C.SDL_SetWindowData(window.cptr(), _name, userdata))
 }
 
 func (window *Window) GetData(name string) unsafe.Pointer {
 	_name := C.CString(name)
-	defer C.SDL_free(unsafe.Pointer(_name))
 	return unsafe.Pointer(C.SDL_GetWindowData(window.cptr(), _name))
 }
 
@@ -365,13 +360,11 @@ func DisableScreenSaver() {
 
 func GL_LoadLibrary(path string) int {
 	_path := C.CString(path)
-	defer C.SDL_free(unsafe.Pointer(_path))
 	return int(C.SDL_GL_LoadLibrary(_path))
 }
 
 func GL_GetProcAddress(proc string) unsafe.Pointer {
 	_proc := C.CString(proc)
-	defer C.SDL_free(unsafe.Pointer(_proc))
 	return unsafe.Pointer(C.SDL_GL_GetProcAddress(_proc))
 }
 
@@ -381,7 +374,6 @@ func GL_UnloadLibrary() {
 
 func GL_ExtensionSupported(extension string) bool {
 	_extension := C.CString(extension)
-	defer C.SDL_free(unsafe.Pointer(_extension))
 	return C.SDL_GL_ExtensionSupported(_extension) != 0
 }
 
