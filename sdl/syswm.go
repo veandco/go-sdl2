@@ -2,7 +2,13 @@ package sdl
 
 /*
 #include "sdl_wrapper.h"
+
+#if defined(__WIN32)
 #include <SDL2/SDL_syswm.h>
+#else
+#include <SDL_syswm.h>
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,2))
 #define SDL_SYSWM_WAYLAND SDL_SYSWM_UNKNOWN
 #define SDL_SYSWM_MIR SDL_SYSWM_UNKNOWN
