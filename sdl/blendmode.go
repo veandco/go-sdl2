@@ -4,6 +4,7 @@ package sdl
 import "C"
 import "unsafe"
 
+// BlendMode (https://wiki.libsdl.org/SDL_BlendMode)
 type BlendMode uint32
 
 const (

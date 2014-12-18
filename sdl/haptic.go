@@ -33,11 +33,13 @@ const (
 
 type Haptic C.SDL_Haptic
 
+// HapticDirection (https://wiki.libsdl.org/SDL_HapticDirection)
 type HapticDirection struct {
 	Type byte
 	dir  [3]int32
 }
 
+// HapticConstant (https://wiki.libsdl.org/SDL_HapticConstant)
 type HapticConstant struct {
 	Type         uint16
 	Direction    HapticDirection
@@ -52,6 +54,7 @@ type HapticConstant struct {
 	FadeLevel    uint16
 }
 
+// HapticPeriodic (https://wiki.libsdl.org/SDL_HapticPeriodic)
 type HapticPeriodic struct {
 	Type         uint16
 	Direction    HapticDirection
@@ -69,6 +72,7 @@ type HapticPeriodic struct {
 	FadeLevel    uint16
 }
 
+// HapticCondition (https://wiki.libsdl.org/SDL_HapticCondition)
 type HapticCondition struct {
 	Type       uint16
 	Direction  HapticDirection
@@ -84,6 +88,7 @@ type HapticCondition struct {
 	Center     [3]int16
 }
 
+// HapticRamp (https://wiki.libsdl.org/SDL_HapticRamp)
 type HapticRamp struct {
 	Type         uint16
 	Direction    HapticDirection
@@ -99,6 +104,7 @@ type HapticRamp struct {
 	FadeLevel    uint16
 }
 
+// HapticCustom (https://wiki.libsdl.org/SDL_HapticCustom)
 type HapticCustom struct {
 	Type         uint16
 	Direction    HapticDirection
@@ -116,127 +122,157 @@ type HapticCustom struct {
 	FadeLevel    uint16
 }
 
+// HapticEffect (https://wiki.libsdl.org/SDL_HapticEffect)
 type HapticEffect interface{}
 
 func (h *Haptic) cptr() *C.SDL_Haptic {
     return (*C.SDL_Haptic)(unsafe.Pointer(h))
 }
 
+// NumHaptics (https://wiki.libsdl.org/SDL_NumHaptics)
 func NumHaptics() int {
 	return int(C.SDL_NumHaptics())
 }
 
+// HapticName (https://wiki.libsdl.org/SDL_HapticName)
 func HapticName(index int) string {
 	return (C.GoString)(C.SDL_HapticName(C.int(index)))
 }
 
+// HapticOpen (https://wiki.libsdl.org/SDL_HapticOpen)
 func HapticOpen(index int) *Haptic {
 	return (*Haptic)(unsafe.Pointer(C.SDL_HapticOpen(C.int(index))))
 }
 
+// HapticOpened (https://wiki.libsdl.org/SDL_HapticOpened)
 func HapticOpened(index int) int {
 	return int(C.SDL_HapticOpened(C.int(index)))
 }
 
+// HapticIndex (https://wiki.libsdl.org/SDL_HapticIndex)
 func HapticIndex(h *Haptic) int {
 	return int(C.SDL_HapticIndex(h.cptr()))
 }
 
+// MouseIsHaptic (https://wiki.libsdl.org/SDL_MouseIsHaptic)
 func MouseIsHaptic() int {
 	return int(C.SDL_MouseIsHaptic())
 }
 
+// HapticOpenFromMouse (https://wiki.libsdl.org/SDL_HapticOpenFromMouse)
 func HapticOpenFromMouse() *Haptic {
 	return (*Haptic)(unsafe.Pointer(C.SDL_HapticOpenFromMouse()))
 }
 
+// JoystickIsHaptic (https://wiki.libsdl.org/SDL_JoystickIsHaptic)
 func JoystickIsHaptic(joy *Joystick) int {
 	return int(C.SDL_JoystickIsHaptic(joy.cptr()))
 }
 
+// HapticOpenFromJoystick (https://wiki.libsdl.org/SDL_HapticOpenFromJoystick)
 func HapticOpenFromJoystick(joy *Joystick) *Haptic {
 	return (*Haptic)(unsafe.Pointer(C.SDL_HapticOpenFromJoystick(joy.cptr())))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticClose)
 func (h *Haptic) Close() {
 	C.SDL_HapticClose(h.cptr())
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticNumEffects)
 func (h *Haptic) NumEffects() int {
 	return int(C.SDL_HapticNumEffects(h.cptr()))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticNumEffectsPlaying)
 func (h *Haptic) NumEffectsPlaying() int {
 	return int(C.SDL_HapticNumEffectsPlaying(h.cptr()))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticQuery)
 func (h *Haptic) Query() uint {
 	return uint(C.SDL_HapticQuery(h.cptr()))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticEffectSupported)
 func (h *Haptic) EffectSupported(he *HapticEffect) int {
     _he := (*C.SDL_HapticEffect)(unsafe.Pointer(he))
 	return int(C.SDL_HapticEffectSupported(h.cptr(), _he))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticNewEffect)
 func (h *Haptic) NewEffect(he *HapticEffect) int {
     _he := (*C.SDL_HapticEffect)(unsafe.Pointer(he))
 	return int(C.SDL_HapticNewEffect(h.cptr(), _he))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticUpdateEffect)
 func (h *Haptic) UpdateEffect(effect int, data *HapticEffect) int {
     _data := (*C.SDL_HapticEffect)(unsafe.Pointer(data))
 	return int(C.SDL_HapticUpdateEffect(h.cptr(), C.int(effect), _data))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticRunEffect)
 func (h *Haptic) RunEffect(effect int, iterations uint32) int {
 	return int(C.SDL_HapticRunEffect(h.cptr(), C.int(effect), C.Uint32(iterations)))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticStopEffect)
 func (h *Haptic) StopEffect(effect int) int {
 	return int(C.SDL_HapticStopEffect(h.cptr(), C.int(effect)))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticDestroyEffect)
 func (h *Haptic) DestroyEffect(effect int) {
 	C.SDL_HapticDestroyEffect(h.cptr(), C.int(effect))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticGetEffectStatus)
 func (h *Haptic) GetEffectStatus(effect int) int {
 	return int(C.SDL_HapticGetEffectStatus(h.cptr(), C.int(effect)))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticSetGain)
 func (h *Haptic) SetGain(gain int) int {
 	return int(C.SDL_HapticSetGain(h.cptr(), C.int(gain)))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticSetAutocenter)
 func (h *Haptic) SetAutocenter(autocenter int) int {
 	return int(C.SDL_HapticSetAutocenter(h.cptr(), C.int(autocenter)))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticPause)
 func (h *Haptic) Pause() int {
 	return int(C.SDL_HapticPause(h.cptr()))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticUnpause)
 func (h *Haptic) Unpause() int {
 	return int(C.SDL_HapticUnpause(h.cptr()))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticStopAll)
 func (h *Haptic) StopAll() int {
 	return int(C.SDL_HapticStopAll(h.cptr()))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticRumbleSupported)
 func (h *Haptic) RumbleSupported() int {
 	return int(C.SDL_HapticRumbleSupported(h.cptr()))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticRumbleInit)
 func (h *Haptic) RumbleInit() int {
 	return int(C.SDL_HapticRumbleInit(h.cptr()))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticRumblePlay)
 func (h *Haptic) RumblePlay(strength float32, length uint32) int {
 	return int(C.SDL_HapticRumblePlay(h.cptr(), C.float(strength), C.Uint32(length)))
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticRumbleStop)
 func (h *Haptic) RumbleStop() int {
 	return int(C.SDL_HapticRumbleStop(h.cptr()))
 }

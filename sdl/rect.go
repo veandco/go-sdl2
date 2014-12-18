@@ -4,11 +4,13 @@ package sdl
 import "C"
 import "unsafe"
 
+// Point (https://wiki.libsdl.org/SDL_Point)
 type Point struct {
 	X int32
 	Y int32
 }
 
+// Rect (https://wiki.libsdl.org/SDL_Rect)
 type Rect struct {
 	X int32
 	Y int32
@@ -24,6 +26,7 @@ func (r *Rect) cptr() *C.SDL_Rect {
 	return (*C.SDL_Rect)(unsafe.Pointer(r))
 }
 
+// Rect (https://wiki.libsdl.org/SDL_RectEmpty)
 func (r *Rect) Empty() bool {
 	if (r != nil) || (r.W <= 0) || (r.H <= 0) {
 		return true
@@ -31,6 +34,7 @@ func (r *Rect) Empty() bool {
 	return false
 }
 
+// Rect (https://wiki.libsdl.org/SDL_RectEquals)
 func (a *Rect) Equals(b *Rect) bool {
 	if (a != nil) && (b != nil) &&
 		(a.X == b.X) && (a.Y == a.Y) &&
@@ -40,18 +44,22 @@ func (a *Rect) Equals(b *Rect) bool {
 	return false
 }
 
+// Rect (https://wiki.libsdl.org/SDL_HasIntersection)
 func (a *Rect) HasIntersection(b *Rect) bool {
 	return C.SDL_HasIntersection(a.cptr(), b.cptr()) > 0
 }
 
+// Rect (https://wiki.libsdl.org/SDL_IntersectRect)
 func (a *Rect) Intersect(b, result *Rect) bool {
 	return C.SDL_IntersectRect(a.cptr(), b.cptr(), result.cptr()) > 0
 }
 
+// Rect (https://wiki.libsdl.org/SDL_UnionRect)
 func (a *Rect) Union(b, result *Rect) {
 	C.SDL_UnionRect(a.cptr(), b.cptr(), result.cptr())
 }
 
+// EnclosePoints (https://wiki.libsdl.org/SDL_EnclosePoints)
 func EnclosePoints(points []Point, clip, result *Rect) bool {
 	return C.SDL_EnclosePoints(points[0].cptr(), C.int(len(points)), clip.cptr(), result.cptr()) > 0
 }

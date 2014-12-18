@@ -61,88 +61,108 @@ func (btn GameControllerButton) c() C.SDL_GameControllerButton {
     return C.SDL_GameControllerButton(btn)
 }
 
+// GameControllerAddMapping (https://wiki.libsdl.org/SDL_GameControllerAddMapping)
 func GameControllerAddMapping(mappingString string) int {
 	_mappingString := C.CString(mappingString)
 	defer C.SDL_free(unsafe.Pointer(_mappingString))
 	return int(C.SDL_GameControllerAddMapping(_mappingString))
 }
 
+// GameControllerMappingForGUID (https://wiki.libsdl.org/SDL_GameControllerMappingForGUID)
 func GameControllerMappingForGUID(guid JoystickGUID) string {
 	return C.GoString(C.SDL_GameControllerMappingForGUID(guid.c()))
 }
 
+// GameControllerMapping (https://wiki.libsdl.org/SDL_GameControllerMapping)
 func GameControllerMapping(ctrl *GameController) string {
 	return C.GoString(C.SDL_GameControllerMapping(ctrl.cptr()))
 }
 
+// IsGameController (https://wiki.libsdl.org/SDL_IsGameController)
 func IsGameController(index int) bool {
 	return C.SDL_IsGameController(C.int(index)) > 0
 }
 
+// GameControllerNameForIndex (https://wiki.libsdl.org/SDL_GameControllerNameForIndex)
 func GameControllerNameForIndex(index int) string {
 	return C.GoString(C.SDL_GameControllerNameForIndex(C.int(index)))
 }
 
+// GameControllerOpen (https://wiki.libsdl.org/SDL_GameControllerOpen)
 func GameControllerOpen(index int) *GameController {
 	return (*GameController)(unsafe.Pointer(C.SDL_GameControllerOpen(C.int(index))))
 }
 
+// GameController (https://wiki.libsdl.org/SDL_GameControllerName)
 func (ctrl *GameController) Name() string {
 	return C.GoString(C.SDL_GameControllerName(ctrl.cptr()))
 }
 
+// GameController (https://wiki.libsdl.org/SDL_GameControllerGetAttached)
 func (ctrl *GameController) GetAttached() bool {
 	return C.SDL_GameControllerGetAttached(ctrl.cptr()) > 0
 }
 
+// GameController (https://wiki.libsdl.org/SDL_GameControllerGetJoystick)
 func (ctrl *GameController) GetJoystick() *Joystick {
 	return (*Joystick)(unsafe.Pointer(C.SDL_GameControllerGetJoystick(ctrl.cptr())))
 }
 
+// GameControllerEventState (https://wiki.libsdl.org/SDL_GameControllerEventState)
 func GameControllerEventState(state int) int {
 	return int(C.SDL_GameControllerEventState(C.int(state)))
 }
 
+// GameControllerUpdate (https://wiki.libsdl.org/SDL_GameControllerUpdate)
 func GameControllerUpdate() {
 	C.SDL_GameControllerUpdate()
 }
 
+// GameControllerGetAxisFromString (https://wiki.libsdl.org/SDL_GameControllerGetAxisFromString)
 func GameControllerGetAxisFromString(pchString string) GameControllerAxis {
 	_pchString := C.CString(pchString)
 	defer C.SDL_free(unsafe.Pointer(_pchString))
 	return GameControllerAxis(C.SDL_GameControllerGetAxisFromString(_pchString))
 }
 
+// GameControllerGetStringForAxis (https://wiki.libsdl.org/SDL_GameControllerGetStringForAxis)
 func GameControllerGetStringForAxis(axis GameControllerAxis) string {
 	return C.GoString(C.SDL_GameControllerGetStringForAxis(axis.c()))
 }
 
+// GameController (https://wiki.libsdl.org/SDL_GameControllerGetBindForAxis)
 func (ctrl *GameController) GetBindForAxis(axis GameControllerAxis) GameControllerButtonBind {
 	return GameControllerButtonBind(C.SDL_GameControllerGetBindForAxis(ctrl.cptr(), axis.c()))
 }
 
+// GameController (https://wiki.libsdl.org/SDL_GameControllerGetAxis)
 func (ctrl *GameController) GetAxis(axis GameControllerAxis) int16 {
 	return int16(C.SDL_GameControllerGetAxis(ctrl.cptr(), axis.c()))
 }
 
+// GameControllerGetButtonFromString (https://wiki.libsdl.org/SDL_GameControllerGetButtonFromString)
 func GameControllerGetButtonFromString(pchString string) GameControllerButton {
 	_pchString := C.CString(pchString)
 	defer C.SDL_free(unsafe.Pointer(_pchString))
 	return GameControllerButton(C.SDL_GameControllerGetButtonFromString(_pchString))
 }
 
+// GameControllerGetStringForButton (https://wiki.libsdl.org/SDL_GameControllerGetStringForButton)
 func GameControllerGetStringForButton(btn GameControllerButton) string {
 	return C.GoString(C.SDL_GameControllerGetStringForButton(btn.c()))
 }
 
+// GameController (https://wiki.libsdl.org/SDL_GameControllerGetBindForButton)
 func (ctrl *GameController) GetBindForButton(btn GameControllerButton) GameControllerButtonBind {
 	return GameControllerButtonBind(C.SDL_GameControllerGetBindForButton(ctrl.cptr(), btn.c()))
 }
 
+// GameController (https://wiki.libsdl.org/SDL_GameControllerGetButton)
 func (ctrl *GameController) GetButton(btn GameControllerButton) byte {
 	return byte(C.SDL_GameControllerGetButton(ctrl.cptr(), btn.c()))
 }
 
+// GameController (https://wiki.libsdl.org/SDL_GameControllerClose)
 func (ctrl *GameController) Close() {
 	C.SDL_GameControllerClose(ctrl.cptr())
 }

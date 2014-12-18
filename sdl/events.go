@@ -97,6 +97,7 @@ const (
 	ENABLE  = C.SDL_ENABLE
 )
 
+// Event (https://wiki.libsdl.org/SDL_Event)
 type Event interface{}
 
 type CEvent struct {
@@ -109,6 +110,7 @@ type CommonEvent struct {
 	Timestamp uint32
 }
 
+// WindowEvent (https://wiki.libsdl.org/SDL_WindowEvent)
 type WindowEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -143,6 +145,7 @@ type KeyUpEvent struct {
 	Keysym    Keysym
 }
 
+// TextEditingEvent (https://wiki.libsdl.org/SDL_TextEditingEvent)
 type TextEditingEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -152,6 +155,7 @@ type TextEditingEvent struct {
 	Length    int32
 }
 
+// TextInputEvent (https://wiki.libsdl.org/SDL_TextInputEvent)
 type TextInputEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -159,6 +163,7 @@ type TextInputEvent struct {
 	Text      [C.SDL_TEXTINPUTEVENT_TEXT_SIZE]byte
 }
 
+// MouseMotionEvent (https://wiki.libsdl.org/SDL_MouseMotionEvent)
 type MouseMotionEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -171,6 +176,7 @@ type MouseMotionEvent struct {
 	YRel      int32
 }
 
+// MouseButtonEvent (https://wiki.libsdl.org/SDL_MouseButtonEvent)
 type MouseButtonEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -184,6 +190,7 @@ type MouseButtonEvent struct {
 	Y         int32
 }
 
+// MouseWheelEvent (https://wiki.libsdl.org/SDL_MouseWheelEvent)
 type MouseWheelEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -193,6 +200,7 @@ type MouseWheelEvent struct {
 	Y         int32
 }
 
+// JoyAxisEvent (https://wiki.libsdl.org/SDL_JoyAxisEvent)
 type JoyAxisEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -205,6 +213,7 @@ type JoyAxisEvent struct {
 	padding4  uint16
 }
 
+// JoyBallEvent (https://wiki.libsdl.org/SDL_JoyBallEvent)
 type JoyBallEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -217,6 +226,7 @@ type JoyBallEvent struct {
 	YRel      int16
 }
 
+// JoyHatEvent (https://wiki.libsdl.org/SDL_JoyHatEvent)
 type JoyHatEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -227,6 +237,7 @@ type JoyHatEvent struct {
 	padding2  uint8
 }
 
+// JoyButtonEvent (https://wiki.libsdl.org/SDL_JoyButtonEvent)
 type JoyButtonEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -271,6 +282,7 @@ type ControllerDeviceEvent struct {
 	Which     JoystickID
 }
 
+// TouchFingerEvent (https://wiki.libsdl.org/SDL_TouchFingerEvent)
 type TouchFingerEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -283,6 +295,7 @@ type TouchFingerEvent struct {
 	Pressure  float32
 }
 
+// MultiGestureEvent (https://wiki.libsdl.org/SDL_MultiGestureEvent)
 type MultiGestureEvent struct {
 	Type       uint32
 	Timestamp  uint32
@@ -295,6 +308,7 @@ type MultiGestureEvent struct {
 	padding    uint16
 }
 
+// DollarGestureEvent (https://wiki.libsdl.org/SDL_DollarGestureEvent)
 type DollarGestureEvent struct {
 	Type       uint32
 	Timestamp  uint32
@@ -306,6 +320,7 @@ type DollarGestureEvent struct {
 	Y          float32
 }
 
+// DropEvent (https://wiki.libsdl.org/SDL_DropEvent)
 type DropEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -317,6 +332,7 @@ type RenderEvent struct {
 	Timestamp uint32
 }
 
+// QuitEvent (https://wiki.libsdl.org/SDL_QuitEvent)
 type QuitEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -332,6 +348,7 @@ type ClipboardEvent struct {
 	Timestamp uint32
 }
 
+// UserEvent (https://wiki.libsdl.org/SDL_UserEvent)
 type UserEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -341,6 +358,7 @@ type UserEvent struct {
 	Data2     unsafe.Pointer
 }
 
+// SysWMEvent (https://wiki.libsdl.org/SDL_SysWMEvent)
 type SysWMEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -365,10 +383,12 @@ func (action EventAction) c() C.SDL_eventaction {
 	return C.SDL_eventaction(action)
 }
 
+// PumpEvents (https://wiki.libsdl.org/SDL_PumpEvents)
 func PumpEvents() {
 	C.SDL_PumpEvents()
 }
 
+// PeepEvents (https://wiki.libsdl.org/SDL_PeepEvents)
 func PeepEvents(events []Event, action EventAction, minType, maxType uint32) int {
 	var _events []CEvent = make([]CEvent, len(events))
 
@@ -389,22 +409,27 @@ func PeepEvents(events []Event, action EventAction, minType, maxType uint32) int
 	return retVal
 }
 
+// HasEvent (https://wiki.libsdl.org/SDL_HasEvent)
 func HasEvent(type_ uint32) bool {
 	return C.SDL_HasEvent(C.Uint32(type_)) != 0
 }
 
+// HasEvents (https://wiki.libsdl.org/SDL_HasEvents)
 func HasEvents(minType, maxType uint32) bool {
 	return C.SDL_HasEvents(C.Uint32(minType), C.Uint32(maxType)) != 0
 }
 
+// FlushEvent (https://wiki.libsdl.org/SDL_FlushEvent)
 func FlushEvent(type_ uint32) {
 	C.SDL_FlushEvent(C.Uint32(type_))
 }
 
+// FlushEvents (https://wiki.libsdl.org/SDL_FlushEvents)
 func FlushEvents(minType, maxType uint32) {
 	C.SDL_FlushEvents(C.Uint32(minType), C.Uint32(maxType))
 }
 
+// PollEvent (https://wiki.libsdl.org/SDL_PollEvent)
 func PollEvent() Event {
 	var cevent C.SDL_Event
 	ret := C.SDL_PollEvent(&cevent)
@@ -479,6 +504,7 @@ func cEvent(event Event) *CEvent {
 	return (*CEvent)(unsafe.Pointer(p.UnsafeAddr()))
 }
 
+// WaitEventTimeout (https://wiki.libsdl.org/SDL_WaitEventTimeout)
 func WaitEventTimeout(timeout int) Event {
 	var cevent CEvent
 	_event := (*C.SDL_Event)(unsafe.Pointer(&cevent))
@@ -489,6 +515,7 @@ func WaitEventTimeout(timeout int) Event {
 	return goEvent(&cevent)
 }
 
+// WaitEvent (https://wiki.libsdl.org/SDL_WaitEvent)
 func WaitEvent() Event {
 	var cevent CEvent
 	_event := (*C.SDL_Event)(unsafe.Pointer(&cevent))
@@ -499,6 +526,7 @@ func WaitEvent() Event {
 	return goEvent(&cevent)
 }
 
+// PushEvent (https://wiki.libsdl.org/SDL_PushEvent)
 func PushEvent(event Event) int {
 	_event := (*C.SDL_Event)(unsafe.Pointer(cEvent(event)))
 	return int(C.SDL_PushEvent(_event))
@@ -548,6 +576,7 @@ func wrapEventFilterCallback(filter EventFilter, e *C.SDL_Event) C.int {
 	}
 }
 
+// SetEventFilter (https://wiki.libsdl.org/SDL_SetEventFilter)
 func SetEventFilter(filter EventFilter) {
 	if eventFilterCache == nil && filter == nil {
 		// nothing to do...
@@ -571,6 +600,7 @@ func SetEventFilterFunc(filterFunc func(Event) bool) {
 	SetEventFilter(eventFilterFunc(filterFunc))
 }
 
+// GetEventFilter (https://wiki.libsdl.org/SDL_GetEventFilter)
 func GetEventFilter() EventFilter {
 	return eventFilterCache
 }
@@ -579,6 +609,7 @@ func isCEventFilterSet() bool {
 	return C.SDL_GetEventFilter(nil, nil) == C.SDL_TRUE
 }
 
+// FilterEvents (https://wiki.libsdl.org/SDL_FilterEvents)
 func FilterEvents(filter EventFilter) {
 	context := &eventFilterCallbackContext{filter}
 	C.filterEvents(context.cptr())
@@ -588,6 +619,7 @@ func FilterEventsFunc(filterFunc func(Event) bool) {
 	FilterEvents(eventFilterFunc(filterFunc))
 }
 
+// AddEventWatch (https://wiki.libsdl.org/SDL_AddEventWatch)
 func AddEventWatch(filter EventFilter) EventWatchHandle {
 	context := &eventFilterCallbackContext{filter}
 	C.addEventWatch(context.cptr())
@@ -599,6 +631,7 @@ func AddEventWatchFunc(filterFunc func(Event) bool) EventWatchHandle {
 	return AddEventWatch(eventFilterFunc(filterFunc))
 }
 
+// DelEventWatch (https://wiki.libsdl.org/SDL_DelEventWatch)
 func DelEventWatch(handle EventWatchHandle) {
 	context, ok := eventWatchesCache[handle]
 	if !ok {
@@ -608,6 +641,7 @@ func DelEventWatch(handle EventWatchHandle) {
 	C.delEventWatch(context.cptr())
 }
 
+// EventState (https://wiki.libsdl.org/SDL_EventState)
 func EventState(type_ uint32, state int) uint8 {
 	return uint8(C.SDL_EventState(C.Uint32(type_), C.int(state)))
 }
@@ -616,6 +650,7 @@ func GetEventState(type_ uint32) uint8 {
 	return uint8(C.SDL_EventState(C.Uint32(type_), QUERY))
 }
 
+// RegisterEvents (https://wiki.libsdl.org/SDL_RegisterEvents)
 func RegisterEvents(numEvents int) uint32 {
 	return uint32(C.SDL_RegisterEvents(C.int(numEvents)))
 }

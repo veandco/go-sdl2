@@ -19,6 +19,7 @@ func (ec ErrorCode) c() C.SDL_errorcode {
     return C.SDL_errorcode(ec)
 }
 
+// GetError (https://wiki.libsdl.org/SDL_GetError)
 func GetError() error {
 	_err := C.SDL_GetError()
 	if *_err == 0 {
@@ -27,6 +28,7 @@ func GetError() error {
 	return errors.New(C.GoString(_err))
 }
 
+// ClearError (https://wiki.libsdl.org/SDL_ClearError)
 func ClearError() {
 	C.SDL_ClearError()
 }

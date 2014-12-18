@@ -265,6 +265,7 @@ const (
 	NUM_SCANCODES = C.SDL_NUM_SCANCODES 
 )
 
+// Scancode (https://wiki.libsdl.org/SDL_Scancode)
 type Scancode uint32
 
 func (code Scancode) c() C.SDL_Scancode {

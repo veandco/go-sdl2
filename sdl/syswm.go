@@ -28,6 +28,7 @@ const (
 	SYSWM_MIR = C.SDL_SYSWM_MIR
 )
 
+// SysWMInfo (https://wiki.libsdl.org/SDL_SysWMInfo)
 type SysWMInfo struct {
 	Version   Version
 	Subsystem uint32
@@ -61,6 +62,7 @@ func (info *SysWMInfo) cptr() *C.SDL_SysWMinfo {
     return (*C.SDL_SysWMinfo)(unsafe.Pointer(info))
 }
 
+// Window (https://wiki.libsdl.org/SDL_GetWindowWMInfo)
 func (window *Window) GetWMInfo(info *SysWMInfo) bool {
 	return C.SDL_GetWindowWMInfo(window.cptr(), info.cptr()) == 1
 }

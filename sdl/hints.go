@@ -66,12 +66,14 @@ const (
 	HINT_OVERRIDE = C.SDL_HINT_OVERRIDE
 )
 
+// HintPriority (https://wiki.libsdl.org/SDL_HintPriority)
 type HintPriority C.SDL_HintPriority
 
 func (hp HintPriority) c() C.SDL_HintPriority {
     return C.SDL_HintPriority(hp)
 }
 
+// SetHintWithPriority (https://wiki.libsdl.org/SDL_SetHintWithPriority)
 func SetHintWithPriority(name, value string, hp HintPriority) bool {
 	_name := C.CString(name)
 	_value := C.CString(value)
@@ -80,6 +82,7 @@ func SetHintWithPriority(name, value string, hp HintPriority) bool {
 	return C.SDL_SetHintWithPriority(_name, _value, hp.c()) > 0
 }
 
+// SetHint (https://wiki.libsdl.org/SDL_SetHint)
 func SetHint(name, value string) bool {
 	_name := C.CString(name)
 	_value := C.CString(value)
@@ -88,12 +91,14 @@ func SetHint(name, value string) bool {
 	return C.SDL_SetHint(_name, _value) > 0
 }
 
+// GetHint (https://wiki.libsdl.org/SDL_GetHint)
 func GetHint(name string) string {
 	_name := C.CString(name)
 	defer C.SDL_free(unsafe.Pointer(_name))
 	return C.GoString(C.SDL_GetHint(_name))
 }
 
+// ClearHints (https://wiki.libsdl.org/SDL_ClearHints)
 func ClearHints() {
 	C.SDL_ClearHints()
 }

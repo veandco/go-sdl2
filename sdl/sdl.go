@@ -22,10 +22,12 @@ const (
 	PRESSED  = 1
 )
 
+// Init (https://wiki.libsdl.org/SDL_Init)
 func Init(flags uint32) int {
 	return int(C.SDL_Init(C.Uint32(flags)))
 }
 
+// Quit (https://wiki.libsdl.org/SDL_Quit)
 func Quit() {
 	C.SDL_Quit()
 
@@ -35,18 +37,22 @@ func Quit() {
 	}
 }
 
+// InitSubSystem (https://wiki.libsdl.org/SDL_InitSubSystem)
 func InitSubSystem(flags uint32) int {
 	return int(C.SDL_InitSubSystem(C.Uint32(flags)))
 }
 
+// QuitSubSystem (https://wiki.libsdl.org/SDL_QuitSubSystem)
 func QuitSubSystem(flags uint32) {
 	C.SDL_QuitSubSystem(C.Uint32(flags))
 }
 
+// WasInit (https://wiki.libsdl.org/SDL_WasInit)
 func WasInit(flags uint32) uint32 {
 	return uint32(C.SDL_WasInit(C.Uint32(flags)))
 }
 
+// GetPlatform (https://wiki.libsdl.org/SDL_GetPlatform)
 func GetPlatform() string {
 	return string(C.GoString(C.SDL_GetPlatform()))
 }
