@@ -46,12 +46,14 @@ const (
 	RW_SEEK_END = C.RW_SEEK_END
 )
 
+// RWops (https://wiki.libsdl.org/SDL_RWops)
 type RWops C.SDL_RWops
 
 func (rw *RWops) cptr() *C.SDL_RWops {
     return (*C.SDL_RWops)(rw)
 }
 
+// RWFromFile (https://wiki.libsdl.org/SDL_RWFromFile)
 func RWFromFile(file, mode string) *RWops {
 	_file := C.CString(file)
 	_mode := C.CString(mode)
@@ -60,6 +62,7 @@ func RWFromFile(file, mode string) *RWops {
 	return (*RWops)(unsafe.Pointer(C.SDL_RWFromFile(_file, _mode)))
 }
 
+// RWFromMem (https://wiki.libsdl.org/SDL_RWFromMem)
 func RWFromMem(mem unsafe.Pointer, size int) *RWops {
 	if mem == nil {
 		return nil
@@ -67,10 +70,12 @@ func RWFromMem(mem unsafe.Pointer, size int) *RWops {
 	return (*RWops)(unsafe.Pointer(C.SDL_RWFromMem(mem, C.int(size))))
 }
 
+// AllocRW (https://wiki.libsdl.org/SDL_AllocRW)
 func AllocRW() *RWops {
 	return (*RWops)(unsafe.Pointer(C.SDL_AllocRW()))
 }
 
+// RWops (https://wiki.libsdl.org/SDL_FreeRW)
 func (area *RWops) FreeRW() {
 	if area == nil {
 		return
@@ -127,6 +132,7 @@ func (src *RWops) ReadU8() uint8 {
 	return uint8(C.SDL_ReadU8(src.cptr()))
 }
 
+// RWops (https://wiki.libsdl.org/SDL_ReadLE16)
 func (src *RWops) ReadLE16() uint16 {
 	if src == nil {
 		return 0
@@ -134,6 +140,7 @@ func (src *RWops) ReadLE16() uint16 {
 	return uint16(C.SDL_ReadLE16(src.cptr()))
 }
 
+// RWops (https://wiki.libsdl.org/SDL_ReadBE16)
 func (src *RWops) ReadBE16() uint16 {
 	if src == nil {
 		return 0
@@ -141,6 +148,7 @@ func (src *RWops) ReadBE16() uint16 {
 	return uint16(C.SDL_ReadBE16(src.cptr()))
 }
 
+// RWops (https://wiki.libsdl.org/SDL_ReadLE32)
 func (src *RWops) ReadLE32() uint32 {
 	if src == nil {
 		return 0
@@ -148,6 +156,7 @@ func (src *RWops) ReadLE32() uint32 {
 	return uint32(C.SDL_ReadLE32(src.cptr()))
 }
 
+// RWops (https://wiki.libsdl.org/SDL_ReadBE32)
 func (src *RWops) ReadBE32() uint32 {
 	if src == nil {
 		return 0
@@ -155,6 +164,7 @@ func (src *RWops) ReadBE32() uint32 {
 	return uint32(C.SDL_ReadBE32(src.cptr()))
 }
 
+// RWops (https://wiki.libsdl.org/SDL_ReadLE64)
 func (src *RWops) ReadLE64() uint64 {
 	if src == nil {
 		return 0
@@ -162,6 +172,7 @@ func (src *RWops) ReadLE64() uint64 {
 	return uint64(C.SDL_ReadLE64(src.cptr()))
 }
 
+// RWops (https://wiki.libsdl.org/SDL_ReadBE64)
 func (src *RWops) ReadBE64() uint64 {
 	if src == nil {
 		return 0
@@ -176,6 +187,7 @@ func (dst *RWops) WriteU8(value uint8) uint {
 	return uint(C.SDL_WriteU8(dst.cptr(), C.Uint8(value)))
 }
 
+// RWops (https://wiki.libsdl.org/SDL_WriteLE16)
 func (dst *RWops) WriteLE16(value uint16) uint {
 	if dst == nil {
 		return 0
@@ -183,6 +195,7 @@ func (dst *RWops) WriteLE16(value uint16) uint {
 	return uint(C.SDL_WriteLE16(dst.cptr(), C.Uint16(value)))
 }
 
+// RWops (https://wiki.libsdl.org/SDL_WriteBE16)
 func (dst *RWops) WriteBE16(value uint16) uint {
 	if dst == nil {
 		return 0
@@ -190,6 +203,7 @@ func (dst *RWops) WriteBE16(value uint16) uint {
 	return uint(C.SDL_WriteBE16(dst.cptr(), C.Uint16(value)))
 }
 
+// RWops (https://wiki.libsdl.org/SDL_WriteLE32)
 func (dst *RWops) WriteLE32(value uint32) uint {
 	if dst == nil {
 		return 0
@@ -197,6 +211,7 @@ func (dst *RWops) WriteLE32(value uint32) uint {
 	return uint(C.SDL_WriteLE32(dst.cptr(), C.Uint32(value)))
 }
 
+// RWops (https://wiki.libsdl.org/SDL_WriteBE32)
 func (dst *RWops) WriteBE32(value uint32) uint {
 	if dst == nil {
 		return 0
@@ -204,6 +219,7 @@ func (dst *RWops) WriteBE32(value uint32) uint {
 	return uint(C.SDL_WriteBE32(dst.cptr(), C.Uint32(value)))
 }
 
+// RWops (https://wiki.libsdl.org/SDL_WriteLE64)
 func (dst *RWops) WriteLE64(value uint64) uint {
 	if dst == nil {
 		return 0
@@ -211,6 +227,7 @@ func (dst *RWops) WriteLE64(value uint64) uint {
 	return uint(C.SDL_WriteLE64(dst.cptr(), C.Uint64(value)))
 }
 
+// RWops (https://wiki.libsdl.org/SDL_WriteBE64)
 func (dst *RWops) WriteBE64(value uint64) uint {
 	if dst == nil {
 		return 0

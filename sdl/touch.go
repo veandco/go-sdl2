@@ -19,18 +19,22 @@ func (t TouchID) c() C.SDL_TouchID {
     return C.SDL_TouchID(t)
 }
 
+// GetNumTouchDevices (https://wiki.libsdl.org/SDL_GetNumTouchDevices)
 func GetNumTouchDevices() int {
 	return int(C.SDL_GetNumTouchDevices())
 }
 
+// GetTouchDevice (https://wiki.libsdl.org/SDL_GetTouchDevice)
 func GetTouchDevice(index int) TouchID {
 	return TouchID(C.SDL_GetTouchDevice(C.int(index)))
 }
 
+// GetNumTouchFingers (https://wiki.libsdl.org/SDL_GetNumTouchFingers)
 func GetNumTouchFingers(t TouchID) int {
 	return int(C.SDL_GetNumTouchFingers(t.c()))
 }
 
+// GetTouchFinger (https://wiki.libsdl.org/SDL_GetTouchFinger)
 func GetTouchFinger(t TouchID, index int) *Finger {
 	return (*Finger)(unsafe.Pointer(C.SDL_GetTouchFinger(t.c(), C.int(index))))
 }

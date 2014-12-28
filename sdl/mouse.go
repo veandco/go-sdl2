@@ -40,64 +40,78 @@ func (c SystemCursor) c() C.SDL_SystemCursor {
     return C.SDL_SystemCursor(c)
 }
 
+// GetMouseFocus (https://wiki.libsdl.org/SDL_GetMouseFocus)
 func GetMouseFocus() *Window {
 	return (*Window)(unsafe.Pointer(C.SDL_GetMouseFocus()))
 }
 
+// GetMouseState (https://wiki.libsdl.org/SDL_GetMouseState)
 func GetMouseState() (x, y int, state uint32) {
 	var _x, _y C.int
 	_state := uint32(C.SDL_GetMouseState(&_x, &_y))
 	return int(_x), int(_y), _state
 }
 
+// GetRelativeMouseState (https://wiki.libsdl.org/SDL_GetRelativeMouseState)
 func GetRelativeMouseState() (x, y int, state uint32) {
 	var _x, _y C.int
 	_state := uint32(C.SDL_GetRelativeMouseState(&_x, &_y))
 	return int(_x), int(_y), _state
 }
 
+// Window (https://wiki.libsdl.org/SDL_WarpMouseInWindow)
 func (window *Window) WarpMouseInWindow(x, y int) {
 	C.SDL_WarpMouseInWindow(window.cptr(), C.int(x), C.int(y))
 }
 
+// SetRelativeMouseMode (https://wiki.libsdl.org/SDL_SetRelativeMouseMode)
 func SetRelativeMouseMode(enabled bool) int {
 	return int(C.SDL_SetRelativeMouseMode(C.SDL_bool(Btoi(enabled))))
 }
 
+// GetRelativeMouseMode (https://wiki.libsdl.org/SDL_GetRelativeMouseMode)
 func GetRelativeMouseMode() bool {
 	return C.SDL_GetRelativeMouseMode() > 0
 }
 
+// CreateCursor (https://wiki.libsdl.org/SDL_CreateCursor)
 func CreateCursor(data, mask *uint8, w, h, hotX, hotY int) *Cursor {
 	_data := (*C.Uint8)(unsafe.Pointer(data))
 	_mask := (*C.Uint8)(unsafe.Pointer(mask))
 	return (*Cursor)(C.SDL_CreateCursor(_data, _mask, C.int(w), C.int(h), C.int(hotX), C.int(hotY)))
 }
 
+// CreateColorCursor (https://wiki.libsdl.org/SDL_CreateColorCursor)
 func CreateColorCursor(surface *Surface, hotX, hotY int) *Cursor {
 	return (*Cursor)(C.SDL_CreateColorCursor(surface.cptr(), C.int(hotX), C.int(hotY)))
 }
 
+// CreateSystemCursor (https://wiki.libsdl.org/SDL_CreateSystemCursor)
 func CreateSystemCursor(id SystemCursor) *Cursor {
 	return (*Cursor)(C.SDL_CreateSystemCursor(id.c()))
 }
 
+// SetCursor (https://wiki.libsdl.org/SDL_SetCursor)
 func SetCursor(cursor *Cursor) {
 	C.SDL_SetCursor(cursor.cptr())
 }
 
+// GetCursor (https://wiki.libsdl.org/SDL_GetCursor)
 func GetCursor() *Cursor {
 	return (*Cursor)(C.SDL_GetCursor())
 }
 
+// GetDefaultCursor (https://wiki.libsdl.org/SDL_GetDefaultCursor)
 func GetDefaultCursor() *Cursor {
 	return (*Cursor)(C.SDL_GetDefaultCursor())
 }
 
+// FreeCursor (https://wiki.libsdl.org/SDL_FreeCursor)
 func FreeCursor(cursor *Cursor) {
 	C.SDL_FreeCursor(cursor.cptr())
 }
 
+// ShowCursor (https://wiki.libsdl.org/SDL_ShowCursor)
 func ShowCursor(toggle int) int {
 	return int(C.SDL_ShowCursor(C.int(toggle)))
 }

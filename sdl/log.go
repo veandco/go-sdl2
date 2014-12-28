@@ -81,28 +81,34 @@ const (
 	NUM_LOG_PRIORITIES
 )
 
+// LogPriority (https://wiki.libsdl.org/SDL_LogPriority)
 type LogPriority C.SDL_LogPriority
 
 func (p LogPriority) c() C.SDL_LogPriority {
 	return C.SDL_LogPriority(p)
 }
 
+// LogSetAllPriority (https://wiki.libsdl.org/SDL_LogSetAllPriority)
 func LogSetAllPriority(p LogPriority) {
 	C.SDL_LogSetAllPriority(p.c())
 }
 
+// LogSetPriority (https://wiki.libsdl.org/SDL_LogSetPriority)
 func LogSetPriority(category int, p LogPriority) {
 	C.SDL_LogSetPriority(C.int(category), p.c())
 }
 
+// LogGetPriority (https://wiki.libsdl.org/SDL_LogGetPriority)
 func LogGetPriority(category int) LogPriority {
 	return LogPriority(C.SDL_LogGetPriority(C.int(category)))
 }
 
+// LogResetPriorities (https://wiki.libsdl.org/SDL_LogResetPriorities)
 func LogResetPriorities() {
 	C.SDL_LogResetPriorities()
 }
 
+// Log (https://wiki.libsdl.org/SDL_Log)
 func Log(str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -112,6 +118,7 @@ func Log(str string, args ...interface{}) {
 	C._SDL_Log(cstr)
 }
 
+// LogVerbose (https://wiki.libsdl.org/SDL_LogVerbose)
 func LogVerbose(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -121,6 +128,7 @@ func LogVerbose(cat int, str string, args ...interface{}) {
 	C._SDL_LogVerbose(C.int(cat), cstr)
 }
 
+// LogDebug (https://wiki.libsdl.org/SDL_LogDebug)
 func LogDebug(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -130,6 +138,7 @@ func LogDebug(cat int, str string, args ...interface{}) {
 	C._SDL_LogDebug(C.int(cat), cstr)
 }
 
+// LogInfo (https://wiki.libsdl.org/SDL_LogInfo)
 func LogInfo(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -139,6 +148,7 @@ func LogInfo(cat int, str string, args ...interface{}) {
 	C._SDL_LogInfo(C.int(cat), cstr)
 }
 
+// LogWarn (https://wiki.libsdl.org/SDL_LogWarn)
 func LogWarn(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -148,6 +158,7 @@ func LogWarn(cat int, str string, args ...interface{}) {
 	C._SDL_LogWarn(C.int(cat), cstr)
 }
 
+// LogError (https://wiki.libsdl.org/SDL_LogError)
 func LogError(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -157,6 +168,7 @@ func LogError(cat int, str string, args ...interface{}) {
 	C._SDL_LogError(C.int(cat), cstr)
 }
 
+// LogCritical (https://wiki.libsdl.org/SDL_LogCritical)
 func LogCritical(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -166,6 +178,7 @@ func LogCritical(cat int, str string, args ...interface{}) {
 	C._SDL_LogCritical(C.int(cat), cstr)
 }
 
+// LogMessage (https://wiki.libsdl.org/SDL_LogMessage)
 func LogMessage(cat int, pri LogPriority, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -196,10 +209,12 @@ var (
     logOutputDataCache interface{}
 )
 
+// LogGetOutputFunction (https://wiki.libsdl.org/SDL_LogGetOutputFunction)
 func LogGetOutputFunction() (LogOutputFunction, interface{}) {
     return logOutputFunctionCache, logOutputDataCache
 }
 
+// LogSetOutputFunction (https://wiki.libsdl.org/SDL_LogSetOutputFunction)
 func LogSetOutputFunction(f LogOutputFunction, data interface{}) {
     ctx := &logOutputFunctionCtx{
             f: f,

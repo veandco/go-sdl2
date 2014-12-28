@@ -279,7 +279,9 @@ const (
 	KMOD_RESERVED = C.KMOD_RESERVED
 )
 
+// Keycode (https://wiki.libsdl.org/SDL_Keycode)
 type Keycode C.SDL_Keycode
+// Keymod (https://wiki.libsdl.org/SDL_Keymod)
 type Keymod C.SDL_Keymod
 
 func (code Keycode) c() C.SDL_Keycode {

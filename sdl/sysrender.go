@@ -4,6 +4,7 @@ package sdl
 import "C"
 import "unsafe"
 
+// Texture (https://wiki.libsdl.org/SDL_Texture)
 type Texture C.SDL_Texture
 type Renderer C.SDL_Renderer
 

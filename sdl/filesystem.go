@@ -24,12 +24,14 @@ static inline char* _SDL_GetPrefPath(const char *org, const char *app)
 import "C"
 import "unsafe"
 
+// GetBasePath (https://wiki.libsdl.org/SDL_GetBasePath)
 func GetBasePath() string {
 	_val := C._SDL_GetBasePath()
 	defer C.SDL_free(unsafe.Pointer(_val))
 	return C.GoString(_val)
 }
 
+// GetPrefPath (https://wiki.libsdl.org/SDL_GetPrefPath)
 func GetPrefPath(org, app string) string {
 	_org := C.CString(org)
 	_app := C.CString(app)
