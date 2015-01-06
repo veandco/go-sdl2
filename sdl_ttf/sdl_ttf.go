@@ -11,6 +11,7 @@ package ttf
 import "C"
 import "github.com/veandco/go-sdl2/sdl"
 import "unsafe"
+import "runtime"
 import "errors"
 
 //Font Hinting Types
@@ -102,6 +103,7 @@ func (f *Font) RenderText_Solid(text string, color sdl.Color) *sdl.Surface {
 }
 
 func (f *Font) RenderText_Shaded(text string, fg, bg sdl.Color) *sdl.Surface {
+	runtime.LockOSThread()
 	_text := C.CString(text)
 	defer C.SDL_free(unsafe.Pointer(_text))
 	_fg := C.SDL_Color{C.Uint8(fg.R), C.Uint8(fg.G), C.Uint8(fg.B), C.Uint8(fg.A)}
