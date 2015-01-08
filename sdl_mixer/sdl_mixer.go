@@ -88,15 +88,15 @@ func LoadWAV_RW(src *sdl.RWops, freesrc int) *Chunk {
 
 func LoadWAV(file string) *Chunk {
 	_file := C.CString(file)
-	defer C.SDL_free(unsafe.Pointer(_file))
+	defer C.free(unsafe.Pointer(_file))
 	_rb := C.CString("rb")
-	defer C.SDL_free(unsafe.Pointer(_rb))
+	defer C.free(unsafe.Pointer(_rb))
 	return (*Chunk)(unsafe.Pointer(C.Mix_LoadWAV_RW(C.SDL_RWFromFile(_file, _rb), 1)))
 }
 
 func LoadMUS(file string) *Music {
 	_file := C.CString(file)
-	defer C.SDL_free(unsafe.Pointer(_file))
+	defer C.free(unsafe.Pointer(_file))
 	return (*Music)(unsafe.Pointer(C.Mix_LoadMUS(_file)))
 }
 
@@ -368,7 +368,7 @@ func MusicPlaying() bool {
 
 func SetMusicCMD(command string) bool {
 	_command := C.CString(command)
-	defer C.SDL_free(unsafe.Pointer(_command))
+	defer C.free(unsafe.Pointer(_command))
 	return int(C.Mix_SetMusicCMD(_command)) == 0
 }
 
@@ -383,7 +383,7 @@ func GetSynchroValue() int {
 
 func SetSoundFonts(paths string) bool {
 	_paths := C.CString(paths)
-	defer C.SDL_free(unsafe.Pointer(_paths))
+	defer C.free(unsafe.Pointer(_paths))
 	return int(C.Mix_SetSoundFonts(_paths)) == 0
 }
 

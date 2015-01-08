@@ -42,7 +42,7 @@ func LoadTyped_RW(src *sdl.RWops, freesrc int, type_ string) (*sdl.Surface, erro
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
 	_freesrc := (C.int)(freesrc)
 	_type := C.CString(type_)
-	defer C.SDL_free(unsafe.Pointer(_type))
+	defer C.free(unsafe.Pointer(_type))
 	_surface := C.IMG_LoadTyped_RW(_src, _freesrc, _type)
 	if _surface == nil {
 		return nil, GetError()
@@ -52,7 +52,7 @@ func LoadTyped_RW(src *sdl.RWops, freesrc int, type_ string) (*sdl.Surface, erro
 
 func Load(file string) (*sdl.Surface, error) {
 	_file := C.CString(file)
-	defer C.SDL_free(unsafe.Pointer(_file))
+	defer C.free(unsafe.Pointer(_file))
 	_surface := C.IMG_Load(_file)
 	if _surface == nil {
 		return nil, GetError()
@@ -73,7 +73,7 @@ func Load_RW(src *sdl.RWops, freesrc int) (*sdl.Surface, error) {
 func LoadTexture(renderer *sdl.Renderer, file string) (*sdl.Texture, error) {
 	_renderer := (*C.SDL_Renderer)(unsafe.Pointer(renderer))
 	_file := C.CString(file)
-	defer C.SDL_free(unsafe.Pointer(_file))
+	defer C.free(unsafe.Pointer(_file))
 	_surface := C.IMG_LoadTexture(_renderer, _file)
 	if _surface == nil {
 		return nil, GetError()
@@ -299,7 +299,7 @@ func LoadWEBP_RW(src *sdl.RWops) (*sdl.Surface, error) {
 
 func ReadXPMFromArray(xpm string) (*sdl.Surface, error) {
 	_xpm := C.CString(xpm)
-	C.SDL_free(unsafe.Pointer(_xpm))
+	C.free(unsafe.Pointer(_xpm))
 	_surface := C.IMG_ReadXPMFromArray(&_xpm)
 	if _surface == nil {
 		return nil, GetError()
@@ -310,7 +310,7 @@ func ReadXPMFromArray(xpm string) (*sdl.Surface, error) {
 func SavePNG(surface *sdl.Surface, file string) error {
 	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
 	_file := C.CString(file)
-	C.SDL_free(unsafe.Pointer(_file))
+	C.free(unsafe.Pointer(_file))
 	_ret := C.IMG_SavePNG(_surface, _file)
 	if _ret < 0 {
 		return GetError()
