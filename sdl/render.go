@@ -160,16 +160,16 @@ func (renderer *Renderer) CreateTextureFromSurface(surface *Surface) (*Texture, 
 }
 
 // Texture (https://wiki.libsdl.org/SDL_QueryTexture)
-func (texture *Texture) Query(format *uint32, access *int, w *int, h *int) error {
-	_format := (*C.Uint32)(unsafe.Pointer(access))
-	_access := (*C.int)(unsafe.Pointer(access))
-	_w := (*C.int)(unsafe.Pointer(w))
-	_h := (*C.int)(unsafe.Pointer(h))
-	_ret := C.SDL_QueryTexture(texture.cptr(), _format, _access, _w, _h)
-	if _ret < 0 {
-		return GetError()
+func (texture *Texture) Query() (uint32, int, int, int, error) {
+	var format C.Uint32
+	var access C.int
+	var width C.int
+	var height C.int
+	ret := C.SDL_QueryTexture(texture.cptr(), &format, &access, &width, &height)
+	if ret < 0 {
+		return 0,0,0,0, GetError()
 	}
-	return nil
+	return uint32(format), int(access), int(width), int(height), nil
 }
 
 // Texture (https://wiki.libsdl.org/SDL_SetTextureColorMod)
