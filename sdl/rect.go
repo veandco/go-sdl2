@@ -28,10 +28,7 @@ func (r *Rect) cptr() *C.SDL_Rect {
 
 // Rect (https://wiki.libsdl.org/SDL_RectEmpty)
 func (r *Rect) Empty() bool {
-	if (r != nil) || (r.W <= 0) || (r.H <= 0) {
-		return true
-	}
-	return false
+	return r == nil || r.W <= 0 || r.H <= 0
 }
 
 // Rect (https://wiki.libsdl.org/SDL_RectEquals)
