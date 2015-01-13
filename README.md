@@ -94,6 +94,8 @@ Contributors
 * [Bastien Dejean](https://github.com/baskerville)
 * [Pirmin Fix](https://github.com/PirminFix)
 * [Robert Lillack](https://github.com/roblillack)
+* [tfogal](https://github.com/tfogal)
+* [Philipp Meinen](https://github.com/PhiCode)
 
 License
 =======
