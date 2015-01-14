@@ -12,10 +12,11 @@ func main() {
 	var window *sdl.Window
 	var info sdl.SysWMInfo
 	var subsystem string
+	var err error
 
-	window = sdl.CreateWindow("", 0, 0, 0, 0, sdl.WINDOW_HIDDEN)
-	if window == nil {
-		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", sdl.GetError())
+	window,err = sdl.CreateWindow("", 0, 0, 0, 0, sdl.WINDOW_HIDDEN)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", err)
 		os.Exit(1)
 	}
 
