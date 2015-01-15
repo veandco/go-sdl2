@@ -18,29 +18,30 @@ func main() {
 	var renderer *sdl.Renderer
 	var texture *sdl.Texture
 	var src, dst sdl.Rect
+	var err error
 
-	window = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
+	window,err = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		winWidth, winHeight, sdl.WINDOW_SHOWN)
-	if window == nil {
-		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", sdl.GetError())
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", err)
 		os.Exit(1)
 	}
 
-	renderer = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
-	if renderer == nil {
-		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", sdl.GetError())
+	renderer,err = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", err)
 		os.Exit(2)
 	}
 
-	image := img.Load(imageName)
-	if image == nil {
-		fmt.Fprintf(os.Stderr, "Failed to load PNG: %s\n", sdl.GetError())
+	image,err := img.Load(imageName)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to load PNG: %s\n", err)
 		os.Exit(3)
 	}
 
-	texture = renderer.CreateTextureFromSurface(image)
-	if texture == nil {
-		fmt.Fprintf(os.Stderr, "Failed to create texture: %s\n", sdl.GetError())
+	texture,err = renderer.CreateTextureFromSurface(image)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to create texture: %s\n", err)
 		os.Exit(4)
 	}
 

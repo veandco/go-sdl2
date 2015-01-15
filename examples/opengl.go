@@ -15,14 +15,15 @@ func main() {
 	var context sdl.GLContext
 	var event sdl.Event
 	var running bool
+	var err error
 
 	if 0 != sdl.Init(sdl.INIT_EVERYTHING) {
 		panic(sdl.GetError())
 	}
-	window = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
+	window,err = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		winWidth, winHeight, sdl.WINDOW_OPENGL)
-	if window == nil {
-		panic(sdl.GetError())
+	if err != nil {
+		panic(err)
 	}
 	context = sdl.GL_CreateContext(window)
 	if context == nil {
