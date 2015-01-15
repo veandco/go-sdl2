@@ -96,6 +96,8 @@ Contributors
 * [Robert Lillack](https://github.com/roblillack)
 * [tfogal](https://github.com/tfogal)
 * [Philipp Meinen](https://github.com/PhiCode)
+* [Thomas McGrew](https://github.com/mcgrew)
+* [Geoff Catlin](https://github.com/gcatlin)
 
 License
 =======
