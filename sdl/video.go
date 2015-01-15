@@ -447,7 +447,7 @@ func GL_SetAttribute(attr GLattr, value int) int {
 func GL_GetAttribute(attr GLattr) (value int, status int) {
 	var _value, _status C.int
 	_status = (C.SDL_GL_GetAttribute(attr.c(), &_value))
-	return int(_status), int(_value)
+	return int(_value), int(_status)
 }
 
 // GL_CreateContext (https://wiki.libsdl.org/SDL_GL_CreateContext)
