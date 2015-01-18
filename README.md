@@ -24,8 +24,12 @@ On __Fedora 20 and above__, type:
 On __Arch Linux__, type:  
 `pacman -S sdl2{,_mixer,_image,_ttf}`
 
-On __Mac OS X__, install SDL2 via [Homebrew](http://brew.sh) like so:
-`brew install sdl2{,_image,_ttf,_mixer}`
+On __Mac OS X__, download the __Runtime Binaries__ (DMG files) of all
+required libraries from official links listed above and copy Frameworks files
+inside DMG Images on any of this paths:  
+`/Library/Frameworks (system-wide)`  
+`/Users/[your_user]/Library/Frameworks (user-level)`
+
 
 
 Installation
@@ -78,7 +82,7 @@ For now, take a look at http://godoc.org/github.com/veandco/go-sdl2/sdl. A full-
 Notes
 =====
 A standalone Go SDL2 library _is_ being considered (read: figured out). That means users should be able to just go get go-sdl2 and compile it without the original C library. That could mean faster build times, more 'idiomatic' Go code, and hopefully more people interested in using and contributing to go-sdl2!
- 
+
 Contributors
 ============
 * [Jacky Boen](https://github.com/jackyb)
@@ -98,6 +102,7 @@ Contributors
 * [Philipp Meinen](https://github.com/PhiCode)
 * [Thomas McGrew](https://github.com/mcgrew)
 * [Geoff Catlin](https://github.com/gcatlin)
+* [Eliuk Blau](https://github.com/eliukblau)
 
 License
 =======

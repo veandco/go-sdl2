@@ -1,8 +1,9 @@
 package img
 
-//#cgo linux freebsd darwin pkg-config: sdl2
-//#cgo linux freebsd darwin LDFLAGS: -lSDL2_image
 //#cgo windows LDFLAGS: -lSDL2 -lSDL2_image
+//#cgo darwin LDFLAGS: -framework SDL2 -framework SDL2_image
+//#cgo linux freebsd pkg-config: sdl2
+//#cgo linux freebsd LDFLAGS: -lSDL2_image
 //#include <stdlib.h>
 //#include "sdl_image_wrapper.h"
 import "C"
@@ -263,7 +264,7 @@ func LoadTIF_RW(src *sdl.RWops) (*sdl.Surface, error) {
 
 func LoadXCF_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	_surface :=C.IMG_LoadXCF_RW(_src)
+	_surface := C.IMG_LoadXCF_RW(_src)
 	if _surface == nil {
 		return nil, GetError()
 	}
