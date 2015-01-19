@@ -37,8 +37,8 @@ type RendererInfoData struct {
 	Flags             uint32
 	NumTextureFormats uint32
 	TextureFormats    [16]int32
-	MaxTextureWidth   int
-	MaxTextureHeight  int
+	MaxTextureWidth   int32
+	MaxTextureHeight  int32
 }
 
 // RendererFlip (https://wiki.libsdl.org/SDL_RendererFlip)

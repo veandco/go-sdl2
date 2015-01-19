@@ -87,9 +87,9 @@ const (
 // DisplayMode (https://wiki.libsdl.org/SDL_DisplayMode)
 type DisplayMode struct {
 	Format      uint32
-	W           int
-	H           int
-	RefreshRate int
+	W           int32
+	H           int32
+	RefreshRate int32
 	DriverData  unsafe.Pointer
 }
 
