@@ -167,7 +167,7 @@ func (texture *Texture) Query() (uint32, int, int, int, error) {
 	var height C.int
 	ret := C.SDL_QueryTexture(texture.cptr(), &format, &access, &width, &height)
 	if ret < 0 {
-		return 0,0,0,0, GetError()
+		return 0, 0, 0, 0, GetError()
 	}
 	return uint32(format), int(access), int(width), int(height), nil
 }
@@ -203,7 +203,6 @@ func (texture *Texture) GetAlphaMod() (alpha uint8, err error) {
 	}
 	return alpha, nil
 }
-
 
 // Texture (https://wiki.libsdl.org/SDL_SetTextureBlendMode)
 func (texture *Texture) SetBlendMode(bm BlendMode) error {

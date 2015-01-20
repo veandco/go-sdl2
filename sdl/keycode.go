@@ -281,13 +281,14 @@ const (
 
 // Keycode (https://wiki.libsdl.org/SDL_Keycode)
 type Keycode C.SDL_Keycode
+
 // Keymod (https://wiki.libsdl.org/SDL_Keymod)
 type Keymod C.SDL_Keymod
 
 func (code Keycode) c() C.SDL_Keycode {
-    return C.SDL_Keycode(code)
+	return C.SDL_Keycode(code)
 }
 
 func (mod Keymod) c() C.SDL_Keymod {
-    return C.SDL_Keymod(mod)
+	return C.SDL_Keymod(mod)
 }
