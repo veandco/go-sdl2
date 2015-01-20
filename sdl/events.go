@@ -494,8 +494,6 @@ func goEvent(cevent *CEvent) Event {
 	default:
 		return (*CommonEvent)(unsafe.Pointer(cevent))
 	}
-
-	panic(fmt.Errorf("Unknown event type: %v", cevent.Type))
 }
 
 func cEvent(event Event) *CEvent {
