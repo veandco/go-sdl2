@@ -18,14 +18,14 @@ import "C"
 import "unsafe"
 
 const (
-	SYSWM_UNKNOWN = C.SDL_SYSWM_UNKNOWN
-	SYSWM_WINDOWS = C.SDL_SYSWM_WINDOWS
-	SYSWM_X11 = C.SDL_SYSWM_X11
+	SYSWM_UNKNOWN  = C.SDL_SYSWM_UNKNOWN
+	SYSWM_WINDOWS  = C.SDL_SYSWM_WINDOWS
+	SYSWM_X11      = C.SDL_SYSWM_X11
 	SYSWM_DIRECTFB = C.SDL_SYSWM_DIRECTFB
-	SYSWM_COCOA = C.SDL_SYSWM_COCOA
-	SYSWM_UIKIT = C.SDL_SYSWM_UIKIT
-	SYSWM_WAYLAND = C.SDL_SYSWM_WAYLAND
-	SYSWM_MIR = C.SDL_SYSWM_MIR
+	SYSWM_COCOA    = C.SDL_SYSWM_COCOA
+	SYSWM_UIKIT    = C.SDL_SYSWM_UIKIT
+	SYSWM_WAYLAND  = C.SDL_SYSWM_WAYLAND
+	SYSWM_MIR      = C.SDL_SYSWM_MIR
 )
 
 // SysWMInfo (https://wiki.libsdl.org/SDL_SysWMInfo)
@@ -59,7 +59,7 @@ type UIKitInfo struct {
 }
 
 func (info *SysWMInfo) cptr() *C.SDL_SysWMinfo {
-    return (*C.SDL_SysWMinfo)(unsafe.Pointer(info))
+	return (*C.SDL_SysWMinfo)(unsafe.Pointer(info))
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowWMInfo)

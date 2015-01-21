@@ -263,7 +263,7 @@ func LoadTIF_RW(src *sdl.RWops) (*sdl.Surface, error) {
 
 func LoadXCF_RW(src *sdl.RWops) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	_surface :=C.IMG_LoadXCF_RW(_src)
+	_surface := C.IMG_LoadXCF_RW(_src)
 	if _surface == nil {
 		return nil, GetError()
 	}

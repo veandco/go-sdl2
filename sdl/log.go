@@ -191,38 +191,38 @@ func LogMessage(cat int, pri LogPriority, str string, args ...interface{}) {
 type LogOutputFunction func(data interface{}, cat int, pri LogPriority, message string)
 
 type logOutputFunctionCtx struct {
-    f LogOutputFunction
-        d interface{}
+	f LogOutputFunction
+	d interface{}
 }
 
 // Yissakhar Z. Beck (DeedleFake)'s implementation
 //
 //export logOutputFunction
 func logOutputFunction(data unsafe.Pointer, cat C.int, pri C.SDL_LogPriority, message *C.char) {
-    ctx := (*logOutputFunctionCtx)(data)
+	ctx := (*logOutputFunctionCtx)(data)
 
-    ctx.f(ctx.d, int(cat), LogPriority(pri), C.GoString(message))
+	ctx.f(ctx.d, int(cat), LogPriority(pri), C.GoString(message))
 }
 
 var (
-    logOutputFunctionCache LogOutputFunction
-    logOutputDataCache interface{}
+	logOutputFunctionCache LogOutputFunction
+	logOutputDataCache     interface{}
 )
 
 // LogGetOutputFunction (https://wiki.libsdl.org/SDL_LogGetOutputFunction)
 func LogGetOutputFunction() (LogOutputFunction, interface{}) {
-    return logOutputFunctionCache, logOutputDataCache
+	return logOutputFunctionCache, logOutputDataCache
 }
 
 // LogSetOutputFunction (https://wiki.libsdl.org/SDL_LogSetOutputFunction)
 func LogSetOutputFunction(f LogOutputFunction, data interface{}) {
-    ctx := &logOutputFunctionCtx{
-            f: f,
-            d: data,
-    }
+	ctx := &logOutputFunctionCtx{
+		f: f,
+		d: data,
+	}
 
-    C.LogSetOutputFunction(unsafe.Pointer(ctx))
+	C.LogSetOutputFunction(unsafe.Pointer(ctx))
 
-    logOutputFunctionCache = f
-    logOutputDataCache = data
+	logOutputFunctionCache = f
+	logOutputDataCache = data
 }

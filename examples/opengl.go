@@ -20,7 +20,7 @@ func main() {
 	if 0 != sdl.Init(sdl.INIT_EVERYTHING) {
 		panic(sdl.GetError())
 	}
-	window,err = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
+	window, err = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		winWidth, winHeight, sdl.WINDOW_OPENGL)
 	if err != nil {
 		panic(err)

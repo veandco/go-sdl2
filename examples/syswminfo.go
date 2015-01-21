@@ -14,7 +14,7 @@ func main() {
 	var subsystem string
 	var err error
 
-	window,err = sdl.CreateWindow("", 0, 0, 0, 0, sdl.WINDOW_HIDDEN)
+	window, err = sdl.CreateWindow("", 0, 0, 0, 0, sdl.WINDOW_HIDDEN)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", err)
 		os.Exit(1)

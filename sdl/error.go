@@ -16,7 +16,7 @@ const (
 type ErrorCode uint
 
 func (ec ErrorCode) c() C.SDL_errorcode {
-    return C.SDL_errorcode(ec)
+	return C.SDL_errorcode(ec)
 }
 
 // GetError (https://wiki.libsdl.org/SDL_GetError)

@@ -21,11 +21,11 @@ type JoystickGUID C.SDL_JoystickGUID
 type JoystickID C.SDL_JoystickID
 
 func (joy *Joystick) cptr() *C.SDL_Joystick {
-    return (*C.SDL_Joystick)(unsafe.Pointer(joy))
+	return (*C.SDL_Joystick)(unsafe.Pointer(joy))
 }
 
 func (guid JoystickGUID) c() C.SDL_JoystickGUID {
-    return C.SDL_JoystickGUID(guid)
+	return C.SDL_JoystickGUID(guid)
 }
 
 // NumJoysticks (https://wiki.libsdl.org/SDL_NumJoysticks)

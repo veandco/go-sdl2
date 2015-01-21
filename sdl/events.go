@@ -11,7 +11,6 @@ package sdl
 import "C"
 import "unsafe"
 import "reflect"
-import "fmt"
 
 var (
 	eventFilterCache  EventFilter

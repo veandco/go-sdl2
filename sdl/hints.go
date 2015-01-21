@@ -61,8 +61,8 @@ const (
 )
 
 const (
-	HINT_DEFAULT = C.SDL_HINT_DEFAULT
-	HINT_NORMAL = C.SDL_HINT_NORMAL
+	HINT_DEFAULT  = C.SDL_HINT_DEFAULT
+	HINT_NORMAL   = C.SDL_HINT_NORMAL
 	HINT_OVERRIDE = C.SDL_HINT_OVERRIDE
 )
 
@@ -70,7 +70,7 @@ const (
 type HintPriority C.SDL_HintPriority
 
 func (hp HintPriority) c() C.SDL_HintPriority {
-    return C.SDL_HintPriority(hp)
+	return C.SDL_HintPriority(hp)
 }
 
 // SetHintWithPriority (https://wiki.libsdl.org/SDL_SetHintWithPriority)
