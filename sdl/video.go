@@ -87,14 +87,15 @@ const (
 // DisplayMode (https://wiki.libsdl.org/SDL_DisplayMode)
 type DisplayMode struct {
 	Format      uint32
-	W           int
-	H           int
-	RefreshRate int
+	W           int32
+	H           int32
+	RefreshRate int32
 	DriverData  unsafe.Pointer
 }
 
 type Window C.SDL_Window
 type GLContext C.SDL_GLContext
+
 // GLattr (https://wiki.libsdl.org/SDL_GLattr)
 type GLattr C.SDL_GLattr
 
@@ -106,8 +107,8 @@ func (dm *DisplayMode) cptr() *C.SDL_DisplayMode {
 	return (*C.SDL_DisplayMode)(unsafe.Pointer(dm))
 }
 
-func (attr GLattr) c() C.SDL_GLattr{
-    return C.SDL_GLattr(attr)
+func (attr GLattr) c() C.SDL_GLattr {
+	return C.SDL_GLattr(attr)
 }
 
 // GetNumVideoDisplays (https://wiki.libsdl.org/SDL_GetNumVideoDisplays)
@@ -148,7 +149,7 @@ func GetNumDisplayModes(displayIndex int) int {
 
 // GetDisplayBounds (https://wiki.libsdl.org/SDL_GetDisplayBounds)
 func GetDisplayBounds(displayIndex int, rect *Rect) int {
-    return int(C.SDL_GetDisplayBounds(C.int(displayIndex), rect.cptr()))
+	return int(C.SDL_GetDisplayBounds(C.int(displayIndex), rect.cptr()))
 }
 
 // GetDisplayMode (https://wiki.libsdl.org/SDL_GetDisplayMode)

@@ -3,8 +3,8 @@ package sdl
 import "testing"
 
 const (
-    TIMER_RESOLUTION = "32"
-    DRIVER = "software"
+	TIMER_RESOLUTION = "32"
+	DRIVER           = "software"
 )
 
 func TestSetHintWithPriority(t *testing.T) {

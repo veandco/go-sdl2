@@ -28,7 +28,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", sdl.GetError())
 		os.Exit(2)
 	}
-	
+
 	var peepArray []sdl.Event = make([]sdl.Event, 5)
 
 	running = true
@@ -42,7 +42,7 @@ func main() {
 				fmt.Printf("Event Peeked Value: %v\n", peepArray[i]) // primitive printing of event
 			}
 		}
-		
+
 		for event = sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 			switch t := event.(type) {
 			case *sdl.QuitEvent:
@@ -61,7 +61,7 @@ func main() {
 					t.Timestamp, t.Type, t.Keysym.Sym, t.Keysym.Mod, t.State, t.Repeat)
 			}
 		}
-		sdl.Delay(1000/30)
+		sdl.Delay(1000 / 30)
 	}
 
 	renderer.Destroy()

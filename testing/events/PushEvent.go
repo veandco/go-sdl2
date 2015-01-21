@@ -9,6 +9,7 @@ import (
 
 var winTitle string = "Go-SDL2 TestWaitEvent"
 var winWidth, winHeight int = 800, 600
+
 const pushTime uint32 = 1000 // number of milliseconds between event pushes
 
 func main() {
@@ -35,19 +36,19 @@ func main() {
 	for running {
 
 		// Push a UserEvent every second
-		if lastPushTime + pushTime < sdl.GetTicks() {
+		if lastPushTime+pushTime < sdl.GetTicks() {
 			lastPushTime = sdl.GetTicks()
 			pEvent := &sdl.UserEvent{sdl.USEREVENT, sdl.GetTicks(), window.GetID(), 1331, nil, nil}
 
 			retVal := sdl.PushEvent(pEvent) // Here's where the event is actually pushed
 
 			switch retVal {
-				case 1:
-					fmt.Println("PushEvent returned success")
-				case 0:
-					fmt.Println("PushEvent returned filtered")
-				case -1:
-					fmt.Printf("PushEvent returned error: %s\n", sdl.GetError)
+			case 1:
+				fmt.Println("PushEvent returned success")
+			case 0:
+				fmt.Println("PushEvent returned filtered")
+			case -1:
+				fmt.Printf("PushEvent returned error: %s\n", sdl.GetError)
 			}
 		}
 
@@ -71,7 +72,7 @@ func main() {
 				fmt.Printf("[%d ms] UserEvent\tcode:%d\n", t.Timestamp, t.Code)
 			}
 		}
-		sdl.Delay(1000/30)
+		sdl.Delay(1000 / 30)
 	}
 
 	renderer.Destroy()

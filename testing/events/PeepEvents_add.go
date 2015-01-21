@@ -9,6 +9,7 @@ import (
 
 var winTitle string = "Go-SDL2 TestWaitEvent"
 var winWidth, winHeight int = 800, 600
+
 const pushTime uint32 = 1000 // number of milliseconds between event pushes
 
 func main() {
@@ -29,7 +30,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", sdl.GetError())
 		os.Exit(2)
 	}
-	
+
 	var peepArray []sdl.Event = make([]sdl.Event, 2)
 	peepArray[0] = &sdl.UserEvent{sdl.USEREVENT, sdl.GetTicks(), window.GetID(), 1331, nil, nil}
 	peepArray[1] = &sdl.UserEvent{sdl.USEREVENT, sdl.GetTicks(), window.GetID(), 10101, nil, nil}
@@ -37,7 +38,7 @@ func main() {
 	running = true
 	lastPushTime := sdl.GetTicks()
 	for running {
-		if lastPushTime + pushTime < sdl.GetTicks() {
+		if lastPushTime+pushTime < sdl.GetTicks() {
 			lastPushTime = sdl.GetTicks()
 			sdl.PumpEvents()
 			numEventsHandled := sdl.PeepEvents(peepArray, sdl.ADDEVENT, sdl.FIRSTEVENT, sdl.LASTEVENT)
@@ -47,7 +48,7 @@ func main() {
 				fmt.Printf("Successful push of %d events\n", numEventsHandled)
 			}
 		}
-		
+
 		for event = sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 			switch t := event.(type) {
 			case *sdl.QuitEvent:
@@ -68,7 +69,7 @@ func main() {
 				fmt.Printf("[%d ms] UserEvent\tcode:%d\n", t.Timestamp, t.Code)
 			}
 		}
-		sdl.Delay(1000/30)
+		sdl.Delay(1000 / 30)
 	}
 
 	renderer.Destroy()

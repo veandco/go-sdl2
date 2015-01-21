@@ -44,26 +44,26 @@ func (surface *Surface) MustLock() bool {
 // CreateRGBSurface (https://wiki.libsdl.org/SDL_CreateRGBSurface)
 func CreateRGBSurface(flags uint32, width, height, depth int32, Rmask, Gmask, Bmask, Amask uint32) *Surface {
 	return (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurface(C.Uint32(flags),
-                                                            C.int(width),
-                                                            C.int(height),
-                                                            C.int(depth),
-                                                            C.Uint32(Rmask),
-                                                            C.Uint32(Gmask),
-                                                            C.Uint32(Bmask),
-                                                            C.Uint32(Amask))))
+		C.int(width),
+		C.int(height),
+		C.int(depth),
+		C.Uint32(Rmask),
+		C.Uint32(Gmask),
+		C.Uint32(Bmask),
+		C.Uint32(Amask))))
 }
 
 // CreateRGBSurfaceFrom (https://wiki.libsdl.org/SDL_CreateRGBSurfaceFrom)
 func CreateRGBSurfaceFrom(pixels unsafe.Pointer, width, height, depth, pitch int, Rmask, Gmask, Bmask, Amask uint32) *Surface {
 	return (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurfaceFrom(pixels,
-                                                                C.int(width),
-                                                                C.int(height),
-                                                                C.int(depth),
-                                                                C.int(pitch),
-                                                                C.Uint32(Rmask),
-                                                                C.Uint32(Gmask),
-                                                                C.Uint32(Bmask),
-                                                                C.Uint32(Amask))))
+		C.int(width),
+		C.int(height),
+		C.int(depth),
+		C.int(pitch),
+		C.Uint32(Rmask),
+		C.Uint32(Gmask),
+		C.Uint32(Bmask),
+		C.Uint32(Amask))))
 }
 
 // Surface (https://wiki.libsdl.org/SDL_FreeSurface)
@@ -88,7 +88,7 @@ func (surface *Surface) Unlock() {
 
 // LoadBMP_RW (https://wiki.libsdl.org/SDL_LoadBMP_RW)
 func LoadBMP_RW(src *RWops, freeSrc int) *Surface {
-    _surface := C.SDL_LoadBMP_RW(src.cptr(), C.int(freeSrc))
+	_surface := C.SDL_LoadBMP_RW(src.cptr(), C.int(freeSrc))
 	return (*Surface)(unsafe.Pointer(_surface))
 }
 

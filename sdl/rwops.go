@@ -32,12 +32,12 @@ import "unsafe"
 
 /* RWops Types */
 const (
-    RWOPS_UNKNOWN   = 0
-    RWOPS_WINFILE   = 1
-    RWOPS_STDFILE   = 2
-    RWOPS_JNIFILE   = 3
-    RWOPS_MEMORY    = 4
-    RWOPS_MEMORY_RO = 5
+	RWOPS_UNKNOWN   = 0
+	RWOPS_WINFILE   = 1
+	RWOPS_STDFILE   = 2
+	RWOPS_JNIFILE   = 3
+	RWOPS_MEMORY    = 4
+	RWOPS_MEMORY_RO = 5
 )
 
 const (
@@ -50,7 +50,7 @@ const (
 type RWops C.SDL_RWops
 
 func (rw *RWops) cptr() *C.SDL_RWops {
-    return (*C.SDL_RWops)(rw)
+	return (*C.SDL_RWops)(rw)
 }
 
 // RWFromFile (https://wiki.libsdl.org/SDL_RWFromFile)

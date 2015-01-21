@@ -5,30 +5,30 @@ import "C"
 import "unsafe"
 
 const (
-	HAPTIC_CONSTANT = C.SDL_HAPTIC_CONSTANT
-	HAPTIC_SINE = C.SDL_HAPTIC_SINE
+	HAPTIC_CONSTANT  = C.SDL_HAPTIC_CONSTANT
+	HAPTIC_SINE      = C.SDL_HAPTIC_SINE
 	HAPTIC_LEFTRIGHT = C.SDL_HAPTIC_LEFTRIGHT
 	//HAPTIC_SQUARE = C.SDL_HAPTIC_SQUARE (back in SDL 2.1)
-	HAPTIC_TRIANGLE = C.SDL_HAPTIC_TRIANGLE
-	HAPTIC_SAWTOOTHUP = C.SDL_HAPTIC_SAWTOOTHUP
+	HAPTIC_TRIANGLE     = C.SDL_HAPTIC_TRIANGLE
+	HAPTIC_SAWTOOTHUP   = C.SDL_HAPTIC_SAWTOOTHUP
 	HAPTIC_SAWTOOTHDOWN = C.SDL_HAPTIC_SAWTOOTHDOWN
-	HAPTIC_RAMP = C.SDL_HAPTIC_RAMP
-	HAPTIC_SPRING = C.SDL_HAPTIC_SPRING
-	HAPTIC_DAMPER = C.SDL_HAPTIC_DAMPER
-	HAPTIC_INERTIA = C.SDL_HAPTIC_INERTIA
-	HAPTIC_FRICTION = C.SDL_HAPTIC_FRICTION
-	HAPTIC_CUSTOM = C.SDL_HAPTIC_CUSTOM
-	HAPTIC_GAIN = C.SDL_HAPTIC_GAIN
-	HAPTIC_AUTOCENTER = C.SDL_HAPTIC_AUTOCENTER
-	HAPTIC_STATUS = C.SDL_HAPTIC_STATUS
-	HAPTIC_PAUSE = C.SDL_HAPTIC_PAUSE
+	HAPTIC_RAMP         = C.SDL_HAPTIC_RAMP
+	HAPTIC_SPRING       = C.SDL_HAPTIC_SPRING
+	HAPTIC_DAMPER       = C.SDL_HAPTIC_DAMPER
+	HAPTIC_INERTIA      = C.SDL_HAPTIC_INERTIA
+	HAPTIC_FRICTION     = C.SDL_HAPTIC_FRICTION
+	HAPTIC_CUSTOM       = C.SDL_HAPTIC_CUSTOM
+	HAPTIC_GAIN         = C.SDL_HAPTIC_GAIN
+	HAPTIC_AUTOCENTER   = C.SDL_HAPTIC_AUTOCENTER
+	HAPTIC_STATUS       = C.SDL_HAPTIC_STATUS
+	HAPTIC_PAUSE        = C.SDL_HAPTIC_PAUSE
 )
 
 const (
-	HAPTIC_POLAR = C.SDL_HAPTIC_POLAR
+	HAPTIC_POLAR     = C.SDL_HAPTIC_POLAR
 	HAPTIC_CARTESIAN = C.SDL_HAPTIC_CARTESIAN
 	HAPTIC_SPHERICAL = C.SDL_HAPTIC_SPHERICAL
-    HAPTIC_INFINITY = C.SDL_HAPTIC_INFINITY
+	HAPTIC_INFINITY  = C.SDL_HAPTIC_INFINITY
 )
 
 type Haptic C.SDL_Haptic
@@ -126,7 +126,7 @@ type HapticCustom struct {
 type HapticEffect interface{}
 
 func (h *Haptic) cptr() *C.SDL_Haptic {
-    return (*C.SDL_Haptic)(unsafe.Pointer(h))
+	return (*C.SDL_Haptic)(unsafe.Pointer(h))
 }
 
 // NumHaptics (https://wiki.libsdl.org/SDL_NumHaptics)
@@ -196,19 +196,19 @@ func (h *Haptic) Query() uint {
 
 // Haptic (https://wiki.libsdl.org/SDL_HapticEffectSupported)
 func (h *Haptic) EffectSupported(he *HapticEffect) int {
-    _he := (*C.SDL_HapticEffect)(unsafe.Pointer(he))
+	_he := (*C.SDL_HapticEffect)(unsafe.Pointer(he))
 	return int(C.SDL_HapticEffectSupported(h.cptr(), _he))
 }
 
 // Haptic (https://wiki.libsdl.org/SDL_HapticNewEffect)
 func (h *Haptic) NewEffect(he *HapticEffect) int {
-    _he := (*C.SDL_HapticEffect)(unsafe.Pointer(he))
+	_he := (*C.SDL_HapticEffect)(unsafe.Pointer(he))
 	return int(C.SDL_HapticNewEffect(h.cptr(), _he))
 }
 
 // Haptic (https://wiki.libsdl.org/SDL_HapticUpdateEffect)
 func (h *Haptic) UpdateEffect(effect int, data *HapticEffect) int {
-    _data := (*C.SDL_HapticEffect)(unsafe.Pointer(data))
+	_data := (*C.SDL_HapticEffect)(unsafe.Pointer(data))
 	return int(C.SDL_HapticUpdateEffect(h.cptr(), C.int(effect), _data))
 }
 
