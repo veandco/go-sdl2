@@ -273,7 +273,7 @@ func CloseAudio() {
 
 // CloseAudioDevice (https://wiki.libsdl.org/SDL_CloseAudioDevice)
 func CloseAudioDevice(dev AudioDeviceID) {
-	C.SDL_UnlockAudioDevice(dev.c())
+	C.SDL_CloseAudioDevice(dev.c())
 }
 
 /*
