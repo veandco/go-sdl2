@@ -6,6 +6,10 @@ import (
 	"testing"
 )
 
+// TODO: AudioCVT is a packed struct in C - proper conversion needs some more work
+//func TestStructAudioCVT(t *testing.T)  { testStructEquality(t, AudioCVT{}, cAudioCVT{}) }
+func TestStructAudioSpec(t *testing.T) { testStructEquality(t, AudioSpec{}, cAudioSpec{}) }
+
 func TestStructKeyDownEvent(t *testing.T) { testStructEquality(t, KeyDownEvent{}, cKeyboardEvent{}) }
 func TestStructKeyUpEvent(t *testing.T)   { testStructEquality(t, KeyUpEvent{}, cKeyboardEvent{}) }
 func TestStructMouseButtonEvent(t *testing.T) {

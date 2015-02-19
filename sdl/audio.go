@@ -58,7 +58,7 @@ type AudioStatus uint
 
 // AudioSpec (https://wiki.libsdl.org/SDL_AudioSpec)
 type AudioSpec struct {
-	Freq     int
+	Freq     int32
 	Format   AudioFormat
 	Channels uint8
 	Silence  uint8
@@ -68,21 +68,23 @@ type AudioSpec struct {
 	Callback AudioCallback
 	UserData unsafe.Pointer
 }
+type cAudioSpec C.SDL_AudioSpec
 
 // AudioCVT (https://wiki.libsdl.org/SDL_AudioCVT)
 type AudioCVT struct {
-	Needed      int
+	Needed      int32
 	SrcFormat   AudioFormat
 	DstFormat   AudioFormat
 	RateIncr    float64
 	Buf         *uint8
-	Len         int
-	LenCVT      int
-	LenMult     int
+	Len         int32
+	LenCVT      int32
+	LenMult     int32
 	LenRatio    float64
-	filters     [10]AudioFilter
-	FilterIndex int
+	filters     [10]AudioFilter // internal
+	filterIndex int32           // internal
 }
+type cAudioCVT C.SDL_AudioCVT
 
 func (fmt AudioFormat) c() C.SDL_AudioFormat {
 	return C.SDL_AudioFormat(fmt)
