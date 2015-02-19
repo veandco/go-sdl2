@@ -30,11 +30,12 @@ type cPixelFormat C.SDL_PixelFormat
 
 // Palette (https://wiki.libsdl.org/SDL_Palette)
 type Palette struct {
-	Ncolors  int
+	Ncolors  int32
 	Colors   *Color
 	Version  uint32
-	RefCount int
+	RefCount int32
 }
+type cPalette C.SDL_Palette
 
 // Color (https://wiki.libsdl.org/SDL_Color)
 type Color struct {

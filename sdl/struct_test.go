@@ -28,6 +28,7 @@ func TestStructTextInputEvent(t *testing.T) {
 	testStructEquality(t, TextInputEvent{}, cTextInputEvent{})
 }
 
+func TestStructPalette(t *testing.T)     { testStructEquality(t, Palette{}, cPalette{}) }
 func TestStructPixelFormat(t *testing.T) { testStructEquality(t, PixelFormat{}, cPixelFormat{}) }
 func TestStructSurface(t *testing.T)     { testStructEquality(t, Surface{}, cSurface{}) }
 func TestStructVersion(t *testing.T)     { testStructEquality(t, Version{}, cVersion{}) }
