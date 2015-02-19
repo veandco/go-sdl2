@@ -19,6 +19,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", err)
 		os.Exit(1)
 	}
+	defer window.Destroy()
 
 	sdl.VERSION(&info.Version)
 
@@ -46,6 +47,4 @@ func main() {
 	} else {
 		fmt.Fprintf(os.Stderr, "Couldn't get window information: %s\n", sdl.GetError())
 	}
-
-	window.Destroy()
 }

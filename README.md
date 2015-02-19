@@ -55,6 +55,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	defer window.Destroy()
 
 	surface := window.GetSurface()
 
@@ -63,7 +64,6 @@ func main() {
 	window.UpdateSurface()
 
 	sdl.Delay(1000)
-	window.Destroy()
 }
 ```
 
