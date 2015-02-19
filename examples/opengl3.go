@@ -60,8 +60,8 @@ func main() {
 	var running bool
 	var err error
 	runtime.LockOSThread()
-	if 0 != sdl.Init(sdl.INIT_EVERYTHING) {
-		panic(sdl.GetError())
+	if err = sdl.Init(sdl.INIT_EVERYTHING); err != nil {
+		panic(err)
 	}
 	defer sdl.Quit()
 	window, err = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED,

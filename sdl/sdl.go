@@ -23,8 +23,11 @@ const (
 )
 
 // Init (https://wiki.libsdl.org/SDL_Init)
-func Init(flags uint32) int {
-	return int(C.SDL_Init(C.Uint32(flags)))
+func Init(flags uint32) error {
+	if C.SDL_Init(C.Uint32(flags)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Quit (https://wiki.libsdl.org/SDL_Quit)
