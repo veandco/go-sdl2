@@ -28,7 +28,7 @@ const (
 	SYSWM_MIR      = C.SDL_SYSWM_MIR
 )
 
-// SysWMInfo (https://wiki.libsdl.org/SDL_SysWMInfo)
+// SysWMInfo (https://wiki.libsdl.org/SDL_SysWMinfo)
 type SysWMInfo struct {
 	Version   Version
 	Subsystem uint32
