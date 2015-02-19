@@ -31,8 +31,6 @@ type Surface struct {
 }
 type cSurface C.SDL_Surface
 
-type blit C.SDL_blit
-
 func (surface *Surface) cptr() *C.SDL_Surface {
 	return (*C.SDL_Surface)(unsafe.Pointer(surface))
 }
