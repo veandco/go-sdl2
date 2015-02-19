@@ -20,15 +20,16 @@ type Surface struct {
 	Format   *PixelFormat
 	W        int32
 	H        int32
-	Pitch    int
+	Pitch    int32
 	pixels   unsafe.Pointer // use Pixels() for access
 	UserData unsafe.Pointer
-	Locked   int
+	Locked   int32
 	LockData unsafe.Pointer
 	ClipRect Rect
-	_map     *[0]byte
-	RefCount int
+	_        unsafe.Pointer // private c field 'map'
+	RefCount int32
 }
+type cSurface C.SDL_Surface
 
 type blit C.SDL_blit
 
