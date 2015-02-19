@@ -24,12 +24,14 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", err)
 		os.Exit(1)
 	}
+	defer window.Destroy()
 
 	renderer, err = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", err)
 		os.Exit(2)
 	}
+	defer renderer.Destroy()
 
 	running = true
 	for running {
@@ -52,7 +54,4 @@ func main() {
 			}
 		}
 	}
-
-	renderer.Destroy()
-	window.Destroy()
 }

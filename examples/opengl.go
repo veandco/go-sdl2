@@ -20,15 +20,18 @@ func main() {
 	if 0 != sdl.Init(sdl.INIT_EVERYTHING) {
 		panic(sdl.GetError())
 	}
+	defer sdl.Quit()
 	window, err = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		winWidth, winHeight, sdl.WINDOW_OPENGL)
 	if err != nil {
 		panic(err)
 	}
+	defer window.Destroy()
 	context = sdl.GL_CreateContext(window)
 	if context == nil {
 		panic(sdl.GetError())
 	}
+	defer sdl.GL_DeleteContext(context)
 
 	gl.Enable(gl.DEPTH_TEST)
 	gl.ClearColor(0.2, 0.2, 0.3, 1.0)
@@ -49,10 +52,6 @@ func main() {
 		drawgl()
 		sdl.GL_SwapWindow(window)
 	}
-
-	sdl.GL_DeleteContext(context)
-	window.Destroy()
-	sdl.Quit()
 }
 
 func drawgl() {
