@@ -6,12 +6,31 @@ import (
 	"testing"
 )
 
-func TestVersionStruct(t *testing.T)     { testStructEquality(t, Version{}, cVersion{}) }
-func TestPixelFormatStruct(t *testing.T) { testStructEquality(t, PixelFormat{}, cPixelFormat{}) }
-func TestSurfaceStruct(t *testing.T)     { testStructEquality(t, Surface{}, cSurface{}) }
+func TestStructKeyDownEvent(t *testing.T) { testStructEquality(t, KeyDownEvent{}, cKeyboardEvent{}) }
+func TestStructKeyUpEvent(t *testing.T)   { testStructEquality(t, KeyUpEvent{}, cKeyboardEvent{}) }
+func TestStructMouseButtonEvent(t *testing.T) {
+	testStructEquality(t, MouseButtonEvent{}, cMouseButtonEvent{})
+}
+func TestStructMouseMotionEvent(t *testing.T) {
+	testStructEquality(t, MouseMotionEvent{}, cMouseMotionEvent{})
+}
+func TestStructMouseWheelEvent(t *testing.T) {
+	testStructEquality(t, MouseWheelEvent{}, cMouseWheelEvent{})
+}
+func TestStructTextEditingEvent(t *testing.T) {
+	testStructEquality(t, TextEditingEvent{}, cTextEditingEvent{})
+}
+func TestStructTextInputEvent(t *testing.T) {
+	testStructEquality(t, TextInputEvent{}, cTextInputEvent{})
+}
 
-//func TestSysWmInfoSize(t *testing.T) { testStructEquality(t, SysWMInfo{}, cSysWMinfo{}) }
-// WindowEvent
+func TestStructPixelFormat(t *testing.T) { testStructEquality(t, PixelFormat{}, cPixelFormat{}) }
+func TestStructSurface(t *testing.T)     { testStructEquality(t, Surface{}, cSurface{}) }
+func TestStructVersion(t *testing.T)     { testStructEquality(t, Version{}, cVersion{}) }
+func TestStructWindowEvent(t *testing.T) { testStructEquality(t, WindowEvent{}, cWindowEvent{}) }
+
+//TODO
+//func TestStructSysWmInfo(t *testing.T)   { testStructEquality(t, SysWMInfo{}, cSysWMinfo{}) }
 
 func testStructEquality(t *testing.T, a, b interface{}) {
 	ta, tb := reflect.TypeOf(a), reflect.TypeOf(b)

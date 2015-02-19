@@ -100,8 +100,8 @@ const (
 type Event interface{}
 
 type CEvent struct {
-	Type     uint32
-	padding1 [52]byte
+	Type uint32
+	_    [52]byte // padding
 }
 
 type CommonEvent struct {
@@ -115,12 +115,15 @@ type WindowEvent struct {
 	Timestamp uint32
 	WindowID  uint32
 	Event     uint8
-	padding1  uint8
-	padding2  uint8
-	padding3  uint8
+	_         uint8 // padding
+	_         uint8 // padding
+	_         uint8 // padding
 	Data1     int32
 	Data2     int32
 }
+type cWindowEvent C.SDL_WindowEvent
+
+//TODO: Key{Up,Down}Event only differ in 'Type' - a boolean field would be enough to distinguish up/down events
 
 type KeyDownEvent struct {
 	Type      uint32
@@ -128,10 +131,11 @@ type KeyDownEvent struct {
 	WindowID  uint32
 	State     uint8
 	Repeat    uint8
-	padding1  uint8
-	padding2  uint8
+	_         uint8 // padding
+	_         uint8 // padding
 	Keysym    Keysym
 }
+type cKeyboardEvent C.SDL_KeyboardEvent
 
 type KeyUpEvent struct {
 	Type      uint32
@@ -139,8 +143,8 @@ type KeyUpEvent struct {
 	WindowID  uint32
 	State     uint8
 	Repeat    uint8
-	padding1  uint8
-	padding2  uint8
+	_         uint8 // padding
+	_         uint8 // padding
 	Keysym    Keysym
 }
 
@@ -154,6 +158,8 @@ type TextEditingEvent struct {
 	Length    int32
 }
 
+type cTextEditingEvent C.SDL_TextEditingEvent
+
 // TextInputEvent (https://wiki.libsdl.org/SDL_TextInputEvent)
 type TextInputEvent struct {
 	Type      uint32
@@ -161,6 +167,7 @@ type TextInputEvent struct {
 	WindowID  uint32
 	Text      [C.SDL_TEXTINPUTEVENT_TEXT_SIZE]byte
 }
+type cTextInputEvent C.SDL_TextInputEvent
 
 // MouseMotionEvent (https://wiki.libsdl.org/SDL_MouseMotionEvent)
 type MouseMotionEvent struct {
@@ -174,6 +181,7 @@ type MouseMotionEvent struct {
 	XRel      int32
 	YRel      int32
 }
+type cMouseMotionEvent C.SDL_MouseMotionEvent
 
 // MouseButtonEvent (https://wiki.libsdl.org/SDL_MouseButtonEvent)
 type MouseButtonEvent struct {
@@ -183,11 +191,12 @@ type MouseButtonEvent struct {
 	Which     uint32
 	Button    uint8
 	State     uint8
-	padding1  uint8
-	padding2  uint8
+	_         uint8 // padding
+	_         uint8 // padding
 	X         int32
 	Y         int32
 }
+type cMouseButtonEvent C.SDL_MouseButtonEvent
 
 // MouseWheelEvent (https://wiki.libsdl.org/SDL_MouseWheelEvent)
 type MouseWheelEvent struct {
@@ -198,6 +207,7 @@ type MouseWheelEvent struct {
 	X         int32
 	Y         int32
 }
+type cMouseWheelEvent C.SDL_MouseWheelEvent
 
 // JoyAxisEvent (https://wiki.libsdl.org/SDL_JoyAxisEvent)
 type JoyAxisEvent struct {
@@ -205,11 +215,11 @@ type JoyAxisEvent struct {
 	Timestamp uint32
 	Which     JoystickID
 	Axis      uint8
-	padding1  uint8
-	padding2  uint8
-	padding3  uint8
+	_         uint8 // padding
+	_         uint8 // padding
+	_         uint8 // padding
 	Value     int16
-	padding4  uint16
+	_         uint16 // padding
 }
 
 // JoyBallEvent (https://wiki.libsdl.org/SDL_JoyBallEvent)
@@ -218,9 +228,9 @@ type JoyBallEvent struct {
 	Timestamp uint32
 	Which     JoystickID
 	Ball      uint8
-	padding1  uint8
-	padding2  uint8
-	padding3  uint8
+	_         uint8 // padding
+	_         uint8 // padding
+	_         uint8 // padding
 	XRel      int16
 	YRel      int16
 }
@@ -232,8 +242,8 @@ type JoyHatEvent struct {
 	Which     JoystickID
 	Hat       uint8
 	Value     uint8
-	padding1  uint8
-	padding2  uint8
+	_         uint8 // padding
+	_         uint8 // padding
 }
 
 // JoyButtonEvent (https://wiki.libsdl.org/SDL_JoyButtonEvent)
@@ -243,8 +253,8 @@ type JoyButtonEvent struct {
 	Which     JoystickID
 	Button    uint8
 	State     uint8
-	padding1  uint8
-	padding2  uint8
+	_         uint8 // padding
+	_         uint8 // padding
 }
 
 type JoyDeviceEvent struct {
@@ -258,11 +268,11 @@ type ControllerAxisEvent struct {
 	Timestamp uint32
 	Which     JoystickID
 	Axis      uint8
-	padding1  uint8
-	padding2  uint8
-	padding3  uint8
+	_         uint8 // padding
+	_         uint8 // padding
+	_         uint8
 	Value     int16
-	padding4  uint16
+	_         uint16 // padding
 }
 
 type ControllerButtonEvent struct {
@@ -271,8 +281,8 @@ type ControllerButtonEvent struct {
 	Which     JoystickID
 	Button    uint8
 	State     uint8
-	padding1  uint8
-	padding2  uint8
+	_         uint8 // padding
+	_         uint8 // padding
 }
 
 type ControllerDeviceEvent struct {
@@ -304,7 +314,7 @@ type MultiGestureEvent struct {
 	X          float32
 	Y          float32
 	NumFingers uint16
-	padding    uint16
+	_          uint16 // padding
 }
 
 // DollarGestureEvent (https://wiki.libsdl.org/SDL_DollarGestureEvent)
