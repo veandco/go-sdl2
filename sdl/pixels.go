@@ -8,9 +8,9 @@ import "unsafe"
 type PixelFormat struct {
 	Format        uint32
 	Palette       *Palette
-	BitsPerPixels uint8
+	BitsPerPixel  uint8
 	BytesPerPixel uint8
-	padding       [2]uint8
+	_             [2]uint8 // padding
 	Rmask         uint32
 	Gmask         uint32
 	Bmask         uint32
@@ -23,9 +23,10 @@ type PixelFormat struct {
 	Gshift        uint8
 	Bshift        uint8
 	Ashift        uint8
-	RefCount      int
+	RefCount      int32
 	Next          *PixelFormat
 }
+type cPixelFormat C.SDL_PixelFormat
 
 // Palette (https://wiki.libsdl.org/SDL_Palette)
 type Palette struct {

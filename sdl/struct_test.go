@@ -6,10 +6,10 @@ import (
 	"testing"
 )
 
-func TestVersionSize(t *testing.T) { testStructEquality(t, Version{}, cVersion{}) }
+func TestVersionSize(t *testing.T)     { testStructEquality(t, Version{}, cVersion{}) }
+func TestPixelFormatSize(t *testing.T) { testStructEquality(t, PixelFormat{}, cPixelFormat{}) }
 
 //func TestSysWmInfoSize(t *testing.T) { testStructEquality(t, SysWMInfo{}, cSysWMinfo{}) }
-// PixelFormat
 // Surface
 // WindowEvent
 
