@@ -57,15 +57,13 @@ func testStructEquality(t *testing.T, a, b interface{}) {
 }
 
 func dumpStructFormat(t *testing.T, s reflect.Type) {
-	const format = "%25s%10d%10d"
-	t.Logf("%25s%10s%10s", "name", "offset", "size")
+	const dFormat = "%5d %30s %8d %8d"
+	var sFormat = strings.Replace(dFormat, "d", "s", -1)
+
+	t.Logf(sFormat, "index", "name", "offset", "size")
 	for i := 0; i < s.NumField(); i++ {
 		f := s.Field(i)
-		if f.Name == "_" {
-			// ignore padding fields
-			continue
-		}
-		t.Logf(format, s.Name()+"."+f.Name, f.Offset, f.Type.Size())
+		t.Logf(dFormat, i, s.Name()+"."+f.Name, f.Offset, f.Type.Size())
 	}
 }
 
