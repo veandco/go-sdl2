@@ -188,8 +188,11 @@ func ConvertPixels(width, height int, srcFormat uint32, src unsafe.Pointer, srcP
 }
 
 // Surface (https://wiki.libsdl.org/SDL_FillRect)
-func (surface *Surface) FillRect(rect *Rect, color uint32) int {
-	return int(C.SDL_FillRect(surface.cptr(), rect.cptr(), C.Uint32(color)))
+func (surface *Surface) FillRect(rect *Rect, color uint32) error {
+	if C.SDL_FillRect(surface.cptr(), rect.cptr(), C.Uint32(color)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_FillRects)
