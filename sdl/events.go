@@ -157,7 +157,6 @@ type TextEditingEvent struct {
 	Start     int32
 	Length    int32
 }
-
 type cTextEditingEvent C.SDL_TextEditingEvent
 
 // TextInputEvent (https://wiki.libsdl.org/SDL_TextInputEvent)
@@ -221,6 +220,7 @@ type JoyAxisEvent struct {
 	Value     int16
 	_         uint16 // padding
 }
+type cJoyAxisEvent C.SDL_JoyAxisEvent
 
 // JoyBallEvent (https://wiki.libsdl.org/SDL_JoyBallEvent)
 type JoyBallEvent struct {
@@ -234,6 +234,7 @@ type JoyBallEvent struct {
 	XRel      int16
 	YRel      int16
 }
+type cJoyBallEvent C.SDL_JoyBallEvent
 
 // JoyHatEvent (https://wiki.libsdl.org/SDL_JoyHatEvent)
 type JoyHatEvent struct {
@@ -245,6 +246,7 @@ type JoyHatEvent struct {
 	_         uint8 // padding
 	_         uint8 // padding
 }
+type cJoyHatEvent C.SDL_JoyHatEvent
 
 // JoyButtonEvent (https://wiki.libsdl.org/SDL_JoyButtonEvent)
 type JoyButtonEvent struct {
@@ -256,6 +258,7 @@ type JoyButtonEvent struct {
 	_         uint8 // padding
 	_         uint8 // padding
 }
+type cJoyButtonEvent C.SDL_JoyButtonEvent
 
 type JoyDeviceEvent struct {
 	Type      uint32
@@ -274,6 +277,7 @@ type ControllerAxisEvent struct {
 	Value     int16
 	_         uint16 // padding
 }
+type cControllerAxisEvent C.SDL_ControllerAxisEvent
 
 type ControllerButtonEvent struct {
 	Type      uint32
@@ -284,12 +288,14 @@ type ControllerButtonEvent struct {
 	_         uint8 // padding
 	_         uint8 // padding
 }
+type cControllerButtonEvent C.SDL_ControllerButtonEvent
 
 type ControllerDeviceEvent struct {
 	Type      uint32
 	Timestamp uint32
 	Which     JoystickID
 }
+type cControllerDeviceEvent C.SDL_ControllerDeviceEvent
 
 // TouchFingerEvent (https://wiki.libsdl.org/SDL_TouchFingerEvent)
 type TouchFingerEvent struct {
@@ -303,6 +309,7 @@ type TouchFingerEvent struct {
 	DY        float32
 	Pressure  float32
 }
+type cTouchFingerEvent C.SDL_TouchFingerEvent
 
 // MultiGestureEvent (https://wiki.libsdl.org/SDL_MultiGestureEvent)
 type MultiGestureEvent struct {
@@ -316,6 +323,7 @@ type MultiGestureEvent struct {
 	NumFingers uint16
 	_          uint16 // padding
 }
+type cMultiGestureEvent C.SDL_MultiGestureEvent
 
 // DollarGestureEvent (https://wiki.libsdl.org/SDL_DollarGestureEvent)
 type DollarGestureEvent struct {
@@ -328,6 +336,7 @@ type DollarGestureEvent struct {
 	X          float32
 	Y          float32
 }
+type cDollarGestureEvent C.SDL_DollarGestureEvent
 
 // DropEvent (https://wiki.libsdl.org/SDL_DropEvent)
 type DropEvent struct {
@@ -335,6 +344,7 @@ type DropEvent struct {
 	Timestamp uint32
 	file      unsafe.Pointer
 }
+type cDropEvent C.SDL_DropEvent
 
 type RenderEvent struct {
 	Type      uint32
@@ -366,6 +376,7 @@ type UserEvent struct {
 	Data1     unsafe.Pointer
 	Data2     unsafe.Pointer
 }
+type cUserEvent C.SDL_UserEvent
 
 // SysWMEvent (https://wiki.libsdl.org/SDL_SysWMEvent)
 type SysWMEvent struct {
@@ -373,6 +384,7 @@ type SysWMEvent struct {
 	Timestamp uint32
 	msg       unsafe.Pointer
 }
+type cSysWMEvent C.SDL_SysWMEvent
 
 type EventAction C.SDL_eventaction
 
