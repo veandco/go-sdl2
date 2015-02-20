@@ -358,8 +358,11 @@ func (window *Window) GetSurface() *Surface {
 }
 
 // Window (https://wiki.libsdl.org/SDL_UpdateWindowSurface)
-func (window *Window) UpdateSurface() int {
-	return int(C.SDL_UpdateWindowSurface(window.cptr()))
+func (window *Window) UpdateSurface() error {
+	if C.SDL_UpdateWindowSurface(window.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_UpdateWindowSurfaceRects)
