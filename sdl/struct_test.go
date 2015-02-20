@@ -7,8 +7,9 @@ import (
 )
 
 // TODO: AudioCVT is a packed struct in C - proper conversion needs some more work
-//func TestStructAudioCVT(t *testing.T)  { testStructEquality(t, AudioCVT{}, cAudioCVT{}) }
-func TestStructAudioSpec(t *testing.T) { testStructEquality(t, AudioSpec{}, cAudioSpec{}) }
+// func TestStructAudioCVT(t *testing.T)  { testStructEquality(t, AudioCVT{}, cAudioCVT{}) }
+func TestStructAudioSpec(t *testing.T)   { testStructEquality(t, AudioSpec{}, cAudioSpec{}) }
+func TestStructDisplayMode(t *testing.T) { testStructEquality(t, DisplayMode{}, cDisplayMode{}) }
 
 func TestStructKeyDownEvent(t *testing.T) { testStructEquality(t, KeyDownEvent{}, cKeyboardEvent{}) }
 func TestStructKeyUpEvent(t *testing.T)   { testStructEquality(t, KeyUpEvent{}, cKeyboardEvent{}) }
@@ -34,8 +35,9 @@ func TestStructSurface(t *testing.T)     { testStructEquality(t, Surface{}, cSur
 func TestStructVersion(t *testing.T)     { testStructEquality(t, Version{}, cVersion{}) }
 func TestStructWindowEvent(t *testing.T) { testStructEquality(t, WindowEvent{}, cWindowEvent{}) }
 
-//TODO
-//func TestStructSysWmInfo(t *testing.T)   { testStructEquality(t, SysWMInfo{}, cSysWMinfo{}) }
+// TODO: embedded structures make testing difficult
+// func TestStructSysWmInfo(t *testing.T)   { testStructEquality(t, SysWMInfo{}, cSysWMinfo{}) }
+// func TestStructRendererInfo(t *testing.T) {	testStructEquality(t, RendererInfo{}, realcRendererInfo{})}
 
 func testStructEquality(t *testing.T, a, b interface{}) {
 	ta, tb := reflect.TypeOf(a), reflect.TypeOf(b)

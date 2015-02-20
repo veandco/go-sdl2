@@ -92,6 +92,7 @@ type DisplayMode struct {
 	RefreshRate int32
 	DriverData  unsafe.Pointer
 }
+type cDisplayMode C.SDL_DisplayMode
 
 type Window C.SDL_Window
 type GLContext C.SDL_GLContext
