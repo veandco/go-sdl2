@@ -10,10 +10,9 @@ import (
 // TODO: SysWMInfo
 // TODO: RendererInfo
 // TODO: AudioCVT
-// TODO: AudioStatus
 // TODO: ErrorCode
-// TODO: MusicType
-// TODO: Fading
+// TODO: mixer.MusicType
+// TODO: mixer.Fading
 func TestStructABI(t *testing.T) {
 	var tests = []struct {
 		gStruct interface{}
@@ -50,6 +49,7 @@ func TestStructABI(t *testing.T) {
 		{SysWMEvent{}, cSysWMEvent{}},
 
 		// non structure types
+		{AudioStatus(0), cAudioStatus(0)},
 		{RendererFlip(0), cRendererFlip(0)},
 	}
 
