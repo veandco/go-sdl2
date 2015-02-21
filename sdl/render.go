@@ -28,6 +28,7 @@ type RendererInfo struct {
 	Name string
 	RendererInfoData
 }
+
 type cRendererInfo struct {
 	Name *C.char
 	RendererInfoData
@@ -40,6 +41,7 @@ type RendererInfoData struct {
 	MaxTextureWidth   int32
 	MaxTextureHeight  int32
 }
+type realcRendererInfo C.SDL_RendererInfo
 
 // RendererFlip (https://wiki.libsdl.org/SDL_RendererFlip)
 type RendererFlip uint

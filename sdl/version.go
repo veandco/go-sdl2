@@ -16,6 +16,7 @@ type Version struct {
 	Minor uint8
 	Patch uint8
 }
+type cVersion C.SDL_version
 
 func (v *Version) cptr() *C.SDL_version {
 	return (*C.SDL_version)(unsafe.Pointer(v))
