@@ -44,10 +44,6 @@ type RendererInfoData struct {
 	MaxTextureHeight  int32
 }
 
-// RendererFlip (https://wiki.libsdl.org/SDL_RendererFlip)
-type RendererFlip uint32
-type cRendererFlip C.SDL_RendererFlip
-
 func (info *RendererInfo) cptr() *C.SDL_RendererInfo {
 	return (*C.SDL_RendererInfo)(unsafe.Pointer(info))
 }
@@ -55,6 +51,10 @@ func (info *RendererInfo) cptr() *C.SDL_RendererInfo {
 func (info *cRendererInfo) cptr() *C.SDL_RendererInfo {
 	return (*C.SDL_RendererInfo)(unsafe.Pointer(info))
 }
+
+// RendererFlip (https://wiki.libsdl.org/SDL_RendererFlip)
+type RendererFlip uint32
+type cRendererFlip C.SDL_RendererFlip
 
 func (flip RendererFlip) c() C.SDL_RendererFlip {
 	return C.SDL_RendererFlip(flip)
