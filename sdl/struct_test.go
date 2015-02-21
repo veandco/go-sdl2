@@ -47,17 +47,29 @@ func TestStructABI(t *testing.T) {
 		{DropEvent{}, cDropEvent{}},
 		{UserEvent{}, cUserEvent{}},
 		{SysWMEvent{}, cSysWMEvent{}},
+	}
 
-		// non structure types
+	for _, test := range tests {
+		testABI(t, test.gStruct, test.cStruct)
+	}
+}
+
+func TestTypeABI(t *testing.T) {
+	var tests = []struct {
+		gType interface{}
+		cType interface{}
+	}{
 		{AudioStatus(0), cAudioStatus(0)},
+		{ErrorCode(0), cErrorCode(0)},
 		{RendererFlip(0), cRendererFlip(0)},
 	}
 
 	for _, test := range tests {
-		testStructABI(t, test.gStruct, test.cStruct)
+		testABI(t, test.gType, test.cType)
 	}
 }
-func testStructABI(t *testing.T, a, b interface{}) {
+
+func testABI(t *testing.T, a, b interface{}) {
 	ta, tb := reflect.TypeOf(a), reflect.TypeOf(b)
 	if ta.Size() != tb.Size() {
 		t.Fatalf("type size missmatch: %s(%d) != %s(%d)",
