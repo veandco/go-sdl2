@@ -17,10 +17,12 @@ const (
 	TEXTUREMODULATE_NONE  = C.SDL_TEXTUREMODULATE_NONE
 	TEXTUREMODULATE_COLOR = C.SDL_TEXTUREMODULATE_COLOR
 	TEXTUREMODULATE_ALPHA = C.SDL_TEXTUREMODULATE_ALPHA
+)
 
-	FLIP_NONE       = C.SDL_FLIP_NONE
-	FLIP_HORIZONTAL = C.SDL_FLIP_HORIZONTAL
-	FLIP_VERTICAL   = C.SDL_FLIP_VERTICAL
+const (
+	FLIP_NONE       RendererFlip = C.SDL_FLIP_NONE
+	FLIP_HORIZONTAL              = C.SDL_FLIP_HORIZONTAL
+	FLIP_VERTICAL                = C.SDL_FLIP_VERTICAL
 )
 
 // RendererInfo (https://wiki.libsdl.org/SDL_RendererInfo)
@@ -41,10 +43,10 @@ type RendererInfoData struct {
 	MaxTextureWidth   int32
 	MaxTextureHeight  int32
 }
-type realcRendererInfo C.SDL_RendererInfo
 
 // RendererFlip (https://wiki.libsdl.org/SDL_RendererFlip)
-type RendererFlip uint
+type RendererFlip uint32
+type cRendererFlip C.SDL_RendererFlip
 
 func (info *RendererInfo) cptr() *C.SDL_RendererInfo {
 	return (*C.SDL_RendererInfo)(unsafe.Pointer(info))
