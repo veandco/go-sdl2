@@ -10,9 +10,6 @@ import (
 // TODO: SysWMInfo
 // TODO: RendererInfo
 // TODO: AudioCVT
-// TODO: ErrorCode
-// TODO: mixer.MusicType
-// TODO: mixer.Fading
 func TestStructABI(t *testing.T) {
 	var tests = []struct {
 		gStruct interface{}
@@ -54,6 +51,8 @@ func TestStructABI(t *testing.T) {
 	}
 }
 
+// TODO: mixer.MusicType
+// TODO: mixer.Fading
 func TestTypeABI(t *testing.T) {
 	var tests = []struct {
 		gType interface{}
