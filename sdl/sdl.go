@@ -41,8 +41,11 @@ func Quit() {
 }
 
 // InitSubSystem (https://wiki.libsdl.org/SDL_InitSubSystem)
-func InitSubSystem(flags uint32) int {
-	return int(C.SDL_InitSubSystem(C.Uint32(flags)))
+func InitSubSystem(flags uint32) error {
+	if C.SDL_InitSubSystem(C.Uint32(flags)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // QuitSubSystem (https://wiki.libsdl.org/SDL_QuitSubSystem)
