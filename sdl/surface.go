@@ -174,8 +174,11 @@ func (surface *Surface) GetAlphaMod() (alpha uint8, err error) {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SetSurfaceBlendMode)
-func (surface *Surface) SetBlendMode(bm BlendMode) int {
-	return int(C.SDL_SetSurfaceBlendMode(surface.cptr(), bm.c()))
+func (surface *Surface) SetBlendMode(bm BlendMode) error {
+	if C.SDL_SetSurfaceBlendMode(surface.cptr(), bm.c()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_GetSurfaceBlendMode)
