@@ -100,13 +100,16 @@ func LoadBMP(file string) *Surface {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SaveBMP_RW)
-func (surface *Surface) SaveBMP_RW(dst *RWops, freeDst int) int {
-	return int(C.SDL_SaveBMP_RW(surface.cptr(), dst.cptr(), C.int(freeDst)))
+func (surface *Surface) SaveBMP_RW(dst *RWops, freeDst int) error {
+	if C.SDL_SaveBMP_RW(surface.cptr(), dst.cptr(), C.int(freeDst)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SaveBMP)
-func (surface *Surface) SaveBMP(file string) int {
-	return int(surface.SaveBMP_RW(RWFromFile(file, "wb"), 1))
+func (surface *Surface) SaveBMP(file string) error {
+	return surface.SaveBMP_RW(RWFromFile(file, "wb"), 1)
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SetSurfaceRLE)
