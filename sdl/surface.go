@@ -157,8 +157,11 @@ func (surface *Surface) GetColorMod() (r, g, b uint8, err error) {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SetSurfaceAlphaMod)
-func (surface *Surface) SetAlphaMod(alpha uint8) int {
-	return int(C.SDL_SetSurfaceAlphaMod(surface.cptr(), C.Uint8(alpha)))
+func (surface *Surface) SetAlphaMod(alpha uint8) error {
+	if C.SDL_SetSurfaceAlphaMod(surface.cptr(), C.Uint8(alpha)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_GetSurfaceAlphaMod)
