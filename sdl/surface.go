@@ -138,8 +138,11 @@ func (surface *Surface) GetColorKey() (key uint32, err error) {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SetSurfaceColorMod)
-func (surface *Surface) SetColorMod(r, g, b uint8) int {
-	return int(C.SDL_SetSurfaceColorMod(surface.cptr(), C.Uint8(r), C.Uint8(g), C.Uint8(b)))
+func (surface *Surface) SetColorMod(r, g, b uint8) error {
+	if C.SDL_SetSurfaceColorMod(surface.cptr(), C.Uint8(r), C.Uint8(g), C.Uint8(b)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_GetSurfaceColorMod)
