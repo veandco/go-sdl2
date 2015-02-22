@@ -212,8 +212,11 @@ func (surface *Surface) ConvertFormat(pixelFormat uint32, flags uint32) *Surface
 
 // ConvertPixels (https://wiki.libsdl.org/SDL_ConvertPixels)
 func ConvertPixels(width, height int, srcFormat uint32, src unsafe.Pointer, srcPitch int,
-	dstFormat uint32, dst unsafe.Pointer, dstPitch int) int {
-	return int(C.SDL_ConvertPixels(C.int(width), C.int(height), C.Uint32(srcFormat), src, C.int(srcPitch), C.Uint32(dstFormat), dst, C.int(dstPitch)))
+	dstFormat uint32, dst unsafe.Pointer, dstPitch int) error {
+	if C.SDL_ConvertPixels(C.int(width), C.int(height), C.Uint32(srcFormat), src, C.int(srcPitch), C.Uint32(dstFormat), dst, C.int(dstPitch)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_FillRect)
