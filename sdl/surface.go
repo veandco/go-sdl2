@@ -129,10 +129,12 @@ func (surface *Surface) SetColorKey(flag int, key uint32) error {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_GetColorKey)
-func (surface *Surface) GetColorKey() (key uint32, status int) {
+func (surface *Surface) GetColorKey() (key uint32, err error) {
 	_key := (*C.Uint32)(unsafe.Pointer(&key))
-	status = int(C.SDL_GetColorKey(surface.cptr(), _key))
-	return key, status
+	if C.SDL_GetColorKey(surface.cptr(), _key) != 0 {
+		return key, GetError()
+	}
+	return key, nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SetSurfaceColorMod)
