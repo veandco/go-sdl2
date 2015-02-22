@@ -121,8 +121,11 @@ func (surface *Surface) SetRLE(flag int) error {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SetColorKey)
-func (surface *Surface) SetColorKey(flag int, key uint32) int {
-	return int(C.SDL_SetColorKey(surface.cptr(), C.int(flag), C.Uint32(key)))
+func (surface *Surface) SetColorKey(flag int, key uint32) error {
+	if C.SDL_SetColorKey(surface.cptr(), C.int(flag), C.Uint32(key)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_GetColorKey)
