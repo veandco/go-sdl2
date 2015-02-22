@@ -40,9 +40,9 @@ const (
 )
 
 const (
-	AUDIO_STOPPED = C.SDL_AUDIO_STOPPED
-	AUDIO_PLAYING = C.SDL_AUDIO_PLAYING
-	AUDIO_PAUSED  = C.SDL_AUDIO_PAUSED
+	AUDIO_STOPPED AudioStatus = C.SDL_AUDIO_STOPPED
+	AUDIO_PLAYING             = C.SDL_AUDIO_PLAYING
+	AUDIO_PAUSED              = C.SDL_AUDIO_PAUSED
 )
 
 const MIX_MAXVOLUME = C.SDL_MIX_MAXVOLUME
@@ -54,7 +54,8 @@ type AudioFilter C.SDL_AudioFilter
 type AudioDeviceID uint32
 
 // AudioStatus (https://wiki.libsdl.org/SDL_AudioStatus)
-type AudioStatus uint
+type AudioStatus uint32
+type cAudioStatus C.SDL_AudioStatus
 
 // AudioSpec (https://wiki.libsdl.org/SDL_AudioSpec)
 type AudioSpec struct {
