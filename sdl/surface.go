@@ -182,9 +182,11 @@ func (surface *Surface) SetBlendMode(bm BlendMode) error {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_GetSurfaceBlendMode)
-func (surface *Surface) GetBlendMode() (bm BlendMode, status int) {
-	status = int(C.SDL_GetSurfaceBlendMode(surface.cptr(), bm.cptr()))
-	return bm, status
+func (surface *Surface) GetBlendMode() (bm BlendMode, err error) {
+	if C.SDL_GetSurfaceBlendMode(surface.cptr(), bm.cptr()) != 0 {
+		return bm, GetError()
+	}
+	return bm, nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SetClipRect)
