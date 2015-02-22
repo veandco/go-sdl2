@@ -113,8 +113,11 @@ func (surface *Surface) SaveBMP(file string) error {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SetSurfaceRLE)
-func (surface *Surface) SetRLE(flag int) int {
-	return int(C.SDL_SetSurfaceRLE(surface.cptr(), C.int(flag)))
+func (surface *Surface) SetRLE(flag int) error {
+	if C.SDL_SetSurfaceRLE(surface.cptr(), C.int(flag)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SetColorKey)
