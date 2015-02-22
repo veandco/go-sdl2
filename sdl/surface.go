@@ -165,10 +165,12 @@ func (surface *Surface) SetAlphaMod(alpha uint8) error {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_GetSurfaceAlphaMod)
-func (surface *Surface) GetAlphaMod() (alpha uint8, status int) {
+func (surface *Surface) GetAlphaMod() (alpha uint8, err error) {
 	_alpha := (*C.Uint8)(unsafe.Pointer(&alpha))
-	status = int(C.SDL_GetSurfaceAlphaMod(surface.cptr(), _alpha))
-	return alpha, status
+	if C.SDL_GetSurfaceAlphaMod(surface.cptr(), _alpha) != 0 {
+		return alpha, GetError()
+	}
+	return alpha, nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SetSurfaceBlendMode)
