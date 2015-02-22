@@ -71,8 +71,11 @@ func (surface *Surface) Free() {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SetSurfacePalette)
-func (surface *Surface) SetPalette(palette *Palette) int {
-	return int(C.SDL_SetSurfacePalette(surface.cptr(), palette.cptr()))
+func (surface *Surface) SetPalette(palette *Palette) error {
+	if C.SDL_SetSurfacePalette(surface.cptr(), palette.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_LockSurface)
