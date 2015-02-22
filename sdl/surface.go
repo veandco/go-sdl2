@@ -146,12 +146,14 @@ func (surface *Surface) SetColorMod(r, g, b uint8) error {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_GetSurfaceColorMod)
-func (surface *Surface) GetColorMod() (r, g, b uint8, status int) {
+func (surface *Surface) GetColorMod() (r, g, b uint8, err error) {
 	_r := (*C.Uint8)(unsafe.Pointer(&r))
 	_g := (*C.Uint8)(unsafe.Pointer(&g))
 	_b := (*C.Uint8)(unsafe.Pointer(&b))
-	status = int(C.SDL_GetSurfaceColorMod(surface.cptr(), _r, _g, _b))
-	return r, g, b, status
+	if C.SDL_GetSurfaceColorMod(surface.cptr(), _r, _g, _b) != 0 {
+		return r, g, b, GetError()
+	}
+	return r, g, b, nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SetSurfaceAlphaMod)
