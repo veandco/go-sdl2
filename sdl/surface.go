@@ -276,8 +276,11 @@ func (src *Surface) SoftStretch(srcRect *Rect, dst *Surface, dstRect *Rect) erro
 }
 
 // Surface (https://wiki.libsdl.org/SDL_UpperBlitScaled)
-func (src *Surface) UpperBlitScaled(srcRect *Rect, dst *Surface, dstRect *Rect) int {
-	return int(C.SDL_UpperBlitScaled(src.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr()))
+func (src *Surface) UpperBlitScaled(srcRect *Rect, dst *Surface, dstRect *Rect) error {
+	if C.SDL_UpperBlitScaled(src.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_LowerBlitScaled)
