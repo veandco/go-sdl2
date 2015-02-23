@@ -236,8 +236,11 @@ func (surface *Surface) FillRects(rects []Rect, color uint32) error {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_BlitSurface)
-func (src *Surface) Blit(srcRect *Rect, dst *Surface, dstRect *Rect) int {
-	return int(C.SDL_BlitSurface(src.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr()))
+func (src *Surface) Blit(srcRect *Rect, dst *Surface, dstRect *Rect) error {
+	if C.SDL_BlitSurface(src.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_BlitScaled)
