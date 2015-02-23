@@ -260,8 +260,11 @@ func (src *Surface) UpperBlit(srcRect *Rect, dst *Surface, dstRect *Rect) error 
 }
 
 // Surface (https://wiki.libsdl.org/SDL_LowerBlit)
-func (src *Surface) LowerBlit(srcRect *Rect, dst *Surface, dstRect *Rect) int {
-	return int(C.SDL_LowerBlit(src.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr()))
+func (src *Surface) LowerBlit(srcRect *Rect, dst *Surface, dstRect *Rect) error {
+	if C.SDL_LowerBlit(src.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SoftStretch)
