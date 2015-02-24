@@ -98,6 +98,7 @@ Contributors
 * [Philipp Meinen](https://github.com/PhiCode)
 * [Thomas McGrew](https://github.com/mcgrew)
 * [Geoff Catlin](https://github.com/gcatlin)
+* [Jason Alan Palmer](https://github.com/jalan)
 
 License
 =======
