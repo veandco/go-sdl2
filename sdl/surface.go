@@ -89,8 +89,11 @@ func (surface *Surface) SetPalette(palette *Palette) error {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_LockSurface)
-func (surface *Surface) Lock() {
-	C.SDL_LockSurface(surface.cptr())
+func (surface *Surface) Lock() error {
+	if C.SDL_LockSurface(surface.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_UnlockSurface)
