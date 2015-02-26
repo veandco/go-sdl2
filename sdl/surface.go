@@ -102,14 +102,17 @@ func (surface *Surface) Unlock() {
 }
 
 // LoadBMP_RW (https://wiki.libsdl.org/SDL_LoadBMP_RW)
-func LoadBMP_RW(src *RWops, freeSrc int) *Surface {
-	_surface := C.SDL_LoadBMP_RW(src.cptr(), C.int(freeSrc))
-	return (*Surface)(unsafe.Pointer(_surface))
+func LoadBMP_RW(src *RWops, freeSrc int) (*Surface, error) {
+	surface := (*Surface)(unsafe.Pointer(C.SDL_LoadBMP_RW(src.cptr(), C.int(freeSrc))))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
 }
 
 // LoadBMP (https://wiki.libsdl.org/SDL_LoadBMP)
-func LoadBMP(file string) *Surface {
-	return (*Surface)(LoadBMP_RW(RWFromFile(file, "rb"), 1))
+func LoadBMP(file string) (*Surface, error) {
+	return LoadBMP_RW(RWFromFile(file, "rb"), 1)
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SaveBMP_RW)
