@@ -41,8 +41,9 @@ func (surface *Surface) MustLock() bool {
 }
 
 // CreateRGBSurface (https://wiki.libsdl.org/SDL_CreateRGBSurface)
-func CreateRGBSurface(flags uint32, width, height, depth int32, Rmask, Gmask, Bmask, Amask uint32) *Surface {
-	return (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurface(C.Uint32(flags),
+func CreateRGBSurface(flags uint32, width, height, depth int32, Rmask, Gmask, Bmask, Amask uint32) (*Surface, error) {
+	surface := (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurface(
+		C.Uint32(flags),
 		C.int(width),
 		C.int(height),
 		C.int(depth),
@@ -50,11 +51,16 @@ func CreateRGBSurface(flags uint32, width, height, depth int32, Rmask, Gmask, Bm
 		C.Uint32(Gmask),
 		C.Uint32(Bmask),
 		C.Uint32(Amask))))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
 }
 
 // CreateRGBSurfaceFrom (https://wiki.libsdl.org/SDL_CreateRGBSurfaceFrom)
-func CreateRGBSurfaceFrom(pixels unsafe.Pointer, width, height, depth, pitch int, Rmask, Gmask, Bmask, Amask uint32) *Surface {
-	return (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurfaceFrom(pixels,
+func CreateRGBSurfaceFrom(pixels unsafe.Pointer, width, height, depth, pitch int, Rmask, Gmask, Bmask, Amask uint32) (*Surface, error) {
+	surface := (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurfaceFrom(
+		pixels,
 		C.int(width),
 		C.int(height),
 		C.int(depth),
@@ -63,6 +69,10 @@ func CreateRGBSurfaceFrom(pixels unsafe.Pointer, width, height, depth, pitch int
 		C.Uint32(Gmask),
 		C.Uint32(Bmask),
 		C.Uint32(Amask))))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_FreeSurface)
