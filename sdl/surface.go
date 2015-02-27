@@ -216,14 +216,21 @@ func (surface *Surface) GetClipRect(rect *Rect) {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_ConvertSurface)
-func (surface *Surface) Convert(fmt *PixelFormat, flags uint32) *Surface {
-	_surface := C.SDL_ConvertSurface(surface.cptr(), fmt.cptr(), C.Uint32(flags))
-	return (*Surface)(unsafe.Pointer(_surface))
+func (surface *Surface) Convert(fmt *PixelFormat, flags uint32) (*Surface, error) {
+	_surface := (*Surface)(unsafe.Pointer(C.SDL_ConvertSurface(surface.cptr(), fmt.cptr(), C.Uint32(flags))))
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return _surface, nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_ConvertSurfaceFormat)
-func (surface *Surface) ConvertFormat(pixelFormat uint32, flags uint32) *Surface {
-	return (*Surface)(unsafe.Pointer(C.SDL_ConvertSurfaceFormat(surface.cptr(), C.Uint32(pixelFormat), C.Uint32(flags))))
+func (surface *Surface) ConvertFormat(pixelFormat uint32, flags uint32) (*Surface, error) {
+	_surface := (*Surface)(unsafe.Pointer(C.SDL_ConvertSurfaceFormat(surface.cptr(), C.Uint32(pixelFormat), C.Uint32(flags))))
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return _surface, nil
 }
 
 // ConvertPixels (https://wiki.libsdl.org/SDL_ConvertPixels)
