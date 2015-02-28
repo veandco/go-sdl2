@@ -41,8 +41,9 @@ func (surface *Surface) MustLock() bool {
 }
 
 // CreateRGBSurface (https://wiki.libsdl.org/SDL_CreateRGBSurface)
-func CreateRGBSurface(flags uint32, width, height, depth int32, Rmask, Gmask, Bmask, Amask uint32) *Surface {
-	return (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurface(C.Uint32(flags),
+func CreateRGBSurface(flags uint32, width, height, depth int32, Rmask, Gmask, Bmask, Amask uint32) (*Surface, error) {
+	surface := (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurface(
+		C.Uint32(flags),
 		C.int(width),
 		C.int(height),
 		C.int(depth),
@@ -50,11 +51,16 @@ func CreateRGBSurface(flags uint32, width, height, depth int32, Rmask, Gmask, Bm
 		C.Uint32(Gmask),
 		C.Uint32(Bmask),
 		C.Uint32(Amask))))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
 }
 
 // CreateRGBSurfaceFrom (https://wiki.libsdl.org/SDL_CreateRGBSurfaceFrom)
-func CreateRGBSurfaceFrom(pixels unsafe.Pointer, width, height, depth, pitch int, Rmask, Gmask, Bmask, Amask uint32) *Surface {
-	return (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurfaceFrom(pixels,
+func CreateRGBSurfaceFrom(pixels unsafe.Pointer, width, height, depth, pitch int, Rmask, Gmask, Bmask, Amask uint32) (*Surface, error) {
+	surface := (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurfaceFrom(
+		pixels,
 		C.int(width),
 		C.int(height),
 		C.int(depth),
@@ -63,6 +69,10 @@ func CreateRGBSurfaceFrom(pixels unsafe.Pointer, width, height, depth, pitch int
 		C.Uint32(Gmask),
 		C.Uint32(Bmask),
 		C.Uint32(Amask))))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_FreeSurface)
@@ -79,8 +89,11 @@ func (surface *Surface) SetPalette(palette *Palette) error {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_LockSurface)
-func (surface *Surface) Lock() {
-	C.SDL_LockSurface(surface.cptr())
+func (surface *Surface) Lock() error {
+	if C.SDL_LockSurface(surface.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_UnlockSurface)
@@ -89,14 +102,17 @@ func (surface *Surface) Unlock() {
 }
 
 // LoadBMP_RW (https://wiki.libsdl.org/SDL_LoadBMP_RW)
-func LoadBMP_RW(src *RWops, freeSrc int) *Surface {
-	_surface := C.SDL_LoadBMP_RW(src.cptr(), C.int(freeSrc))
-	return (*Surface)(unsafe.Pointer(_surface))
+func LoadBMP_RW(src *RWops, freeSrc int) (*Surface, error) {
+	surface := (*Surface)(unsafe.Pointer(C.SDL_LoadBMP_RW(src.cptr(), C.int(freeSrc))))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
 }
 
 // LoadBMP (https://wiki.libsdl.org/SDL_LoadBMP)
-func LoadBMP(file string) *Surface {
-	return (*Surface)(LoadBMP_RW(RWFromFile(file, "rb"), 1))
+func LoadBMP(file string) (*Surface, error) {
+	return LoadBMP_RW(RWFromFile(file, "rb"), 1)
 }
 
 // Surface (https://wiki.libsdl.org/SDL_SaveBMP_RW)
@@ -200,14 +216,21 @@ func (surface *Surface) GetClipRect(rect *Rect) {
 }
 
 // Surface (https://wiki.libsdl.org/SDL_ConvertSurface)
-func (surface *Surface) Convert(fmt *PixelFormat, flags uint32) *Surface {
-	_surface := C.SDL_ConvertSurface(surface.cptr(), fmt.cptr(), C.Uint32(flags))
-	return (*Surface)(unsafe.Pointer(_surface))
+func (surface *Surface) Convert(fmt *PixelFormat, flags uint32) (*Surface, error) {
+	_surface := (*Surface)(unsafe.Pointer(C.SDL_ConvertSurface(surface.cptr(), fmt.cptr(), C.Uint32(flags))))
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return _surface, nil
 }
 
 // Surface (https://wiki.libsdl.org/SDL_ConvertSurfaceFormat)
-func (surface *Surface) ConvertFormat(pixelFormat uint32, flags uint32) *Surface {
-	return (*Surface)(unsafe.Pointer(C.SDL_ConvertSurfaceFormat(surface.cptr(), C.Uint32(pixelFormat), C.Uint32(flags))))
+func (surface *Surface) ConvertFormat(pixelFormat uint32, flags uint32) (*Surface, error) {
+	_surface := (*Surface)(unsafe.Pointer(C.SDL_ConvertSurfaceFormat(surface.cptr(), C.Uint32(pixelFormat), C.Uint32(flags))))
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return _surface, nil
 }
 
 // ConvertPixels (https://wiki.libsdl.org/SDL_ConvertPixels)
