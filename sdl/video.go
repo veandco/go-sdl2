@@ -113,8 +113,12 @@ func (attr GLattr) c() C.SDL_GLattr {
 }
 
 // GetNumVideoDisplays (https://wiki.libsdl.org/SDL_GetNumVideoDisplays)
-func GetNumVideoDisplays() int {
-	return int(C.SDL_GetNumVideoDisplays())
+func GetNumVideoDisplays() (int, error) {
+	n := int(C.SDL_GetNumVideoDisplays())
+	if n < 0 {
+		return n, GetError()
+	}
+	return n, nil
 }
 
 // GetNumVideoDrivers (https://wiki.libsdl.org/SDL_GetNumVideoDrivers)
