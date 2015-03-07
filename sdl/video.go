@@ -136,9 +136,11 @@ func GetVideoDriver(index int) string {
 }
 
 // VideoInit (https://wiki.libsdl.org/SDL_VideoInit)
-func VideoInit(driverName string) int {
-	_driverName := C.CString(driverName)
-	return int(C.SDL_VideoInit(_driverName))
+func VideoInit(driverName string) error {
+	if C.SDL_VideoInit(C.CString(driverName)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // VideoQuit (https://wiki.libsdl.org/SDL_VideoQuit)
