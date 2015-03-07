@@ -363,8 +363,12 @@ func (window *Window) SetFullscreen(flags uint32) int {
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowSurface)
-func (window *Window) GetSurface() *Surface {
-	return (*Surface)(unsafe.Pointer(C.SDL_GetWindowSurface(window.cptr())))
+func (window *Window) GetSurface() (*Surface, error) {
+	surface := (*Surface)(unsafe.Pointer(C.SDL_GetWindowSurface(window.cptr())))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_UpdateWindowSurface)
