@@ -122,8 +122,12 @@ func GetNumVideoDisplays() (int, error) {
 }
 
 // GetNumVideoDrivers (https://wiki.libsdl.org/SDL_GetNumVideoDrivers)
-func GetNumVideoDrivers() int {
-	return int(C.SDL_GetNumVideoDrivers())
+func GetNumVideoDrivers() (int, error) {
+	n := int(C.SDL_GetNumVideoDrivers())
+	if n < 0 {
+		return n, GetError()
+	}
+	return n, nil
 }
 
 // GetVideoDriver (https://wiki.libsdl.org/SDL_GetVideoDriver)
