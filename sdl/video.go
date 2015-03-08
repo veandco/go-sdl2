@@ -358,8 +358,11 @@ func (window *Window) Restore() {
 }
 
 // Window (https://wiki.libsdl.org/SDL_SetWindowFullscreen)
-func (window *Window) SetFullscreen(flags uint32) int {
-	return int(C.SDL_SetWindowFullscreen(window.cptr(), C.Uint32(flags)))
+func (window *Window) SetFullscreen(flags uint32) error {
+	if C.SDL_SetWindowFullscreen(window.cptr(), C.Uint32(flags)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowSurface)
