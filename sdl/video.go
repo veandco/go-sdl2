@@ -398,8 +398,11 @@ func (window *Window) GetGrab() bool {
 }
 
 // Window (https://wiki.libsdl.org/SDL_SetWindowBrightness)
-func (window *Window) SetBrightness(brightness float32) int {
-	return int(C.SDL_SetWindowBrightness(window.cptr(), C.float(brightness)))
+func (window *Window) SetBrightness(brightness float32) error {
+	if C.SDL_SetWindowBrightness(window.cptr(), C.float(brightness)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowBrightness)
