@@ -154,8 +154,12 @@ func GetCurrentVideoDriver() string {
 }
 
 // GetNumDisplayModes (https://wiki.libsdl.org/SDL_GetNumDisplayModes)
-func GetNumDisplayModes(displayIndex int) int {
-	return int(C.SDL_GetNumDisplayModes(C.int(displayIndex)))
+func GetNumDisplayModes(displayIndex int) (int, error) {
+	n := int(C.SDL_GetNumDisplayModes(C.int(displayIndex)))
+	if n < 0 {
+		return n, GetError()
+	}
+	return n, nil
 }
 
 // GetDisplayBounds (https://wiki.libsdl.org/SDL_GetDisplayBounds)
