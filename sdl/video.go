@@ -171,8 +171,11 @@ func GetDisplayBounds(displayIndex int, rect *Rect) error {
 }
 
 // GetDisplayMode (https://wiki.libsdl.org/SDL_GetDisplayMode)
-func GetDisplayMode(displayIndex int, modeIndex int, mode *DisplayMode) int {
-	return int(C.SDL_GetDisplayMode(C.int(displayIndex), C.int(modeIndex), mode.cptr()))
+func GetDisplayMode(displayIndex int, modeIndex int, mode *DisplayMode) error {
+	if C.SDL_GetDisplayMode(C.int(displayIndex), C.int(modeIndex), mode.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GetDesktopDisplayMode (https://wiki.libsdl.org/SDL_GetDesktopDisplayMode)
