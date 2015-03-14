@@ -13,6 +13,20 @@ package mix
 //extern void callEffectFunc(int channel, void *stream, int len, void *udata);
 //extern void callEffectDone(int channel, void *udata);
 //extern int callEachSoundFont(char* str, void* udata);
+//
+//static inline Uint32 getChunkTimeMilliseconds(Mix_Chunk *chunk)
+//{
+//	Uint32 points = 0;
+//	Uint32 frames = 0;
+//	int freq = 0;
+//	Uint16 fmt = 0;
+//	int chans = 0;
+//	if (!Mix_QuerySpec(&freq, &fmt, &chans))
+//		return 0;
+//	points = (chunk->alen / ((fmt & 0xFF) / 8));
+//	frames = (points / chans);
+//	return (frames * 1000) / freq;
+//}
 import "C"
 import "unsafe"
 import "reflect"
@@ -210,6 +224,11 @@ func (chunk *Chunk) PlayTimed(channel, loops, ticks int) bool {
 	_loops := (C.int)(loops)
 	_ticks := (C.int)(ticks)
 	return int(C.Mix_PlayChannelTimed(_channel, _chunk, _loops, _ticks)) == 0
+}
+
+func (chunk *Chunk) LengthInMs() uint {
+	_chunk := (*C.Mix_Chunk)(unsafe.Pointer(chunk))
+	return uint(C.getChunkTimeMilliseconds(_chunk))
 }
 
 func (chunk *Chunk) PlayChannel(channel, loops int) bool {
