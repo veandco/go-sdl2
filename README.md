@@ -99,6 +99,9 @@ Contributors
 * [Thomas McGrew](https://github.com/mcgrew)
 * [Geoff Catlin](https://github.com/gcatlin)
 * [Jason Alan Palmer](https://github.com/jalan)
+* [Seuk Won Kang](https://github.com/kasworld)
+
+_if anyone is missing, let me know!_
 
 License
 =======
