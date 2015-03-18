@@ -179,8 +179,11 @@ func GetDisplayMode(displayIndex int, modeIndex int, mode *DisplayMode) error {
 }
 
 // GetDesktopDisplayMode (https://wiki.libsdl.org/SDL_GetDesktopDisplayMode)
-func GetDesktopDisplayMode(displayIndex int, mode *DisplayMode) int {
-	return int(C.SDL_GetDesktopDisplayMode(C.int(displayIndex), mode.cptr()))
+func GetDesktopDisplayMode(displayIndex int, mode *DisplayMode) error {
+	if C.SDL_GetDesktopDisplayMode(C.int(displayIndex), mode.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GetCurrentDisplayMode (https://wiki.libsdl.org/SDL_GetCurrentDisplayMode)
