@@ -195,8 +195,12 @@ func GetCurrentDisplayMode(displayIndex int, mode *DisplayMode) error {
 }
 
 // GetClosestDisplayMode (https://wiki.libsdl.org/SDL_GetClosestDisplayMode)
-func GetClosestDisplayMode(displayIndex int, mode *DisplayMode, closest *DisplayMode) *DisplayMode {
-	return (*DisplayMode)(unsafe.Pointer((C.SDL_GetClosestDisplayMode(C.int(displayIndex), mode.cptr(), closest.cptr()))))
+func GetClosestDisplayMode(displayIndex int, mode *DisplayMode, closest *DisplayMode) (*DisplayMode, error) {
+	m := (*DisplayMode)(unsafe.Pointer((C.SDL_GetClosestDisplayMode(C.int(displayIndex), mode.cptr(), closest.cptr()))))
+	if m == nil {
+		return nil, GetError()
+	}
+	return m, nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowDisplayIndex)
