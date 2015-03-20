@@ -204,8 +204,12 @@ func GetClosestDisplayMode(displayIndex int, mode *DisplayMode, closest *Display
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowDisplayIndex)
-func (window *Window) GetDisplayIndex() int {
-	return int(C.SDL_GetWindowDisplayIndex(window.cptr()))
+func (window *Window) GetDisplayIndex() (int, error) {
+	i := int(C.SDL_GetWindowDisplayIndex(window.cptr()))
+	if i < 0 {
+		return i, GetError()
+	}
+	return i, nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_SetWindowDisplayMode)
