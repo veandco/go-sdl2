@@ -213,13 +213,19 @@ func (window *Window) GetDisplayIndex() (int, error) {
 }
 
 // Window (https://wiki.libsdl.org/SDL_SetWindowDisplayMode)
-func (window *Window) SetDisplayMode(mode *DisplayMode) int {
-	return int(C.SDL_SetWindowDisplayMode(window.cptr(), mode.cptr()))
+func (window *Window) SetDisplayMode(mode *DisplayMode) error {
+	if C.SDL_SetWindowDisplayMode(window.cptr(), mode.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowDisplayMode)
-func (window *Window) GetDisplayMode(mode *DisplayMode) int {
-	return int(C.SDL_GetWindowDisplayMode(window.cptr(), mode.cptr()))
+func (window *Window) GetDisplayMode(mode *DisplayMode) error {
+	if C.SDL_GetWindowDisplayMode(window.cptr(), mode.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowPixelFormat)
