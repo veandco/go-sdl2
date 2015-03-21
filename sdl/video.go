@@ -459,10 +459,12 @@ func (window *Window) SetGammaRamp(red, green, blue *uint16) error {
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowGammaRamp)
-func (window *Window) GetGammaRamp() (red, green, blue uint16, status int) {
+func (window *Window) GetGammaRamp() (red, green, blue uint16, err error) {
 	var _red, _green, _blue C.Uint16
-	_status := int(C.SDL_GetWindowGammaRamp(window.cptr(), &_red, &_green, &_blue))
-	return uint16(_red), uint16(_green), uint16(_blue), _status
+	if C.SDL_GetWindowGammaRamp(window.cptr(), &_red, &_green, &_blue) != 0 {
+		return uint16(_red), uint16(_green), uint16(_blue), GetError()
+	}
+	return uint16(_red), uint16(_green), uint16(_blue), nil
 }
 
 // IsScreenSaverEnabled (https://wiki.libsdl.org/SDL_IsScreenSaverEnabled)
