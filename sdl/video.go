@@ -417,8 +417,11 @@ func (window *Window) UpdateSurface() error {
 }
 
 // Window (https://wiki.libsdl.org/SDL_UpdateWindowSurfaceRects)
-func (window *Window) UpdateSurfaceRects(rects []Rect) int {
-	return int(C.SDL_UpdateWindowSurfaceRects(window.cptr(), rects[0].cptr(), C.int(len(rects))))
+func (window *Window) UpdateSurfaceRects(rects []Rect) error {
+	if C.SDL_UpdateWindowSurfaceRects(window.cptr(), rects[0].cptr(), C.int(len(rects))) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_SetWindowGrab)
