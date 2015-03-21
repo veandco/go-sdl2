@@ -448,11 +448,14 @@ func (window *Window) GetBrightness() float32 {
 }
 
 // Window (https://wiki.libsdl.org/SDL_SetWindowGammaRamp)
-func (window *Window) SetGammaRamp(red, green, blue *uint16) int {
+func (window *Window) SetGammaRamp(red, green, blue *uint16) error {
 	_red := (*C.Uint16)(red)
 	_green := (*C.Uint16)(red)
 	_blue := (*C.Uint16)(blue)
-	return int(C.SDL_SetWindowGammaRamp(window.cptr(), _red, _green, _blue))
+	if C.SDL_SetWindowGammaRamp(window.cptr(), _red, _green, _blue) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowGammaRamp)
