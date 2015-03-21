@@ -229,8 +229,12 @@ func (window *Window) GetDisplayMode(mode *DisplayMode) error {
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowPixelFormat)
-func (window *Window) GetPixelFormat() uint32 {
-	return (uint32)(C.SDL_GetWindowPixelFormat(window.cptr()))
+func (window *Window) GetPixelFormat() (uint32, error) {
+	f := (uint32)(C.SDL_GetWindowPixelFormat(window.cptr()))
+	if f == PIXELFORMAT_UNKNOWN {
+		return f, GetError()
+	}
+	return f, nil
 }
 
 // CreateWindow (https://wiki.libsdl.org/SDL_CreateWindow)
