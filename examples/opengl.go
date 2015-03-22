@@ -27,9 +27,9 @@ func main() {
 		panic(err)
 	}
 	defer window.Destroy()
-	context = sdl.GL_CreateContext(window)
-	if context == nil {
-		panic(sdl.GetError())
+	context, err = sdl.GL_CreateContext(window)
+	if err != nil {
+		panic(err)
 	}
 	defer sdl.GL_DeleteContext(context)
 

@@ -35,9 +35,9 @@ func main() {
 	}
 	defer renderer.Destroy()
 
-	image = sdl.LoadBMP(imageName)
-	if image == nil {
-		fmt.Fprintf(os.Stderr, "Failed to load BMP: %s", sdl.GetError())
+	image, err = sdl.LoadBMP(imageName)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to load BMP: %s\n", err)
 		os.Exit(3)
 	}
 	defer image.Free()
