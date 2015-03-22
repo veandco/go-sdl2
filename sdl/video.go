@@ -509,8 +509,11 @@ func GL_ExtensionSupported(extension string) bool {
 }
 
 // GL_SetAttribute (https://wiki.libsdl.org/SDL_GL_SetAttribute)
-func GL_SetAttribute(attr GLattr, value int) int {
-	return int(C.SDL_GL_SetAttribute(attr.c(), C.int(value)))
+func GL_SetAttribute(attr GLattr, value int) error {
+	if C.SDL_GL_SetAttribute(attr.c(), C.int(value)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GL_GetAttribute (https://wiki.libsdl.org/SDL_GL_GetAttribute)
