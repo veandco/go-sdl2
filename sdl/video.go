@@ -517,10 +517,12 @@ func GL_SetAttribute(attr GLattr, value int) error {
 }
 
 // GL_GetAttribute (https://wiki.libsdl.org/SDL_GL_GetAttribute)
-func GL_GetAttribute(attr GLattr) (value int, status int) {
-	var _value, _status C.int
-	_status = (C.SDL_GL_GetAttribute(attr.c(), &_value))
-	return int(_value), int(_status)
+func GL_GetAttribute(attr GLattr) (int, error) {
+	var _value C.int
+	if C.SDL_GL_GetAttribute(attr.c(), &_value) != 0 {
+		return int(_value), GetError()
+	}
+	return int(_value), nil
 }
 
 // GL_CreateContext (https://wiki.libsdl.org/SDL_GL_CreateContext)
