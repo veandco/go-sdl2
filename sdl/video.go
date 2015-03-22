@@ -483,9 +483,12 @@ func DisableScreenSaver() {
 }
 
 // GL_LoadLibrary (https://wiki.libsdl.org/SDL_GL_LoadLibrary)
-func GL_LoadLibrary(path string) int {
+func GL_LoadLibrary(path string) error {
 	_path := C.CString(path)
-	return int(C.SDL_GL_LoadLibrary(_path))
+	if C.SDL_GL_LoadLibrary(_path) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GL_GetProcAddress (https://wiki.libsdl.org/SDL_GL_GetProcAddress)
