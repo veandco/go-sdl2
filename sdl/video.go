@@ -526,8 +526,12 @@ func GL_GetAttribute(attr GLattr) (int, error) {
 }
 
 // GL_CreateContext (https://wiki.libsdl.org/SDL_GL_CreateContext)
-func GL_CreateContext(window *Window) GLContext {
-	return GLContext(C.SDL_GL_CreateContext(window.cptr()))
+func GL_CreateContext(window *Window) (GLContext, error) {
+	c := GLContext(C.SDL_GL_CreateContext(window.cptr()))
+	if c == nil {
+		return nil, GetError()
+	}
+	return c, nil
 }
 
 // GL_MakeCurrent (https://wiki.libsdl.org/SDL_GL_MakeCurrent)
