@@ -543,13 +543,20 @@ func GL_MakeCurrent(window *Window, glcontext GLContext) error {
 }
 
 // GL_SetSwapInterval (https://wiki.libsdl.org/SDL_GL_SetSwapInterval)
-func GL_SetSwapInterval(interval int) int {
-	return int(C.SDL_GL_SetSwapInterval(C.int(interval)))
+func GL_SetSwapInterval(interval int) error {
+	if C.SDL_GL_SetSwapInterval(C.int(interval)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GL_GetSwapInterval (https://wiki.libsdl.org/SDL_GL_GetSwapInterval)
-func GL_GetSwapInterval() int {
-	return int(C.SDL_GL_GetSwapInterval())
+func GL_GetSwapInterval() (int, error) {
+	i := int(C.SDL_GL_GetSwapInterval())
+	if i == -1 {
+		return i, GetError()
+	}
+	return i, nil
 }
 
 // GL_SwapWindow (https://wiki.libsdl.org/SDL_GL_SwapWindow)
