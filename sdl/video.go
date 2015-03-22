@@ -535,8 +535,11 @@ func GL_CreateContext(window *Window) (GLContext, error) {
 }
 
 // GL_MakeCurrent (https://wiki.libsdl.org/SDL_GL_MakeCurrent)
-func GL_MakeCurrent(window *Window, glcontext GLContext) int {
-	return int(C.SDL_GL_MakeCurrent(window.cptr(), C.SDL_GLContext(glcontext)))
+func GL_MakeCurrent(window *Window, glcontext GLContext) error {
+	if C.SDL_GL_MakeCurrent(window.cptr(), C.SDL_GLContext(glcontext)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GL_SetSwapInterval (https://wiki.libsdl.org/SDL_GL_SetSwapInterval)
