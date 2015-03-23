@@ -113,13 +113,21 @@ func (attr GLattr) c() C.SDL_GLattr {
 }
 
 // GetNumVideoDisplays (https://wiki.libsdl.org/SDL_GetNumVideoDisplays)
-func GetNumVideoDisplays() int {
-	return int(C.SDL_GetNumVideoDisplays())
+func GetNumVideoDisplays() (int, error) {
+	n := int(C.SDL_GetNumVideoDisplays())
+	if n < 0 {
+		return n, GetError()
+	}
+	return n, nil
 }
 
 // GetNumVideoDrivers (https://wiki.libsdl.org/SDL_GetNumVideoDrivers)
-func GetNumVideoDrivers() int {
-	return int(C.SDL_GetNumVideoDrivers())
+func GetNumVideoDrivers() (int, error) {
+	n := int(C.SDL_GetNumVideoDrivers())
+	if n < 0 {
+		return n, GetError()
+	}
+	return n, nil
 }
 
 // GetVideoDriver (https://wiki.libsdl.org/SDL_GetVideoDriver)
@@ -128,9 +136,11 @@ func GetVideoDriver(index int) string {
 }
 
 // VideoInit (https://wiki.libsdl.org/SDL_VideoInit)
-func VideoInit(driverName string) int {
-	_driverName := C.CString(driverName)
-	return int(C.SDL_VideoInit(_driverName))
+func VideoInit(driverName string) error {
+	if C.SDL_VideoInit(C.CString(driverName)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // VideoQuit (https://wiki.libsdl.org/SDL_VideoQuit)
@@ -144,53 +154,87 @@ func GetCurrentVideoDriver() string {
 }
 
 // GetNumDisplayModes (https://wiki.libsdl.org/SDL_GetNumDisplayModes)
-func GetNumDisplayModes(displayIndex int) int {
-	return int(C.SDL_GetNumDisplayModes(C.int(displayIndex)))
+func GetNumDisplayModes(displayIndex int) (int, error) {
+	n := int(C.SDL_GetNumDisplayModes(C.int(displayIndex)))
+	if n < 0 {
+		return n, GetError()
+	}
+	return n, nil
 }
 
 // GetDisplayBounds (https://wiki.libsdl.org/SDL_GetDisplayBounds)
-func GetDisplayBounds(displayIndex int, rect *Rect) int {
-	return int(C.SDL_GetDisplayBounds(C.int(displayIndex), rect.cptr()))
+func GetDisplayBounds(displayIndex int, rect *Rect) error {
+	if C.SDL_GetDisplayBounds(C.int(displayIndex), rect.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GetDisplayMode (https://wiki.libsdl.org/SDL_GetDisplayMode)
-func GetDisplayMode(displayIndex int, modeIndex int, mode *DisplayMode) int {
-	return int(C.SDL_GetDisplayMode(C.int(displayIndex), C.int(modeIndex), mode.cptr()))
+func GetDisplayMode(displayIndex int, modeIndex int, mode *DisplayMode) error {
+	if C.SDL_GetDisplayMode(C.int(displayIndex), C.int(modeIndex), mode.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GetDesktopDisplayMode (https://wiki.libsdl.org/SDL_GetDesktopDisplayMode)
-func GetDesktopDisplayMode(displayIndex int, mode *DisplayMode) int {
-	return int(C.SDL_GetDesktopDisplayMode(C.int(displayIndex), mode.cptr()))
+func GetDesktopDisplayMode(displayIndex int, mode *DisplayMode) error {
+	if C.SDL_GetDesktopDisplayMode(C.int(displayIndex), mode.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GetCurrentDisplayMode (https://wiki.libsdl.org/SDL_GetCurrentDisplayMode)
-func GetCurrentDisplayMode(displayIndex int, mode *DisplayMode) int {
-	return int(C.SDL_GetCurrentDisplayMode(C.int(displayIndex), mode.cptr()))
+func GetCurrentDisplayMode(displayIndex int, mode *DisplayMode) error {
+	if C.SDL_GetCurrentDisplayMode(C.int(displayIndex), mode.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GetClosestDisplayMode (https://wiki.libsdl.org/SDL_GetClosestDisplayMode)
-func GetClosestDisplayMode(displayIndex int, mode *DisplayMode, closest *DisplayMode) *DisplayMode {
-	return (*DisplayMode)(unsafe.Pointer((C.SDL_GetClosestDisplayMode(C.int(displayIndex), mode.cptr(), closest.cptr()))))
+func GetClosestDisplayMode(displayIndex int, mode *DisplayMode, closest *DisplayMode) (*DisplayMode, error) {
+	m := (*DisplayMode)(unsafe.Pointer((C.SDL_GetClosestDisplayMode(C.int(displayIndex), mode.cptr(), closest.cptr()))))
+	if m == nil {
+		return nil, GetError()
+	}
+	return m, nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowDisplayIndex)
-func (window *Window) GetDisplayIndex() int {
-	return int(C.SDL_GetWindowDisplayIndex(window.cptr()))
+func (window *Window) GetDisplayIndex() (int, error) {
+	i := int(C.SDL_GetWindowDisplayIndex(window.cptr()))
+	if i < 0 {
+		return i, GetError()
+	}
+	return i, nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_SetWindowDisplayMode)
-func (window *Window) SetDisplayMode(mode *DisplayMode) int {
-	return int(C.SDL_SetWindowDisplayMode(window.cptr(), mode.cptr()))
+func (window *Window) SetDisplayMode(mode *DisplayMode) error {
+	if C.SDL_SetWindowDisplayMode(window.cptr(), mode.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowDisplayMode)
-func (window *Window) GetDisplayMode(mode *DisplayMode) int {
-	return int(C.SDL_GetWindowDisplayMode(window.cptr(), mode.cptr()))
+func (window *Window) GetDisplayMode(mode *DisplayMode) error {
+	if C.SDL_GetWindowDisplayMode(window.cptr(), mode.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowPixelFormat)
-func (window *Window) GetPixelFormat() uint32 {
-	return (uint32)(C.SDL_GetWindowPixelFormat(window.cptr()))
+func (window *Window) GetPixelFormat() (uint32, error) {
+	f := (uint32)(C.SDL_GetWindowPixelFormat(window.cptr()))
+	if f == PIXELFORMAT_UNKNOWN {
+		return f, GetError()
+	}
+	return f, nil
 }
 
 // CreateWindow (https://wiki.libsdl.org/SDL_CreateWindow)
@@ -348,13 +392,20 @@ func (window *Window) Restore() {
 }
 
 // Window (https://wiki.libsdl.org/SDL_SetWindowFullscreen)
-func (window *Window) SetFullscreen(flags uint32) int {
-	return int(C.SDL_SetWindowFullscreen(window.cptr(), C.Uint32(flags)))
+func (window *Window) SetFullscreen(flags uint32) error {
+	if C.SDL_SetWindowFullscreen(window.cptr(), C.Uint32(flags)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowSurface)
-func (window *Window) GetSurface() *Surface {
-	return (*Surface)(unsafe.Pointer(C.SDL_GetWindowSurface(window.cptr())))
+func (window *Window) GetSurface() (*Surface, error) {
+	surface := (*Surface)(unsafe.Pointer(C.SDL_GetWindowSurface(window.cptr())))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_UpdateWindowSurface)
@@ -366,8 +417,11 @@ func (window *Window) UpdateSurface() error {
 }
 
 // Window (https://wiki.libsdl.org/SDL_UpdateWindowSurfaceRects)
-func (window *Window) UpdateSurfaceRects(rects []Rect) int {
-	return int(C.SDL_UpdateWindowSurfaceRects(window.cptr(), rects[0].cptr(), C.int(len(rects))))
+func (window *Window) UpdateSurfaceRects(rects []Rect) error {
+	if C.SDL_UpdateWindowSurfaceRects(window.cptr(), rects[0].cptr(), C.int(len(rects))) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_SetWindowGrab)
@@ -381,8 +435,11 @@ func (window *Window) GetGrab() bool {
 }
 
 // Window (https://wiki.libsdl.org/SDL_SetWindowBrightness)
-func (window *Window) SetBrightness(brightness float32) int {
-	return int(C.SDL_SetWindowBrightness(window.cptr(), C.float(brightness)))
+func (window *Window) SetBrightness(brightness float32) error {
+	if C.SDL_SetWindowBrightness(window.cptr(), C.float(brightness)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowBrightness)
@@ -391,18 +448,23 @@ func (window *Window) GetBrightness() float32 {
 }
 
 // Window (https://wiki.libsdl.org/SDL_SetWindowGammaRamp)
-func (window *Window) SetGammaRamp(red, green, blue *uint16) int {
+func (window *Window) SetGammaRamp(red, green, blue *uint16) error {
 	_red := (*C.Uint16)(red)
 	_green := (*C.Uint16)(red)
 	_blue := (*C.Uint16)(blue)
-	return int(C.SDL_SetWindowGammaRamp(window.cptr(), _red, _green, _blue))
+	if C.SDL_SetWindowGammaRamp(window.cptr(), _red, _green, _blue) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowGammaRamp)
-func (window *Window) GetGammaRamp() (red, green, blue uint16, status int) {
+func (window *Window) GetGammaRamp() (red, green, blue uint16, err error) {
 	var _red, _green, _blue C.Uint16
-	_status := int(C.SDL_GetWindowGammaRamp(window.cptr(), &_red, &_green, &_blue))
-	return uint16(_red), uint16(_green), uint16(_blue), _status
+	if C.SDL_GetWindowGammaRamp(window.cptr(), &_red, &_green, &_blue) != 0 {
+		return uint16(_red), uint16(_green), uint16(_blue), GetError()
+	}
+	return uint16(_red), uint16(_green), uint16(_blue), nil
 }
 
 // IsScreenSaverEnabled (https://wiki.libsdl.org/SDL_IsScreenSaverEnabled)
@@ -421,9 +483,12 @@ func DisableScreenSaver() {
 }
 
 // GL_LoadLibrary (https://wiki.libsdl.org/SDL_GL_LoadLibrary)
-func GL_LoadLibrary(path string) int {
+func GL_LoadLibrary(path string) error {
 	_path := C.CString(path)
-	return int(C.SDL_GL_LoadLibrary(_path))
+	if C.SDL_GL_LoadLibrary(_path) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GL_GetProcAddress (https://wiki.libsdl.org/SDL_GL_GetProcAddress)
@@ -444,35 +509,54 @@ func GL_ExtensionSupported(extension string) bool {
 }
 
 // GL_SetAttribute (https://wiki.libsdl.org/SDL_GL_SetAttribute)
-func GL_SetAttribute(attr GLattr, value int) int {
-	return int(C.SDL_GL_SetAttribute(attr.c(), C.int(value)))
+func GL_SetAttribute(attr GLattr, value int) error {
+	if C.SDL_GL_SetAttribute(attr.c(), C.int(value)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GL_GetAttribute (https://wiki.libsdl.org/SDL_GL_GetAttribute)
-func GL_GetAttribute(attr GLattr) (value int, status int) {
-	var _value, _status C.int
-	_status = (C.SDL_GL_GetAttribute(attr.c(), &_value))
-	return int(_value), int(_status)
+func GL_GetAttribute(attr GLattr) (int, error) {
+	var _value C.int
+	if C.SDL_GL_GetAttribute(attr.c(), &_value) != 0 {
+		return int(_value), GetError()
+	}
+	return int(_value), nil
 }
 
 // GL_CreateContext (https://wiki.libsdl.org/SDL_GL_CreateContext)
-func GL_CreateContext(window *Window) GLContext {
-	return GLContext(C.SDL_GL_CreateContext(window.cptr()))
+func GL_CreateContext(window *Window) (GLContext, error) {
+	c := GLContext(C.SDL_GL_CreateContext(window.cptr()))
+	if c == nil {
+		return nil, GetError()
+	}
+	return c, nil
 }
 
 // GL_MakeCurrent (https://wiki.libsdl.org/SDL_GL_MakeCurrent)
-func GL_MakeCurrent(window *Window, glcontext GLContext) int {
-	return int(C.SDL_GL_MakeCurrent(window.cptr(), C.SDL_GLContext(glcontext)))
+func GL_MakeCurrent(window *Window, glcontext GLContext) error {
+	if C.SDL_GL_MakeCurrent(window.cptr(), C.SDL_GLContext(glcontext)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GL_SetSwapInterval (https://wiki.libsdl.org/SDL_GL_SetSwapInterval)
-func GL_SetSwapInterval(interval int) int {
-	return int(C.SDL_GL_SetSwapInterval(C.int(interval)))
+func GL_SetSwapInterval(interval int) error {
+	if C.SDL_GL_SetSwapInterval(C.int(interval)) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GL_GetSwapInterval (https://wiki.libsdl.org/SDL_GL_GetSwapInterval)
-func GL_GetSwapInterval() int {
-	return int(C.SDL_GL_GetSwapInterval())
+func GL_GetSwapInterval() (int, error) {
+	i := int(C.SDL_GL_GetSwapInterval())
+	if i == -1 {
+		return i, GetError()
+	}
+	return i, nil
 }
 
 // GL_SwapWindow (https://wiki.libsdl.org/SDL_GL_SwapWindow)
