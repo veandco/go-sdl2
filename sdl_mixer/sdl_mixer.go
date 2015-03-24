@@ -191,11 +191,11 @@ func GroupChannel(which, tag int) bool {
 	return int(C.Mix_GroupChannel(_which, _tag)) > 0
 }
 
-func GroupChannels(from, to, tag int) bool {
+func GroupChannels(from, to, tag int) int {
 	_from := (C.int)(from)
 	_to := (C.int)(to)
 	_tag := (C.int)(tag)
-	return int(C.Mix_GroupChannels(_from, _to, _tag)) > 0
+	return int(C.Mix_GroupChannels(_from, _to, _tag))
 }
 
 func GroupAvailable(tag int) int {
@@ -218,24 +218,24 @@ func GroupNewer(tag int) int {
 	return (int)(C.Mix_GroupNewer(_tag))
 }
 
-func (chunk *Chunk) PlayTimed(channel, loops, ticks int) bool {
+func (chunk *Chunk) PlayTimed(channel, loops, ticks int) int {
 	_channel := (C.int)(channel)
 	_chunk := (*C.Mix_Chunk)(unsafe.Pointer(chunk))
 	_loops := (C.int)(loops)
 	_ticks := (C.int)(ticks)
-	return int(C.Mix_PlayChannelTimed(_channel, _chunk, _loops, _ticks)) == 0
+	return int(C.Mix_PlayChannelTimed(_channel, _chunk, _loops, _ticks))
 }
 
-func (chunk *Chunk) LengthInMs() uint {
+func (chunk *Chunk) LengthInMs() int {
 	_chunk := (*C.Mix_Chunk)(unsafe.Pointer(chunk))
-	return uint(C.getChunkTimeMilliseconds(_chunk))
+	return int(C.getChunkTimeMilliseconds(_chunk))
 }
 
-func (chunk *Chunk) PlayChannel(channel, loops int) bool {
+func (chunk *Chunk) PlayChannel(channel, loops int) int {
 	_channel := (C.int)(channel)
 	_chunk := (*C.Mix_Chunk)(unsafe.Pointer(chunk))
 	_loops := (C.int)(loops)
-	return int(C.Mix_PlayChannelTimed(_channel, _chunk, _loops, -1)) == 0
+	return int(C.Mix_PlayChannelTimed(_channel, _chunk, _loops, -1))
 }
 
 func (music *Music) Play(loops int) bool {
@@ -259,22 +259,22 @@ func (music *Music) FadeInPos(loops, ms int, position float64) bool {
 	return int(C.Mix_FadeInMusicPos(_music, _loops, _ms, _position)) == 0
 }
 
-func (chunk *Chunk) FadeIn(channel, loops, ms, ticks int) bool {
+func (chunk *Chunk) FadeIn(channel, loops, ms, ticks int) int {
 	_channel := (C.int)(channel)
 	_chunk := (*C.Mix_Chunk)(unsafe.Pointer(chunk))
 	_loops := (C.int)(loops)
 	_ms := (C.int)(ms)
-	return int(C.Mix_FadeInChannelTimed(_channel, _chunk, _loops, _ms, -1)) == 0
+	return int(C.Mix_FadeInChannelTimed(_channel, _chunk, _loops, _ms, -1))
 }
 
-func (chunk *Chunk) FadeInTimed(channel, loops, ms, ticks int) bool {
+func (chunk *Chunk) FadeInTimed(channel, loops, ms, ticks int) int {
 	_channel := (C.int)(channel)
 	_chunk := (*C.Mix_Chunk)(unsafe.Pointer(chunk))
 	_loops := (C.int)(loops)
 	_ms := (C.int)(ms)
 	_ticks := (C.int)(ticks)
 	return int(C.Mix_FadeInChannelTimed(_channel, _chunk, _loops, _ms,
-		_ticks)) == 0
+		_ticks))
 }
 
 func SetVolume(channel, volume int) int {
