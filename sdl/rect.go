@@ -47,20 +47,24 @@ func (a *Rect) HasIntersection(b *Rect) bool {
 }
 
 // Rect (https://wiki.libsdl.org/SDL_IntersectRect)
-func (a *Rect) Intersect(b, result *Rect) bool {
-	return C.SDL_IntersectRect(a.cptr(), b.cptr(), result.cptr()) > 0
+func (a *Rect) Intersect(b *Rect) (result Rect, ok bool) {
+	ok = C.SDL_IntersectRect(a.cptr(), b.cptr(), result.cptr()) > 0
+    return
 }
 
 // Rect (https://wiki.libsdl.org/SDL_UnionRect)
-func (a *Rect) Union(b, result *Rect) {
+func (a *Rect) Union(b *Rect) (result Rect) {
 	C.SDL_UnionRect(a.cptr(), b.cptr(), result.cptr())
+    return
 }
 
 // EnclosePoints (https://wiki.libsdl.org/SDL_EnclosePoints)
-func EnclosePoints(points []Point, clip, result *Rect) bool {
-	return C.SDL_EnclosePoints(points[0].cptr(), C.int(len(points)), clip.cptr(), result.cptr()) > 0
+func EnclosePoints(points []Point, clip *Rect) (result Rect, ok bool) {
+	ok = C.SDL_EnclosePoints(points[0].cptr(), C.int(len(points)), clip.cptr(), result.cptr()) > 0
+    return
 }
 
+// IntersectLine 
 func (rect *Rect) IntersectLine(X1, Y1, X2, Y2 *int) bool {
 	_X1 := (*C.int)(unsafe.Pointer(X1))
 	_Y1 := (*C.int)(unsafe.Pointer(Y1))
