@@ -4,21 +4,23 @@ package sdl
 import "C"
 import "unsafe"
 
+type SharedObject uintptr
+
 // LoadObject (https://wiki.libsdl.org/SDL_LoadObject)
-func LoadObject(sofile string) unsafe.Pointer {
+func LoadObject(sofile string) SharedObject {
 	_sofile := C.CString(sofile)
 	defer C.free(unsafe.Pointer(_sofile))
-	return (unsafe.Pointer)(C.SDL_LoadObject(_sofile))
+	return (SharedObject)(C.SDL_LoadObject(_sofile))
 }
 
 // LoadFunction (https://wiki.libsdl.org/SDL_LoadFunction)
-func LoadFunction(handle unsafe.Pointer, name string) unsafe.Pointer {
+func (handle SharedObject) LoadFunction(name string) unsafe.Pointer {
 	_name := C.CString(name)
 	defer C.free(unsafe.Pointer(_name))
-	return (unsafe.Pointer)(C.SDL_LoadFunction(handle, _name))
+	return (unsafe.Pointer)(C.SDL_LoadFunction((unsafe.Pointer)(handle), _name))
 }
 
 // UnloadObject (https://wiki.libsdl.org/SDL_UnloadObject)
-func UnloadObject(handle unsafe.Pointer) {
-	C.SDL_UnloadObject(handle)
+func (handle SharedObject) Unload() {
+	C.SDL_UnloadObject((unsafe.Pointer)(handle))
 }
