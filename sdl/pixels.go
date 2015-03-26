@@ -151,6 +151,11 @@ const (
 	PIXELFORMAT_YVYU        = C.SDL_PIXELFORMAT_YVYU
 )
 
+const (
+	ALPHA_OPAQUE      = C.SDL_ALPHA_OPAQUE
+	ALPHA_TRANSPARENT = C.SDL_ALPHA_TRANSPARENT
+)
+
 func (fmt *PixelFormat) cptr() *C.SDL_PixelFormat {
 	return (*C.SDL_PixelFormat)(unsafe.Pointer(fmt))
 }
