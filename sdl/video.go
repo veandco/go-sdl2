@@ -448,23 +448,29 @@ func (window *Window) GetBrightness() float32 {
 }
 
 // Window (https://wiki.libsdl.org/SDL_SetWindowGammaRamp)
-func (window *Window) SetGammaRamp(red, green, blue *uint16) error {
-	_red := (*C.Uint16)(red)
-	_green := (*C.Uint16)(red)
-	_blue := (*C.Uint16)(blue)
-	if C.SDL_SetWindowGammaRamp(window.cptr(), _red, _green, _blue) != 0 {
+func (window *Window) SetGammaRamp(red, green, blue *[256]uint16) error {
+	if C.SDL_SetWindowGammaRamp(
+		window.cptr(),
+		(*C.Uint16)(unsafe.Pointer(red)),
+		(*C.Uint16)(unsafe.Pointer(green)),
+		(*C.Uint16)(unsafe.Pointer(blue))) != 0 {
+
 		return GetError()
 	}
 	return nil
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowGammaRamp)
-func (window *Window) GetGammaRamp() (red, green, blue uint16, err error) {
-	var _red, _green, _blue C.Uint16
-	if C.SDL_GetWindowGammaRamp(window.cptr(), &_red, &_green, &_blue) != 0 {
-		return uint16(_red), uint16(_green), uint16(_blue), GetError()
+func (window *Window) GetGammaRamp() (red, green, blue *[256]uint16, err error) {
+	if C.SDL_GetWindowGammaRamp(
+		window.cptr(),
+		(*C.Uint16)(unsafe.Pointer(red)),
+		(*C.Uint16)(unsafe.Pointer(green)),
+		(*C.Uint16)(unsafe.Pointer(blue))) != 0 {
+
+		return red, green, blue, GetError()
 	}
-	return uint16(_red), uint16(_green), uint16(_blue), nil
+	return red, green, blue, nil
 }
 
 // IsScreenSaverEnabled (https://wiki.libsdl.org/SDL_IsScreenSaverEnabled)
