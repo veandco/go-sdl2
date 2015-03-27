@@ -294,7 +294,7 @@ func (renderer *Renderer) GetViewport(rect *Rect) {
 	C.SDL_RenderGetViewport(renderer.cptr(), rect.cptr())
 }
 
-// Renderer (https://wiki.libsdl.org/SDL_SetClipRect)
+// Renderer (https://wiki.libsdl.org/SDL_RenderSetClipRect)
 func (renderer *Renderer) SetClipRect(rect *Rect) error {
 	_ret := C.SDL_RenderSetClipRect(renderer.cptr(), rect.cptr())
 	if _ret < 0 {
@@ -303,7 +303,7 @@ func (renderer *Renderer) SetClipRect(rect *Rect) error {
 	return nil
 }
 
-// Renderer (https://wiki.libsdl.org/SDL_GetClipRect)
+// Renderer (https://wiki.libsdl.org/SDL_RenderGetClipRect)
 func (renderer *Renderer) GetClipRect(rect *Rect) {
 	C.SDL_RenderGetClipRect(renderer.cptr(), rect.cptr())
 }
@@ -439,7 +439,7 @@ func (renderer *Renderer) DrawRects(rects []Rect) error {
 	return nil
 }
 
-// Renderer (https://wiki.libsdl.org/SDL_FillRect)
+// Renderer (https://wiki.libsdl.org/SDL_RenderFillRect)
 func (renderer *Renderer) FillRect(rect *Rect) error {
 	_ret := C.SDL_RenderFillRect(renderer.cptr(), rect.cptr())
 	if _ret < 0 {
@@ -448,7 +448,7 @@ func (renderer *Renderer) FillRect(rect *Rect) error {
 	return nil
 }
 
-// Renderer (https://wiki.libsdl.org/SDL_FillRects)
+// Renderer (https://wiki.libsdl.org/SDL_RenderFillRects)
 func (renderer *Renderer) FillRects(rects []Rect) error {
 	_ret := C.SDL_RenderFillRects(renderer.cptr(), rects[0].cptr(), C.int(len(rects)))
 	if _ret < 0 {
