@@ -33,10 +33,10 @@ import "reflect"
 import "github.com/veandco/go-sdl2/sdl"
 
 type Chunk struct {
-	Allocated int32
-	Buf       *uint8
-	Len       uint32
-	Volume    uint8
+	allocated int32
+	buf       *uint8
+	len_      uint32
+	volume    uint8
 }
 
 const (
@@ -74,69 +74,118 @@ type Music struct {
 type MusicType int
 type Fading int
 
-func OpenAudio(frequency int, format uint16, channels, chunksize int) bool {
+func cint(b bool) C.int {
+	if b {
+		return 1
+	} else {
+		return 0
+	}
+}
+
+func OpenAudio(frequency int, format uint16, channels, chunksize int) error {
 	_frequency := (C.int)(frequency)
 	_format := (C.Uint16)(format)
 	_channels := (C.int)(channels)
 	_chunksize := (C.int)(chunksize)
-	return int(C.Mix_OpenAudio(_frequency, _format, _channels, _chunksize)) == 0
+	if C.Mix_OpenAudio(_frequency, _format, _channels, _chunksize) < 0 {
+		return sdl.GetError()
+	} else {
+		return nil
+	}
 }
 
-func AllocateChannels(numchans int) bool {
+func AllocateChannels(numchans int) int {
 	_numchans := (C.int)(numchans)
-	return int(C.Mix_AllocateChannels(_numchans)) == 0
+	return int(C.Mix_AllocateChannels(_numchans))
 }
 
-func QuerySpec(frequency *int, format *uint16, channels *int) bool {
-	_frequency := (*C.int)(unsafe.Pointer(frequency))
-	_format := (*C.Uint16)(unsafe.Pointer(format))
-	_channels := (*C.int)(unsafe.Pointer(channels))
-	return int(C.Mix_QuerySpec(_frequency, _format, _channels)) > 0
+// open is number of call to OpenAudio or 0 on error
+func QuerySpec() (frequency int, format uint16, channels int, open int, err error) {
+	var _frequency C.int
+	var _format C.Uint16
+	var _channels C.int
+	open = int(C.Mix_QuerySpec(&_frequency, &_format, &_channels))
+	if open == 0 {
+		err = sdl.GetError()
+	}
+	frequency = int(_frequency)
+	format = uint16(_format)
+	channels = int(_channels)
+	return
 }
 
-func LoadWAV_RW(src *sdl.RWops, freesrc int) *Chunk {
+func LoadWAV_RW(src *sdl.RWops, freesrc bool) (chunk *Chunk, err error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	_freesrc := (C.int)(freesrc)
-	return (*Chunk)(unsafe.Pointer(C.Mix_LoadWAV_RW(_src, _freesrc)))
+	_freesrc := cint(freesrc)
+	chunk = (*Chunk)(unsafe.Pointer(C.Mix_LoadWAV_RW(_src, _freesrc)))
+	if chunk == nil {
+		err = sdl.GetError()
+	}
+	return
 }
 
-func LoadWAV(file string) *Chunk {
+func LoadWAV(file string) (chunk *Chunk, err error) {
 	_file := C.CString(file)
 	defer C.free(unsafe.Pointer(_file))
 	_rb := C.CString("rb")
 	defer C.free(unsafe.Pointer(_rb))
-	return (*Chunk)(unsafe.Pointer(C.Mix_LoadWAV_RW(C.SDL_RWFromFile(_file, _rb), 1)))
+	// why doesn't this call Mix_LoadWAV ?
+	chunk = (*Chunk)(unsafe.Pointer(C.Mix_LoadWAV_RW(C.SDL_RWFromFile(_file, _rb), 1)))
+	if chunk == nil {
+		err = sdl.GetError()
+	}
+	return
 }
 
-func LoadMUS(file string) *Music {
+func LoadMUS(file string) (mus *Music, err error) {
 	_file := C.CString(file)
 	defer C.free(unsafe.Pointer(_file))
-	return (*Music)(unsafe.Pointer(C.Mix_LoadMUS(_file)))
+	mus = (*Music)(unsafe.Pointer(C.Mix_LoadMUS(_file)))
+	if mus == nil {
+		err = sdl.GetError()
+	}
+	return
 }
 
-func LoadMUS_RW(src *sdl.RWops, freesrc int) *Music {
+func LoadMUS_RW(src *sdl.RWops, freesrc int) (mus *Music, err error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
 	_freesrc := (C.int)(freesrc)
-	return (*Music)(unsafe.Pointer(C.Mix_LoadMUS_RW(_src, _freesrc)))
+	mus = (*Music)(unsafe.Pointer(C.Mix_LoadMUS_RW(_src, _freesrc)))
+	if mus == nil {
+		err = sdl.GetError()
+	}
+	return
 }
 
-func LoadMUSType_RW(src *sdl.RWops, type_ MusicType, freesrc int) *Music {
+func LoadMUSType_RW(src *sdl.RWops, type_ MusicType, freesrc int) (mus *Music, err error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
 	_type := (C.Mix_MusicType)(type_)
 	_freesrc := (C.int)(freesrc)
-	return (*Music)(unsafe.Pointer(C.Mix_LoadMUSType_RW(_src, _type,
+	mus = (*Music)(unsafe.Pointer(C.Mix_LoadMUSType_RW(_src, _type,
 		_freesrc)))
+	if mus == nil {
+		err = sdl.GetError()
+	}
+	return
 }
 
-func QuickLoad_WAV(mem *uint8) *Chunk {
+func QuickLoad_WAV(mem unsafe.Pointer) (chunk *Chunk, err error) {
 	_mem := (*C.Uint8)(mem)
-	return (*Chunk)(unsafe.Pointer(C.Mix_QuickLoad_WAV(_mem)))
+	chunk = (*Chunk)(unsafe.Pointer(C.Mix_QuickLoad_WAV(_mem)))
+	if chunk == nil {
+		err = sdl.GetError()
+	}
+	return
 }
 
-func QuickLoad_RAW(mem *uint8, len_ uint32) *Chunk {
+func QuickLoad_RAW(mem *uint8, len_ uint32) (chunk *Chunk, err error) {
 	_mem := (*C.Uint8)(mem)
 	_len := (C.Uint32)(len_)
-	return (*Chunk)(unsafe.Pointer(C.Mix_QuickLoad_RAW(_mem, _len)))
+	chunk = (*Chunk)(unsafe.Pointer(C.Mix_QuickLoad_RAW(_mem, _len)))
+	if chunk == nil {
+		err = sdl.GetError()
+	}
+	return
 }
 
 func (chunk *Chunk) Free() {
@@ -154,30 +203,46 @@ func (music *Music) Type() MusicType {
 	return (MusicType)(C.Mix_GetMusicType(_music))
 }
 
-func SetPanning(channel int, left, right uint8) bool {
+func SetPanning(channel int, left, right uint8) error {
 	_channel := (C.int)(channel)
 	_left := (C.Uint8)(left)
 	_right := (C.Uint8)(right)
-	return int(C.Mix_SetPanning(_channel, _left, _right)) == 0
+	if C.Mix_SetPanning(_channel, _left, _right) == 0 {
+		return sdl.GetError()
+	} else {
+		return nil
+	}
 }
 
-func SetPosition(channel int, angle int16, distance uint8) bool {
+func SetPosition(channel int, angle int16, distance uint8) error {
 	_channel := (C.int)(channel)
 	_angle := (C.Sint16)(angle)
 	_distance := (C.Uint8)(distance)
-	return int(C.Mix_SetPosition(_channel, _angle, _distance)) == 0
+	if (C.Mix_SetPosition(_channel, _angle, _distance)) == 0 {
+		return sdl.GetError()
+	} else {
+		return nil
+	}
 }
 
-func SetDistance(channel int, distance uint8) bool {
+func SetDistance(channel int, distance uint8) error {
 	_channel := (C.int)(channel)
 	_distance := (C.Uint8)(distance)
-	return int(C.Mix_SetDistance(_channel, _distance)) == 0
+	if (C.Mix_SetDistance(_channel, _distance)) == 0 {
+		return sdl.GetError()
+	} else {
+		return nil
+	}
 }
 
-func SetReverseStereo(channel int, flip int) bool {
+func SetReverseStereo(channel int, flip int) error {
 	_channel := (C.int)(channel)
 	_flip := (C.int)(flip)
-	return int(C.Mix_SetReverseStereo(_channel, _flip)) == 0
+	if (C.Mix_SetReverseStereo(_channel, _flip)) == 0 {
+		return sdl.GetError()
+	} else {
+		return nil
+	}
 }
 
 func ReserveChannels(num int) int {
@@ -188,7 +253,7 @@ func ReserveChannels(num int) int {
 func GroupChannel(which, tag int) bool {
 	_which := (C.int)(which)
 	_tag := (C.int)(tag)
-	return int(C.Mix_GroupChannel(_which, _tag)) > 0
+	return C.Mix_GroupChannel(_which, _tag) != 0
 }
 
 func GroupChannels(from, to, tag int) int {
@@ -218,12 +283,16 @@ func GroupNewer(tag int) int {
 	return (int)(C.Mix_GroupNewer(_tag))
 }
 
-func (chunk *Chunk) PlayTimed(channel, loops, ticks int) int {
+func (chunk *Chunk) PlayTimed(channel, loops, ticks int) (channel_ int, err error) {
 	_channel := (C.int)(channel)
 	_chunk := (*C.Mix_Chunk)(unsafe.Pointer(chunk))
 	_loops := (C.int)(loops)
 	_ticks := (C.int)(ticks)
-	return int(C.Mix_PlayChannelTimed(_channel, _chunk, _loops, _ticks))
+	channel_ = int(C.Mix_PlayChannelTimed(_channel, _chunk, _loops, _ticks))
+	if channel_ == -1 {
+		err = sdl.GetError()
+	}
+	return
 }
 
 func (chunk *Chunk) LengthInMs() int {
@@ -231,99 +300,114 @@ func (chunk *Chunk) LengthInMs() int {
 	return int(C.getChunkTimeMilliseconds(_chunk))
 }
 
-func (chunk *Chunk) PlayChannel(channel, loops int) int {
+func (chunk *Chunk) PlayChannel(channel, loops int) (channel_ int, err error) {
 	_channel := (C.int)(channel)
 	_chunk := (*C.Mix_Chunk)(unsafe.Pointer(chunk))
 	_loops := (C.int)(loops)
-	return int(C.Mix_PlayChannelTimed(_channel, _chunk, _loops, -1))
+	channel_ = int(C.Mix_PlayChannelTimed(_channel, _chunk, _loops, -1))
+	if channel_ == -1 {
+		err = sdl.GetError()
+	}
+	return
 }
 
-func (music *Music) Play(loops int) bool {
+func (music *Music) Play(loops int) error {
 	_music := (*C.Mix_Music)(unsafe.Pointer(music))
 	_loops := (C.int)(loops)
-	return int(C.Mix_PlayMusic(_music, _loops)) == 0
+	if C.Mix_PlayMusic(_music, _loops) == -1 {
+		return sdl.GetError()
+	} else {
+		return nil
+	}
 }
 
-func (music *Music) FadeIn(loops, ms int) bool {
+func (music *Music) FadeIn(loops, ms int) error {
 	_music := (*C.Mix_Music)(unsafe.Pointer(music))
 	_loops := (C.int)(loops)
 	_ms := (C.int)(ms)
-	return int(C.Mix_FadeInMusic(_music, _loops, _ms)) == 0
+	if C.Mix_FadeInMusic(_music, _loops, _ms) == -1 {
+		return sdl.GetError()
+	} else {
+		return nil
+	}
 }
 
-func (music *Music) FadeInPos(loops, ms int, position float64) bool {
+func (music *Music) FadeInPos(loops, ms int, position float64) error {
 	_music := (*C.Mix_Music)(unsafe.Pointer(music))
 	_loops := (C.int)(loops)
 	_ms := (C.int)(ms)
 	_position := (C.double)(position)
-	return int(C.Mix_FadeInMusicPos(_music, _loops, _ms, _position)) == 0
+	if C.Mix_FadeInMusicPos(_music, _loops, _ms, _position) == -1 {
+		return sdl.GetError()
+	} else {
+		return nil
+	}
 }
 
-func (chunk *Chunk) FadeIn(channel, loops, ms, ticks int) int {
-	_channel := (C.int)(channel)
-	_chunk := (*C.Mix_Chunk)(unsafe.Pointer(chunk))
-	_loops := (C.int)(loops)
-	_ms := (C.int)(ms)
-	return int(C.Mix_FadeInChannelTimed(_channel, _chunk, _loops, _ms, -1))
+func (chunk *Chunk) FadeIn(channel, loops, ms int) (channel_ int, err error) {
+	return chunk.FadeInTimed(channel, loops, ms, -1)
 }
 
-func (chunk *Chunk) FadeInTimed(channel, loops, ms, ticks int) int {
+func (chunk *Chunk) FadeInTimed(channel, loops, ms, ticks int) (channel_ int, err error) {
 	_channel := (C.int)(channel)
 	_chunk := (*C.Mix_Chunk)(unsafe.Pointer(chunk))
 	_loops := (C.int)(loops)
 	_ms := (C.int)(ms)
 	_ticks := (C.int)(ticks)
-	return int(C.Mix_FadeInChannelTimed(_channel, _chunk, _loops, _ms,
-		_ticks))
+	channel_ = int(C.Mix_FadeInChannelTimed(_channel, _chunk, _loops, _ms, _ticks))
+	if channel_ == -1 {
+		err = sdl.GetError()
+	}
+	return
 }
 
-func SetVolume(channel, volume int) int {
+func Volume(channel, volume int) int {
 	_channel := (C.int)(channel)
 	_volume := (C.int)(volume)
 	return (int)(C.Mix_Volume(_channel, _volume))
 }
 
-func (chunk *Chunk) SetVolume(volume int) int {
+func (chunk *Chunk) Volume(volume int) int {
 	_chunk := (*C.Mix_Chunk)(unsafe.Pointer(chunk))
 	_volume := (C.int)(volume)
 	return (int)(C.Mix_VolumeChunk(_chunk, _volume))
 }
 
-func SetMusicVolume(volume int) int {
+func VolumeMusic(volume int) int {
 	_volume := (C.int)(volume)
 	return (int)(C.Mix_VolumeMusic(_volume))
 }
 
-func HaltChannel(channel int) bool {
+func HaltChannel(channel int) {
 	_channel := (C.int)(channel)
-	return int(C.Mix_HaltChannel(_channel)) == 0
+	C.Mix_HaltChannel(_channel)
 }
 
-func HaltGroup(tag int) bool {
+func HaltGroup(tag int) {
 	_tag := (C.int)(tag)
-	return int(C.Mix_HaltGroup(_tag)) == 0
+	C.Mix_HaltGroup(_tag)
 }
 
-func HaltMusic() bool {
-	return int(C.Mix_HaltMusic()) == 0
+func HaltMusic() {
+	C.Mix_HaltMusic()
 }
 
-func ExpireChannel(channel, ticks int) bool {
+func ExpireChannel(channel, ticks int) int {
 	_channel := (C.int)(channel)
 	_ticks := (C.int)(ticks)
-	return int(C.Mix_ExpireChannel(_channel, _ticks)) == 0
+	return int(C.Mix_ExpireChannel(_channel, _ticks))
 }
 
-func FadeOutChannel(which, ms int) bool {
+func FadeOutChannel(which, ms int) int {
 	_which := (C.int)(which)
 	_ms := (C.int)(ms)
-	return int(C.Mix_FadeOutChannel(_which, _ms)) == 0
+	return int(C.Mix_FadeOutChannel(_which, _ms))
 }
 
-func FadeOutGroup(tag, ms int) bool {
+func FadeOutGroup(tag, ms int) int {
 	_tag := (C.int)(tag)
 	_ms := (C.int)(ms)
-	return int(C.Mix_FadeOutGroup(_tag, _ms)) == 0
+	return int(C.Mix_FadeOutGroup(_tag, _ms))
 }
 
 func FadeOutMusic(ms int) bool {
@@ -371,9 +455,13 @@ func PausedMusic() bool {
 	return int(C.Mix_PausedMusic()) > 0
 }
 
-func SetMusicPosition(position int64) bool {
+func SetMusicPosition(position int64) error {
 	_position := (C.double)(position)
-	return int(C.Mix_SetMusicPosition(_position)) == 0
+	if C.Mix_SetMusicPosition(_position) == -1 {
+		return sdl.GetError()
+	} else {
+		return nil
+	}
 }
 
 func Playing(channel int) bool {
@@ -385,27 +473,35 @@ func MusicPlaying() bool {
 	return int(C.Mix_PlayingMusic()) > 0
 }
 
-func SetMusicCMD(command string) bool {
+func SetMusicCMD(command string) error {
 	_command := C.CString(command)
 	defer C.free(unsafe.Pointer(_command))
-	return int(C.Mix_SetMusicCMD(_command)) == 0
+	if C.Mix_SetMusicCMD(_command) == -1 {
+		return sdl.GetError()
+	} else {
+		return nil
+	}
 }
 
+// undocumented
 func SetSynchroValue(value int) bool {
 	_value := (C.int)(value)
 	return int(C.Mix_SetSynchroValue(_value)) == 0
 }
 
+// undocumented
 func GetSynchroValue() int {
 	return (int)(C.Mix_GetSynchroValue())
 }
 
+// undocumented
 func SetSoundFonts(paths string) bool {
 	_paths := C.CString(paths)
 	defer C.free(unsafe.Pointer(_paths))
 	return int(C.Mix_SetSoundFonts(_paths)) == 0
 }
 
+// undocumented
 func GetSoundFonts() string {
 	return (string)(C.GoString(C.Mix_GetSoundFonts()))
 }
@@ -523,7 +619,7 @@ func callEffectDone(channel C.int, udata unsafe.Pointer) {
 func RegisterEffect(channel int, f EffectFuncT, d EffectDoneT) int {
 	//the user data pointer is not required, because go has proper closures
 	index := len(allEffectFunc)
-	//since go functions can't be cast to C function pointers (yet), we have a workaround here.
+	//since go functions can't be cast to C function pointers, we have a workaround here.
 	allEffectFunc = append(allEffectFunc, f)
 	allEffectDone = append(allEffectDone, d)
 	return int(C.Mix_RegisterEffect(C.int(channel), (*[0]byte)(C.callEffectFunc), (*[0]byte)(C.callEffectDone), unsafe.Pointer(uintptr(index))))
@@ -537,6 +633,9 @@ func UnregisterEffect(channel int, f EffectFuncT) int {
 */
 
 func UnregisterAllEffects(channel int) int {
+	// release all effect functions
+	allEffectFunc = nil
+	allEffectDone = nil
 	return int(C.Mix_UnregisterAllEffects(C.int(channel)))
 }
 
