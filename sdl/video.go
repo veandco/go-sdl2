@@ -46,6 +46,12 @@ const (
 )
 
 const (
+	MESSAGEBOX_ERROR       = C.SDL_MESSAGEBOX_ERROR
+	MESSAGEBOX_WARNING     = C.SDL_MESSAGEBOX_WARNING
+	MESSAGEBOX_INFORMATION = C.SDL_MESSAGEBOX_INFORMATION
+)
+
+const (
 	GL_RED_SIZE                   = C.SDL_GL_RED_SIZE
 	GL_GREEN_SIZE                 = C.SDL_GL_GREEN_SIZE
 	GL_BLUE_SIZE                  = C.SDL_GL_BLUE_SIZE
@@ -471,6 +477,20 @@ func (window *Window) GetGammaRamp() (red, green, blue *[256]uint16, err error) 
 		return red, green, blue, GetError()
 	}
 	return red, green, blue, nil
+}
+
+// Window (https://wiki.libsdl.org/SDL_ShowSimpleMessageBox)
+func (window *Window) ShowSimpleMessageBox(flags uint32, title, message string) {
+	ShowSimpleMessageBox(flags, title, message, window)
+}
+
+// ShowSimpleMessageBox (https://wiki.libsdl.org/SDL_ShowSimpleMessageBox)
+func ShowSimpleMessageBox(flags uint32, title, message string, window *Window) {
+	_title := C.CString(title)
+	defer C.free(unsafe.Pointer(_title))
+	_message := C.CString(message)
+	defer C.free(unsafe.Pointer(_message))
+	C.SDL_ShowSimpleMessageBox(C.Uint32(flags), _title, _message, window.cptr())
 }
 
 // IsScreenSaverEnabled (https://wiki.libsdl.org/SDL_IsScreenSaverEnabled)
