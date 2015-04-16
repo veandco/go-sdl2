@@ -479,18 +479,16 @@ func (window *Window) GetGammaRamp() (red, green, blue *[256]uint16, err error) 
 	return red, green, blue, nil
 }
 
-// Window (https://wiki.libsdl.org/SDL_ShowSimpleMessageBox)
-func (window *Window) ShowSimpleMessageBox(flags uint32, title, message string) {
-	ShowSimpleMessageBox(flags, title, message, window)
-}
-
 // ShowSimpleMessageBox (https://wiki.libsdl.org/SDL_ShowSimpleMessageBox)
-func ShowSimpleMessageBox(flags uint32, title, message string, window *Window) {
+func ShowSimpleMessageBox(flags uint32, title, message string, window *Window) error {
 	_title := C.CString(title)
 	defer C.free(unsafe.Pointer(_title))
 	_message := C.CString(message)
 	defer C.free(unsafe.Pointer(_message))
-	C.SDL_ShowSimpleMessageBox(C.Uint32(flags), _title, _message, window.cptr())
+	if (int)(C.SDL_ShowSimpleMessageBox(C.Uint32(flags), _title, _message, window.cptr())) < 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // IsScreenSaverEnabled (https://wiki.libsdl.org/SDL_IsScreenSaverEnabled)
