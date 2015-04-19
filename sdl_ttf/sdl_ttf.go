@@ -141,6 +141,31 @@ func (f *Font) RenderUTF8_Blended(text string, color sdl.Color) *sdl.Surface {
 	return surface
 }
 
+func (f *Font) SizeText(text string) (int,int,error) {
+	_text := C.CString(text)
+	defer C.free(unsafe.Pointer(_text))
+	var w C.int
+	var h C.int
+	result :=  C.TTF_SizeText(f.f,_text,&w,&h)
+	if result == 0 {
+		return int(w),int(h),nil
+	}
+	return int(w),int(h),GetError()
+}
+
+func (f *Font) SizeUTF8(text string) (int,int,error) {
+	_text := C.CString(text)
+	defer C.free(unsafe.Pointer(_text))
+	var w C.int
+	var h C.int
+	result :=  C.TTF_SizeUTF8(f.f,_text,&w,&h)
+	if result == 0 {
+		return int(w),int(h),nil
+	}
+	return int(w),int(h),GetError()
+}
+
+
 func (f *Font) Close() {
 	C.TTF_CloseFont(f.f)
 	f.f = nil
