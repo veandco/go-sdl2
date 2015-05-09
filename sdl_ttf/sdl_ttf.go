@@ -93,6 +93,23 @@ func OpenFontIndex(file string, size int, index int) (*Font, error) {
 	return &Font{f}, nil
 }
 
+func OpenFontRW(src *sdl.RWops, freesrc, size int) (*Font, error) {
+	return OpenFontIndexRW(src, freesrc, size, 0)
+}
+
+func OpenFontIndexRW(src *sdl.RWops, freesrc, size, index int) (*Font, error) {
+	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
+	_freesrc := (C.int)(freesrc)
+	_size := (C.int)(size)
+	_index := (C.long)(index)
+	f := (*C.TTF_Font)(C.TTF_OpenFontIndexRW(_src, _freesrc, _size, _index))
+
+	if f == nil {
+		return nil, GetError()
+	}
+	return &Font{f}, nil
+}
+
 func (f *Font) RenderUTF8_Solid(text string, color sdl.Color) (*sdl.Surface,error) {
 	_text := C.CString(text)
 	defer C.free(unsafe.Pointer(_text))
