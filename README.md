@@ -28,7 +28,7 @@ On __Mac OS X__, install SDL2 via [Homebrew](http://brew.sh) like so:
 `brew install sdl2{,_image,_ttf,_mixer}`
 
 On __Windows__, install SDL2 via [Msys2](https://msys2.github.io) like so:
-`pacman -S mingw-w64-x86_64-SDL2{,_mixer,_image,_ttf}`
+`pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-SDL2{,_mixer,_image,_ttf}`
 
 Installation
 ============
