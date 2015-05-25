@@ -164,7 +164,7 @@ func (renderer *Renderer) CreateTextureFromSurface(surface *Surface) (*Texture, 
 }
 
 // Texture (https://wiki.libsdl.org/SDL_QueryTexture)
-func (texture *Texture) Query() (uint32, int, int, int, error) {
+func (texture *Texture) Query() (uint32, int, int32, int32, error) {
 	var format C.Uint32
 	var access C.int
 	var width C.int
@@ -173,7 +173,7 @@ func (texture *Texture) Query() (uint32, int, int, int, error) {
 	if ret < 0 {
 		return 0, 0, 0, 0, GetError()
 	}
-	return uint32(format), int(access), int(width), int(height), nil
+	return uint32(format), int(access), int32(width), int32(height), nil
 }
 
 // Texture (https://wiki.libsdl.org/SDL_SetTextureColorMod)
