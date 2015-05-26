@@ -31,6 +31,8 @@ inside DMG Images on any of this paths:
 `/Users/[your_user]/Library/Frameworks (user-level)`
 
 
+On __Windows__, install SDL2 via [Msys2](https://msys2.github.io) like so:
+`pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-SDL2{,_mixer,_image,_ttf}`
 
 Installation
 ============
@@ -54,20 +56,26 @@ package main
 import "github.com/veandco/go-sdl2/sdl"
 
 func main() {
+	sdl.Init(sdl.INIT_EVERYTHING)
+
 	window, err := sdl.CreateWindow("test", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		800, 600, sdl.WINDOW_SHOWN)
 	if err != nil {
 		panic(err)
 	}
+	defer window.Destroy()
 
-	surface := window.GetSurface()
+	surface, err := window.GetSurface()
+	if err != nil {
+		panic(err)
+	}
 
 	rect := sdl.Rect{0, 0, 200, 200}
 	surface.FillRect(&rect, 0xffff0000)
 	window.UpdateSurface()
 
 	sdl.Delay(1000)
-	window.Destroy()
+	sdl.Quit()
 }
 ```
 
@@ -103,6 +111,10 @@ Contributors
 * [Thomas McGrew](https://github.com/mcgrew)
 * [Geoff Catlin](https://github.com/gcatlin)
 * [Eliuk Blau](https://github.com/eliukblau)
+* [Jason Alan Palmer](https://github.com/jalan)
+* [Seuk Won Kang](https://github.com/kasworld)
+
+_if anyone is missing, let me know!_
 
 License
 =======
