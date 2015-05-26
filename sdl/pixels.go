@@ -8,9 +8,9 @@ import "unsafe"
 type PixelFormat struct {
 	Format        uint32
 	Palette       *Palette
-	BitsPerPixels uint8
+	BitsPerPixel  uint8
 	BytesPerPixel uint8
-	padding       [2]uint8
+	_             [2]uint8 // padding
 	Rmask         uint32
 	Gmask         uint32
 	Bmask         uint32
@@ -23,17 +23,19 @@ type PixelFormat struct {
 	Gshift        uint8
 	Bshift        uint8
 	Ashift        uint8
-	RefCount      int
+	RefCount      int32
 	Next          *PixelFormat
 }
+type cPixelFormat C.SDL_PixelFormat
 
 // Palette (https://wiki.libsdl.org/SDL_Palette)
 type Palette struct {
-	Ncolors  int
+	Ncolors  int32
 	Colors   *Color
 	Version  uint32
-	RefCount int
+	RefCount int32
 }
+type cPalette C.SDL_Palette
 
 // Color (https://wiki.libsdl.org/SDL_Color)
 type Color struct {
@@ -147,6 +149,11 @@ const (
 	PIXELFORMAT_YUY2        = C.SDL_PIXELFORMAT_YUY2
 	PIXELFORMAT_UYVY        = C.SDL_PIXELFORMAT_UYVY
 	PIXELFORMAT_YVYU        = C.SDL_PIXELFORMAT_YVYU
+)
+
+const (
+	ALPHA_OPAQUE      = C.SDL_ALPHA_OPAQUE
+	ALPHA_TRANSPARENT = C.SDL_ALPHA_TRANSPARENT
 )
 
 func (fmt *PixelFormat) cptr() *C.SDL_PixelFormat {

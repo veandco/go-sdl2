@@ -13,8 +13,8 @@ func TestInitQuit(t *testing.T) {
 			// FreeBSD does not support the haptic subsystem
 			continue
 		}
-		if Init(subs[i]) != 0 {
-			t.Errorf("Error on Init(%d): %s", subs[i], GetError())
+		if err := Init(subs[i]); err != nil {
+			t.Errorf("Error on Init(%d): %s", subs[i], err)
 		}
 		if WasInit(subs[i]) != subs[i] {
 			t.Errorf("Init(%d): subsystem not initialized", subs[i])
@@ -23,8 +23,8 @@ func TestInitQuit(t *testing.T) {
 		if WasInit(subs[i]) == subs[i] {
 			t.Errorf("QuitSubSystem(%d): subsystem still initialized", subs[i])
 		}
-		if InitSubSystem(subs[i]) != 0 {
-			t.Errorf("Error on Init(%d): %s", subs[i], GetError())
+		if err := InitSubSystem(subs[i]); err != nil {
+			t.Errorf("Error on Init(%d): %s", subs[i], err)
 		}
 		if WasInit(subs[i]) != subs[i] {
 			t.Errorf("InitSubSystem(%d): subsystem not initialized", subs[i])

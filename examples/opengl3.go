@@ -60,22 +60,22 @@ func main() {
 	var running bool
 	var err error
 	runtime.LockOSThread()
-	if 0 != sdl.Init(sdl.INIT_EVERYTHING) {
-		panic(sdl.GetError())
+	if err = sdl.Init(sdl.INIT_EVERYTHING); err != nil {
+		panic(err)
 	}
+	defer sdl.Quit()
 	window, err = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED,
 		sdl.WINDOWPOS_UNDEFINED,
 		winWidth, winHeight, sdl.WINDOW_OPENGL)
 	if err != nil {
 		panic(err)
 	}
-	if window == nil {
-		panic(sdl.GetError())
+	defer window.Destroy()
+	context, err = sdl.GL_CreateContext(window)
+	if err != nil {
+		panic(err)
 	}
-	context = sdl.GL_CreateContext(window)
-	if context == nil {
-		panic(sdl.GetError())
-	}
+	defer sdl.GL_DeleteContext(context)
 
 	gl.Init()
 	gl.Viewport(0, 0, gl.Sizei(winWidth), gl.Sizei(winHeight))
@@ -138,10 +138,6 @@ func main() {
 		drawgl()
 		sdl.GL_SwapWindow(window)
 	}
-
-	sdl.GL_DeleteContext(context)
-	window.Destroy()
-	sdl.Quit()
 }
 
 func drawgl() {

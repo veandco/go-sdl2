@@ -40,9 +40,9 @@ const (
 )
 
 const (
-	AUDIO_STOPPED = C.SDL_AUDIO_STOPPED
-	AUDIO_PLAYING = C.SDL_AUDIO_PLAYING
-	AUDIO_PAUSED  = C.SDL_AUDIO_PAUSED
+	AUDIO_STOPPED AudioStatus = C.SDL_AUDIO_STOPPED
+	AUDIO_PLAYING             = C.SDL_AUDIO_PLAYING
+	AUDIO_PAUSED              = C.SDL_AUDIO_PAUSED
 )
 
 const MIX_MAXVOLUME = C.SDL_MIX_MAXVOLUME
@@ -54,11 +54,12 @@ type AudioFilter C.SDL_AudioFilter
 type AudioDeviceID uint32
 
 // AudioStatus (https://wiki.libsdl.org/SDL_AudioStatus)
-type AudioStatus uint
+type AudioStatus uint32
+type cAudioStatus C.SDL_AudioStatus
 
 // AudioSpec (https://wiki.libsdl.org/SDL_AudioSpec)
 type AudioSpec struct {
-	Freq     int
+	Freq     int32
 	Format   AudioFormat
 	Channels uint8
 	Silence  uint8
@@ -68,21 +69,23 @@ type AudioSpec struct {
 	Callback AudioCallback
 	UserData unsafe.Pointer
 }
+type cAudioSpec C.SDL_AudioSpec
 
 // AudioCVT (https://wiki.libsdl.org/SDL_AudioCVT)
 type AudioCVT struct {
-	Needed      int
+	Needed      int32
 	SrcFormat   AudioFormat
 	DstFormat   AudioFormat
 	RateIncr    float64
 	Buf         *uint8
-	Len         int
-	LenCVT      int
-	LenMult     int
+	Len         int32
+	LenCVT      int32
+	LenMult     int32
 	LenRatio    float64
-	filters     [10]AudioFilter
-	FilterIndex int
+	filters     [10]AudioFilter // internal
+	filterIndex int32           // internal
 }
+type cAudioCVT C.SDL_AudioCVT
 
 func (fmt AudioFormat) c() C.SDL_AudioFormat {
 	return C.SDL_AudioFormat(fmt)
@@ -268,12 +271,12 @@ func UnlockAudioDevice(dev AudioDeviceID) {
 
 // CloseAudio (https://wiki.libsdl.org/SDL_CloseAudio)
 func CloseAudio() {
-	C.SDL_UnlockAudio()
+	C.SDL_CloseAudio()
 }
 
 // CloseAudioDevice (https://wiki.libsdl.org/SDL_CloseAudioDevice)
 func CloseAudioDevice(dev AudioDeviceID) {
-	C.SDL_UnlockAudioDevice(dev.c())
+	C.SDL_CloseAudioDevice(dev.c())
 }
 
 /*

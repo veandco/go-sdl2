@@ -17,10 +17,12 @@ const (
 	TEXTUREMODULATE_NONE  = C.SDL_TEXTUREMODULATE_NONE
 	TEXTUREMODULATE_COLOR = C.SDL_TEXTUREMODULATE_COLOR
 	TEXTUREMODULATE_ALPHA = C.SDL_TEXTUREMODULATE_ALPHA
+)
 
-	FLIP_NONE       = C.SDL_FLIP_NONE
-	FLIP_HORIZONTAL = C.SDL_FLIP_HORIZONTAL
-	FLIP_VERTICAL   = C.SDL_FLIP_VERTICAL
+const (
+	FLIP_NONE       RendererFlip = C.SDL_FLIP_NONE
+	FLIP_HORIZONTAL              = C.SDL_FLIP_HORIZONTAL
+	FLIP_VERTICAL                = C.SDL_FLIP_VERTICAL
 )
 
 // RendererInfo (https://wiki.libsdl.org/SDL_RendererInfo)
@@ -28,6 +30,7 @@ type RendererInfo struct {
 	Name string
 	RendererInfoData
 }
+
 type cRendererInfo struct {
 	Name *C.char
 	RendererInfoData
@@ -41,9 +44,6 @@ type RendererInfoData struct {
 	MaxTextureHeight  int32
 }
 
-// RendererFlip (https://wiki.libsdl.org/SDL_RendererFlip)
-type RendererFlip uint
-
 func (info *RendererInfo) cptr() *C.SDL_RendererInfo {
 	return (*C.SDL_RendererInfo)(unsafe.Pointer(info))
 }
@@ -51,6 +51,10 @@ func (info *RendererInfo) cptr() *C.SDL_RendererInfo {
 func (info *cRendererInfo) cptr() *C.SDL_RendererInfo {
 	return (*C.SDL_RendererInfo)(unsafe.Pointer(info))
 }
+
+// RendererFlip (https://wiki.libsdl.org/SDL_RendererFlip)
+type RendererFlip uint32
+type cRendererFlip C.SDL_RendererFlip
 
 func (flip RendererFlip) c() C.SDL_RendererFlip {
 	return C.SDL_RendererFlip(flip)
@@ -160,7 +164,7 @@ func (renderer *Renderer) CreateTextureFromSurface(surface *Surface) (*Texture, 
 }
 
 // Texture (https://wiki.libsdl.org/SDL_QueryTexture)
-func (texture *Texture) Query() (uint32, int, int, int, error) {
+func (texture *Texture) Query() (uint32, int, int32, int32, error) {
 	var format C.Uint32
 	var access C.int
 	var width C.int
@@ -169,7 +173,7 @@ func (texture *Texture) Query() (uint32, int, int, int, error) {
 	if ret < 0 {
 		return 0, 0, 0, 0, GetError()
 	}
-	return uint32(format), int(access), int(width), int(height), nil
+	return uint32(format), int(access), int32(width), int32(height), nil
 }
 
 // Texture (https://wiki.libsdl.org/SDL_SetTextureColorMod)
@@ -290,7 +294,7 @@ func (renderer *Renderer) GetViewport(rect *Rect) {
 	C.SDL_RenderGetViewport(renderer.cptr(), rect.cptr())
 }
 
-// Renderer (https://wiki.libsdl.org/SDL_SetClipRect)
+// Renderer (https://wiki.libsdl.org/SDL_RenderSetClipRect)
 func (renderer *Renderer) SetClipRect(rect *Rect) error {
 	_ret := C.SDL_RenderSetClipRect(renderer.cptr(), rect.cptr())
 	if _ret < 0 {
@@ -299,7 +303,7 @@ func (renderer *Renderer) SetClipRect(rect *Rect) error {
 	return nil
 }
 
-// Renderer (https://wiki.libsdl.org/SDL_GetClipRect)
+// Renderer (https://wiki.libsdl.org/SDL_RenderGetClipRect)
 func (renderer *Renderer) GetClipRect(rect *Rect) {
 	C.SDL_RenderGetClipRect(renderer.cptr(), rect.cptr())
 }
@@ -435,7 +439,7 @@ func (renderer *Renderer) DrawRects(rects []Rect) error {
 	return nil
 }
 
-// Renderer (https://wiki.libsdl.org/SDL_FillRect)
+// Renderer (https://wiki.libsdl.org/SDL_RenderFillRect)
 func (renderer *Renderer) FillRect(rect *Rect) error {
 	_ret := C.SDL_RenderFillRect(renderer.cptr(), rect.cptr())
 	if _ret < 0 {
@@ -444,7 +448,7 @@ func (renderer *Renderer) FillRect(rect *Rect) error {
 	return nil
 }
 
-// Renderer (https://wiki.libsdl.org/SDL_FillRects)
+// Renderer (https://wiki.libsdl.org/SDL_RenderFillRects)
 func (renderer *Renderer) FillRects(rects []Rect) error {
 	_ret := C.SDL_RenderFillRects(renderer.cptr(), rects[0].cptr(), C.int(len(rects)))
 	if _ret < 0 {
