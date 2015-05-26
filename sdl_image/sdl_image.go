@@ -9,7 +9,7 @@ package img
 import "C"
 import "unsafe"
 import "errors"
-import "github.com/veandco/go-sdl2/sdl"
+import "github.com/eliukblau/go-sdl2/sdl"
 
 const (
 	INIT_JPG  = 0x00000001

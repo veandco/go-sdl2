@@ -31,7 +31,7 @@ package mix
 import "C"
 import "unsafe"
 import "reflect"
-import "github.com/veandco/go-sdl2/sdl"
+import "github.com/eliukblau/go-sdl2/sdl"
 
 type Chunk struct {
 	allocated int32
