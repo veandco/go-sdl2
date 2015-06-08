@@ -238,9 +238,9 @@ func (texture *Texture) Update(rect *Rect, pixels unsafe.Pointer, pitch int) err
 }
 
 // Texture (https://wiki.libsdl.org/SDL_LockTexture)
-func (texture *Texture) Lock(rect *Rect, pixels unsafe.Pointer, pitch *int) error {
+func (texture *Texture) Lock(rect *Rect, pixels *unsafe.Pointer, pitch *int) error {
 	_pitch := (*C.int)(unsafe.Pointer(pitch))
-	_ret := C.SDL_LockTexture(texture.cptr(), rect.cptr(), &pixels, _pitch)
+	_ret := C.SDL_LockTexture(texture.cptr(), rect.cptr(), pixels, _pitch)
 	if _ret < 0 {
 		return GetError()
 	}
