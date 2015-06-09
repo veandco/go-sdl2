@@ -34,8 +34,11 @@ type Font struct {
 	f *C.TTF_Font
 }
 
-func Init() int {
-	return int(C.TTF_Init())
+func Init() error {
+	if C.TTF_Init() == -1 {
+		return GetError()
+	}
+	return nil
 }
 
 func WasInit() bool {
