@@ -108,6 +108,7 @@ Contributors
 * [Geoff Catlin](https://github.com/gcatlin)
 * [Jason Alan Palmer](https://github.com/jalan)
 * [Seuk Won Kang](https://github.com/kasworld)
+* [Brandon Mulcahy](https://github.com/jangler)
 
 _if anyone is missing, let me know!_
 
