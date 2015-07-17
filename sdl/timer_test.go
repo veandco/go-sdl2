@@ -29,7 +29,7 @@ func TestGetPerformance(t *testing.T) {
 	ms := 10
 	time.Sleep(time.Duration(ms) * time.Millisecond)
 	after := GetPerformanceCounter()
-	if after-before <= freq*uint64(ms)/1000 {
+	if after-before < freq*uint64(ms)/1000 {
 		t.Errorf("GetPerformanceCounter(): returned %d, then %d after %d ms",
 			before, after, ms)
 	}
