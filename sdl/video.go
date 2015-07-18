@@ -18,6 +18,7 @@ const (
 	WINDOW_MOUSE_FOCUS        = C.SDL_WINDOW_MOUSE_FOCUS
 	WINDOW_FULLSCREEN_DESKTOP = C.SDL_WINDOW_FULLSCREEN_DESKTOP
 	WINDOW_FOREIGN            = C.SDL_WINDOW_FOREIGN
+	WINDOW_ALLOW_HIGHDPI      = C.SDL_WINDOW_ALLOW_HIGHDPI
 )
 
 const (
@@ -335,6 +336,13 @@ func (window *Window) SetSize(w int, h int) {
 func (window *Window) GetSize() (w, h int) {
 	var _w, _h C.int
 	C.SDL_GetWindowSize(window.cptr(), &_w, &_h)
+	return int(_w), int(_h)
+}
+
+// Window (https://wiki.libsdl.org/SDL_GetWindowSize)
+func (window *Window) GetDrawableSize() (w, h int) {
+	var _w, _h C.int
+	C.SDL_GL_GetDrawableSize(window.cptr(), &_w, &_h)
 	return int(_w), int(_h)
 }
 
