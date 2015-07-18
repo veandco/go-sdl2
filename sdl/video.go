@@ -339,13 +339,6 @@ func (window *Window) GetSize() (w, h int) {
 	return int(_w), int(_h)
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowSize)
-func (window *Window) GetDrawableSize() (w, h int) {
-	var _w, _h C.int
-	C.SDL_GL_GetDrawableSize(window.cptr(), &_w, &_h)
-	return int(_w), int(_h)
-}
-
 // Window (https://wiki.libsdl.org/SDL_SetWindowMinimumSize)
 func (window *Window) SetMinimumSize(minW int, minH int) {
 	C.SDL_SetWindowMinimumSize(window.cptr(), C.int(minW), C.int(minH))
@@ -589,6 +582,13 @@ func GL_GetSwapInterval() (int, error) {
 		return i, GetError()
 	}
 	return i, nil
+}
+
+// GL_GetDrawableSize (https://wiki.libsdl.org/SDL_GL_GetDrawableSize)
+func GL_GetDrawableSize(window *Window) (w, h int) {
+	var _w, _h C.int
+	C.SDL_GL_GetDrawableSize(window.cptr(), &_w, &_h)
+	return int(_w), int(_h)
 }
 
 // GL_SwapWindow (https://wiki.libsdl.org/SDL_GL_SwapWindow)
