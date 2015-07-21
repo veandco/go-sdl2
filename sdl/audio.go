@@ -2,7 +2,10 @@ package sdl
 
 // #include "sdl_wrapper.h"
 import "C"
-import "unsafe"
+import (
+	"reflect"
+	"unsafe"
+)
 
 const (
 	AUDIO_MASK_BITSIZE  = C.SDL_AUDIO_MASK_BITSIZE
@@ -201,26 +204,42 @@ func PauseAudioDevice(dev AudioDeviceID, pauseOn int) {
 }
 
 // LoadWAV_RW (https://wiki.libsdl.org/SDL_LoadWAV_RW)
-func LoadWAV_RW(src *RWops, freeSrc int, spec *AudioSpec, audioBuf **uint8, audioLen *uint32) *AudioSpec {
-	_audioBuf := (**C.Uint8)(unsafe.Pointer(audioBuf))
-	_audioLen := (*C.Uint32)(unsafe.Pointer(audioLen))
-	return (*AudioSpec)(unsafe.Pointer(C.SDL_LoadWAV_RW(src.cptr(), C.int(freeSrc), spec.cptr(), _audioBuf, _audioLen)))
+func LoadWAV_RW(src *RWops, freeSrc int, spec *AudioSpec) ([]byte, *AudioSpec) {
+	var _audioBuf *C.Uint8
+	var _audioLen C.Uint32
+	audioSpec := (*AudioSpec)(unsafe.Pointer(C.SDL_LoadWAV_RW(src.cptr(), C.int(freeSrc), spec.cptr(), &_audioBuf, &_audioLen)))
+
+	var b []byte
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+	sliceHeader.Len = (int)(_audioLen)
+	sliceHeader.Cap = (int)(_audioLen)
+	sliceHeader.Data = uintptr(unsafe.Pointer(_audioBuf))
+	return b, audioSpec
 }
 
 // LoadWAV (https://wiki.libsdl.org/SDL_LoadWAV)
-func LoadWAV(file string, spec *AudioSpec, audioBuf **uint8, audioLen *uint32) *AudioSpec {
+func LoadWAV(file string, spec *AudioSpec) ([]byte, *AudioSpec) {
 	_file := C.CString(file)
 	_rb := C.CString("rb")
 	defer C.free(unsafe.Pointer(_file))
 	defer C.free(unsafe.Pointer(_rb))
-	_audioBuf := (**C.Uint8)(unsafe.Pointer(audioBuf))
-	_audioLen := (*C.Uint32)(unsafe.Pointer(audioLen))
-	return (*AudioSpec)(unsafe.Pointer(C.SDL_LoadWAV_RW(C.SDL_RWFromFile(_file, _rb), 1, spec.cptr(), _audioBuf, _audioLen)))
+
+	var _audioBuf *C.Uint8
+	var _audioLen C.Uint32
+	audioSpec := (*AudioSpec)(unsafe.Pointer(C.SDL_LoadWAV_RW(C.SDL_RWFromFile(_file, _rb), 1, spec.cptr(), &_audioBuf, &_audioLen)))
+
+	var b []byte
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+	sliceHeader.Len = (int)(_audioLen)
+	sliceHeader.Cap = (int)(_audioLen)
+	sliceHeader.Data = uintptr(unsafe.Pointer(_audioBuf))
+	return b, audioSpec
 }
 
 // FreeWAV (https://wiki.libsdl.org/SDL_FreeWAV)
-func FreeWAV(audioBuf *uint8) {
-	_audioBuf := (*C.Uint8)(unsafe.Pointer(audioBuf))
+func FreeWAV(audioBuf []uint8) {
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&audioBuf))
+	_audioBuf := (*C.Uint8)(unsafe.Pointer(sliceHeader.Data))
 	C.SDL_FreeWAV(_audioBuf)
 }
 
