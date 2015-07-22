@@ -145,10 +145,13 @@ func GetAudioDriver(index int) string {
 }
 
 // AudioInit (https://wiki.libsdl.org/SDL_AudioInit)
-func AudioInit(driverName string) int {
+func AudioInit(driverName string) error {
 	_driverName := C.CString(driverName)
 	defer C.free(unsafe.Pointer(_driverName))
-	return int(C.SDL_AudioInit(_driverName))
+	if C.SDL_AudioInit(_driverName) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // AudioQuit (https://wiki.libsdl.org/SDL_AudioQuit)
