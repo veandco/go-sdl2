@@ -124,11 +124,11 @@ func (ctx *RWops) RWwrite(ptr unsafe.Pointer, size, num uint) uint {
 }
 
 // RWclose (https://wiki.libsdl.org/SDL_RWclose)
-func (ctx *RWops) RWclose() int {
-	if ctx == nil {
-		return 0
+func (ctx *RWops) RWclose() error {
+	if ctx != nil && C.RWclose(ctx.cptr()) != 0 {
+		return GetError()
 	}
-	return int(C.RWclose(ctx.cptr()))
+	return nil
 }
 
 func (src *RWops) ReadU8() uint8 {
