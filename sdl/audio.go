@@ -145,10 +145,13 @@ func GetAudioDriver(index int) string {
 }
 
 // AudioInit (https://wiki.libsdl.org/SDL_AudioInit)
-func AudioInit(driverName string) int {
+func AudioInit(driverName string) error {
 	_driverName := C.CString(driverName)
 	defer C.free(unsafe.Pointer(_driverName))
-	return int(C.SDL_AudioInit(_driverName))
+	if C.SDL_AudioInit(_driverName) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // AudioQuit (https://wiki.libsdl.org/SDL_AudioQuit)
@@ -162,8 +165,11 @@ func GetCurrentAudioDriver() string {
 }
 
 // OpenAudio (https://wiki.libsdl.org/SDL_OpenAudio)
-func OpenAudio(desired, obtained *AudioSpec) int {
-	return int(C.SDL_OpenAudio(desired.cptr(), obtained.cptr()))
+func OpenAudio(desired, obtained *AudioSpec) error {
+	if C.SDL_OpenAudio(desired.cptr(), obtained.cptr()) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GetNumAudioDevices (https://wiki.libsdl.org/SDL_GetNumAudioDevices)
@@ -249,9 +255,12 @@ func BuildAudioCVT(cvt *AudioCVT, srcFormat AudioFormat, srcChannels uint8, srcR
 }
 
 // ConvertAudio (https://wiki.libsdl.org/SDL_ConvertAudio)
-func ConvertAudio(cvt *AudioCVT) int {
+func ConvertAudio(cvt *AudioCVT) error {
 	_cvt := (*C.SDL_AudioCVT)(unsafe.Pointer(cvt))
-	return int(C.SDL_ConvertAudio(_cvt))
+	if C.SDL_ConvertAudio(_cvt) != 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // MixAudio (https://wiki.libsdl.org/SDL_MixAudio)

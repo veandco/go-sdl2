@@ -11,6 +11,41 @@ var squareWave = []byte("RIFF,\x00\x00\x00WAVEfmt \x10\x00\x00\x00\x01\x00" +
 	"\x01\x00\xab \x00\x00\xab \x00\x00\x01\x00\b\x00data\b\x00\x00\x00\x00" +
 	"\x00\x00\x00\xff\xff\xff\xff")
 
+func TestAudioInitQuit(t *testing.T) {
+	// figure out what driver will work
+	if err := InitSubSystem(INIT_AUDIO); err != nil {
+		t.Fatalf("InitSubSystem(INIT_AUDIO): %v", err)
+	}
+	driver := GetCurrentAudioDriver()
+
+	// reset audio subsystem
+	QuitSubSystem(INIT_AUDIO)
+	if GetCurrentAudioDriver() != "" {
+		t.Fatalf(`GetCurrentAudioDriver() != "" after QuitSubSystem()`)
+	}
+
+	// test valid init
+	if err := AudioInit(driver); err != nil {
+		t.Errorf("AudioInit(%s) returned error: %v", driver, err)
+	} else {
+		if got := GetCurrentAudioDriver(); got != driver {
+			t.Errorf("GetCurrentAudioDriver() == %#v; want %#v", got, driver)
+		}
+
+		// test quit
+		AudioQuit()
+		if GetCurrentAudioDriver() != "" {
+			t.Fatalf(`GetCurrentAudioDriver() != "" after AudioQuit()`)
+		}
+	}
+
+	// test invalid init
+	driver = "bogus"
+	if err := AudioInit(driver); err == nil {
+		t.Errorf("AudioInit(%s) did not return error", driver)
+	}
+}
+
 func TestLoadWAV_RW(t *testing.T) {
 	// load WAV from *RWOps pointing to WAV data
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&squareWave))
