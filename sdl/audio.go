@@ -80,7 +80,7 @@ type AudioCVT struct {
 	SrcFormat   AudioFormat
 	DstFormat   AudioFormat
 	RateIncr    float64
-	Buf         *uint8
+	buf         *uint8			// use AudioCVT.Buf() for access
 	Len         int32
 	LenCVT      int32
 	LenMult     int32
@@ -132,6 +132,17 @@ func (format AudioFormat) IsLittleEndian() bool {
 
 func (format AudioFormat) IsUnsigned() bool {
 	return !format.IsSigned()
+}
+
+// access AudioCVT.buf as slice.
+// len(slice) will return converted audio buffer length
+func (cvt AudioCVT) Buf() []byte {
+	var b []byte
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+	sliceHeader.Len = int(cvt.LenCVT)
+	sliceHeader.Cap = int(cvt.Len * cvt.LenMult)
+	sliceHeader.Data = uintptr(unsafe.Pointer(cvt.buf))
+	return b
 }
 
 // GetNumAudioDrivers (https://wiki.libsdl.org/SDL_GetNumAudioDrivers)
