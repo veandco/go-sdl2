@@ -64,11 +64,21 @@ func EnclosePoints(points []Point, clip *Rect) (result Rect, ok bool) {
 	return
 }
 
-// IntersectLine
+// IntersectLine (https://wiki.libsdl.org/SDL_IntersectRectAndLine)
 func (rect *Rect) IntersectLine(X1, Y1, X2, Y2 *int) bool {
-	_X1 := (*C.int)(unsafe.Pointer(X1))
-	_Y1 := (*C.int)(unsafe.Pointer(Y1))
-	_X2 := (*C.int)(unsafe.Pointer(X2))
-	_Y2 := (*C.int)(unsafe.Pointer(Y2))
-	return C.SDL_IntersectRectAndLine(rect.cptr(), _X1, _Y1, _X2, _Y2) > 0
+	X1_32, Y1_32, X2_32, Y2_32 := int32(*X1), int32(*Y1), int32(*X2), int32(*Y2)
+
+	_X1 := (*C.int)(unsafe.Pointer(&X1_32))
+	_Y1 := (*C.int)(unsafe.Pointer(&Y1_32))
+	_X2 := (*C.int)(unsafe.Pointer(&X2_32))
+	_Y2 := (*C.int)(unsafe.Pointer(&Y2_32))
+
+	result := C.SDL_IntersectRectAndLine(rect.cptr(), _X1, _Y1, _X2, _Y2) == C.SDL_TRUE
+
+	*X1 = int(X1_32)
+	*Y1 = int(Y1_32)
+	*X2 = int(X2_32)
+	*Y2 = int(Y2_32)
+
+	return result
 }
