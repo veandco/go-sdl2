@@ -73,7 +73,7 @@ func (r *Rect) IntersectLine(X1, Y1, X2, Y2 *int) bool {
 	_X2 := (*C.int)(unsafe.Pointer(&X2_32))
 	_Y2 := (*C.int)(unsafe.Pointer(&Y2_32))
 
-	result := C.SDL_IntersectRectAndLine(rect.cptr(), _X1, _Y1, _X2, _Y2) == C.SDL_TRUE
+	result := C.SDL_IntersectRectAndLine(r.cptr(), _X1, _Y1, _X2, _Y2) == C.SDL_TRUE
 
 	*X1 = int(X1_32)
 	*Y1 = int(Y1_32)
