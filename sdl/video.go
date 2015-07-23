@@ -18,6 +18,7 @@ const (
 	WINDOW_MOUSE_FOCUS        = C.SDL_WINDOW_MOUSE_FOCUS
 	WINDOW_FULLSCREEN_DESKTOP = C.SDL_WINDOW_FULLSCREEN_DESKTOP
 	WINDOW_FOREIGN            = C.SDL_WINDOW_FOREIGN
+	WINDOW_ALLOW_HIGHDPI      = C.SDL_WINDOW_ALLOW_HIGHDPI
 )
 
 const (
@@ -581,6 +582,13 @@ func GL_GetSwapInterval() (int, error) {
 		return i, GetError()
 	}
 	return i, nil
+}
+
+// GL_GetDrawableSize (https://wiki.libsdl.org/SDL_GL_GetDrawableSize)
+func GL_GetDrawableSize(window *Window) (w, h int) {
+	var _w, _h C.int
+	C.SDL_GL_GetDrawableSize(window.cptr(), &_w, &_h)
+	return int(_w), int(_h)
 }
 
 // GL_SwapWindow (https://wiki.libsdl.org/SDL_GL_SwapWindow)
