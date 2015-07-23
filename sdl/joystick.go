@@ -59,10 +59,12 @@ func (joy *Joystick) GetGUID() JoystickGUID {
 }
 
 // JoystickGetGUIDString (https://wiki.libsdl.org/SDL_JoystickGetGUIDString)
-func JoystickGetGUIDString(guid JoystickGUID, pszGUID string, cbGUID int) {
-	_pszGUID := C.CString(pszGUID)
-	defer C.free(unsafe.Pointer(_pszGUID))
-	C.SDL_JoystickGetGUIDString(guid.c(), _pszGUID, C.int(cbGUID))
+func JoystickGetGUIDString(guid JoystickGUID) string {
+	_pszGUID := make([]rune, 1024)
+	pszGUID := C.CString(string(_pszGUID[:]))
+	defer C.free(unsafe.Pointer(pszGUID))
+	C.SDL_JoystickGetGUIDString(guid.c(), pszGUID, C.int(unsafe.Sizeof(_pszGUID)))
+	return C.GoString(pszGUID)
 }
 
 // JoystickGetGUIDFromString (https://wiki.libsdl.org/SDL_JoystickGetGUIDFromString)
