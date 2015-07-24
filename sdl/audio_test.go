@@ -50,7 +50,7 @@ func TestLoadWAV_RW(t *testing.T) {
 	// load WAV from *RWOps pointing to WAV data
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&squareWave))
 	src := RWFromMem(unsafe.Pointer(sliceHeader.Data), len(squareWave))
-	buf, spec := LoadWAV_RW(src, 0, &AudioSpec{})
+	buf, spec := LoadWAV_RW(src, false, &AudioSpec{})
 
 	// test returned []byte
 	want := []byte{0, 0, 0, 0, 255, 255, 255, 255}
