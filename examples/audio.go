@@ -42,6 +42,6 @@ func main() {
 		Callback: sdl.AudioCallback(C.SineWave),
 	}
 	sdl.OpenAudio(spec, nil)
-	sdl.PauseAudio(0)
+	sdl.PauseAudio(false)
 	time.Sleep(1 * time.Second)
 }

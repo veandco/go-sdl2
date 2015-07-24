@@ -11,6 +11,24 @@ var squareWave = []byte("RIFF,\x00\x00\x00WAVEfmt \x10\x00\x00\x00\x01\x00" +
 	"\x01\x00\xab \x00\x00\xab \x00\x00\x01\x00\b\x00data\b\x00\x00\x00\x00" +
 	"\x00\x00\x00\xff\xff\xff\xff")
 
+func TestAudioDevices(t *testing.T) {
+	for _, isCapture := range []bool{false, true} {
+		n := GetNumAudioDevices(isCapture)
+		for i := 0; i < n; i++ {
+			if GetAudioDeviceName(i, isCapture) == "" {
+				t.Errorf("GetAudioDeviceName(%v, %v) returned empty string",
+					i, isCapture)
+			}
+		}
+
+		// cover GetAudioDeviceName() even if n < 1
+		if name := GetAudioDeviceName(-1, isCapture); name != "" {
+			t.Errorf("GetAudioDeviceName(-1, %v) == %#v; want empty string",
+				isCapture, name)
+		}
+	}
+}
+
 func TestAudioInitQuit(t *testing.T) {
 	// figure out what driver will work
 	if err := InitSubSystem(INIT_AUDIO); err != nil {
@@ -50,7 +68,7 @@ func TestLoadWAV_RW(t *testing.T) {
 	// load WAV from *RWOps pointing to WAV data
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&squareWave))
 	src := RWFromMem(unsafe.Pointer(sliceHeader.Data), len(squareWave))
-	buf, spec := LoadWAV_RW(src, 0, &AudioSpec{})
+	buf, spec := LoadWAV_RW(src, false, &AudioSpec{})
 
 	// test returned []byte
 	want := []byte{0, 0, 0, 0, 255, 255, 255, 255}
