@@ -11,6 +11,24 @@ var squareWave = []byte("RIFF,\x00\x00\x00WAVEfmt \x10\x00\x00\x00\x01\x00" +
 	"\x01\x00\xab \x00\x00\xab \x00\x00\x01\x00\b\x00data\b\x00\x00\x00\x00" +
 	"\x00\x00\x00\xff\xff\xff\xff")
 
+func TestAudioDevices(t *testing.T) {
+	for _, isCapture := range []bool{false, true} {
+		n := GetNumAudioDevices(isCapture)
+		for i := 0; i < n; i++ {
+			if GetAudioDeviceName(i, isCapture) == "" {
+				t.Errorf("GetAudioDeviceName(%v, %v) returned empty string",
+					i, isCapture)
+			}
+		}
+
+		// cover GetAudioDeviceName() even if n < 1
+		if name := GetAudioDeviceName(-1, isCapture); name != "" {
+			t.Errorf("GetAudioDeviceName(-1, %v) == %#v; want empty string",
+				isCapture, name)
+		}
+	}
+}
+
 func TestAudioInitQuit(t *testing.T) {
 	// figure out what driver will work
 	if err := InitSubSystem(INIT_AUDIO); err != nil {
