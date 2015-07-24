@@ -194,10 +194,16 @@ func GetAudioDeviceName(index int, isCapture bool) string {
 }
 
 // OpenAudioDevice (https://wiki.libsdl.org/SDL_OpenAudioDevice)
-func OpenAudioDevice(device string, isCapture bool, desired, obtained *AudioSpec, allowedChanges int) int {
+func OpenAudioDevice(device string, isCapture bool, desired, obtained *AudioSpec, allowedChanges int) (AudioDeviceID, error) {
 	_device := C.CString(device)
+	if device == "" {
+		_device = nil
+	}
 	defer C.free(unsafe.Pointer(_device))
-	return int(C.SDL_OpenAudioDevice(_device, C.int(Btoi(isCapture)), desired.cptr(), obtained.cptr(), C.int(allowedChanges)))
+	if id := AudioDeviceID(C.SDL_OpenAudioDevice(_device, C.int(Btoi(isCapture)), desired.cptr(), obtained.cptr(), C.int(allowedChanges))); id > 0 {
+		return id, nil
+	}
+	return 0, GetError()
 }
 
 // GetAudioStatus (https://wiki.libsdl.org/SDL_GetAudioStatus)
