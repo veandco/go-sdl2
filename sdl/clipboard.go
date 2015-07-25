@@ -5,18 +5,24 @@ import "C"
 import "unsafe"
 
 // SetClipboardText (https://wiki.libsdl.org/SDL_SetClipboardText)
-func SetClipboardText(text string) int {
+func SetClipboardText(text string) error {
 	_text := C.CString(text)
 	defer C.free(unsafe.Pointer(_text))
-	return int(C.SDL_SetClipboardText(_text))
+	if C.SDL_SetClipboardText(_text) < 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // GetClipboardText (https://wiki.libsdl.org/SDL_GetClipboardText)
-func GetClipboardText() string {
+func GetClipboardText() (string, error) {
 	text := C.SDL_GetClipboardText()
+	if text == nil {
+		return "", GetError()
+	}
 	defer C.SDL_free(unsafe.Pointer(text))
 	_text := C.GoString(text)
-	return _text
+	return _text, nil
 }
 
 // HasClipboardText (https://wiki.libsdl.org/SDL_HasClipboardText)
