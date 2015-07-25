@@ -86,9 +86,8 @@ type Fading int
 func cint(b bool) C.int {
 	if b {
 		return 1
-	} else {
-		return 0
 	}
+	return 0
 }
 
 // OpenAudio (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_11.html)
@@ -99,9 +98,8 @@ func OpenAudio(frequency int, format uint16, channels, chunksize int) error {
 	_chunksize := (C.int)(chunksize)
 	if C.Mix_OpenAudio(_frequency, _format, _channels, _chunksize) < 0 {
 		return sdl.GetError()
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // AllocateChannels
@@ -236,9 +234,8 @@ func SetPanning(channel int, left, right uint8) error {
 	_right := (C.Uint8)(right)
 	if C.Mix_SetPanning(_channel, _left, _right) == 0 {
 		return sdl.GetError()
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // SetPosition
@@ -249,9 +246,8 @@ func SetPosition(channel int, angle int16, distance uint8) error {
 	_distance := (C.Uint8)(distance)
 	if (C.Mix_SetPosition(_channel, _angle, _distance)) == 0 {
 		return sdl.GetError()
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // SetDistance
@@ -261,9 +257,8 @@ func SetDistance(channel int, distance uint8) error {
 	_distance := (C.Uint8)(distance)
 	if (C.Mix_SetDistance(_channel, _distance)) == 0 {
 		return sdl.GetError()
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // SetReverseStereo
@@ -273,9 +268,8 @@ func SetReverseStereo(channel int, flip int) error {
 	_flip := (C.int)(flip)
 	if (C.Mix_SetReverseStereo(_channel, _flip)) == 0 {
 		return sdl.GetError()
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // ReserveChannels
@@ -367,9 +361,8 @@ func (music *Music) Play(loops int) error {
 	_loops := (C.int)(loops)
 	if C.Mix_PlayMusic(_music, _loops) == -1 {
 		return sdl.GetError()
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // FadeIn (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_58.html)
@@ -379,9 +372,8 @@ func (music *Music) FadeIn(loops, ms int) error {
 	_ms := (C.int)(ms)
 	if C.Mix_FadeInMusic(_music, _loops, _ms) == -1 {
 		return sdl.GetError()
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // FadeInPos (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_59.html)
@@ -392,9 +384,8 @@ func (music *Music) FadeInPos(loops, ms int, position float64) error {
 	_position := (C.double)(position)
 	if C.Mix_FadeInMusicPos(_music, _loops, _ms, _position) == -1 {
 		return sdl.GetError()
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // FadeIn (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_30.html)
@@ -548,9 +539,8 @@ func SetMusicPosition(position int64) error {
 	_position := (C.double)(position)
 	if C.Mix_SetMusicPosition(_position) == -1 {
 		return sdl.GetError()
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // Playing (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_38.html)
@@ -572,9 +562,8 @@ func SetMusicCMD(command string) error {
 	defer C.free(unsafe.Pointer(_command))
 	if C.Mix_SetMusicCMD(_command) == -1 {
 		return sdl.GetError()
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // undocumented
