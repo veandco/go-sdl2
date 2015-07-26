@@ -263,7 +263,7 @@ func SetDistance(channel int, distance uint8) error {
 
 // SetReverseStereo
 // (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_83.html)
-func SetReverseStereo(channel int, flip int) error {
+func SetReverseStereo(channel, flip int) error {
 	_channel := (C.int)(channel)
 	_flip := (C.int)(flip)
 	if (C.Mix_SetReverseStereo(_channel, _flip)) == 0 {
@@ -504,9 +504,9 @@ func Resume(channel int) {
 }
 
 // Paused (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_39.html)
-func Paused(channel int) bool {
+func Paused(channel int) int {
 	_channel := (C.int)(channel)
-	return int(C.Mix_Paused(_channel)) > 0
+	return int(C.Mix_Paused(_channel))
 }
 
 // PauseMusic
@@ -544,9 +544,9 @@ func SetMusicPosition(position int64) error {
 }
 
 // Playing (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_38.html)
-func Playing(channel int) bool {
+func Playing(channel int) int {
 	_channel := (C.int)(channel)
-	return int(C.Mix_Playing(_channel)) > 0
+	return int(C.Mix_Playing(_channel))
 }
 
 // PlayingMusic
@@ -725,13 +725,16 @@ func callEffectDone(channel C.int, udata unsafe.Pointer) {
 
 // RegisterEffect
 // (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_76.html)
-func RegisterEffect(channel int, f EffectFuncT, d EffectDoneT) int {
+func RegisterEffect(channel int, f EffectFuncT, d EffectDoneT) error {
 	//the user data pointer is not required, because go has proper closures
 	index := len(allEffectFunc)
 	//since go functions can't be cast to C function pointers, we have a workaround here.
 	allEffectFunc = append(allEffectFunc, f)
 	allEffectDone = append(allEffectDone, d)
-	return int(C.Mix_RegisterEffect(C.int(channel), (*[0]byte)(C.callEffectFunc), (*[0]byte)(C.callEffectDone), unsafe.Pointer(uintptr(index))))
+	if C.Mix_RegisterEffect(C.int(channel), (*[0]byte)(C.callEffectFunc), (*[0]byte)(C.callEffectDone), unsafe.Pointer(uintptr(index))) == 0 {
+		return sdl.GetError()
+	}
+	return nil
 }
 
 // that we use the same function pointer for all functions definitely makes a problem when we want to remove it again
@@ -743,11 +746,14 @@ func UnregisterEffect(channel int, f EffectFuncT) int {
 
 // UnregisterAllEffects
 // (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_78.html)
-func UnregisterAllEffects(channel int) int {
+func UnregisterAllEffects(channel int) error {
 	// release all effect functions
 	allEffectFunc = nil
 	allEffectDone = nil
-	return int(C.Mix_UnregisterAllEffects(C.int(channel)))
+	if C.Mix_UnregisterAllEffects(C.int(channel)) == 0 {
+		return sdl.GetError()
+	}
+	return nil
 }
 
 //export callEachSoundFont
