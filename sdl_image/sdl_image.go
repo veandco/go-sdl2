@@ -45,9 +45,9 @@ func GetError() error {
 
 // LoadTyped_RW
 // (http://www.libsdl.org/projects/SDL_image/docs/SDL_image_13.html)
-func LoadTyped_RW(src *sdl.RWops, freesrc int, type_ string) (*sdl.Surface, error) {
+func LoadTyped_RW(src *sdl.RWops, freesrc bool, type_ string) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	_freesrc := (C.int)(freesrc)
+	_freesrc := (C.int)(sdl.Btoi(freesrc))
 	_type := C.CString(type_)
 	defer C.free(unsafe.Pointer(_type))
 	_surface := C.IMG_LoadTyped_RW(_src, _freesrc, _type)
@@ -69,9 +69,9 @@ func Load(file string) (*sdl.Surface, error) {
 }
 
 // Load_RW (http://www.libsdl.org/projects/SDL_image/docs/SDL_image_12.html)
-func Load_RW(src *sdl.RWops, freesrc int) (*sdl.Surface, error) {
+func Load_RW(src *sdl.RWops, freesrc bool) (*sdl.Surface, error) {
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	_freesrc := (C.int)(freesrc)
+	_freesrc := (C.int)(sdl.Btoi(freesrc))
 	_surface := C.IMG_Load_RW(_src, _freesrc)
 	if _surface == nil {
 		return nil, GetError()
@@ -90,10 +90,10 @@ func LoadTexture(renderer *sdl.Renderer, file string) (*sdl.Texture, error) {
 	return (*sdl.Texture)(unsafe.Pointer(_surface)), nil
 }
 
-func LoadTexture_RW(renderer *sdl.Renderer, src *sdl.RWops, freesrc int) (*sdl.Texture, error) {
+func LoadTexture_RW(renderer *sdl.Renderer, src *sdl.RWops, freesrc bool) (*sdl.Texture, error) {
 	_renderer := (*C.SDL_Renderer)(unsafe.Pointer(renderer))
 	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
-	_freesrc := (C.int)(freesrc)
+	_freesrc := (C.int)(sdl.Btoi(freesrc))
 	_surface := C.IMG_LoadTexture_RW(_renderer, _src, _freesrc)
 	if _surface == nil {
 		return nil, GetError()
