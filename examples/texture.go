@@ -12,7 +12,7 @@ var winTitle string = "Go-SDL2 Texture"
 var winWidth, winHeight int = 800, 600
 var imageName string = "test.bmp"
 
-func main() {
+func run() int {
 	var window *sdl.Window
 	var renderer *sdl.Renderer
 	var image *sdl.Surface
@@ -24,28 +24,28 @@ func main() {
 		winWidth, winHeight, sdl.WINDOW_SHOWN)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", err)
-		os.Exit(1)
+		return 1
 	}
 	defer window.Destroy()
 
 	renderer, err = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", err)
-		os.Exit(2)
+		return 2
 	}
 	defer renderer.Destroy()
 
 	image, err = sdl.LoadBMP(imageName)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to load BMP: %s\n", err)
-		os.Exit(3)
+		return 3
 	}
 	defer image.Free()
 
 	texture, err = renderer.CreateTextureFromSurface(image)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create texture: %s\n", err)
-		os.Exit(4)
+		return 4
 	}
 	defer texture.Destroy()
 
@@ -57,4 +57,10 @@ func main() {
 	renderer.Present()
 
 	sdl.Delay(2000)
+
+	return 0
+}
+
+func main() {
+	os.Exit(run())
 }
