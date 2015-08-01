@@ -11,7 +11,7 @@ import (
 var winTitle string = "Go-SDL2 Render"
 var winWidth, winHeight int = 800, 600
 
-func main() {
+func run() int {
 	var window *sdl.Window
 	var renderer *sdl.Renderer
 	var points []sdl.Point
@@ -22,14 +22,14 @@ func main() {
 		winWidth, winHeight, sdl.WINDOW_SHOWN)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", err)
-		os.Exit(1)
+		return 1
 	}
 	defer window.Destroy()
 
 	renderer, err = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", err)
-		os.Exit(2)
+		return 2
 	}
 	defer renderer.Destroy()
 
@@ -64,4 +64,10 @@ func main() {
 	renderer.Present()
 
 	sdl.Delay(2000)
+
+	return 0
+}
+
+func main() {
+	os.Exit(run())
 }
