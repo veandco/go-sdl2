@@ -77,7 +77,7 @@ func main() {
 
 
 
-For more complete examples, see inside the _examples_ folder.
+For more complete examples, see inside the _examples_ folder. Run any of the .go files with `go run`.
 
 Documentation
 =============
