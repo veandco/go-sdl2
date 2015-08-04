@@ -85,6 +85,8 @@ For now, take a look at http://godoc.org/github.com/veandco/go-sdl2/sdl. A full-
 
 Notes
 =====
+Some Linux distributions like Ubuntu and Fedora don't compile SDL2_mixer with MP3 support. You will need to recompile it with MP3 support from source. Refer to issue [#148](https://github.com/veandco/go-sdl2/issues/148) for instructions.
+
 A standalone Go SDL2 library _is_ being considered (read: figured out). That means users should be able to just go get go-sdl2 and compile it without the original C library. That could mean faster build times, more 'idiomatic' Go code, and hopefully more people interested in using and contributing to go-sdl2!
  
 Contributors
