@@ -4,7 +4,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/jackyb/go-gl/gl"
+	"github.com/go-gl/gl/v2.1/gl"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -21,6 +21,11 @@ func main() {
 		panic(err)
 	}
 	defer sdl.Quit()
+
+	if err = gl.Init(); err != nil {
+		panic(err)
+	}
+
 	window, err = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		winWidth, winHeight, sdl.WINDOW_OPENGL)
 	if err != nil {
