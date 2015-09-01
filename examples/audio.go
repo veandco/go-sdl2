@@ -4,6 +4,7 @@ package main
 // void SineWave(void *userdata, Uint8 *stream, int len);
 import "C"
 import (
+	"log"
 	"math"
 	"reflect"
 	"time"
@@ -34,6 +35,12 @@ func SineWave(userdata unsafe.Pointer, stream *C.Uint8, length C.int) {
 }
 
 func main() {
+	if err := sdl.Init(sdl.INIT_AUDIO); err != nil {
+		log.Println(err)
+		return
+	}
+	defer sdl.Quit()
+	
 	spec := &sdl.AudioSpec{
 		Freq:     sampleHz,
 		Format:   sdl.AUDIO_U8,
