@@ -24,7 +24,7 @@ int main()
 		return 2;
 	}
 
-	SDL_Surface *image = IMG_Load("test.png");
+	SDL_Surface *image = IMG_Load("../../assets/test.png");
 	if (!image) {
 		fprintf(stderr, "Failed to load PNG: %s\n", SDL_GetError());
 		return 3;

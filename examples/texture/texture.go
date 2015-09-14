@@ -5,17 +5,17 @@ package main
 import (
 	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
-	"github.com/veandco/go-sdl2/sdl_image"
 	"os"
 )
 
 var winTitle string = "Go-SDL2 Texture"
 var winWidth, winHeight int = 800, 600
-var imageName string = "test.png"
+var imageName string = "../../assets/test.bmp"
 
 func run() int {
 	var window *sdl.Window
 	var renderer *sdl.Renderer
+	var image *sdl.Surface
 	var texture *sdl.Texture
 	var src, dst sdl.Rect
 	var err error
@@ -35,9 +35,9 @@ func run() int {
 	}
 	defer renderer.Destroy()
 
-	image, err := img.Load(imageName)
+	image, err = sdl.LoadBMP(imageName)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to load PNG: %s\n", err)
+		fmt.Fprintf(os.Stderr, "Failed to load BMP: %s\n", err)
 		return 3
 	}
 	defer image.Free()
@@ -53,8 +53,6 @@ func run() int {
 	dst = sdl.Rect{100, 50, 512, 512}
 
 	renderer.Clear()
-	renderer.SetDrawColor(255, 0, 0, 255)
-	renderer.FillRect(&sdl.Rect{0, 0, int32(winWidth), int32(winHeight)})
 	renderer.Copy(texture, &src, &dst)
 	renderer.Present()
 

@@ -24,7 +24,7 @@ int main()
 		return 3;
 	}
 
-	music = Mix_LoadMUS("test.mp3");
+	music = Mix_LoadMUS("../../assets/test.mp3");
 	if (!music) {
 		fprintf(stderr, "%s\n", SDL_GetError());
 		return 4;

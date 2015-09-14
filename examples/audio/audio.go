@@ -40,7 +40,7 @@ func main() {
 		return
 	}
 	defer sdl.Quit()
-	
+
 	spec := &sdl.AudioSpec{
 		Freq:     sampleHz,
 		Format:   sdl.AUDIO_U8,

@@ -26,7 +26,7 @@ func main() {
 		return
 	}
 
-	if music, err := mix.LoadMUS("test.mp3"); err != nil {
+	if music, err := mix.LoadMUS("../../assets/test.mp3"); err != nil {
 		log.Println(err)
 	} else if err = music.Play(1); err != nil {
 		log.Println(err)
