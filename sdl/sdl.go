@@ -1,7 +1,8 @@
 package sdl
 
 // #cgo windows LDFLAGS: -lSDL2
-// #cgo linux freebsd darwin pkg-config: sdl2
+// #cgo darwin LDFLAGS: -framework SDL2
+// #cgo linux freebsd pkg-config: sdl2
 // #include "sdl_wrapper.h"
 import "C"
 

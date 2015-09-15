@@ -1,15 +1,16 @@
 package ttf
 
 //#cgo windows LDFLAGS: -lSDL2 -lSDL2_ttf
-//#cgo linux freebsd darwin pkg-config: sdl2
-//#cgo linux freebsd darwin LDFLAGS: -lSDL2_ttf
+//#cgo darwin LDFLAGS: -framework SDL2 -framework SDL2_ttf
+//#cgo linux freebsd pkg-config: sdl2
+//#cgo linux freebsd LDFLAGS: -lSDL2_ttf
 //#include <stdlib.h>
 //#include "sdl_ttf_wrapper.h"
 //void Do_TTF_SetError(const char *str) {
 //    TTF_SetError(str);
 //}
 import "C"
-import "github.com/veandco/go-sdl2/sdl"
+import "github.com/eliukblau/go-sdl2/sdl"
 import "unsafe"
 import "errors"
 

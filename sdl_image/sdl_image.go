@@ -1,14 +1,15 @@
 package img
 
-//#cgo linux freebsd darwin pkg-config: sdl2
-//#cgo linux freebsd darwin LDFLAGS: -lSDL2_image
 //#cgo windows LDFLAGS: -lSDL2 -lSDL2_image
+//#cgo darwin LDFLAGS: -framework SDL2 -framework SDL2_image
+//#cgo linux freebsd pkg-config: sdl2
+//#cgo linux freebsd LDFLAGS: -lSDL2_image
 //#include <stdlib.h>
 //#include "sdl_image_wrapper.h"
 import "C"
 import "unsafe"
 import "errors"
-import "github.com/veandco/go-sdl2/sdl"
+import "github.com/eliukblau/go-sdl2/sdl"
 
 const (
 	INIT_JPG  = 0x00000001

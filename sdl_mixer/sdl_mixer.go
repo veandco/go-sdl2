@@ -1,8 +1,9 @@
 package mix
 
 //#cgo windows LDFLAGS: -lSDL2 -lSDL2_mixer
-//#cgo linux freebsd darwin pkg-config: sdl2
-//#cgo linux freebsd darwin LDFLAGS: -lSDL2_mixer
+//#cgo darwin LDFLAGS: -framework SDL2 -framework SDL2_mixer
+//#cgo linux freebsd pkg-config: sdl2
+//#cgo linux freebsd LDFLAGS: -lSDL2_mixer
 //#include <stdlib.h>
 //#include "sdl_mixer_wrapper.h"
 //
@@ -30,7 +31,7 @@ package mix
 import "C"
 import "unsafe"
 import "reflect"
-import "github.com/veandco/go-sdl2/sdl"
+import "github.com/eliukblau/go-sdl2/sdl"
 
 // Chunk (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html)
 type Chunk struct {
