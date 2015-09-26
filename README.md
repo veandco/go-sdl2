@@ -79,19 +79,15 @@ func main() {
 
 For more complete examples, see inside the _examples_ folder. Run any of the .go files with `go run`.
 
-Documentation
-=============
-For now, take a look at http://godoc.org/github.com/veandco/go-sdl2/sdl. A full-featured website will be created once we hit a stable point.
-
 FAQ
 ===
-_Why does my program crash randomly?_
+__Why does my program crash randomly?__
 Putting `runtime.LockOSThread()` at the start of your main() usually solves the problem. We will reimplement parts of go-sdl2 in different way so this doesn't happen in the future.
 
-_Why can't SDL_mixer seem to play MP3 audio file?_
+__Why can't SDL_mixer seem to play MP3 audio file?__
 Your installed SDL_mixer probably doesn't support MP3 file. You will need to compile smpeg and SDL_mixer from source with the MP3 option enabled. You can find smpeg in the `external` directory of SDL_mixer. Refer to issue [#148](https://github.com/veandco/go-sdl2/issues/148) for instructions.
 
-_Does go-sdl2 support compiling on mobile platforms like Android and iOS?_
+__Does go-sdl2 support compiling on mobile platforms like Android and iOS?__
 Not yet
 
 _Will there be Go port of SDL2 be ready?_
