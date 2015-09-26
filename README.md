@@ -90,7 +90,7 @@ Your installed SDL_mixer probably doesn't support MP3 file. You will need to com
 __Does go-sdl2 support compiling on mobile platforms like Android and iOS?__  
 Not yet
 
-_Will there be Go port of SDL2 be ready?_  
+__Will there be Go port of SDL2?__  
 There's some work on it but no plan to open-source it yet simply because it's a mess right now :)
 
 Contributors
