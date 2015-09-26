@@ -83,12 +83,17 @@ Documentation
 =============
 For now, take a look at http://godoc.org/github.com/veandco/go-sdl2/sdl. A full-featured website will be created once we hit a stable point.
 
-Notes
-=====
-Some Linux distributions like Ubuntu and Fedora don't compile SDL2_mixer with MP3 support. You will need to recompile it with MP3 support from source. Refer to issue [#148](https://github.com/veandco/go-sdl2/issues/148) for instructions.
+FAQ
+===
+_Why can't SDL_mixer seem to play MP3 audio file?_
+Your installed SDL_mixer probably doesn't support MP3 file. You will need to compile smpeg and SDL_mixer from source with the MP3 option enabled. You can find smpeg in the `external` directory of SDL_mixer. Refer to issue [#148](https://github.com/veandco/go-sdl2/issues/148) for instructions.
 
-A standalone Go SDL2 library _is_ being considered (read: figured out). That means users should be able to just go get go-sdl2 and compile it without the original C library. That could mean faster build times, more 'idiomatic' Go code, and hopefully more people interested in using and contributing to go-sdl2!
- 
+_Does go-sdl2 support compiling on mobile platforms like Android and iOS?_
+Not yet
+
+_Will there be Go port of SDL2 be ready?_
+There's some work on it but no plan to open-source it yet simply because it's a mess right now :)
+
 Contributors
 ============
 * [Jacky Boen](https://github.com/jackyb)
