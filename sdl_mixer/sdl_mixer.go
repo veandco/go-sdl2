@@ -12,7 +12,6 @@ package mix
 //extern void callChannelFinished(int channel);
 //extern void callEffectFunc(int channel, void *stream, int len, void *udata);
 //extern void callEffectDone(int channel, void *udata);
-//extern int callEachSoundFont(char* str, void* udata);
 //
 //static inline Uint32 getChunkTimeMilliseconds(Mix_Chunk *chunk)
 //{
@@ -596,18 +595,6 @@ func GetSynchroValue() int {
 	return (int)(C.Mix_GetSynchroValue())
 }
 
-// undocumented
-func SetSoundFonts(paths string) bool {
-	_paths := C.CString(paths)
-	defer C.free(unsafe.Pointer(_paths))
-	return int(C.Mix_SetSoundFonts(_paths)) == 0
-}
-
-// undocumented
-func GetSoundFonts() string {
-	return (string)(C.GoString(C.Mix_GetSoundFonts()))
-}
-
 // GetChunk (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_41.html)
 func GetChunk(channel int) *Chunk {
 	_channel := (C.int)(channel)
@@ -773,17 +760,4 @@ func UnregisterAllEffects(channel int) error {
 		return sdl.GetError()
 	}
 	return nil
-}
-
-//export callEachSoundFont
-func callEachSoundFont(str *C.char, udata unsafe.Pointer) C.int {
-	return C.int(eachSoundFontFunc(C.GoString(str)))
-}
-
-var eachSoundFontFunc func(string) int
-
-// undocumented
-func EachSoundFont(function func(string) int) int {
-	eachSoundFontFunc = function
-	return int(C.Mix_EachSoundFont((*[0]byte)(C.callEachSoundFont), nil))
 }
