@@ -9,6 +9,7 @@ package mix
 //#include "sdl_mixer_wrapper.h"
 //extern int callEachSoundFont(char* str, void* udata);
 import "C"
+import "unsafe"
 
 var eachSoundFontFunc func(string) int
 
