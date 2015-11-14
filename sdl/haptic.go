@@ -179,6 +179,11 @@ func (h *Haptic) Close() {
 	C.SDL_HapticClose(h.cptr())
 }
 
+// Haptic (https://wiki.libsdl.org/SDL_HapticNumAxes)
+func (h *Haptic) NumAxes() int {
+	return int(C.SDL_HapticNumAxes(h.cptr()))
+}
+
 // Haptic (https://wiki.libsdl.org/SDL_HapticNumEffects)
 func (h *Haptic) NumEffects() int {
 	return int(C.SDL_HapticNumEffects(h.cptr()))
