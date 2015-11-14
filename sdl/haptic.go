@@ -104,6 +104,14 @@ type HapticRamp struct {
 	FadeLevel    uint16
 }
 
+// HapticLeftRight (https://wiki.libsdl.org/SDL_HapticLeftRight)
+type HapticLeftRight struct {
+	Type           uint16
+	Length         uint32
+	LargeMagnitude uint16
+	SmallMagnitude uint16
+}
+
 // HapticCustom (https://wiki.libsdl.org/SDL_HapticCustom)
 type HapticCustom struct {
 	Type         uint16
@@ -123,7 +131,35 @@ type HapticCustom struct {
 }
 
 // HapticEffect (https://wiki.libsdl.org/SDL_HapticEffect)
-type HapticEffect interface{}
+type HapticEffect C.SDL_HapticEffect
+
+func (he HapticEffect) Type() uint16 {
+	return *((*uint16)(unsafe.Pointer(&he[0])))
+}
+
+func (he HapticEffect) Constant() *HapticConstant {
+	return (*HapticConstant)(unsafe.Pointer(&he[0]))
+}
+
+func (he HapticEffect) Periodic() *HapticPeriodic {
+	return (*HapticPeriodic)(unsafe.Pointer(&he[0]))
+}
+
+func (he HapticEffect) Condition() *HapticCondition {
+	return (*HapticCondition)(unsafe.Pointer(&he[0]))
+}
+
+func (he HapticEffect) Ramp() *HapticRamp {
+	return (*HapticRamp)(unsafe.Pointer(&he[0]))
+}
+
+func (he HapticEffect) LeftRight() *HapticLeftRight {
+	return (*HapticLeftRight)(unsafe.Pointer(&he[0]))
+}
+
+func (he HapticEffect) Custom() *HapticCustom {
+	return (*HapticCustom)(unsafe.Pointer(&he[0]))
+}
 
 func (h *Haptic) cptr() *C.SDL_Haptic {
 	return (*C.SDL_Haptic)(unsafe.Pointer(h))
