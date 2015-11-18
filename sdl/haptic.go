@@ -161,6 +161,10 @@ func (he HapticEffect) Custom() *HapticCustom {
 	return (*HapticCustom)(unsafe.Pointer(&he[0]))
 }
 
+func (he HapticEffect) SetType(typ uint16) {
+	*((*uint16)(unsafe.Pointer(&he[0]))) = typ
+}
+
 func (h *Haptic) cptr() *C.SDL_Haptic {
 	return (*C.SDL_Haptic)(unsafe.Pointer(h))
 }
