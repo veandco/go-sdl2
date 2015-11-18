@@ -119,6 +119,11 @@ func (attr GLattr) c() C.SDL_GLattr {
 	return C.SDL_GLattr(attr)
 }
 
+// GetDisplayName (https://wiki.libsdl.org/SDL_GetDisplayName)
+func GetDisplayName(displayIndex int) string {
+	return C.GoString(C.SDL_GetDisplayName(C.int(displayIndex)))
+}
+
 // GetNumVideoDisplays (https://wiki.libsdl.org/SDL_GetNumVideoDisplays)
 func GetNumVideoDisplays() (int, error) {
 	n := int(C.SDL_GetNumVideoDisplays())
