@@ -340,6 +340,19 @@ func (renderer *Renderer) SetDrawColor(r, g, b, a uint8) error {
 	return nil
 }
 
+// Custom variant of SetDrawColor
+func (renderer *Renderer) SetDrawColorArray(bs ...uint8) error {
+	_bs := []C.Uint8{0, 0, 0, 255}
+	for i := 0; i < len(_bs) && i < len(bs); i++ {
+		_bs[i] = C.Uint8(bs[i])
+	}
+	_ret := C.SDL_SetRenderDrawColor(renderer.cptr(), _bs[0], _bs[1], _bs[2], _bs[3])
+	if _ret < 0 {
+		return GetError()
+	}
+	return nil
+}
+
 // Renderer (https://wiki.libsdl.org/SDL_GetRenderDrawColor)
 func (renderer *Renderer) GetDrawColor() (r, g, b, a uint8, err error) {
 	_r := (*C.Uint8)(unsafe.Pointer(&r))
