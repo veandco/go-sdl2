@@ -93,7 +93,7 @@ Not yet
 __Will there be Go port of SDL2?__  
 There's some work on it but no plan to open-source it yet simply because it's a mess right now :)
 
-__How do I contribute?__
+__How do I contribute?__  
 Generally by forking the repository, and then sending pull requests. But unfortunately this is a go project, and the absolute import statements make forking a bit more complicated. [Here](http://blog.campoy.cat/2014/03/github-and-go-forking-pull-requests-and.html) are some instructions, how you can work with that. Generally pull requests are very welcome.
 
 Contributors
