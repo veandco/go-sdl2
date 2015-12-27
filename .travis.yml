@@ -1,0 +1,17 @@
+language: go
+
+go:
+  - 1.5
+  - tip
+
+install:
+  - cd ~
+  - mkdir sdl2install
+  - export SDL2DIR="`pwd`/sdl2install"
+  
+  - wget https://www.libsdl.org/release/SDL2-2.0.3.tar.gz
+  - tar xzf SDL2-2.0.3.tar.gz
+  - cd SDL2-2.0.3
+  - ./configure --prefix=$SDL2DIR
+  - make
+  - make install
