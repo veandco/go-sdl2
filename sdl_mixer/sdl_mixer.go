@@ -79,9 +79,7 @@ const (
 const DEFAULT_CHUNKSIZE = 2
 
 // Music (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html)
-type Music struct {
-	unsafe.Pointer
-}
+type Music C.Mix_Music
 
 // MusicType (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_87.html)
 type MusicType int
