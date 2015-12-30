@@ -342,7 +342,7 @@ type cDollarGestureEvent C.SDL_DollarGestureEvent
 type DropEvent struct {
 	Type      uint32
 	Timestamp uint32
-	file      unsafe.Pointer
+	File      unsafe.Pointer
 }
 type cDropEvent C.SDL_DropEvent
 
