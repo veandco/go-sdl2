@@ -53,6 +53,11 @@ const (
 )
 
 const (
+	MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT	= C.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT
+	MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT	= C.SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
+)
+
+const (
 	GL_RED_SIZE                   = C.SDL_GL_RED_SIZE
 	GL_GREEN_SIZE                 = C.SDL_GL_GREEN_SIZE
 	GL_BLUE_SIZE                  = C.SDL_GL_BLUE_SIZE
@@ -107,12 +112,84 @@ type GLContext C.SDL_GLContext
 // GLattr (https://wiki.libsdl.org/SDL_GLattr)
 type GLattr C.SDL_GLattr
 
+// MessageBoxColor (https://wiki.libsdl.org/SDL_MessageBoxColor)
+type MessageBoxColor struct {
+	R uint8
+	G uint8
+	B uint8
+}
+type cMessageBoxColor C.SDL_MessageBoxColor
+
+// MessageBoxColorScheme (https://wiki.libsdl.org/SDL_MessageBoxColorScheme)
+type MessageBoxColorScheme struct {
+	Colors [5]MessageBoxColor
+}
+type cMessageBoxColorScheme C.SDL_MessageBoxColorScheme
+
+// MessageBoxButtonData (https://wiki.libsdl.org/SDL_MessageBoxButtonData)
+type MessageBoxButtonData struct {
+	Flags 		uint32
+	ButtonId 	int32
+	Text 			string
+}
+
+type cMessageBoxButtonData struct {
+	Flags 		uint32
+	ButtonId 	int32
+	Text 			*C.char
+}
+
+// MessageBoxData (https://wiki.libsdl.org/SDL_MessageBoxData)
+type MessageBoxData struct {
+	Flags 			uint32
+	Window 			*Window
+	Title 			string
+	Message 		string
+	NumButtons	int32
+	Buttons 		[]MessageBoxButtonData
+	ColorScheme *MessageBoxColorScheme
+}
+
+type cMessageBoxData struct {
+	Flags 			uint32
+	Window 			*C.SDL_Window
+	Title 			*C.char
+	Message 		*C.char
+	NumButtons	int32
+	Buttons 		*C.SDL_MessageBoxButtonData
+	ColorScheme *C.SDL_MessageBoxColorScheme
+}
+
 func (w *Window) cptr() *C.SDL_Window {
 	return (*C.SDL_Window)(unsafe.Pointer(w))
 }
 
 func (dm *DisplayMode) cptr() *C.SDL_DisplayMode {
 	return (*C.SDL_DisplayMode)(unsafe.Pointer(dm))
+}
+
+func (mc *MessageBoxColor) cptr() *C.SDL_MessageBoxColor {
+	return (*C.SDL_MessageBoxColor)(unsafe.Pointer(mc))
+}
+
+func (mcs *MessageBoxColorScheme) cptr() *C.SDL_MessageBoxColorScheme {
+	return (*C.SDL_MessageBoxColorScheme)(unsafe.Pointer(mcs))
+}
+
+func (mbd *MessageBoxButtonData) cptr() *C.SDL_MessageBoxButtonData {
+	return (*C.SDL_MessageBoxButtonData)(unsafe.Pointer(mbd))
+}
+
+func (cmbd *cMessageBoxButtonData) cptr() *C.SDL_MessageBoxButtonData {
+	return (*C.SDL_MessageBoxButtonData)(unsafe.Pointer(cmbd))
+}
+
+func (md *MessageBoxData) cptr() *C.SDL_MessageBoxData {
+	return (*C.SDL_MessageBoxData)(unsafe.Pointer(md))
+}
+
+func (cmd *cMessageBoxData) cptr() *C.SDL_MessageBoxData {
+	return (*C.SDL_MessageBoxData)(unsafe.Pointer(cmd))
 }
 
 func (attr GLattr) c() C.SDL_GLattr {
@@ -492,6 +569,49 @@ func ShowSimpleMessageBox(flags uint32, title, message string, window *Window) e
 	_message := C.CString(message)
 	defer C.free(unsafe.Pointer(_message))
 	if (int)(C.SDL_ShowSimpleMessageBox(C.Uint32(flags), _title, _message, window.cptr())) < 0 {
+		return GetError()
+	}
+	return nil
+}
+
+// ShowMessageBox (https://wiki.libsdl.org/SDL_ShowMessageBox)
+func ShowMessageBox(data *MessageBoxData, buttonid *int32) error {
+	_title := C.CString(data.Title)
+	defer C.free(unsafe.Pointer(_title))
+	_message := C.CString(data.Message)
+	defer C.free(unsafe.Pointer(_message))
+
+	var cbuttons 	[]*C.SDL_MessageBoxButtonData
+	var cbtntexts []*C.char
+	defer func(texts []*C.char) {
+		for _, t := range texts {
+			C.free(unsafe.Pointer(t))
+		}
+	}(cbtntexts)
+
+	for _, btn := range data.Buttons {
+		ctext := C.CString(btn.Text)
+		cbtn := cMessageBoxButtonData{
+			Flags: btn.Flags,
+			ButtonId: btn.ButtonId,
+			Text: ctext,
+		}
+
+		cbuttons = append(cbuttons, cbtn.cptr())
+		cbtntexts = append(cbtntexts, ctext)
+	}
+
+	cdata := cMessageBoxData{
+		Flags: data.Flags,
+		Window: data.Window.cptr(),
+		Title: _title,
+		Message: _message,
+		NumButtons: data.NumButtons,
+		Buttons: cbuttons[0],
+		ColorScheme: data.ColorScheme.cptr(),
+	}
+
+	if int(C.SDL_ShowMessageBox(cdata.cptr(), (*C.int)(unsafe.Pointer(buttonid)))) < 0 {
 		return GetError()
 	}
 	return nil
