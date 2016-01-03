@@ -63,8 +63,12 @@ func (info *SysWMInfo) cptr() *C.SDL_SysWMinfo {
 }
 
 // Window (https://wiki.libsdl.org/SDL_GetWindowWMInfo)
-func (window *Window) GetWMInfo(info *SysWMInfo) bool {
-	return C.SDL_GetWindowWMInfo(window.cptr(), info.cptr()) == 1
+func (window *Window) GetWMInfo() (*SysWMInfo, error) {
+	var info SysWMInfo
+	if C.SDL_GetWindowWMInfo(window.cptr(), info.cptr()) == 0 {
+		return nil, GetError()
+	}
+	return &info, nil
 }
 
 func (info *SysWMInfo) GetWindowsInfo() *WindowsInfo {
