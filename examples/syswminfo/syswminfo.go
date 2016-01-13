@@ -10,7 +10,7 @@ import (
 
 func main() {
 	var window *sdl.Window
-	var info sdl.SysWMInfo
+	var info *sdl.SysWMInfo
 	var subsystem string
 	var err error
 
@@ -21,9 +21,8 @@ func main() {
 	}
 	defer window.Destroy()
 
-	sdl.VERSION(&info.Version)
-
-	if window.GetWMInfo(&info) {
+	info, err = window.GetWMInfo()
+	if err == nil {
 		switch info.Subsystem {
 		case sdl.SYSWM_UNKNOWN:
 			subsystem = "An unknown system!"
@@ -39,12 +38,13 @@ func main() {
 			subsystem = "UIKit"
 		}
 
+		sdl.VERSION(&info.Version)
 		fmt.Printf("This program is running SDL version %d.%d.%d on %s\n",
 			info.Version.Major,
 			info.Version.Minor,
 			info.Version.Patch,
 			subsystem)
 	} else {
-		fmt.Fprintf(os.Stderr, "Couldn't get window information: %s\n", sdl.GetError())
+		fmt.Fprintf(os.Stderr, "Couldn't get window information: %s\n", err)
 	}
 }
