@@ -38,7 +38,6 @@ func main() {
 			subsystem = "UIKit"
 		}
 
-		sdl.VERSION(&info.Version)
 		fmt.Printf("This program is running SDL version %d.%d.%d on %s\n",
 			info.Version.Major,
 			info.Version.Minor,
