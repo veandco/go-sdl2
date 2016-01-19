@@ -156,7 +156,7 @@ type cMessageBoxData struct {
 	Title 			*C.char
 	Message 		*C.char
 	NumButtons	int32
-	Buttons 		*C.SDL_MessageBoxButtonData
+	Buttons 		*cMessageBoxButtonData
 	ColorScheme *C.SDL_MessageBoxColorScheme
 }
 
@@ -581,7 +581,7 @@ func ShowMessageBox(data *MessageBoxData, buttonid *int32) error {
 	_message := C.CString(data.Message)
 	defer C.free(unsafe.Pointer(_message))
 
-	var cbuttons 	[]*C.SDL_MessageBoxButtonData
+	var cbuttons []cMessageBoxButtonData
 	var cbtntexts []*C.char
 	defer func(texts []*C.char) {
 		for _, t := range texts {
@@ -597,7 +597,7 @@ func ShowMessageBox(data *MessageBoxData, buttonid *int32) error {
 			Text: ctext,
 		}
 
-		cbuttons = append(cbuttons, cbtn.cptr())
+		cbuttons = append(cbuttons, cbtn)
 		cbtntexts = append(cbtntexts, ctext)
 	}
 
@@ -607,7 +607,7 @@ func ShowMessageBox(data *MessageBoxData, buttonid *int32) error {
 		Title: _title,
 		Message: _message,
 		NumButtons: data.NumButtons,
-		Buttons: cbuttons[0],
+		Buttons: &cbuttons[0],
 		ColorScheme: data.ColorScheme.cptr(),
 	}
 
