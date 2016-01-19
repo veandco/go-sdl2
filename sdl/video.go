@@ -53,8 +53,8 @@ const (
 )
 
 const (
-	MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT	= C.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT
-	MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT	= C.SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
+	MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT = C.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT
+	MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT = C.SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
 )
 
 const (
@@ -128,35 +128,35 @@ type cMessageBoxColorScheme C.SDL_MessageBoxColorScheme
 
 // MessageBoxButtonData (https://wiki.libsdl.org/SDL_MessageBoxButtonData)
 type MessageBoxButtonData struct {
-	Flags 		uint32
-	ButtonId 	int32
-	Text 			string
+	Flags    uint32
+	ButtonId int32
+	Text     string
 }
 
 type cMessageBoxButtonData struct {
-	Flags 		uint32
-	ButtonId 	int32
-	Text 			*C.char
+	Flags    uint32
+	ButtonId int32
+	Text     *C.char
 }
 
 // MessageBoxData (https://wiki.libsdl.org/SDL_MessageBoxData)
 type MessageBoxData struct {
-	Flags 			uint32
-	Window 			*Window
-	Title 			string
-	Message 		string
-	NumButtons	int32
-	Buttons 		[]MessageBoxButtonData
+	Flags       uint32
+	Window      *Window
+	Title       string
+	Message     string
+	NumButtons  int32
+	Buttons     []MessageBoxButtonData
 	ColorScheme *MessageBoxColorScheme
 }
 
 type cMessageBoxData struct {
-	Flags 			uint32
-	Window 			*C.SDL_Window
-	Title 			*C.char
-	Message 		*C.char
-	NumButtons	int32
-	Buttons 		*cMessageBoxButtonData
+	Flags       uint32
+	Window      *C.SDL_Window
+	Title       *C.char
+	Message     *C.char
+	NumButtons  int32
+	Buttons     *cMessageBoxButtonData
 	ColorScheme *C.SDL_MessageBoxColorScheme
 }
 
@@ -592,9 +592,9 @@ func ShowMessageBox(data *MessageBoxData, buttonid *int32) error {
 	for _, btn := range data.Buttons {
 		ctext := C.CString(btn.Text)
 		cbtn := cMessageBoxButtonData{
-			Flags: btn.Flags,
+			Flags:    btn.Flags,
 			ButtonId: btn.ButtonId,
-			Text: ctext,
+			Text:     ctext,
 		}
 
 		cbuttons = append(cbuttons, cbtn)
@@ -602,12 +602,12 @@ func ShowMessageBox(data *MessageBoxData, buttonid *int32) error {
 	}
 
 	cdata := cMessageBoxData{
-		Flags: data.Flags,
-		Window: data.Window.cptr(),
-		Title: _title,
-		Message: _message,
-		NumButtons: data.NumButtons,
-		Buttons: &cbuttons[0],
+		Flags:       data.Flags,
+		Window:      data.Window.cptr(),
+		Title:       _title,
+		Message:     _message,
+		NumButtons:  data.NumButtons,
+		Buttons:     &cbuttons[0],
 		ColorScheme: data.ColorScheme.cptr(),
 	}
 
