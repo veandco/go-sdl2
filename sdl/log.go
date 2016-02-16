@@ -6,42 +6,42 @@ package sdl
 
 static inline void _SDL_Log(const char *fmt)
 {
-    SDL_Log(fmt);
+    SDL_Log("%s", fmt);
 }
 
 static inline void _SDL_LogVerbose(int category, const char *fmt)
 {
-    SDL_LogVerbose(category, fmt);
+    SDL_LogVerbose(category, "%s", fmt);
 }
 
 static inline void _SDL_LogDebug(int category, const char *fmt)
 {
-    SDL_LogDebug(category, fmt);
+    SDL_LogDebug(category, "%s", fmt);
 }
 
 static inline void _SDL_LogInfo(int category, const char *fmt)
 {
-    SDL_LogInfo(category, fmt);
+    SDL_LogInfo(category, "%s", fmt);
 }
 
 static inline void _SDL_LogWarn(int category, const char *fmt)
 {
-    SDL_LogWarn(category, fmt);
+    SDL_LogWarn(category, "%s", fmt);
 }
 
 static inline void _SDL_LogError(int category, const char *fmt)
 {
-    SDL_LogError(category, fmt);
+    SDL_LogError(category, "%s", fmt);
 }
 
 static inline void _SDL_LogCritical(int category, const char *fmt)
 {
-    SDL_LogCritical(category, fmt);
+    SDL_LogCritical(category, "%s", fmt);
 }
 
 static inline void _SDL_LogMessage(int category, SDL_LogPriority priority, const char *fmt)
 {
-    SDL_LogCritical(category, fmt);
+    SDL_LogCritical(category, "%s", fmt);
 }
 */
 import "C"
