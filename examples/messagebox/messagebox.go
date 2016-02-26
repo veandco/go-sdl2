@@ -34,7 +34,8 @@ func main() {
 	}
 
 	var buttonid int32
-	if sdl.ShowMessageBox(&messageboxdata, &buttonid) != nil {
+	var err error
+	if err, buttonid = sdl.ShowMessageBox(&messageboxdata); err != nil {
 		fmt.Println("error displaying message box")
 		return
 	}
