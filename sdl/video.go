@@ -1,6 +1,12 @@
 package sdl
 
-// #include "sdl_wrapper.h"
+//	#include "sdl_wrapper.h"
+//	static inline Sint32 ShowMessageBox(SDL_MessageBoxData data)
+//	{
+//		Sint32 buttonid;
+//		SDL_ShowMessageBox(&data, &buttonid);
+//		return buttonid;
+//	}
 import "C"
 import "unsafe"
 
@@ -133,12 +139,6 @@ type MessageBoxButtonData struct {
 	Text     string
 }
 
-type cMessageBoxButtonData struct {
-	Flags    uint32
-	ButtonId int32
-	Text     *C.char
-}
-
 // MessageBoxData (https://wiki.libsdl.org/SDL_MessageBoxData)
 type MessageBoxData struct {
 	Flags       uint32
@@ -156,7 +156,7 @@ type cMessageBoxData struct {
 	Title       *C.char
 	Message     *C.char
 	NumButtons  int32
-	Buttons     *cMessageBoxButtonData
+	Buttons     *C.SDL_MessageBoxButtonData
 	ColorScheme *C.SDL_MessageBoxColorScheme
 }
 
@@ -180,16 +180,12 @@ func (mbd *MessageBoxButtonData) cptr() *C.SDL_MessageBoxButtonData {
 	return (*C.SDL_MessageBoxButtonData)(unsafe.Pointer(mbd))
 }
 
-func (cmbd *cMessageBoxButtonData) cptr() *C.SDL_MessageBoxButtonData {
+func (cmbd *C.SDL_MessageBoxButtonData) cptr() *C.SDL_MessageBoxButtonData {
 	return (*C.SDL_MessageBoxButtonData)(unsafe.Pointer(cmbd))
 }
 
 func (md *MessageBoxData) cptr() *C.SDL_MessageBoxData {
 	return (*C.SDL_MessageBoxData)(unsafe.Pointer(md))
-}
-
-func (cmd *cMessageBoxData) cptr() *C.SDL_MessageBoxData {
-	return (*C.SDL_MessageBoxData)(unsafe.Pointer(cmd))
 }
 
 func (attr GLattr) c() C.SDL_GLattr {
@@ -575,13 +571,13 @@ func ShowSimpleMessageBox(flags uint32, title, message string, window *Window) e
 }
 
 // ShowMessageBox (https://wiki.libsdl.org/SDL_ShowMessageBox)
-func ShowMessageBox(data *MessageBoxData, buttonid *int32) error {
+func ShowMessageBox(data *MessageBoxData) (err error, buttonid int32) {
 	_title := C.CString(data.Title)
 	defer C.free(unsafe.Pointer(_title))
 	_message := C.CString(data.Message)
 	defer C.free(unsafe.Pointer(_message))
 
-	var cbuttons []cMessageBoxButtonData
+	var cbuttons []C.SDL_MessageBoxButtonData
 	var cbtntexts []*C.char
 	defer func(texts []*C.char) {
 		for _, t := range texts {
@@ -591,30 +587,31 @@ func ShowMessageBox(data *MessageBoxData, buttonid *int32) error {
 
 	for _, btn := range data.Buttons {
 		ctext := C.CString(btn.Text)
-		cbtn := cMessageBoxButtonData{
-			Flags:    btn.Flags,
-			ButtonId: btn.ButtonId,
-			Text:     ctext,
+		cbtn := C.SDL_MessageBoxButtonData{
+			flags:    C.Uint32(btn.Flags),
+			buttonid: C.int(btn.ButtonId),
+			text:     ctext,
 		}
 
 		cbuttons = append(cbuttons, cbtn)
 		cbtntexts = append(cbtntexts, ctext)
 	}
 
-	cdata := cMessageBoxData{
-		Flags:       data.Flags,
-		Window:      data.Window.cptr(),
-		Title:       _title,
-		Message:     _message,
-		NumButtons:  data.NumButtons,
-		Buttons:     &cbuttons[0],
-		ColorScheme: data.ColorScheme.cptr(),
+	cdata := C.SDL_MessageBoxData{
+		flags:       C.Uint32(data.Flags),
+		window:      data.Window.cptr(),
+		title:       _title,
+		message:     _message,
+		numbuttons:  C.int(data.NumButtons),
+		buttons:     &cbuttons[0],
+		colorScheme: data.ColorScheme.cptr(),
 	}
 
-	if int(C.SDL_ShowMessageBox(cdata.cptr(), (*C.int)(unsafe.Pointer(buttonid)))) < 0 {
-		return GetError()
+	if buttonid := int32(C.ShowMessageBox(cdata)); buttonid < 0 {
+		return GetError(), buttonid
+	} else {
+		return nil, buttonid
 	}
-	return nil
 }
 
 // IsScreenSaverEnabled (https://wiki.libsdl.org/SDL_IsScreenSaverEnabled)
