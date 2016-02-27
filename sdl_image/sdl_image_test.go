@@ -264,7 +264,7 @@ func TestLoadFormat(t *testing.T) {
 			continue
 		}
 
-		rwops = sdl.RWFromMem(unsafe.Pointer(&testBadData), len(testBadData))
+		rwops = sdl.RWFromMem(unsafe.Pointer(&testBadData[0]), len(testBadData))
 		defer rwops.RWclose()
 		surf, err = test.function(rwops)
 		if surf != nil {
