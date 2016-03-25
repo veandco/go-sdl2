@@ -180,10 +180,6 @@ func (mbd *MessageBoxButtonData) cptr() *C.SDL_MessageBoxButtonData {
 	return (*C.SDL_MessageBoxButtonData)(unsafe.Pointer(mbd))
 }
 
-func (cmbd *C.SDL_MessageBoxButtonData) cptr() *C.SDL_MessageBoxButtonData {
-	return (*C.SDL_MessageBoxButtonData)(unsafe.Pointer(cmbd))
-}
-
 func (md *MessageBoxData) cptr() *C.SDL_MessageBoxData {
 	return (*C.SDL_MessageBoxData)(unsafe.Pointer(md))
 }
