@@ -88,7 +88,9 @@ __Why can't SDL_mixer seem to play MP3 audio file?__
 Your installed SDL_mixer probably doesn't support MP3 file. You will need to compile smpeg and SDL_mixer from source with the MP3 option enabled. You can find smpeg in the `external` directory of SDL_mixer. Refer to issue [#148](https://github.com/veandco/go-sdl2/issues/148) for instructions.
 
 __Does go-sdl2 support compiling on mobile platforms like Android and iOS?__  
-Not yet
+For Android, see https://github.com/gen2brain/go-sdl2-android-example.
+
+There is currently no support for iOS yet.
 
 __Will there be Go port of SDL2?__  
 There's some work on it but no plan to open-source it yet simply because it's a mess right now :)
