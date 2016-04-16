@@ -26,8 +26,6 @@ func run() int {
 	}
 	defer window.Destroy()
 
-    go sdl.ProcessCalls()
-
 	sdl.CallQueue <- func() {
         renderer, err = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
         if err != nil {

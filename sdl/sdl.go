@@ -30,13 +30,17 @@ const (
 var CallQueue = make(chan func(), 1)
 
 // Run through functions in FuncQueue. Intended to be called as a goroutine.
-func ProcessCalls() {
+func processCalls() {
     runtime.LockOSThread()
 
     for {
         f := <- CallQueue
         f()
     }
+}
+
+func init() {
+    go processCalls()
 }
 
 // Init (https://wiki.libsdl.org/SDL_Init)
