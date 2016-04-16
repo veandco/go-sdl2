@@ -5,6 +5,10 @@ package sdl
 // #include "sdl_wrapper.h"
 import "C"
 
+import (
+    "runtime"
+)
+
 const (
 	INIT_TIMER          = 0x00000001
 	INIT_AUDIO          = 0x00000010
@@ -21,6 +25,19 @@ const (
 	RELEASED = 0
 	PRESSED  = 1
 )
+
+// Queue of functions that are thread-sensitive
+var CallQueue = make(chan func(), 1)
+
+// Run through functions in FuncQueue. Intended to be called as a goroutine.
+func ProcessCalls() {
+    runtime.LockOSThread()
+
+    for {
+        f := <- CallQueue
+        f()
+    }
+}
 
 // Init (https://wiki.libsdl.org/SDL_Init)
 func Init(flags uint32) error {
