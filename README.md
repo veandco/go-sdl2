@@ -84,6 +84,8 @@ FAQ
 __Why does my program crash randomly?__  
 Putting `runtime.LockOSThread()` at the start of your main() usually solves the problem. We will reimplement parts of go-sdl2 in different way so this doesn't happen in the future.
 
+UPDATE: Recent update added a call queue system where you can put thread-sensitive code and have it called synchronously on the same OS thread. See the `render_queue` example to see how it works.
+
 __Why can't SDL_mixer seem to play MP3 audio file?__  
 Your installed SDL_mixer probably doesn't support MP3 file. You will need to compile smpeg and SDL_mixer from source with the MP3 option enabled. You can find smpeg in the `external` directory of SDL_mixer. Refer to issue [#148](https://github.com/veandco/go-sdl2/issues/148) for instructions.
 
