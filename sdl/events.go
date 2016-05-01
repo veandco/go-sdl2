@@ -410,7 +410,7 @@ func PumpEvents() {
 }
 
 // PeepEvents (https://wiki.libsdl.org/SDL_PeepEvents)
-func PeepEvents(events []Event, action EventAction, minType, maxType uint32) int {
+func PeepEvents(events []Event, action EventAction, minType, maxType uint32) (storedEvents int, err error) {
 	var _events []CEvent = make([]CEvent, len(events))
 
 	if action == ADDEVENT { // the contents of _events matter if they are to be added
@@ -420,14 +420,19 @@ func PeepEvents(events []Event, action EventAction, minType, maxType uint32) int
 	}
 
 	_pevents := (*C.SDL_Event)(unsafe.Pointer(&_events[0]))
-	retVal := int(C.SDL_PeepEvents(_pevents, C.int(len(events)), action.c(), C.Uint32(minType), C.Uint32(maxType)))
+	storedEvents = int(C.SDL_PeepEvents(_pevents, C.int(len(events)), action.c(), C.Uint32(minType), C.Uint32(maxType)))
 
 	if action != ADDEVENT { // put events into slice, events unchanged if action = ADDEVENT
-		for i := 0; i < retVal; i++ {
+		for i := 0; i < storedEvents; i++ {
 			events[i] = goEvent(&_events[i])
 		}
 	}
-	return retVal
+
+    if storedEvents < 0 {
+        GetError()
+    }
+
+	return
 }
 
 // HasEvent (https://wiki.libsdl.org/SDL_HasEvent)
