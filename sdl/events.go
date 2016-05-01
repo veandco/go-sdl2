@@ -546,9 +546,14 @@ func WaitEvent() Event {
 }
 
 // PushEvent (https://wiki.libsdl.org/SDL_PushEvent)
-func PushEvent(event Event) int {
+func PushEvent(event Event) (filtered bool, err error) {
 	_event := (*C.SDL_Event)(unsafe.Pointer(cEvent(event)))
-	return int(C.SDL_PushEvent(_event))
+    if ok := int(C.SDL_PushEvent(_event)); ok < 0 {
+        filtered, err = false, GetError()
+    } else if ok == 0 {
+        filtered, err = true, nil
+    }
+	return
 }
 
 func (ef eventFilterFunc) FilterEvent(e Event) bool {
