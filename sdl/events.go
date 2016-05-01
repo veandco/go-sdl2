@@ -429,7 +429,7 @@ func PeepEvents(events []Event, action EventAction, minType, maxType uint32) (st
 	}
 
 	if storedEvents < 0 {
-		GetError()
+		err = GetError()
 	}
 
 	return
