@@ -428,9 +428,9 @@ func PeepEvents(events []Event, action EventAction, minType, maxType uint32) (st
 		}
 	}
 
-    if storedEvents < 0 {
-        GetError()
-    }
+	if storedEvents < 0 {
+		GetError()
+	}
 
 	return
 }
@@ -553,11 +553,11 @@ func WaitEvent() Event {
 // PushEvent (https://wiki.libsdl.org/SDL_PushEvent)
 func PushEvent(event Event) (filtered bool, err error) {
 	_event := (*C.SDL_Event)(unsafe.Pointer(cEvent(event)))
-    if ok := int(C.SDL_PushEvent(_event)); ok < 0 {
-        filtered, err = false, GetError()
-    } else if ok == 0 {
-        filtered, err = true, nil
-    }
+	if ok := int(C.SDL_PushEvent(_event)); ok < 0 {
+		filtered, err = false, GetError()
+	} else if ok == 0 {
+		filtered, err = true, nil
+	}
 	return
 }
 

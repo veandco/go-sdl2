@@ -6,7 +6,7 @@ package sdl
 import "C"
 
 import (
-    "runtime"
+	"runtime"
 )
 
 const (
@@ -31,16 +31,16 @@ var CallQueue = make(chan func(), 1)
 
 // Run through functions in FuncQueue. Intended to be called as a goroutine.
 func processCalls() {
-    runtime.LockOSThread()
+	runtime.LockOSThread()
 
-    for {
-        f := <- CallQueue
-        f()
-    }
+	for {
+		f := <-CallQueue
+		f()
+	}
 }
 
 func init() {
-    go processCalls()
+	go processCalls()
 }
 
 // Init (https://wiki.libsdl.org/SDL_Init)
