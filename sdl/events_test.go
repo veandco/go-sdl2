@@ -13,6 +13,11 @@ func TestEventsPushEvent(t *testing.T) {
 		Code: 42,
 	}
 
+	// Remove existing events in the queue
+	if _, err := PeepEvents(make([]Event, 100), GETEVENT, FIRSTEVENT, LASTEVENT); err != nil {
+		t.Errorf("PeepEvents:", err)
+	}
+
 	PushEvent(&in)
 
 	out, ok := PollEvent().(*UserEvent)
