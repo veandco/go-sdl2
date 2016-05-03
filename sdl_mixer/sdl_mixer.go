@@ -68,15 +68,15 @@ const (
 // Defines (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_91.html)
 const (
 	CHANNELS          = 8
-	DEFAULT_FREQUENCY = 22050
-	DEFAULT_FORMAT    = sdl.AUDIO_S16SYS
-	DEFAULT_CHANNELS  = 2
-	MAX_VOLUME        = 128
+	DEFAULT_FREQUENCY = C.MIX_DEFAULT_FREQUENCY
+	DEFAULT_FORMAT    = C.MIX_DEFAULT_FORMAT
+	DEFAULT_CHANNELS  = C.MIX_DEFAULT_CHANNELS
+	MAX_VOLUME        = C.MIX_MAX_VOLUME
 	CHANNEL_POST      = -2
 	EFFECTSMAXSPEED   = "MIX_EFFECTSMAXSPEED"
 )
 
-const DEFAULT_CHUNKSIZE = 2
+const DEFAULT_CHUNKSIZE = 1024
 
 // Music (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html)
 type Music C.Mix_Music
