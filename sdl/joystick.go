@@ -39,7 +39,7 @@ func JoystickNameForIndex(index int) string {
 }
 
 // JoystickOpen (https://wiki.libsdl.org/SDL_JoystickOpen)
-func JoystickOpen(index int) *Joystick {
+func JoystickOpen(index JoystickID) *Joystick {
 	return (*Joystick)(C.SDL_JoystickOpen(C.int(index)))
 }
 
