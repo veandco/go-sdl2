@@ -107,7 +107,7 @@ Contributors
 * [akovaski](https://github.com/akovaski)
 * [Jeromy Johnson](https://github.com/whyrusleeping)
 * [Cai Lei](https://github.com/ccll)
-* [krux02](https://github.com/krux02)
+* [Arne Döring](https://github.com/krux02)
 * [marcusva](https://github.com/marcusva)
 * [Tom Murray](https://github.com/TomMurray)
 * [Ian Davis](https://github.com/iand)
