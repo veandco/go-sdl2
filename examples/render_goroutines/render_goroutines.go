@@ -47,6 +47,7 @@ func run() int {
 				g := byte(rand.Int())
 				b := byte(rand.Int())
 
+				// Call the render function in the 'render' thread synchronously
 				sdl.CallQueue <- func() {
 					renderer.SetDrawColor(r, g, b, 255)
 					renderer.DrawPoint(x, y)
