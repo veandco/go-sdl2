@@ -49,7 +49,7 @@ func (a *Rect) Empty() bool {
 // (https://wiki.libsdl.org/SDL_RectEquals)
 func (a *Rect) Equals(b *Rect) bool {
 	if (a != nil) && (b != nil) &&
-		(a.X == b.X) && (a.Y == a.Y) &&
+		(a.X == b.X) && (a.Y == b.Y) &&
 		(a.W == b.W) && (a.H == b.H) {
 		return true
 	}
