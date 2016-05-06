@@ -1,4 +1,4 @@
-// +build !nomidi
+// +build !nomidi,!android
 
 package mix
 
@@ -35,4 +35,3 @@ func SetSoundFonts(paths string) bool {
 func GetSoundFonts() string {
 	return (string)(C.GoString(C.Mix_GetSoundFonts()))
 }
-
