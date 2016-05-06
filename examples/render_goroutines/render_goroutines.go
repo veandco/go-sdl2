@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -46,6 +47,7 @@ func run() int {
 				r := byte(rand.Int())
 				g := byte(rand.Int())
 				b := byte(rand.Int())
+				time.Sleep(1 * time.Millisecond)
 
 				// Call the render function in the 'render' thread synchronously
 				sdl.CallQueue <- func() {
