@@ -7,8 +7,8 @@ import "unsafe"
 // External storage states. See the official Android developer guide for more information:
 // (http://developer.android.com/guide/topics/data/data-storage.html)
 const (
-	ANDROID_EXTERNAL_STORAGE_READ  = 0x01
-	ANDROID_EXTERNAL_STORAGE_WRITE = 0x02
+	ANDROID_EXTERNAL_STORAGE_READ  = C.SDL_ANDROID_EXTERNAL_STORAGE_READ
+	ANDROID_EXTERNAL_STORAGE_WRITE = C.SDL_ANDROID_EXTERNAL_STORAGE_WRITE
 )
 
 // Gets the path used for internal storage for this application
