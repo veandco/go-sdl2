@@ -56,7 +56,7 @@ func Quit() {
 	C.SDL_Quit()
 
 	eventFilterCache = nil
-	for k, _ := range eventWatches {
+	for k := range eventWatches {
 		delete(eventWatches, k)
 	}
 }

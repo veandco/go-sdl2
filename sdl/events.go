@@ -15,7 +15,7 @@ import "sync"
 
 var (
 	eventFilterCache          EventFilter
-	eventWatches              map[EventWatchHandle]*eventFilterCallbackContext = make(map[EventWatchHandle]*eventFilterCallbackContext)
+	eventWatches              = make(map[EventWatchHandle]*eventFilterCallbackContext)
 	lastEventWatchHandleMutex sync.Mutex
 	lastEventWatchHandle      EventWatchHandle
 )
