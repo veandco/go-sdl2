@@ -213,8 +213,8 @@ func TestEventsEventWatchClearOnStartup(t *testing.T) {
 
 	Quit()
 
-	if len(eventWatchesCache) != 0 {
-		t.Errorf("Expected go event watches cache to be cleared but it contains %d contexts", len(eventWatchesCache))
+	if len(eventWatches) != 0 {
+		t.Errorf("Expected go event watches to be cleared but it contains %d contexts", len(eventWatches))
 	}
 }
 
