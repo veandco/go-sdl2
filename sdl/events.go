@@ -11,10 +11,13 @@ package sdl
 import "C"
 import "unsafe"
 import "reflect"
+import "sync"
 
 var (
-	eventFilterCache  EventFilter
-	eventWatchesCache map[EventWatchHandle]*eventFilterCallbackContext = make(map[EventWatchHandle]*eventFilterCallbackContext)
+	eventFilterCache          EventFilter
+	eventWatches              = make(map[EventWatchHandle]*eventFilterCallbackContext)
+	lastEventWatchHandleMutex sync.Mutex
+	lastEventWatchHandle      EventWatchHandle
 )
 
 const (
@@ -396,6 +399,7 @@ type eventFilterFunc func(Event) bool
 
 type eventFilterCallbackContext struct {
 	filter EventFilter
+	handle EventWatchHandle
 }
 
 type EventWatchHandle uintptr
@@ -565,12 +569,25 @@ func (ef eventFilterFunc) FilterEvent(e Event) bool {
 	return ef(e)
 }
 
-func (e *eventFilterCallbackContext) handle() EventWatchHandle {
-	return EventWatchHandle(unsafe.Pointer(e))
+func newEventFilterCallbackContext(filter EventFilter) *eventFilterCallbackContext {
+	lastEventWatchHandleMutex.Lock()
+	defer lastEventWatchHandleMutex.Unlock()
+	// Look for the next available watch handle (this should be immediate
+	// unless you're creating a LOT of handlers).
+	for {
+		if _, ok := eventWatches[lastEventWatchHandle]; !ok {
+			break
+		}
+		lastEventWatchHandle++
+	}
+	e := &eventFilterCallbackContext{filter, lastEventWatchHandle}
+	eventWatches[lastEventWatchHandle] = e
+	lastEventWatchHandle++
+	return e
 }
 
 func (e *eventFilterCallbackContext) cptr() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(e.handle)
 }
 
 //export goSetEventFilterCallback
@@ -590,7 +607,7 @@ func goEventFilterCallback(userdata unsafe.Pointer, e *C.SDL_Event) C.int {
 	// it doesn't a panic will let us know that there something wrong and the
 	// problem can be fixed.
 
-	context := (*eventFilterCallbackContext)(userdata)
+	context := eventWatches[EventWatchHandle(userdata)]
 	return wrapEventFilterCallback(context.filter, e)
 }
 
@@ -640,7 +657,7 @@ func isCEventFilterSet() bool {
 
 // FilterEvents (https://wiki.libsdl.org/SDL_FilterEvents)
 func FilterEvents(filter EventFilter) {
-	context := &eventFilterCallbackContext{filter}
+	context := newEventFilterCallbackContext(filter)
 	C.filterEvents(context.cptr())
 }
 
@@ -650,10 +667,9 @@ func FilterEventsFunc(filterFunc func(Event) bool) {
 
 // AddEventWatch (https://wiki.libsdl.org/SDL_AddEventWatch)
 func AddEventWatch(filter EventFilter) EventWatchHandle {
-	context := &eventFilterCallbackContext{filter}
+	context := newEventFilterCallbackContext(filter)
 	C.addEventWatch(context.cptr())
-	eventWatchesCache[context.handle()] = context
-	return context.handle()
+	return context.handle
 }
 
 func AddEventWatchFunc(filterFunc func(Event) bool) EventWatchHandle {
@@ -662,11 +678,11 @@ func AddEventWatchFunc(filterFunc func(Event) bool) EventWatchHandle {
 
 // DelEventWatch (https://wiki.libsdl.org/SDL_DelEventWatch)
 func DelEventWatch(handle EventWatchHandle) {
-	context, ok := eventWatchesCache[handle]
+	context, ok := eventWatches[handle]
 	if !ok {
 		return
 	}
-	delete(eventWatchesCache, context.handle())
+	delete(eventWatches, context.handle)
 	C.delEventWatch(context.cptr())
 }
 
