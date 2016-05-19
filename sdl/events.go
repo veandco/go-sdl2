@@ -208,7 +208,7 @@ type MouseWheelEvent struct {
 	Which     uint32
 	X         int32
 	Y         int32
-    Direction uint32
+	Direction uint32
 }
 type cMouseWheelEvent C.SDL_MouseWheelEvent
 
@@ -393,14 +393,15 @@ type cSysWMEvent C.SDL_SysWMEvent
 type EventAction C.SDL_eventaction
 
 type EventFilter interface {
-	FilterEvent(e Event) bool
+	FilterEvent(e Event, userdata interface{}) bool
 }
 
-type eventFilterFunc func(Event) bool
+type eventFilterFunc func(Event, interface{}) bool
 
 type eventFilterCallbackContext struct {
-	filter EventFilter
-	handle EventWatchHandle
+	filter   EventFilter
+	handle   EventWatchHandle
+	userdata interface{}
 }
 
 type EventWatchHandle uintptr
@@ -566,11 +567,11 @@ func PushEvent(event Event) (filtered bool, err error) {
 	return
 }
 
-func (ef eventFilterFunc) FilterEvent(e Event) bool {
-	return ef(e)
+func (ef eventFilterFunc) FilterEvent(e Event, userdata interface{}) bool {
+	return ef(e, userdata)
 }
 
-func newEventFilterCallbackContext(filter EventFilter) *eventFilterCallbackContext {
+func newEventFilterCallbackContext(filter EventFilter, userdata interface{}) *eventFilterCallbackContext {
 	lastEventWatchHandleMutex.Lock()
 	defer lastEventWatchHandleMutex.Unlock()
 	// Look for the next available watch handle (this should be immediate
@@ -581,7 +582,7 @@ func newEventFilterCallbackContext(filter EventFilter) *eventFilterCallbackConte
 		}
 		lastEventWatchHandle++
 	}
-	e := &eventFilterCallbackContext{filter, lastEventWatchHandle}
+	e := &eventFilterCallbackContext{filter, lastEventWatchHandle, userdata}
 	eventWatches[lastEventWatchHandle] = e
 	lastEventWatchHandle++
 	return e
@@ -598,7 +599,7 @@ func goSetEventFilterCallback(data unsafe.Pointer, e *C.SDL_Event) C.int {
 	// /non-nil. If there is an issue, then it should panic here so we can
 	// figure out why that is.
 
-	return wrapEventFilterCallback(eventFilterCache, e)
+	return wrapEventFilterCallback(eventFilterCache, e, nil)
 }
 
 //export goEventFilterCallback
@@ -609,12 +610,12 @@ func goEventFilterCallback(userdata unsafe.Pointer, e *C.SDL_Event) C.int {
 	// problem can be fixed.
 
 	context := eventWatches[EventWatchHandle(userdata)]
-	return wrapEventFilterCallback(context.filter, e)
+	return wrapEventFilterCallback(context.filter, e, context.userdata)
 }
 
-func wrapEventFilterCallback(filter EventFilter, e *C.SDL_Event) C.int {
+func wrapEventFilterCallback(filter EventFilter, e *C.SDL_Event, userdata interface{}) C.int {
 	gev := goEvent((*CEvent)(unsafe.Pointer(e)))
-	result := filter.FilterEvent(gev)
+	result := filter.FilterEvent(gev, userdata)
 
 	if result {
 		return C.SDL_TRUE
@@ -624,7 +625,7 @@ func wrapEventFilterCallback(filter EventFilter, e *C.SDL_Event) C.int {
 }
 
 // SetEventFilter (https://wiki.libsdl.org/SDL_SetEventFilter)
-func SetEventFilter(filter EventFilter) {
+func SetEventFilter(filter EventFilter, userdata interface{}) {
 	if eventFilterCache == nil && filter == nil {
 		// nothing to do...
 		return
@@ -643,8 +644,8 @@ func SetEventFilter(filter EventFilter) {
 	eventFilterCache = filter
 }
 
-func SetEventFilterFunc(filterFunc func(Event) bool) {
-	SetEventFilter(eventFilterFunc(filterFunc))
+func SetEventFilterFunc(filterFunc eventFilterFunc, userdata interface{}) {
+	SetEventFilter(filterFunc, userdata)
 }
 
 // GetEventFilter (https://wiki.libsdl.org/SDL_GetEventFilter)
@@ -657,24 +658,24 @@ func isCEventFilterSet() bool {
 }
 
 // FilterEvents (https://wiki.libsdl.org/SDL_FilterEvents)
-func FilterEvents(filter EventFilter) {
-	context := newEventFilterCallbackContext(filter)
+func FilterEvents(filter EventFilter, userdata interface{}) {
+	context := newEventFilterCallbackContext(filter, userdata)
 	C.filterEvents(context.cptr())
 }
 
-func FilterEventsFunc(filterFunc func(Event) bool) {
-	FilterEvents(eventFilterFunc(filterFunc))
+func FilterEventsFunc(filter eventFilterFunc, userdata interface{}) {
+	FilterEvents(filter, userdata)
 }
 
 // AddEventWatch (https://wiki.libsdl.org/SDL_AddEventWatch)
-func AddEventWatch(filterFunc eventFilterFunc) EventWatchHandle {
-	return addEventWatch(filterFunc)
-}
-
-func addEventWatch(filter EventFilter) EventWatchHandle {
-	context := newEventFilterCallbackContext(filter)
+func AddEventWatch(filter EventFilter, userdata interface{}) EventWatchHandle {
+	context := newEventFilterCallbackContext(filter, userdata)
 	C.addEventWatch(context.cptr())
 	return context.handle
+}
+
+func AddEventWatchFunc(filterFunc eventFilterFunc, userdata interface{}) EventWatchHandle {
+	return AddEventWatch(filterFunc, userdata)
 }
 
 // DelEventWatch (https://wiki.libsdl.org/SDL_DelEventWatch)

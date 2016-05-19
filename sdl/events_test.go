@@ -31,7 +31,7 @@ func TestEventsPushEvent(t *testing.T) {
 
 type simpleTestFilter struct{}
 
-func (s *simpleTestFilter) FilterEvent(e Event) bool {
+func (s *simpleTestFilter) FilterEvent(e Event, userdata interface{}) bool {
 	return true
 }
 
@@ -40,7 +40,7 @@ func TestEventsSetGetEventFilter(t *testing.T) {
 	defer Quit()
 
 	filter := &simpleTestFilter{}
-	SetEventFilter(filter)
+	SetEventFilter(filter, nil)
 
 	if filter != GetEventFilter() {
 		t.Errorf("Could not round-trip the event filter.")
@@ -50,7 +50,7 @@ func TestEventsSetGetEventFilter(t *testing.T) {
 		t.Errorf("Event filter was not actually set in C.")
 	}
 
-	SetEventFilter(nil)
+	SetEventFilter(nil, nil)
 
 	if nil != GetEventFilter() {
 		t.Errorf("Event filter was not cleared.")
@@ -92,7 +92,9 @@ func TestEventsSetEventFilter(t *testing.T) {
 
 		return ue.Code == 42
 	}
-	SetEventFilterFunc(func(e Event) bool { return filterFunc(e, true) })
+	SetEventFilterFunc(func(e Event, userdata interface{}) bool {
+		return filterFunc(e, true)
+	}, nil)
 
 	ins := []*UserEvent{
 		&UserEvent{Type: USEREVENT, Code: 42},
@@ -121,9 +123,9 @@ func TestEventsGetEventFilterNilOnStartup(t *testing.T) {
 	if GetEventFilter() != nil {
 		t.Errorf("Event filter should be nil on startup.")
 	}
-	SetEventFilterFunc(func(_ Event) bool {
+	SetEventFilterFunc(func(_ Event, userdata interface{}) bool {
 		return true
-	})
+	}, nil)
 
 	Quit()
 	Init(INIT_EVERYTHING)
@@ -163,7 +165,9 @@ func TestEventsFilterEventsFuncQ(t *testing.T) {
 		}
 	}
 
-	FilterEventsFunc(func(e Event) bool { return filterFunc(e, true) })
+	FilterEventsFunc(func(e Event, userdata interface{}) bool {
+		return filterFunc(e, true)
+	}, nil)
 
 	outCount := countEventsInQ(false)
 
@@ -182,13 +186,16 @@ func TestEventsAddEventWatch(t *testing.T) {
 	}
 
 	out := Event(nil)
-	watch := func(e Event) bool {
+	watch := func(e Event, userdata interface{}) bool {
 		t.Log("TestAddEventWatch received", e)
 		out = e
+		if val, ok := userdata.(int); !ok || val != 0xDEADBEEF {
+			t.Errorf("Failed to get userdata")
+		}
 		return true
 	}
 
-	AddEventWatch(watch)
+	AddEventWatchFunc(watch, 0xDEADBEEF)
 	PushEvent(&in)
 
 	if out == nil {
@@ -207,9 +214,9 @@ func TestEventsAddEventWatch(t *testing.T) {
 func TestEventsEventWatchClearOnStartup(t *testing.T) {
 	Init(INIT_EVERYTHING)
 
-	AddEventWatch(func(_ Event) bool {
+	AddEventWatchFunc(func(_ Event, userdata interface{}) bool {
 		return true
-	})
+	}, nil)
 
 	Quit()
 
@@ -228,13 +235,13 @@ func TestEventsAddDelEventWatch(t *testing.T) {
 	}
 
 	out := Event(nil)
-	watch := func(e Event) bool {
+	watch := func(e Event, userdata interface{}) bool {
 		t.Log("TestAddDelEventWatch received", e)
 		out = e
 		return true
 	}
 
-	handle := AddEventWatch(watch)
+	handle := AddEventWatchFunc(watch, nil)
 	DelEventWatch(handle)
 	PushEvent(&in)
 
