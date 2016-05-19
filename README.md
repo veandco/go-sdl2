@@ -94,37 +94,64 @@ For Android, see https://github.com/gen2brain/go-sdl2-android-example.
 
 There is currently no support for iOS yet.
 
-__Will there be Go port of SDL2?__  
-There's some work on it but no plan to open-source it yet simply because it's a mess right now :)
-
 __How do I contribute?__  
-Generally by forking the repository, and then sending pull requests. But unfortunately this is a go project, and the absolute import statements make forking a bit more complicated. [Here](http://blog.campoy.cat/2014/03/github-and-go-forking-pull-requests-and.html) are some instructions, how you can work with that. Generally pull requests are very welcome.
+You can contribute by a lot of ways from improving README, fixing typos, coding style, specific bugs, performance optimizations. However, it is preferred that you break up your commits to single logical change using `git add -p` so it is easier to review the patch. The larger the change, the more necessary it is for the commit to be broken up to tiny little pieces. If your change is large but consistent throughout (e.g. fixing a specific coding style that happens on almost every file), that can be counted as single logical change.
+
+You can generally start by forking the repository, and then sending pull requests. But unfortunately this is a Go project, and the absolute import statements make forking a bit more complicated. [Here](http://blog.campoy.cat/2014/03/github-and-go-forking-pull-requests-and.html) are some instructions, how you can work with that. Generally pull requests are very welcome.
+
+Last but not least, we're starting to use commit messages that looks like this: `sdl: fixed some typos in render.go` or `examples: render_goroutine: fixed a dereferenced nil pointer` where it starts with folder hierarchy. It's not something strictly required but we would prefer it to be followed.
+
+__Will there be Go port of SDL2?__  
+Due to the way Go is going with C interopability, this might not be possible or even make sense. Another way that we're currently thinking is to create a Rust port instead as it has nicer compatibility with C.
+
+License
+=======
+Go-SDL2 is BSD 3-clause licensed.
 
 Contributors
 ============
+Here's the list of contributors with their respective Github URLs.
 * [Jacky Boen](https://github.com/jackyb)
 * [HardWareGuy](https://github.com/HardWareGuy)
 * [akovaski](https://github.com/akovaski)
 * [Jeromy Johnson](https://github.com/whyrusleeping)
 * [Cai Lei](https://github.com/ccll)
 * [Arne Döring](https://github.com/krux02)
-* [marcusva](https://github.com/marcusva)
+* [Marcus von Appen](https://github.com/marcusva)
 * [Tom Murray](https://github.com/TomMurray)
 * [Ian Davis](https://github.com/iand)
 * [hschendel](https://github.com/hschendel)
+* [Ingo Oeser](https://github.com/nightlyone)
+* [nlordell](https://github.com/nlordell)
+* [Ben Davies](https://github.com/JalfResi)
 * [Bastien Dejean](https://github.com/baskerville)
-* [Pirmin Fix](https://github.com/PirminFix)
+* [Pirmin Tapken](https://github.com/PirminTapken)
 * [Robert Lillack](https://github.com/roblillack)
-* [tfogal](https://github.com/tfogal)
+* [Marcell Jusztin](https://github.com/morcmarc)
+* [Stan Schwertly](https://github.com/Stantheman)
+* [Michael Vetter](https://github.com/jubalh)
+* [Tom Fogal](https://github.com/tfogal)
 * [Philipp Meinen](https://github.com/PhiCode)
 * [Thomas McGrew](https://github.com/mcgrew)
 * [Geoff Catlin](https://github.com/gcatlin)
+* [Schobers](https://github.com/Schobers)
+* [Jan Tuitman](https://github.com/jantuitman)
+* [Nick Powell](https://github.com/THUNDERGROOVE)
+* [Steven R. Wiley](https://github.com/srwiley)
+* [Franco Lazzarino](https://github.com/flazz)
 * [Jason Alan Palmer](https://github.com/jalan)
 * [Seuk Won Kang](https://github.com/kasworld)
 * [Brandon Mulcahy](https://github.com/jangler)
+* [Tim Anema](https://github.com/tanema)
+* [Tyler Compton](https://github.com/velovix)
+* [Nicolas Hess](https://github.com/n0dev)
+* [Stephen Noonan](https://github.com/tycho)
+* [Guilherme Freitas Nemeth](https://github.com/glhrmfrts)
+* [Charney Kaye](https://github.com/charneykaye)
+* [Lars Scheme](https://github.com/gonutz)
+* [Emil Laine](https://github.com/emlai)
+* [Andreas T. Jonsson](https://github.com/andreas-jonsson)
+* [Milan Nikolic](https://github.com/gen2brain)
+* [Mike Gerow](https://github.com/gerow)
 
-_if anyone is missing, let me know!_
-
-License
-=======
-Go-SDL2 is BSD 3-clause licensed.
+_if anyone is missing, let me know!.. or you can add yourself in :)_
