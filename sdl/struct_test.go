@@ -71,11 +71,11 @@ func TestTypeABI(t *testing.T) {
 func testABI(t *testing.T, a, b interface{}) {
 	ta, tb := reflect.TypeOf(a), reflect.TypeOf(b)
 	if ta.Size() != tb.Size() {
-		t.Fatalf("type size missmatch: %s(%d) != %s(%d)",
+		t.Fatalf("type size mismatch: %s(%d) != %s(%d)",
 			ta.Name(), ta.Size(), tb.Name(), tb.Size())
 	}
 	if ta.Kind() != tb.Kind() {
-		t.Fatalf("type kind missmatch: %s=%s != %s=%s",
+		t.Fatalf("type kind mismatch: %s=%s != %s=%s",
 			ta.Name(), ta.Kind(), tb.Name(), tb.Kind())
 	}
 
@@ -114,7 +114,7 @@ func verifyField(t *testing.T, gField reflect.StructField, cType reflect.Type) e
 	gOffset, gSize := gField.Offset, gField.Type.Size()
 	cOffset, cSize := cField.Offset, cField.Type.Size()
 	if cOffset != gOffset || cSize != gSize {
-		return fmt.Errorf("field offset/size missmatch %s(%d, %d) != %s(%d, %d)",
+		return fmt.Errorf("field offset/size mismatch %s(%d, %d) != %s(%d, %d)",
 			gField.Name, gOffset, gSize,
 			cField.Name, cOffset, cSize)
 	}
