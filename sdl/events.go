@@ -208,6 +208,7 @@ type MouseWheelEvent struct {
 	Which     uint32
 	X         int32
 	Y         int32
+    Direction uint32
 }
 type cMouseWheelEvent C.SDL_MouseWheelEvent
 
