@@ -666,14 +666,14 @@ func FilterEventsFunc(filterFunc func(Event) bool) {
 }
 
 // AddEventWatch (https://wiki.libsdl.org/SDL_AddEventWatch)
-func AddEventWatch(filter EventFilter) EventWatchHandle {
+func AddEventWatch(filterFunc eventFilterFunc) EventWatchHandle {
+	return addEventWatch(filterFunc)
+}
+
+func addEventWatch(filter EventFilter) EventWatchHandle {
 	context := newEventFilterCallbackContext(filter)
 	C.addEventWatch(context.cptr())
 	return context.handle
-}
-
-func AddEventWatchFunc(filterFunc func(Event) bool) EventWatchHandle {
-	return AddEventWatch(eventFilterFunc(filterFunc))
 }
 
 // DelEventWatch (https://wiki.libsdl.org/SDL_DelEventWatch)

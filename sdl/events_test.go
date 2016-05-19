@@ -188,7 +188,7 @@ func TestEventsAddEventWatch(t *testing.T) {
 		return true
 	}
 
-	AddEventWatchFunc(watch)
+	AddEventWatch(watch)
 	PushEvent(&in)
 
 	if out == nil {
@@ -207,7 +207,7 @@ func TestEventsAddEventWatch(t *testing.T) {
 func TestEventsEventWatchClearOnStartup(t *testing.T) {
 	Init(INIT_EVERYTHING)
 
-	AddEventWatchFunc(func(_ Event) bool {
+	AddEventWatch(func(_ Event) bool {
 		return true
 	})
 
@@ -234,7 +234,7 @@ func TestEventsAddDelEventWatch(t *testing.T) {
 		return true
 	}
 
-	handle := AddEventWatchFunc(watch)
+	handle := AddEventWatch(watch)
 	DelEventWatch(handle)
 	PushEvent(&in)
 
