@@ -1,50 +1,50 @@
 package sdl
 
 import (
-    "testing"
+	"testing"
 )
 
 func TestSurface(t *testing.T) {
-    var window *Window
-    var surface *Surface
-    var image *Surface
-    var err error
+	var window *Window
+	var surface *Surface
+	var image *Surface
+	var err error
 
-    Init(INIT_EVERYTHING)
-    defer Quit()
+	Init(INIT_EVERYTHING)
+	defer Quit()
 
-    if window, err = CreateWindow("Hello!", 100, 100, 800, 600, WINDOW_SHOWN); err != nil {
-        t.Error(err)
-    }
-    defer window.Destroy()
+	if window, err = CreateWindow("Hello!", 100, 100, 800, 600, WINDOW_SHOWN); err != nil {
+		t.Error(err)
+	}
+	defer window.Destroy()
 
-    if surface, err = window.GetSurface(); err != nil {
-        t.Error(err)
-    }
+	if surface, err = window.GetSurface(); err != nil {
+		t.Error(err)
+	}
 
-    pixels := surface.Pixels()
-    for i := range pixels {
-        pixels[i] = 0xFF
-    }
+	pixels := surface.Pixels()
+	for i := range pixels {
+		pixels[i] = 0xFF
+	}
 
-    if err = window.UpdateSurface(); err != nil {
-        t.Error(err)
-    }
+	if err = window.UpdateSurface(); err != nil {
+		t.Error(err)
+	}
 
-    Delay(50)
+	Delay(50)
 
-    if image, err = LoadBMP("../assets/test.bmp"); err != nil {
-        t.Error(err)
-    }
-    defer image.Free()
+	if image, err = LoadBMP("../assets/test.bmp"); err != nil {
+		t.Error(err)
+	}
+	defer image.Free()
 
-    if err = image.Blit(&Rect{0, 0, 512, 512}, surface, &Rect{0, 0, 512, 512}); err != nil {
-        t.Error(err)
-    }
+	if err = image.Blit(&Rect{0, 0, 512, 512}, surface, &Rect{0, 0, 512, 512}); err != nil {
+		t.Error(err)
+	}
 
-    if err = window.UpdateSurface(); err != nil {
-        t.Error(err)
-    }
+	if err = window.UpdateSurface(); err != nil {
+		t.Error(err)
+	}
 
-    Delay(50)
+	Delay(50)
 }
