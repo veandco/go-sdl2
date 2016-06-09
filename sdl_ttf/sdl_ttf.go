@@ -6,7 +6,7 @@ package ttf
 //#include <stdlib.h>
 //#include "sdl_ttf_wrapper.h"
 //void Do_TTF_SetError(const char *str) {
-//    TTF_SetError(str);
+//    TTF_SetError("%s", str);
 //}
 import "C"
 import "github.com/veandco/go-sdl2/sdl"
