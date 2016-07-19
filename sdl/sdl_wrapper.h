@@ -1,4 +1,4 @@
-#if defined(__WIN32)
+#if defined(_WIN32)
 	#include <SDL2/SDL.h>
 	#include <stdlib.h>
 #else
