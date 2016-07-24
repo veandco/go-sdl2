@@ -1,12 +1,22 @@
 package sdl
 
-//	#include "sdl_wrapper.h"
-//	static inline Sint32 ShowMessageBox(SDL_MessageBoxData data)
-//	{
-//		Sint32 buttonid;
-//		SDL_ShowMessageBox(&data, &buttonid);
-//		return buttonid;
-//	}
+/*
+#include "sdl_wrapper.h"
+static inline Sint32 ShowMessageBox(SDL_MessageBoxData data)
+{
+	Sint32 buttonid;
+	SDL_ShowMessageBox(&data, &buttonid);
+	return buttonid;
+}
+
+#if !(SDL_VERSION_ATLEAST(2,0,1))
+static void SDL_GL_GetDrawableSize(SDL_Window *window, int *w, int *h)
+{
+	*w = 0;
+	*h = 0;
+}
+#endif
+*/
 import "C"
 import "unsafe"
 
