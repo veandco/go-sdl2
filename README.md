@@ -27,8 +27,11 @@ On __Arch Linux__, type:
 On __Mac OS X__, install SDL2 via [Homebrew](http://brew.sh) like so:
 `brew install sdl2{,_image,_ttf,_mixer}`
 
-On __Windows__, install SDL2 via [Msys2](https://msys2.github.io) like so:
+On __Windows__, you can either install SDL2 via [Msys2](https://msys2.github.io) like so:
 `pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-SDL2{,_mixer,_image,_ttf}`
+
+or use [MinGW](http://mingw.org) and download pre-compiled development libraries from http://libsdl.org/download-2.0.php. In this case, you need to put files inside `i686-w64-mingw32` or `x86_64-w64-mingw32` into MinGW's `mingw32` directory e.g. `C:\MinGW\mingw32`. Assuming you have setup MinGW correctly (install base system so it has `gcc` and friends, set PATH environment variables), you should be able to build go-sdl2. If you have 64-bit system, you can still build by modifying certain environment flags before building such as `CGO_ENABLED=1 GOARCH=386 go build`.
+
 
 Installation
 ============
