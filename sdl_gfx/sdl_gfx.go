@@ -629,7 +629,7 @@ func GFXPrimitivesSetFontRotation(rotation uint32) {
 	C.gfxPrimitivesSetFontRotation(_rotation)
 }
 
-func CharacterColor(renderer *sdl.Renderer, x, y, c byte, color uint32) bool {
+func CharacterColor(renderer *sdl.Renderer, x, y int, c byte, color uint32) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_c := C.char(c)
@@ -637,7 +637,7 @@ func CharacterColor(renderer *sdl.Renderer, x, y, c byte, color uint32) bool {
 	return C.characterColor(renderer, _x, _y, _c, _color) == 0
 }
 
-func CharacterRGBA(renderer *sdl.Renderer, x, y, c, r, g, b, a uint8) bool {
+func CharacterRGBA(renderer *sdl.Renderer, x, y int, c, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_c := C.char(c)

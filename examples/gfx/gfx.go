@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
-	//"math/rand"
+	"math/rand"
 	"os"
 	"sync"
-	//"time"
 
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/sdl_gfx"
@@ -26,7 +25,7 @@ func run() int {
 	}
 	defer window.Destroy()
 
-	if renderer, err = sdl.CreateRenderer(window, -1, sdl.RENDERER_SOFTWARE); err != nil {
+	if renderer, err = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED); err != nil {
 		fmt.Fprint(os.Stderr, "Failed to create renderer: %s\n", err)
 		os.Exit(2)
 	}
@@ -40,7 +39,7 @@ func run() int {
 			go func(x, y int) {
 				// Call the render function in the 'render' thread synchronously
 				sdl.CallQueue <- func() {
-					gfx.PixelColor(renderer, x, y, 0xffff00ff)
+					gfx.PixelColor(renderer, x, y, rand.Uint32())
 					wg.Done()
 				}
 			}(x, y)
