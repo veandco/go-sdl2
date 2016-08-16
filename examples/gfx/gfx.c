@@ -9,7 +9,8 @@ int main()
 {
 	SDL_Window *window;
 	SDL_Renderer *renderer;
-	int x, y;
+	Sint16 vx[] = { 100, 300, 200 };
+	Sint16 vy[] = { 100, 100, 300 };
 
 	window = SDL_CreateWindow("SDL2 GFX", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_OPENGL);
 	if (!window) {
@@ -23,11 +24,8 @@ int main()
 		return -1;
 	}
 
-	for (y = 0; y < HEIGHT; y++) {
-		for (x = 0; x < WIDTH; x++) {
-			pixelColor(renderer, x, y, rand());
-		}
-	}
+	filledPolygonColor(renderer, vx, vy, 3, 0xFFFF0000);
+
 	SDL_RenderPresent(renderer);
 	SDL_Delay(3000);
 
