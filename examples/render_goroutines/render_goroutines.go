@@ -1,5 +1,3 @@
-// author: Jacky Boen
-
 package main
 
 import (
@@ -7,64 +5,102 @@ import (
 	"math/rand"
 	"os"
 	"sync"
-	"time"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-var winTitle string = "Go-SDL2 Render"
-var winWidth, winHeight int = 800, 600
+const (
+	WindowTitle = "Go-SDL2 Render"
+	WindowWidth = 800
+	WindowHeight = 600
+	FrameRate = 60
+
+	RectWidth = 20
+	RectHeight = 20
+	NumRects = WindowHeight / RectHeight
+)
+
+var rects [NumRects]sdl.Rect
 
 func run() int {
 	var window *sdl.Window
 	var renderer *sdl.Renderer
+	var err error
 
-	window, err := sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
-		winWidth, winHeight, sdl.WINDOW_SHOWN)
+	sdl.CallQueue <- func() {
+		window, err = sdl.CreateWindow(WindowTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, WindowWidth, WindowHeight, sdl.WINDOW_OPENGL)
+	}
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", err)
 		return 1
 	}
-	defer window.Destroy()
+	defer func() {
+		sdl.CallQueue <- func() {
+			window.Destroy()
+		}
+	}()
 
-	renderer, err = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
+	sdl.CallQueue <- func() {
+		renderer, err = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
+	}
 	if err != nil {
 		fmt.Fprint(os.Stderr, "Failed to create renderer: %s\n", err)
-		os.Exit(2)
+		return 2
 	}
-	renderer.Clear()
-	defer renderer.Destroy()
+	defer func() {
+		sdl.CallQueue <- func() {
+			renderer.Destroy()
+		}
+	}()
 
-	// Set a WaitGroup to wait until all pixels are drawn
-	var wg sync.WaitGroup
+	sdl.CallQueue <- func() {
+		renderer.Clear()
+	}
 
-	for y := 0; y < winHeight; y++ {
-		for x := 0; x < winWidth; x++ {
-			wg.Add(1)
-
-			go func(x, y int) {
-				// Do some fake processing before rendering
-				r := byte(rand.Int())
-				g := byte(rand.Int())
-				b := byte(rand.Int())
-				time.Sleep(1 * time.Millisecond)
-
-				// Call the render function in the 'render' thread synchronously
-				sdl.CallQueue <- func() {
-					renderer.SetDrawColor(r, g, b, 255)
-					renderer.DrawPoint(x, y)
-					wg.Done()
-				}
-			}(x, y)
+	for i := range rects {
+		rects[i] = sdl.Rect{
+			X: int32(rand.Int() % WindowWidth),
+			Y: int32(i * WindowHeight / len(rects)),
+			W: RectWidth,
+			H: RectHeight,
 		}
 	}
 
-	// Wait until all pixels are drawn
-	wg.Wait()
+	running := true
+	for running {
+		sdl.CallQueue <- func() {
+			for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
+				switch event.(type) {
+				case *sdl.QuitEvent:
+					running = false
+				}
+			}
 
-	// Show the pixels for a while
-	renderer.Present()
-	sdl.Delay(3000)
+			renderer.Clear()
+			renderer.SetDrawColor(0, 0, 0, 0x20)
+			renderer.FillRect(&sdl.Rect{0, 0, WindowWidth, WindowHeight})
+		}
+
+		// Do expensive stuff using goroutines
+		wg := sync.WaitGroup{}
+		for i := range rects {
+			wg.Add(1)
+			go func(i int) {
+				rects[i].X = (rects[i].X + 10) % WindowWidth
+				sdl.CallQueue <- func() {
+					renderer.SetDrawColor(0xff, 0xff, 0xff, 0xff)
+					renderer.DrawRect(&rects[i])
+				}
+				wg.Done()
+			}(i)
+		}
+		wg.Wait()
+
+		sdl.CallQueue <- func() {
+			renderer.Present()
+			sdl.Delay(1000 / FrameRate)
+		}
+	}
 
 	return 0
 }
