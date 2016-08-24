@@ -29,7 +29,7 @@ const (
 // Queue of functions that are thread-sensitive
 var CallQueue = make(chan func(), 1)
 
-// Run through functions in FuncQueue. Intended to be called as a goroutine.
+// Run through functions in CallQueue. Intended to be called as a goroutine.
 func processCalls() {
 	runtime.LockOSThread()
 
