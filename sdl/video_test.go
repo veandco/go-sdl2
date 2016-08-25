@@ -11,7 +11,7 @@ func TestWindow(t *testing.T) {
 	Init(INIT_EVERYTHING)
 	defer Quit()
 
-	if window, err = CreateWindow("Window Test!", 100, 100, 800, 600, WINDOW_SHOWN); err != nil {
+	if window, err = CreateWindow("Hello!", 100, 100, 800, 600, WINDOW_SHOWN); err != nil {
 		t.Error(err)
 	}
 	defer window.Destroy()
