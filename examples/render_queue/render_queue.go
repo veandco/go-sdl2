@@ -1,15 +1,17 @@
-// author: Jacky Boen
-
 package main
 
 import (
 	"fmt"
-	"github.com/veandco/go-sdl2/sdl"
 	"os"
+
+	"github.com/veandco/go-sdl2/sdl"
 )
 
-var winTitle string = "Go-SDL2 Render"
-var winWidth, winHeight int = 800, 600
+const (
+	WindowTitle = "Go-SDL2 Render Queue"
+	WindowWidth = 800
+	WindowHeight = 600
+)
 
 func run() int {
 	var window *sdl.Window
@@ -17,22 +19,37 @@ func run() int {
 	var points []sdl.Point
 	var rect sdl.Rect
 	var rects []sdl.Rect
+	var err error
 
-	window, err := sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
-		winWidth, winHeight, sdl.WINDOW_SHOWN)
+	sdl.CallQueue <- func() {
+		window, err = sdl.CreateWindow(WindowTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, WindowWidth, WindowHeight, sdl.WINDOW_SHOWN)
+	}
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", err)
 		return 1
 	}
-	defer window.Destroy()
+	defer func() {
+		sdl.CallQueue <- func() {
+			window.Destroy()
+		}
+	}()
 
-	renderer, err = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
+	sdl.CallQueue <- func() {
+		renderer, err = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
+	}
 	if err != nil {
 		fmt.Fprint(os.Stderr, "Failed to create renderer: %s\n", err)
-		os.Exit(2)
+		return 2
 	}
-	renderer.Clear()
-	defer renderer.Destroy()
+
+	sdl.CallQueue <- func() {
+		renderer.Clear()
+	}
+	defer func() {
+		sdl.CallQueue <- func() {
+			renderer.Destroy()
+		}
+	}()
 
 	go func() {
 		println("goroutine: A")
@@ -118,7 +135,9 @@ func run() int {
 		println("queue: H")
 	}
 
-	sdl.Delay(2000)
+	sdl.CallQueue <- func() {
+		sdl.Delay(2000)
+	}
 
 	return 0
 }
