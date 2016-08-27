@@ -1,7 +1,16 @@
 package sdl
 
-import "testing"
-import "runtime"
+import (
+	"fmt"
+	"runtime"
+	"testing"
+)
+
+func init() {
+	if !VERSION_ATLEAST(2, 0, 4) {
+		fmt.Printf("Warning: Your SDL version (%d.%d.%d) is outdated and may fail to pass tests written for 2.0.4\n", MAJOR_VERSION, MINOR_VERSION, PATCHLEVEL)
+	}
+}
 
 func TestInitQuit(t *testing.T) {
 	Init(0)
