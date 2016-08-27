@@ -70,13 +70,15 @@ func TestTypeABI(t *testing.T) {
 
 func testABI(t *testing.T, a, b interface{}) {
 	ta, tb := reflect.TypeOf(a), reflect.TypeOf(b)
-	if ta.Size() != tb.Size() {
-		t.Fatalf("type size mismatch: %s(%d) != %s(%d)",
+	if ta.Size() != tb.Size() || edgeCases(a, b) {
+		t.Errorf("type size mismatch: %s(%d) != %s(%d)",
 			ta.Name(), ta.Size(), tb.Name(), tb.Size())
+		t.Fail()
 	}
 	if ta.Kind() != tb.Kind() {
-		t.Fatalf("type kind mismatch: %s=%s != %s=%s",
+		t.Errorf("type kind mismatch: %s=%s != %s=%s",
 			ta.Name(), ta.Kind(), tb.Name(), tb.Kind())
+		t.Fail()
 	}
 
 	if ta.Kind() == reflect.Struct {
@@ -93,6 +95,17 @@ func testABI(t *testing.T, a, b interface{}) {
 			}
 		}
 	}
+}
+
+// @note: add checks by SDL version for known edge-cases
+func edgeCases(a, b interface{}) bool {
+	if !VERSION_ATLEAST(2, 0, 4) {
+		if _, ok := a.(MouseWheelEvent); !ok {
+			return true
+		}
+	}
+
+	return false
 }
 
 func dumpStructFormat(t *testing.T, s reflect.Type) {
