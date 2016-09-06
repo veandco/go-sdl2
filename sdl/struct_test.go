@@ -37,7 +37,8 @@ func mouseWheelEventEdgeCase(t *testing.T, a, b interface{}) {
 	if VERSION_ATLEAST(2, 0, 4) {
 		structMatchFixed(t, ta, tb, 28)
 	} else {
-		structMatchFixed(t, ta, tb, 24)
+		tf := reflect.TypeOf(MouseWheelEvent{}.Direction)
+		structMatchFixed(t, ta, tb, tb.Size() + tf.Size())
 	}
 }
 
@@ -110,19 +111,19 @@ func testABI(t *testing.T, a, b interface{}, f EdgeCaseFunc) {
 		f(t, a, b)
 	} else {
 		structMatch(t, ta, tb)
-	}
 
-	if ta.Kind() == reflect.Struct {
-		for i := 0; i < ta.NumField(); i++ {
-			f := ta.Field(i)
-			if f.Name == "_" {
-				// ignore padding fields
-				continue
-			}
-			if err := verifyField(t, f, tb); err != nil {
-				dumpStructFormat(t, ta)
-				dumpStructFormat(t, tb)
-				t.Error(err)
+		if ta.Kind() == reflect.Struct {
+			for i := 0; i < ta.NumField(); i++ {
+				f := ta.Field(i)
+				if f.Name == "_" {
+					// ignore padding fields
+					continue
+				}
+				if err := verifyField(t, f, tb); err != nil {
+					dumpStructFormat(t, ta)
+					dumpStructFormat(t, tb)
+					t.Error(err)
+				}
 			}
 		}
 	}
