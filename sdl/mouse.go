@@ -116,6 +116,20 @@ func ShowCursor(toggle int) int {
 	return int(C.SDL_ShowCursor(C.int(toggle)))
 }
 
+// CaptureMouse (https://wiki.libsdl.org/SDL_CaptureMouse)
+func CaptureMouse(toggle bool) error {
+	var ierr C.int
+	if toggle {
+		ierr = C.SDL_CaptureMouse(C.SDL_TRUE)
+	} else {
+		ierr = C.SDL_CaptureMouse(C.SDL_FALSE)
+	}
+	if ierr != 0 {
+		return GetError()
+	}
+	return nil
+}
+
 func Button(flag uint32) uint32 {
 	return 1 << (flag - 1)
 }
