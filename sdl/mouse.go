@@ -1,6 +1,22 @@
 package sdl
 
-// #include "sdl_wrapper.h"
+/*
+#include "sdl_wrapper.h"
+
+#if defined(__WIN32)
+#include <SDL2/SDL_syswm.h>
+#else
+#include <SDL_syswm.h>
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,4))
+#pragma message("SDL_CaptureMouse is not supported before SDL 2.0.4")
+static int SDL_CaptureMouse(SDL_bool enabled)
+{
+	return -1;
+}
+#endif
+*/
 import "C"
 import "unsafe"
 
