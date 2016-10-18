@@ -43,6 +43,16 @@ func init() {
 	go processCalls()
 }
 
+// Helper to run functions on the main thread
+func Do(f func()) {
+	done := make(chan bool, 1)
+	CallQueue <- func() {
+		f()
+		done <- true
+	}
+	<-done
+}
+
 // Init (https://wiki.libsdl.org/SDL_Init)
 func Init(flags uint32) error {
 	if C.SDL_Init(C.Uint32(flags)) != 0 {
