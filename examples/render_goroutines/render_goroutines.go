@@ -21,6 +21,7 @@ const (
 )
 
 var rects [NumRects]sdl.Rect
+var runningMutex sync.Mutex
 
 func run() int {
 	var window *sdl.Window
@@ -72,7 +73,9 @@ func run() int {
 			for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 				switch event.(type) {
 				case *sdl.QuitEvent:
+					runningMutex.Lock()
 					running = false
+					runningMutex.Unlock()
 				}
 			}
 
