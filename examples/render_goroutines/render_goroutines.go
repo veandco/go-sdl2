@@ -27,35 +27,35 @@ func run() int {
 	var renderer *sdl.Renderer
 	var err error
 
-	sdl.CallQueue <- func() {
+	sdl.Do(func() {
 		window, err = sdl.CreateWindow(WindowTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, WindowWidth, WindowHeight, sdl.WINDOW_OPENGL)
-	}
+	})
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", err)
 		return 1
 	}
 	defer func() {
-		sdl.CallQueue <- func() {
+		sdl.Do(func() {
 			window.Destroy()
-		}
+		})
 	}()
 
-	sdl.CallQueue <- func() {
+	sdl.Do(func() {
 		renderer, err = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
-	}
+	})
 	if err != nil {
 		fmt.Fprint(os.Stderr, "Failed to create renderer: %s\n", err)
 		return 2
 	}
 	defer func() {
-		sdl.CallQueue <- func() {
+		sdl.Do(func() {
 			renderer.Destroy()
-		}
+		})
 	}()
 
-	sdl.CallQueue <- func() {
+	sdl.Do(func() {
 		renderer.Clear()
-	}
+	})
 
 	for i := range rects {
 		rects[i] = sdl.Rect{
@@ -68,7 +68,7 @@ func run() int {
 
 	running := true
 	for running {
-		sdl.CallQueue <- func() {
+		sdl.Do(func() {
 			for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 				switch event.(type) {
 				case *sdl.QuitEvent:
@@ -79,7 +79,7 @@ func run() int {
 			renderer.Clear()
 			renderer.SetDrawColor(0, 0, 0, 0x20)
 			renderer.FillRect(&sdl.Rect{0, 0, WindowWidth, WindowHeight})
-		}
+		})
 
 		// Do expensive stuff using goroutines
 		wg := sync.WaitGroup{}
@@ -87,19 +87,19 @@ func run() int {
 			wg.Add(1)
 			go func(i int) {
 				rects[i].X = (rects[i].X + 10) % WindowWidth
-				sdl.CallQueue <- func() {
+				sdl.Do(func() {
 					renderer.SetDrawColor(0xff, 0xff, 0xff, 0xff)
 					renderer.DrawRect(&rects[i])
-				}
+				})
 				wg.Done()
 			}(i)
 		}
 		wg.Wait()
 
-		sdl.CallQueue <- func() {
+		sdl.Do(func() {
 			renderer.Present()
 			sdl.Delay(1000 / FrameRate)
-		}
+		})
 	}
 
 	return 0
