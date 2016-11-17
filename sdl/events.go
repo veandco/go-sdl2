@@ -18,6 +18,7 @@ var (
 	eventWatches              = make(map[EventWatchHandle]*eventFilterCallbackContext)
 	lastEventWatchHandleMutex sync.Mutex
 	lastEventWatchHandle      EventWatchHandle
+	cevent                    C.SDL_Event
 )
 
 const (
@@ -463,7 +464,6 @@ func FlushEvents(minType, maxType uint32) {
 
 // PollEvent (https://wiki.libsdl.org/SDL_PollEvent)
 func PollEvent() Event {
-	var cevent C.SDL_Event
 	ret := C.SDL_PollEvent(&cevent)
 	if ret == 0 {
 		return nil
