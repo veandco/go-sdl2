@@ -80,7 +80,7 @@ type AudioCVT struct {
 	SrcFormat   AudioFormat
 	DstFormat   AudioFormat
 	RateIncr    float64
-	buf         *uint8 // use AudioCVT.Buf() for access
+	Buf         *uint8 // use AudioCVT.BufAsSlice() for access via Go slice
 	Len         int32
 	LenCVT      int32
 	LenMult     int32
@@ -136,12 +136,12 @@ func (format AudioFormat) IsUnsigned() bool {
 
 // access AudioCVT.buf as slice.
 // len(slice) will return converted audio buffer length
-func (cvt AudioCVT) Buf() []byte {
+func (cvt AudioCVT) BufAsSlice() []byte {
 	var b []byte
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
 	sliceHeader.Len = int(cvt.LenCVT)
 	sliceHeader.Cap = int(cvt.Len * cvt.LenMult)
-	sliceHeader.Data = uintptr(unsafe.Pointer(cvt.buf))
+	sliceHeader.Data = uintptr(unsafe.Pointer(cvt.Buf))
 	return b
 }
 
