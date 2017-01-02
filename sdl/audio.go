@@ -80,7 +80,7 @@ type AudioCVT struct {
 	SrcFormat   AudioFormat
 	DstFormat   AudioFormat
 	RateIncr    float64
-	Buf         *uint8 // use AudioCVT.BufAsSlice() for access via Go slice
+	Buf         unsafe.Pointer // use AudioCVT.BufAsSlice() for access via Go slice
 	Len         int32
 	LenCVT      int32
 	LenMult     int32
@@ -132,6 +132,14 @@ func (format AudioFormat) IsLittleEndian() bool {
 
 func (format AudioFormat) IsUnsigned() bool {
 	return !format.IsSigned()
+}
+
+func (cvt *AudioCVT) AllocBuf(size uintptr) {
+	cvt.Buf = C.malloc(C.size_t(size))
+}
+
+func (cvt *AudioCVT) FreeBuf() {
+	C.free(cvt.Buf)
 }
 
 // access AudioCVT.buf as slice.
