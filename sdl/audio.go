@@ -142,8 +142,8 @@ func (cvt *AudioCVT) FreeBuf() {
 	C.free(cvt.Buf)
 }
 
-// access AudioCVT.buf as slice.
-// len(slice) will return converted audio buffer length
+// Access AudioCVT.buf as slice.
+// NOTE: Must have used ConvertAudio() before usage because it uses LenCVT as slice length.
 func (cvt AudioCVT) BufAsSlice() []byte {
 	var b []byte
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
