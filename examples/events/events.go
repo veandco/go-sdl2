@@ -79,6 +79,8 @@ func run() int {
 				fmt.Printf("Some event\n");
 			}
 		}
+
+		sdl.Delay(16)
 	}
 
 	sdl.Quit()
