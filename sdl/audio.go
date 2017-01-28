@@ -294,6 +294,17 @@ func ConvertAudio(cvt *AudioCVT) error {
 	return nil
 }
 
+// QueueAudio (https://wiki.libsdl.org/SDL_QueueAudio)
+func QueueAudio(dev AudioDeviceID, data []byte) error {
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&data))
+	_data := unsafe.Pointer(sliceHeader.Data)
+	_len := (C.Uint32)(sliceHeader.Len)
+	if C.SDL_QueueAudio(dev.c(), _data, _len) != 0 {
+		return GetError()
+	}
+	return nil
+}
+
 // MixAudio (https://wiki.libsdl.org/SDL_MixAudio)
 func MixAudio(dst, src *uint8, len_ uint32, volume int) {
 	_dst := (*C.Uint8)(unsafe.Pointer(dst))
