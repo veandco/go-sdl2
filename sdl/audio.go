@@ -1,6 +1,16 @@
 package sdl
 
-// #include "sdl_wrapper.h"
+/*
+#include "sdl_wrapper.h"
+
+#if !(SDL_VERSION_ATLEAST(2,0,4))
+#pragma message("SDL_QueueAudio is not supported before SDL 2.0.4")
+static int SDL_QueueAudio(SDL_AudioDeviceID, const void *, Uint32)
+{
+	return -1;
+}
+#endif
+*/
 import "C"
 import (
 	"reflect"
