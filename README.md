@@ -87,8 +87,8 @@ FAQ
 __Why does my program exits with code 3221225781 on Windows?__
 You need to put the `SDL2.dll` in the same folder as your program.
 
-__Why does my program crash randomly?__  
-Putting `runtime.LockOSThread()` at the start of your main() usually solves the problem. We will reimplement parts of go-sdl2 in different way so this doesn't happen in the future.
+__Why does my program crash randomly or hang?__
+Putting `runtime.LockOSThread()` at the start of your main() usually solves the problem (see [SDL2 FAQ](https://wiki.libsdl.org/FAQDevelopment) about multi-threading).
 
 UPDATE: Recent update added a call queue system where you can put thread-sensitive code and have it called synchronously on the same OS thread. See the `render_queue` or `render_goroutines` examples to see how it works.
 
