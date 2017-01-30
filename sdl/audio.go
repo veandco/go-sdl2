@@ -5,7 +5,7 @@ package sdl
 
 #if !(SDL_VERSION_ATLEAST(2,0,4))
 #pragma message("SDL_QueueAudio is not supported before SDL 2.0.4")
-static int SDL_QueueAudio(SDL_AudioDeviceID, const void *, Uint32)
+static int SDL_QueueAudio(SDL_AudioDeviceID dev, const void *data, Uint32 len)
 {
 	return -1;
 }
