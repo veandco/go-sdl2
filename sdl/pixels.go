@@ -54,6 +54,13 @@ func (c Color) Uint32() uint32 {
 	return v
 }
 
+// RGBA returns the alpha-premultiplied red, green, blue and alpha values
+// for the color. Each value ranges within [0, 0xffff], but is represented
+// by a uint32 so that multiplying by a blend factor up to 0xffff will not
+// overflow.
+//
+// An alpha-premultiplied color component c has been scaled by alpha (a),
+// so has valid values 0 <= c <= a.
 func (c Color) RGBA(r, g, b, a uint32) {
 	r = uint32(c.R)
 	r |= r << 8
