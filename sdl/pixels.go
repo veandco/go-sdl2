@@ -61,7 +61,7 @@ func (c Color) Uint32() uint32 {
 //
 // An alpha-premultiplied color component c has been scaled by alpha (a),
 // so has valid values 0 <= c <= a.
-func (c Color) RGBA(r, g, b, a uint32) {
+func (c Color) RGBA() (r, g, b, a uint32) {
 	r = uint32(c.R)
 	r |= r << 8
 	g = uint32(c.G)
