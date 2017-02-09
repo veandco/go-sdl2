@@ -11,10 +11,10 @@ var characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ `!@#$%^&*
 
 func randomString(t *testing.T) string {
 	s := ""
-	length := 16 + rand.Int() % 16
+	length := 16 + rand.Int()%16
 
 	for i := 0; i < length; i++ {
-		s += string(characters[rand.Int() % len(characters)])
+		s += string(characters[rand.Int()%len(characters)])
 	}
 	t.Log("text:", s)
 

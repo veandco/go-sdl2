@@ -99,8 +99,8 @@ func TestEnclosurePoints(t *testing.T) {
 		enclosure Rect
 	}{
 		{want: false, points: make([]Point, 0), clip: nil, enclosure: Rect{}},
-		{want: true, points: []Point{Point{5, 5}, Point{3, 7}, Point{4, 2}}, clip: nil, enclosure: Rect{3, 2, 3, 6}},
-		{want: true, points: []Point{Point{5, 5}, Point{3, 7}, Point{4, 2}}, clip: &Rect{0, 0, 6, 6}, enclosure: Rect{4, 2, 2, 4}},
+		{want: true, points: []Point{{5, 5}, {3, 7}, {4, 2}}, clip: nil, enclosure: Rect{3, 2, 3, 6}},
+		{want: true, points: []Point{{5, 5}, {3, 7}, {4, 2}}, clip: &Rect{0, 0, 6, 6}, enclosure: Rect{4, 2, 2, 4}},
 	}
 
 	for _, test := range tests {

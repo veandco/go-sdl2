@@ -47,9 +47,9 @@ const (
 
 const (
 	INIT_FLAC = C.MIX_INIT_FLAC
-	INIT_MOD = C.MIX_INIT_MOD
-	INIT_MP3 = C.MIX_INIT_MP3
-	INIT_OGG = C.MIX_INIT_OGG
+	INIT_MOD  = C.MIX_INIT_MOD
+	INIT_MP3  = C.MIX_INIT_MP3
+	INIT_OGG  = C.MIX_INIT_OGG
 )
 
 const (
@@ -96,7 +96,7 @@ func cint(b bool) C.int {
 
 func Init(flags int) error {
 	initted := int(C.Mix_Init(C.int(flags)))
-	if initted & flags != flags {
+	if initted&flags != flags {
 		return sdl.GetError()
 	}
 	return nil

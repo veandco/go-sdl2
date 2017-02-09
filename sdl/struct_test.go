@@ -38,7 +38,7 @@ func mouseWheelEventEdgeCase(t *testing.T, a, b interface{}) {
 		structMatchFixed(t, ta, tb, 28)
 	} else {
 		tf := reflect.TypeOf(MouseWheelEvent{}.Direction)
-		structMatchFixed(t, ta, tb, tb.Size() + tf.Size())
+		structMatchFixed(t, ta, tb, tb.Size()+tf.Size())
 	}
 }
 
@@ -47,8 +47,8 @@ func mouseWheelEventEdgeCase(t *testing.T, a, b interface{}) {
 // TODO: AudioCVT
 func TestStructABI(t *testing.T) {
 	var tests = []struct {
-		gStruct interface{}
-		cStruct interface{}
+		gStruct    interface{}
+		cStruct    interface{}
 		isEdgeCase EdgeCaseFunc
 	}{
 		{AudioSpec{}, cAudioSpec{}, nil},

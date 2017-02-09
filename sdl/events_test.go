@@ -97,8 +97,8 @@ func TestEventsSetEventFilter(t *testing.T) {
 	}, nil)
 
 	ins := []*UserEvent{
-		&UserEvent{Type: USEREVENT, Code: 42},
-		&UserEvent{Type: USEREVENT, Code: 41},
+		{Type: USEREVENT, Code: 42},
+		{Type: USEREVENT, Code: 41},
 	}
 
 	expectedOutCount := 0
@@ -140,8 +140,8 @@ func TestEventsFilterEventsFuncQ(t *testing.T) {
 	defer Quit()
 
 	ins := []*UserEvent{
-		&UserEvent{Type: USEREVENT, Code: 42},
-		&UserEvent{Type: USEREVENT, Code: 41},
+		{Type: USEREVENT, Code: 42},
+		{Type: USEREVENT, Code: 41},
 	}
 
 	filterFunc := func(e Event, log bool) bool {
