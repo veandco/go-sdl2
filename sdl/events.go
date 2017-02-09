@@ -348,6 +348,7 @@ type DropEvent struct {
 	Type      uint32
 	Timestamp uint32
 	File      unsafe.Pointer
+	WindowID  uint32
 }
 type cDropEvent C.SDL_DropEvent
 
