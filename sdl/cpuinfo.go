@@ -3,23 +3,21 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
-static inline int _SDL_GetSystemRAM()
+#if !(SDL_VERSION_ATLEAST(2,0,1))
+#pragma message("SDL_GetSystemRAM is not supported before SDL 2.0.1")
+static inline int SDL_GetSystemRAM()
 {
-#if (SDL_VERSION_ATLEAST(2,0,1))
-    return SDL_GetSystemRAM();
-#else
-    return 0;
-#endif
+	return -1;
 }
+#endif
 
-static inline SDL_bool _SDL_HasAVX()
+#if !(SDL_VERSION_ATLEAST(2,0,2))
+#pragma message("SDL_HasAVX is not supported before SDL 2.0.2")
+static inline SDL_bool SDL_HasAVX()
 {
-#if (SDL_VERSION_ATLEAST(2,0,2))
-    return SDL_HasAVX();
-#else
-    return SDL_FALSE;
-#endif
+	return SDL_FALSE;
 }
+#endif
 
 */
 import "C"
@@ -83,9 +81,9 @@ func HasSSE42() bool {
 
 // GetSystemRAM (https://wiki.libsdl.org/SDL_GetSystemRAM)
 func GetSystemRAM() int {
-	return int(C._SDL_GetSystemRAM())
+	return int(C.SDL_GetSystemRAM())
 }
 
 func HasAVX() bool {
-	return C._SDL_HasAVX() > 0
+	return C.SDL_HasAVX() > 0
 }
