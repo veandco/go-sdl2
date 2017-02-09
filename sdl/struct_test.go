@@ -42,6 +42,16 @@ func mouseWheelEventEdgeCase(t *testing.T, a, b interface{}) {
 	}
 }
 
+func dropEventEdgeCase(t *testing.T, a, b interface{}) {
+	ta, tb := reflect.TypeOf(a), reflect.TypeOf(b)
+
+	if VERSION_ATLEAST(2, 0, 5) {
+		structMatch(t, ta, tb)
+	} else {
+		structMatchFixed(t, ta, tb, 24)
+	}
+}
+
 // TODO: SysWMInfo
 // TODO: RendererInfo
 // TODO: AudioCVT
@@ -77,7 +87,7 @@ func TestStructABI(t *testing.T) {
 		{TouchFingerEvent{}, cTouchFingerEvent{}, nil},
 		{MultiGestureEvent{}, cMultiGestureEvent{}, nil},
 		{DollarGestureEvent{}, cDollarGestureEvent{}, nil},
-		{DropEvent{}, cDropEvent{}, nil},
+		{DropEvent{}, cDropEvent{}, dropEventEdgeCase},
 		{UserEvent{}, cUserEvent{}, nil},
 		{SysWMEvent{}, cSysWMEvent{}, nil},
 	}
