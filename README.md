@@ -64,10 +64,7 @@ func main() {
 	}
 	defer window.Destroy()
 
-	surface, err := window.GetSurface()
-	if err != nil {
-		panic(err)
-	}
+	surface := window.GetSurface()
 
 	rect := sdl.Rect{0, 0, 200, 200}
 	surface.FillRect(&rect, 0xffff0000)
