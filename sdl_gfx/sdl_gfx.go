@@ -12,7 +12,7 @@ import "unsafe"
 // FPS
 const (
 	FPS_UPPER_LIMIT = 200
-	FPS_LOWER_LIMIT = 200
+	FPS_LOWER_LIMIT = 1
 	FPS_DEFAULT     = 30
 )
 
@@ -26,7 +26,7 @@ type FPSmanager struct {
 
 const (
 	SMOOTHING_OFF = 0
-	SMOOTHING_ON  = 0
+	SMOOTHING_ON  = 1
 )
 
 func min(a ...int) int {
