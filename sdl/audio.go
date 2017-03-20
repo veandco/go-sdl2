@@ -10,6 +10,14 @@ static int SDL_QueueAudio(SDL_AudioDeviceID dev, const void *data, Uint32 len)
 	return -1;
 }
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,5))
+#pragma message("SDL_DequeueAudio is not supported before SDL 2.0.5")
+static int SDL_DequeueAudio(SDL_AudioDeviceID dev, const void *data, Uint32 len)
+{
+	return -1;
+}
+#endif
 */
 import "C"
 import (
@@ -314,6 +322,18 @@ func QueueAudio(dev AudioDeviceID, data []byte) error {
 	}
 	return nil
 }
+
+// DequeueAudio (https://wiki.libsdl.org/SDL_DequeueAudio)
+func DequeueAudio(dev AudioDeviceID, data []byte) error {
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&data))
+	_data := unsafe.Pointer(sliceHeader.Data)
+	_len := (C.Uint32)(sliceHeader.Len)
+	if C.SDL_DequeueAudio(dev.c(), _data, _len) != 0 {
+		return GetError()
+	}
+	return nil
+}
+
 
 // MixAudio (https://wiki.libsdl.org/SDL_MixAudio)
 func MixAudio(dst, src *uint8, len_ uint32, volume int) {
