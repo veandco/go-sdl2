@@ -109,5 +109,7 @@ func run() int {
 }
 
 func main() {
-	os.Exit(run())
+	sdl.Main(func() {
+		os.Exit(run())
+	})
 }
