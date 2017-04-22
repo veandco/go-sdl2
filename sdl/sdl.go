@@ -27,26 +27,48 @@ const (
 )
 
 // Queue of functions that are thread-sensitive
-var CallQueue = make(chan func(), 1)
+var callQueue = make(chan func())
 
-// Run through functions in CallQueue. Intended to be called as a goroutine.
-func processCalls() {
+func init() {
+	// Make sure the main goroutine is bound to the main thread.
 	runtime.LockOSThread()
+}
 
+// Main entry point. Run this function at the beginning of main(), and pass
+// your own main body to it as a function. E.g.:
+//
+// func main() {
+//    sdl.Main(func() {
+//        // Your code here....
+//        // [....]
+//
+//        // Calls to SDL can be made by any goroutine, but always guarded by sdl.Do()
+//        sdl.Do(func() {
+//            sdl.Init(0)
+//        })
+//    })
+// }
+func Main(main func()) {
+	exitch := make(chan bool, 1)
+	go func() {
+		main()
+		exitch <- true
+	}()
 	for {
-		f := <-CallQueue
-		f()
+		select {
+		case f := <-callQueue:
+			f()
+		case <-exitch:
+			return
+		}
 	}
 }
 
-func init() {
-	go processCalls()
-}
-
-// Helper to run functions on the main thread
+// Run the specified function in the main thread.
+// For this function to work, you must have correctly used sdl.Main() in your main() function.
 func Do(f func()) {
 	done := make(chan bool, 1)
-	CallQueue <- func() {
+	callQueue <- func() {
 		f()
 		done <- true
 	}
