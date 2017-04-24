@@ -6,13 +6,14 @@ go:
   - tip
 
 install:
-  - cd ~
   - mkdir sdl2install
-  - export SDL2DIR="`pwd`/sdl2install"
-  
-  - wget https://www.libsdl.org/release/SDL2-2.0.4.tar.gz
-  - tar xf SDL2-2.0.4.tar.gz
-  - cd SDL2-2.0.4
-  - ./configure --prefix=$SDL2DIR
+  - wget https://www.libsdl.org/release/SDL2-2.0.0.tar.gz
+  - tar xf SDL2-2.0.0.tar.gz
+  - cd SDL2-2.0.0
+  - ./configure
   - make
-  - make install
+  - sudo make install
+
+script:
+  - cd ../sdl
+  - go build
