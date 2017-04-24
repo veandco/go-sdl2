@@ -9,11 +9,11 @@ static int SDL_QueueAudio(SDL_AudioDeviceID dev, const void *data, Uint32 len)
 {
 	return -1;
 }
-static Uint32 SDL_GetQueuedAudioSize(SDL_AudioDeviceID)
+static Uint32 SDL_GetQueuedAudioSize(SDL_AudioDeviceID dev_id)
 {
 	return 0;
 }
-static SDL_ClearQueuedAudio(SDL_AudioDeviceID dev)
+static void SDL_ClearQueuedAudio(SDL_AudioDeviceID dev)
 {
 }
 #endif
