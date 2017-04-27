@@ -337,7 +337,7 @@ func LoadWEBP_RW(src *sdl.RWops) (*sdl.Surface, error) {
 // (http://www.libsdl.org/projects/SDL_image/docs/SDL_image_28.html)
 func ReadXPMFromArray(xpm string) (*sdl.Surface, error) {
 	_xpm := C.CString(xpm)
-	C.free(unsafe.Pointer(_xpm))
+	defer C.free(unsafe.Pointer(_xpm))
 	_surface := C.IMG_ReadXPMFromArray(&_xpm)
 	if _surface == nil {
 		return nil, GetError()
@@ -348,7 +348,7 @@ func ReadXPMFromArray(xpm string) (*sdl.Surface, error) {
 func SavePNG(surface *sdl.Surface, file string) error {
 	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
 	_file := C.CString(file)
-	C.free(unsafe.Pointer(_file))
+	defer C.free(unsafe.Pointer(_file))
 	_ret := C.IMG_SavePNG(_surface, _file)
 	if _ret < 0 {
 		return GetError()
