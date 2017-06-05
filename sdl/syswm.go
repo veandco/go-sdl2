@@ -5,6 +5,8 @@ package sdl
 
 #if defined(__WIN32)
 #include <SDL2/SDL_syswm.h>
+#elif defined(__linux__)
+#include <SDL2/SDL_syswm.h>
 #else
 #include <SDL_syswm.h>
 #endif
