@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/veandco/go-sdl2/sdl"
-	"github.com/veandco/go-sdl2/sdl_gfx"
+	"github.com/veandco/go-sdl2/gfx"
 )
 
 var winTitle string = "SDL2 GFX"

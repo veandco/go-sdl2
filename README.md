@@ -52,9 +52,9 @@ Installation
 ============
 To get the bindings, type:  
 `go get -v github.com/veandco/go-sdl2/sdl`  
-`go get -v github.com/veandco/go-sdl2/sdl_mixer`  
-`go get -v github.com/veandco/go-sdl2/sdl_image`  
-`go get -v github.com/veandco/go-sdl2/sdl_ttf`
+`go get -v github.com/veandco/go-sdl2/mix`  
+`go get -v github.com/veandco/go-sdl2/img`  
+`go get -v github.com/veandco/go-sdl2/ttf`
 
 or type this if you use Bash terminal:  
 `go get -v github.com/veandco/go-sdl2/sdl{,_mixer,_image,_ttf}`
