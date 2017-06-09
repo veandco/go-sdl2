@@ -4,8 +4,12 @@ package sdl
 #include "sdl_wrapper.h"
 */
 import "C"
-import "unsafe"
-import "reflect"
+import (
+	"image"
+	"image/color"
+	"reflect"
+	"unsafe"
+)
 
 const (
 	SWSURFACE = C.SDL_SWSURFACE
@@ -33,6 +37,71 @@ type cSurface C.SDL_Surface
 
 func (surface *Surface) cptr() *C.SDL_Surface {
 	return (*C.SDL_Surface)(unsafe.Pointer(surface))
+}
+
+// Set sets the color of a pixel in x, y coordinate
+func (surface Surface) Set(x, y int, c color.Color) {
+	index := x + y*int(surface.Format.BytesPerPixel)
+	r, g, b, a := c.RGBA()
+	pixels := surface.Pixels()
+
+	switch surface.Format.Format {
+	case PIXELFORMAT_ABGR8888:
+		pixels[index+0] = byte(a)
+		pixels[index+1] = byte(b)
+		pixels[index+2] = byte(g)
+		pixels[index+3] = byte(r)
+	case PIXELFORMAT_ARGB8888:
+		pixels[index+0] = byte(a)
+		pixels[index+1] = byte(r)
+		pixels[index+2] = byte(g)
+		pixels[index+3] = byte(b)
+	}
+}
+
+// ColorModel returns the color model of the surface
+func (surface Surface) ColorModel() color.Model {
+	switch surface.Format.Format {
+	case PIXELFORMAT_ABGR8888:
+		fallthrough
+	case PIXELFORMAT_ARGB8888:
+		return color.RGBAModel
+	default:
+		return UnknownModel{}
+	}
+}
+
+// Bounds returns the bounding rectangle of the surface
+func (surface Surface) Bounds() image.Rectangle {
+	return image.Rectangle{
+		Min: image.Point{0, 0},
+		Max: image.Point{int(surface.W), int(surface.H)},
+	}
+}
+
+// At returns the pixel at x, y coordinate
+func (surface Surface) At(x, y int) color.Color {
+	index := x + y*int(surface.Format.BytesPerPixel)
+	pixels := surface.Pixels()
+
+	switch surface.Format.Format {
+	case PIXELFORMAT_ABGR8888:
+		return Color{
+			pixels[index] + 3,
+			pixels[index] + 2,
+			pixels[index] + 1,
+			pixels[index] + 0,
+		}
+	case PIXELFORMAT_ARGB8888:
+		return Color{
+			pixels[index] + 1,
+			pixels[index] + 2,
+			pixels[index] + 3,
+			pixels[index] + 0,
+		}
+	default:
+		return Color{0, 0, 0, 0}
+	}
 }
 
 // Surface (https://wiki.libsdl.org/SDL_MustLock)

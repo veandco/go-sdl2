@@ -2,7 +2,10 @@ package sdl
 
 // #include "sdl_wrapper.h"
 import "C"
-import "unsafe"
+import (
+	"image/color"
+	"unsafe"
+)
 
 // PixelFormat (https://wiki.libsdl.org/SDL_PixelFormat)
 type PixelFormat struct {
@@ -306,4 +309,10 @@ func GetRGBA(pixel uint32, format *PixelFormat) (r, g, b, a uint8) {
 // CalculateGammaRamp (https://wiki.libsdl.org/SDL_CalculateGammaRamp)
 func CalculateGammaRamp(gamma float32, ramp *[256]uint16) {
 	C.SDL_CalculateGammaRamp(C.float(gamma), (*C.Uint16)(unsafe.Pointer(&ramp[0])))
+}
+
+type UnknownModel struct{}
+
+func (m UnknownModel) Convert(c color.Color) color.Color {
+	return c
 }
