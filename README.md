@@ -57,7 +57,7 @@ To get the bindings, type:
 `go get -v github.com/veandco/go-sdl2/ttf`
 
 or type this if you use Bash terminal:  
-`go get -v github.com/veandco/go-sdl2/sdl{,_mixer,_image,_ttf}`
+`go get -v github.com/veandco/go-sdl2/{sdl,mix,img,ttf}`
 
 __Note__: If you didn't use the previous commands or use 'go install', you will experience long
 compilation time because Go doesn't keep the built binaries unless you install them.
