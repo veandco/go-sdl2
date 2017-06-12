@@ -3,7 +3,7 @@ SRCDIR=		${.CURDIR}
 ALLDIRS!=	find ${SRCDIR} -type d -not -path "./.git*"
 # Packages
 ROOTPKG=	${SRCDIR:S/${GOPATH}\/src\///}
-PACKAGES=	sdl sdl_image sdl_mixer sdl_ttf
+PACKAGES=	sdl img mix ttf
 # Some cleanups
 CLEANUP=	*.cache *.core *~ *.orig
 

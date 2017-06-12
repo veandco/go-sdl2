@@ -5,7 +5,7 @@ package main
 import (
 	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
-	"github.com/veandco/go-sdl2/sdl_image"
+	"github.com/veandco/go-sdl2/img"
 	"os"
 )
 
