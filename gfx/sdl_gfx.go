@@ -607,7 +607,7 @@ func BezierRGBA(renderer *sdl.Renderer, vx, vy []int16, s int, r, g, b, a uint8)
 	return C.bezierRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _vx, _vy, _len, _s, _r, _g, _b, _a) == 0
 }
 
-func GFXPrimitiveSetFont(fontdata []byte, cw, ch uint32) {
+func SetFont(fontdata []byte, cw, ch uint32) {
 	_fontdata := unsafe.Pointer(nil)
 	if fontdata != nil {
 		_fontdata = unsafe.Pointer(&fontdata[0])
@@ -617,7 +617,7 @@ func GFXPrimitiveSetFont(fontdata []byte, cw, ch uint32) {
 	C.gfxPrimitivesSetFont(_fontdata, _cw, _ch)
 }
 
-func GFXPrimitivesSetFontRotation(rotation uint32) {
+func SetFontRotation(rotation uint32) {
 	_rotation := C.Uint32(rotation)
 	C.gfxPrimitivesSetFontRotation(_rotation)
 }
