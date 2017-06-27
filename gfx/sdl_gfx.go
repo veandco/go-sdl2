@@ -608,7 +608,10 @@ func BezierRGBA(renderer *sdl.Renderer, vx, vy []int16, s int, r, g, b, a uint8)
 }
 
 func GFXPrimitiveSetFont(fontdata []byte, cw, ch uint32) {
-	_fontdata := unsafe.Pointer(&fontdata[0])
+	_fontdata := unsafe.Pointer(nil)
+	if fontdata != nil {
+		_fontdata = unsafe.Pointer(&fontdata[0])
+	}
 	_cw := C.Uint32(cw)
 	_ch := C.Uint32(ch)
 	C.gfxPrimitivesSetFont(_fontdata, _cw, _ch)
