@@ -29,6 +29,11 @@ func GetKeyboardState() []uint8 {
 	return *(*[]uint8)(unsafe.Pointer(&sh))
 }
 
+// GetModState (https://wiki.libsdl.org/SDL_GetModState)
+func GetModState() Keymod {
+	return (Keymod)(C.SDL_GetModState())
+}
+
 // SetModState (https://wiki.libsdl.org/SDL_SetModState)
 func SetModState(mod Keymod) {
 	C.SDL_SetModState(mod.c())
