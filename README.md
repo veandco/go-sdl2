@@ -25,7 +25,7 @@ On __Arch Linux__, type:
 `pacman -S sdl2{,_mixer,_image,_ttf}`
 
 On __Mac OS X__, install SDL2 via [Homebrew](http://brew.sh) like so:
-`brew install sdl2{,_image,_ttf,_mixer}`
+`brew install sdl2{,_image,_ttf,_mixer} pkg-config`
 
 On __Windows__,  
 1. Install mingw-w64 from [Mingw-builds](http://mingw-w64.org/doku.php/download/mingw-builds)  
