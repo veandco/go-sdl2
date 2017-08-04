@@ -24,7 +24,7 @@ On __Fedora 20 and above__, type:
 On __Arch Linux__, type:  
 `pacman -S sdl2{,_mixer,_image,_ttf}`
 
-On __Mac OS X__, install SDL2 via [Homebrew](http://brew.sh) like so:
+On __Mac OS X__, install SDL2 via [Homebrew](http://brew.sh) like so:  
 `brew install sdl2{,_image,_ttf,_mixer} pkg-config`
 
 On __Windows__,  
