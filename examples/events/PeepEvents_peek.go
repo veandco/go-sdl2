@@ -16,14 +16,14 @@ func main() {
 	var event sdl.Event
 	var running bool
 
-	window = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
+	window, _ = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		winWidth, winHeight, sdl.WINDOW_SHOWN)
 	if window == nil {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", sdl.GetError())
 		os.Exit(1)
 	}
 
-	renderer = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
+	renderer, _ = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
 	if renderer == nil {
 		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", sdl.GetError())
 		os.Exit(2)
@@ -34,7 +34,7 @@ func main() {
 	running = true
 	for running {
 		sdl.PumpEvents()
-		numEventsRetrieved := sdl.PeepEvents(peepArray, sdl.PEEKEVENT, sdl.FIRSTEVENT, sdl.LASTEVENT)
+		numEventsRetrieved, _ := sdl.PeepEvents(peepArray, sdl.PEEKEVENT, sdl.FIRSTEVENT, sdl.LASTEVENT)
 		if numEventsRetrieved < 0 {
 			fmt.Printf("PeepEvents error: %s\n", sdl.GetError())
 		} else {
