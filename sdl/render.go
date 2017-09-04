@@ -2,6 +2,7 @@ package sdl
 
 // #include "sdl_wrapper.h"
 import "C"
+import "reflect"
 import "unsafe"
 
 const (
@@ -228,9 +229,10 @@ func (texture *Texture) GetBlendMode() (bm BlendMode, err error) {
 }
 
 // Texture (https://wiki.libsdl.org/SDL_UpdateTexture)
-func (texture *Texture) Update(rect *Rect, pixels unsafe.Pointer, pitch int) error {
+func (texture *Texture) Update(rect *Rect, pixels []byte, pitch int) error {
+	_pixels := unsafe.Pointer(&pixels[0])
 	_pitch := C.int(pitch)
-	_ret := C.SDL_UpdateTexture(texture.cptr(), rect.cptr(), pixels, _pitch)
+	_ret := C.SDL_UpdateTexture(texture.cptr(), rect.cptr(), _pixels, _pitch)
 	if _ret < 0 {
 		return GetError()
 	}
@@ -238,13 +240,34 @@ func (texture *Texture) Update(rect *Rect, pixels unsafe.Pointer, pitch int) err
 }
 
 // Texture (https://wiki.libsdl.org/SDL_LockTexture)
-func (texture *Texture) Lock(rect *Rect, pixels *unsafe.Pointer, pitch *int) error {
-	_pitch := (*C.int)(unsafe.Pointer(pitch))
-	_ret := C.SDL_LockTexture(texture.cptr(), rect.cptr(), pixels, _pitch)
+func (texture *Texture) Lock(rect *Rect) ([]byte, int, error) {
+	var _pitch C.int
+	var _pixels unsafe.Pointer
+	var b []byte
+	var length int
+
+	_ret := C.SDL_LockTexture(texture.cptr(), rect.cptr(), &_pixels, &_pitch)
 	if _ret < 0 {
-		return GetError()
+		return b, int(_pitch), GetError()
 	}
-	return nil
+
+	_, _, w, h, err := texture.Query()
+	if err != nil {
+		return b, int(_pitch), GetError()
+	}
+
+	pitch := int32(_pitch)
+	if rect != nil {
+		length = int((pitch / w) * rect.W * rect.H)
+	} else {
+		length = int(pitch * h)
+	}
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+	sliceHeader.Cap = int(length)
+	sliceHeader.Len = int(length)
+	sliceHeader.Data = uintptr(_pixels)
+
+	return b, int(pitch), nil
 }
 
 // Texture (https://wiki.libsdl.org/SDL_UnlockTexture)
