@@ -304,6 +304,14 @@ func (renderer *Renderer) SetLogicalSize(w int, h int) error {
 	return nil
 }
 
+// Renderer (https://wiki.libsdl.org/SDL_RenderGetLogicalSize)
+func (renderer *Renderer) GetLogicalSize() (w, h int) {
+	_w := (*C.int)(unsafe.Pointer(&w))
+	_h := (*C.int)(unsafe.Pointer(&h))
+	C.SDL_RenderGetLogicalSize(renderer.cptr(), _w, _h)
+	return
+}
+
 // Renderer (https://wiki.libsdl.org/SDL_RenderSetViewport)
 func (renderer *Renderer) SetViewport(rect *Rect) error {
 	_ret := C.SDL_RenderSetViewport(renderer.cptr(), rect.cptr())
