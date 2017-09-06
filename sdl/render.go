@@ -133,7 +133,7 @@ func (renderer *Renderer) GetInfo() (RendererInfo, error) {
 }
 
 // Renderer (https://wiki.libsdl.org/SDL_GetRendererOutputSize)
-func (renderer *Renderer) GetRendererOutputSize() (w, h int, err error) {
+func (renderer *Renderer) GetOutputSize() (w, h int, err error) {
 	_w := (*C.int)(unsafe.Pointer(&w))
 	_h := (*C.int)(unsafe.Pointer(&h))
 	_ret := C.SDL_GetRendererOutputSize(renderer.cptr(), _w, _h)
