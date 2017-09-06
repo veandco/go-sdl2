@@ -12,24 +12,30 @@ var winWidth, winHeight int = 800, 600
 
 const pushTime uint32 = 1000 // number of milliseconds between event pushes
 
-func main() {
+func run() int {
 	var window *sdl.Window
 	var renderer *sdl.Renderer
 	var event sdl.Event
 	var running bool
+	var err error
 
-	window = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
+	sdl.Init(sdl.INIT_EVERYTHING)
+	defer sdl.Quit()
+
+	window, err = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		winWidth, winHeight, sdl.WINDOW_SHOWN)
-	if window == nil {
-		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", sdl.GetError())
-		os.Exit(1)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", err)
+		return 1
 	}
+	defer window.Destroy()
 
-	renderer = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
-	if renderer == nil {
-		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", sdl.GetError())
-		os.Exit(2)
+	renderer, err = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", err)
+		return 2
 	}
+	defer renderer.Destroy()
 
 	var peepArray []sdl.Event = make([]sdl.Event, 2)
 	peepArray[0] = &sdl.UserEvent{sdl.USEREVENT, sdl.GetTicks(), window.GetID(), 1331, nil, nil}
@@ -41,9 +47,10 @@ func main() {
 		if lastPushTime+pushTime < sdl.GetTicks() {
 			lastPushTime = sdl.GetTicks()
 			sdl.PumpEvents()
-			numEventsHandled := sdl.PeepEvents(peepArray, sdl.ADDEVENT, sdl.FIRSTEVENT, sdl.LASTEVENT)
-			if numEventsHandled < 0 {
-				fmt.Printf("PeepEvents error: %s\n", sdl.GetError())
+			numEventsHandled, err := sdl.PeepEvents(peepArray, sdl.ADDEVENT, sdl.FIRSTEVENT, sdl.LASTEVENT)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "PeepEvents error: %s\n", err)
+				return 3
 			} else {
 				fmt.Printf("Successful push of %d events\n", numEventsHandled)
 			}
@@ -72,6 +79,9 @@ func main() {
 		sdl.Delay(1000 / 30)
 	}
 
-	renderer.Destroy()
-	window.Destroy()
+	return 0
+}
+
+func main() {
+	os.Exit(run())
 }
