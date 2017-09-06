@@ -17,15 +17,21 @@ func run() int {
 	var vx, vy = make([]int16, 3), make([]int16, 3)
 	var err error
 
+	if err = sdl.Init(sdl.INIT_EVERYTHING); err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to initialize SDL: %s\n", err)
+		return 1
+	}
+	defer sdl.Quit()
+
 	if window, err = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, winWidth, winHeight, sdl.WINDOW_SHOWN); err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", err)
-		return 1
+		return 2
 	}
 	defer window.Destroy()
 
 	if renderer, err = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED); err != nil {
-		fmt.Fprint(os.Stderr, "Failed to create renderer: %s\n", err)
-		os.Exit(2)
+		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", err)
+		return 3 // don't use os.Exit(3); otherwise, previous deferred calls will never run
 	}
 	renderer.Clear()
 	defer renderer.Destroy()
