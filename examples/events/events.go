@@ -19,6 +19,7 @@ func run() int {
 	var err error
 
 	sdl.Init(sdl.INIT_EVERYTHING)
+	defer sdl.Quit()
 
 	window, err = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		winWidth, winHeight, sdl.WINDOW_SHOWN)
@@ -76,14 +77,12 @@ func run() int {
 					fmt.Printf("Joystick %d disconnected\n", t.Which)
 				}
 			default:
-				fmt.Printf("Some event\n");
+				fmt.Printf("Some event\n")
 			}
 		}
 
 		sdl.Delay(16)
 	}
-
-	sdl.Quit()
 
 	return 0
 }
