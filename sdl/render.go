@@ -117,18 +117,19 @@ func (window *Window) GetRenderer() (*Renderer, error) {
 }
 
 // Renderer (https://wiki.libsdl.org/SDL_GetRendererInfo)
-func (renderer *Renderer) GetRendererInfo(info *RendererInfo) error {
+func (renderer *Renderer) GetInfo() (RendererInfo, error) {
 	var cinfo cRendererInfo
+	var info RendererInfo
 	ret := int(C.SDL_GetRendererInfo(renderer.cptr(), cinfo.cptr()))
 	if ret < 0 {
-		return GetError()
+		return info, GetError()
 	}
 
 	info.RendererInfoData = cinfo.RendererInfoData
 	// No need to free, it's done by DestroyRenderer
 	info.Name = C.GoString(cinfo.Name)
 
-	return nil
+	return info, nil
 }
 
 // Renderer (https://wiki.libsdl.org/SDL_GetRendererOutputSize)
