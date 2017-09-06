@@ -7,7 +7,6 @@ import (
 	"log"
 	"math"
 	"reflect"
-	"time"
 	"unsafe"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -48,7 +47,11 @@ func main() {
 		Samples:  sampleHz,
 		Callback: sdl.AudioCallback(C.SineWave),
 	}
-	sdl.OpenAudio(spec, nil)
+	if err := sdl.OpenAudio(spec, nil); err != nil {
+		log.Println(err)
+		return
+	}
 	sdl.PauseAudio(false)
-	time.Sleep(1 * time.Second)
+	sdl.Delay(5000) // play audio for long enough to understand whether it works
+	sdl.CloseAudio()
 }
