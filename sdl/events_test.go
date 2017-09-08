@@ -1,8 +1,19 @@
 package sdl
 
 import (
+	"os"
+	"runtime"
 	"testing"
 )
+
+func TestMain(m *testing.M) {
+	// TODO: Find a better way to do this
+
+	runtime.UnlockOSThread() // allow tests to be run on different threads
+	exitcode := m.Run()
+	runtime.LockOSThread() // tests have run, so relock
+	os.Exit(exitcode)
+}
 
 func TestEventsPushEvent(t *testing.T) {
 	Init(INIT_EVERYTHING)
