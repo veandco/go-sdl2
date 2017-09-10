@@ -12,19 +12,19 @@ func main() {
 		log.Println(err)
 		return
 	}
+	defer sdl.Quit()
 
 	if err := mix.Init(mix.INIT_MP3); err != nil {
 		log.Println(err)
 		return
 	}
-	defer sdl.Quit()
 	defer mix.Quit()
-	defer mix.CloseAudio()
 
 	if err := mix.OpenAudio(22050, mix.DEFAULT_FORMAT, 2, 4096); err != nil {
 		log.Println(err)
 		return
 	}
+	defer mix.CloseAudio()
 
 	if music, err := mix.LoadMUS("../../assets/test.mp3"); err != nil {
 		log.Println(err)
