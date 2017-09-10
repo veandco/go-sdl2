@@ -110,7 +110,11 @@ Putting `runtime.LockOSThread()` at the start of your main() usually solves the 
 UPDATE: Recent update added a call queue system where you can put thread-sensitive code and have it called synchronously on the same OS thread. See the `render_queue` or `render_goroutines` examples to see how it works.
 
 __Why can't SDL_mixer seem to play MP3 audio file?__  
-Your installed SDL_mixer probably doesn't support MP3 file. You will need to compile smpeg and SDL_mixer from source with the MP3 option enabled. You can find smpeg in the `external` directory of SDL_mixer. Refer to issue [#148](https://github.com/veandco/go-sdl2/issues/148) for instructions.
+Your installed SDL_mixer probably doesn't support MP3 file.
+
+On __Mac OS X__, this is easy to correct. First remove the faulty mixer: `brew remove sdl2_mixer`, then reinstall it with the MP3 option: `brew install sdl2_mixer --with-flac --with-fluid-synth --with-libmikmod --with-libmodplug --with-smpeg2`. If necessary, check which options you can enable with `brew info sdl2_mixer`.
+
+On __Other Operating Systems__, you will need to compile smpeg and SDL_mixer from source with the MP3 option enabled. You can find smpeg in the `external` directory of SDL_mixer. Refer to issue [#148](https://github.com/veandco/go-sdl2/issues/148) for instructions.
 
 __Does go-sdl2 support compiling on mobile platforms like Android and iOS?__  
 For Android, see https://github.com/gen2brain/go-sdl2-android-example.
