@@ -122,9 +122,6 @@ You can generally start by forking the repository, and then sending pull request
 
 Last but not least, we're starting to use commit messages that looks like this: `sdl: fixed some typos in render.go` or `examples: render_goroutine: fixed a dereferenced nil pointer` where it starts with folder hierarchy. It's not something strictly required but we would prefer it to be followed.
 
-__Will there be Go port of SDL2?__  
-Due to the way Go is going with C interopability, this might not be possible or even make sense. Another way that we're currently thinking is to create a Rust port instead as it has nicer compatibility with C.
-
 License
 =======
 Go-SDL2 is BSD 3-clause licensed.
