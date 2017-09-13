@@ -5,14 +5,16 @@ import (
 )
 
 func TestGetBasePath(t *testing.T) {
-	Init(INIT_EVERYTHING)
-	path := GetBasePath()
-	// pathetic, but a comparison to runtime.Caller() does not help here,
-	// since this would return go's testing package
-	if path == "" {
-		t.Error("GetBasePath() did not return anything")
-	}
-	Quit()
+	Do(func() {
+		Init(INIT_EVERYTHING)
+		path := GetBasePath()
+		// pathetic, but a comparison to runtime.Caller() does not help here,
+		// since this would return go's testing package
+		if path == "" {
+			t.Error("GetBasePath() did not return anything")
+		}
+		Quit()
+	})
 }
 
 // Do not test GetPrefPath(), since SDL_GetPrefPath() also
