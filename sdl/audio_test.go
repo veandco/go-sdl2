@@ -30,38 +30,40 @@ func TestAudioDevices(t *testing.T) {
 }
 
 func TestAudioInitQuit(t *testing.T) {
-	// figure out what driver will work
-	if err := InitSubSystem(INIT_AUDIO); err != nil {
-		t.Fatalf("InitSubSystem(INIT_AUDIO): %v", err)
-	}
-	driver := GetCurrentAudioDriver()
-
-	// reset audio subsystem
-	QuitSubSystem(INIT_AUDIO)
-	if GetCurrentAudioDriver() != "" {
-		t.Fatalf(`GetCurrentAudioDriver() != "" after QuitSubSystem()`)
-	}
-
-	// test valid init
-	if err := AudioInit(driver); err != nil {
-		t.Errorf("AudioInit(%s) returned error: %v", driver, err)
-	} else {
-		if got := GetCurrentAudioDriver(); got != driver {
-			t.Errorf("GetCurrentAudioDriver() == %#v; want %#v", got, driver)
+	Do(func(){
+		// figure out what driver will work
+		if err := InitSubSystem(INIT_AUDIO); err != nil {
+			t.Fatalf("InitSubSystem(INIT_AUDIO): %v", err)
 		}
+		driver := GetCurrentAudioDriver()
 
-		// test quit
-		AudioQuit()
+		// reset audio subsystem
+		QuitSubSystem(INIT_AUDIO)
 		if GetCurrentAudioDriver() != "" {
-			t.Fatalf(`GetCurrentAudioDriver() != "" after AudioQuit()`)
+			t.Fatalf(`GetCurrentAudioDriver() != "" after QuitSubSystem()`)
 		}
-	}
 
-	// test invalid init
-	driver = "bogus"
-	if err := AudioInit(driver); err == nil {
-		t.Errorf("AudioInit(%s) did not return error", driver)
-	}
+		// test valid init
+		if err := AudioInit(driver); err != nil {
+			t.Errorf("AudioInit(%s) returned error: %v", driver, err)
+		} else {
+			if got := GetCurrentAudioDriver(); got != driver {
+				t.Errorf("GetCurrentAudioDriver() == %#v; want %#v", got, driver)
+			}
+
+			// test quit
+			AudioQuit()
+			if GetCurrentAudioDriver() != "" {
+				t.Fatalf(`GetCurrentAudioDriver() != "" after AudioQuit()`)
+			}
+		}
+
+		// test invalid init
+		driver = "bogus"
+		if err := AudioInit(driver); err == nil {
+			t.Errorf("AudioInit(%s) did not return error", driver)
+		}
+	})
 }
 
 func TestLoadWAV_RW(t *testing.T) {
