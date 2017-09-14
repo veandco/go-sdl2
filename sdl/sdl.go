@@ -52,6 +52,7 @@ func Main(main func()) {
 	exitch := make(chan bool, 1)
 	go func() {
 		main()
+		// fmt.Println("END") // to check if os.Exit(..) is called by main() above
 		exitch <- true
 	}()
 	for {
