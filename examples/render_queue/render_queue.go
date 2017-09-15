@@ -143,7 +143,14 @@ func run() int {
 }
 
 func main() {
+	// os.Exit(..) must run AFTER sdl.Main(..) below; so keep track of exit
+	// status manually outside the closure passed into sdl.Main(..) below
+	var exitcode int
 	sdl.Main(func() {
-		os.Exit(run())
+		exitcode = run()
 	})
+	// os.Exit(..) must run here! If run in sdl.Main(..) above, it will cause
+	// premature quitting of sdl.Main(..) function; resource cleaning deferred
+	// calls/closing of channels may never run
+	os.Exit(exitcode)
 }
