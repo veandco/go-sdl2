@@ -76,8 +76,10 @@ func Main(main func()) {
 	}
 }
 
-// Run the specified function in the main thread.
-// For this function to work, you must have correctly used sdl.Main() in your main() function.
+// Do the specified function in the main thread.
+// For this function to work, you must have correctly used sdl.Main(..) in your
+// main() function. Calling this function before/without sdl.Main(..) will cause
+// your code to block indefinitely.
 func Do(f func()) {
 	done := make(chan bool, 1)
 	callQueue <- func() {
