@@ -29,6 +29,8 @@ const (
 var (
 	// Queue of functions that are thread-sensitive
 	callQueue chan func() // initialize only if sdl.Main(..) is called
+	// Channel to force thread-sensitive functions to execute one at a time
+	done      chan bool   // initialize only if sdl.Main(..) is called
 )
 
 func init() {
@@ -62,7 +64,7 @@ func init() {
 // 		os.Exit(exitcode)
 // 	}
 func Main(main func()) {
-	callQueue = make(chan func())
+	callQueue, done = make(chan func()), make(chan bool, 1)
 
 	go func() {
 		defer close(callQueue) // this channel is no longer needed after main()
@@ -78,7 +80,6 @@ func Main(main func()) {
 // main() function. Calling this function before/without sdl.Main(..) will cause
 // your code to block indefinitely.
 func Do(f func()) {
-	done := make(chan bool, 1)
 	callQueue <- func() {
 		f()
 		done <- true
