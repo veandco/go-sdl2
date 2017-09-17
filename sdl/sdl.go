@@ -26,73 +26,62 @@ const (
 	PRESSED  = 1
 )
 
-var (
-	// Queue of functions that are thread-sensitive
-	callQueue chan func() // initialized only if Main(..) is called
-	// Channel to signal that a thread-sensitive function has finished execution
-	callDone  chan bool   // initialized only if Main(..) is called
-)
+// Queue of functions that are thread-sensitive
+var callQueue = make(chan func())
 
 func init() {
 	// Make sure the main goroutine is bound to the main thread.
 	runtime.LockOSThread()
 }
 
-// Main entry point. Run this function at the beginning of main(), and pass your
-// own main body to it as a function. E.g.:
+// Main entry point. Run this function at the beginning of main(), and pass
+// your own main body to it as a function. E.g.:
 //
-// 	func main() {
-// 		sdl.Main(func() {
-// 			// Your code here....
-// 			// [....]
+// func main() {
+//    sdl.Main(func() {
+//        // Your code here....
+//        // [....]
 //
-// 			// Calls to SDL can be made by any goroutine, but always guarded by sdl.Do()
-// 			sdl.Do(func() {
-// 				sdl.Init(0)
-// 			})
-// 		})
-// 	}
-//
-// Avoid calling functions like os.Exit(..) within your passed-in function since
-// they don't respect deferred calls. Instead, do this:
-//
-// 	func main() {
-// 		var exitcode int
-// 		sdl.Main(func() {
-// 			exitcode = run()) // assuming run has signature func() int
-// 		})
-// 		os.Exit(exitcode)
-// 	}
+//        // Calls to SDL can be made by any goroutine, but always guarded by sdl.Do()
+//        sdl.Do(func() {
+//            sdl.Init(0)
+//        })
+//    })
+// }
 func Main(main func()) {
-	callQueue, callDone = make(chan func()), make(chan bool, 1)
-
+	exitch := make(chan bool, 1)
 	go func() {
-		defer close(callQueue)
 		main()
 		// fmt.Println("END") // to check if os.Exit(..) is called by main() above
+		exitch <- true
 	}()
-
-	for f := range callQueue { f() }
+	for {
+		select {
+		case f := <-callQueue:
+			f()
+		case <-exitch:
+			return
+		}
+	}
 }
 
-// Do the specified function in the main thread.
-// For this function to work, you must have correctly used sdl.Main(..) in your
-// main() function. Calling this function before/without sdl.Main(..) will cause
-// your code to block indefinitely.
+// Run the specified function in the main thread.
+// For this function to work, you must have correctly used sdl.Main() in your main() function.
 func Do(f func()) {
+	done := make(chan bool, 1)
 	callQueue <- func() {
 		f()
-		callDone <- true
+		done <- true
 	}
-	<-callDone
+	<-done
 }
 
 // Init (https://wiki.libsdl.org/SDL_Init)
-func Init(flags uint32) (err error) {
+func Init(flags uint32) error {
 	if C.SDL_Init(C.Uint32(flags)) != 0 {
-		err = GetError()
+		return GetError()
 	}
-	return
+	return nil
 }
 
 // Quit (https://wiki.libsdl.org/SDL_Quit)
@@ -106,11 +95,11 @@ func Quit() {
 }
 
 // InitSubSystem (https://wiki.libsdl.org/SDL_InitSubSystem)
-func InitSubSystem(flags uint32) (err error) {
+func InitSubSystem(flags uint32) error {
 	if C.SDL_InitSubSystem(C.Uint32(flags)) != 0 {
-		err = GetError()
+		return GetError()
 	}
-	return
+	return nil
 }
 
 // QuitSubSystem (https://wiki.libsdl.org/SDL_QuitSubSystem)
