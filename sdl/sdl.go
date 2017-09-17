@@ -34,20 +34,31 @@ func init() {
 	runtime.LockOSThread()
 }
 
-// Main entry point. Run this function at the beginning of main(), and pass
-// your own main body to it as a function. E.g.:
+// Main entry point. Run this function at the beginning of main(), and pass your
+// own main body to it as a function. E.g.:
 //
-// func main() {
-//    sdl.Main(func() {
-//        // Your code here....
-//        // [....]
+// 	func main() {
+// 		sdl.Main(func() {
+// 			// Your code here....
+// 			// [....]
 //
-//        // Calls to SDL can be made by any goroutine, but always guarded by sdl.Do()
-//        sdl.Do(func() {
-//            sdl.Init(0)
-//        })
-//    })
-// }
+// 			// Calls to SDL can be made by any goroutine, but always guarded by sdl.Do()
+// 			sdl.Do(func() {
+// 				sdl.Init(0)
+// 			})
+// 		})
+// 	}
+//
+// Avoid calling functions like os.Exit(..) within your passed-in function since
+// they don't respect deferred calls. Instead, do this:
+//
+// 	func main() {
+// 		var exitcode int
+// 		sdl.Main(func() {
+// 			exitcode = run()) // assuming run has signature func() int
+// 		})
+// 		os.Exit(exitcode)
+// 	}
 func Main(main func()) {
 	exitch := make(chan bool, 1)
 	go func() {
@@ -65,8 +76,10 @@ func Main(main func()) {
 	}
 }
 
-// Run the specified function in the main thread.
-// For this function to work, you must have correctly used sdl.Main() in your main() function.
+// Do the specified function in the main thread.
+// For this function to work, you must have correctly used sdl.Main(..) in your
+// main() function. Calling this function before/without sdl.Main(..) will cause
+// your code to block indefinitely.
 func Do(f func()) {
 	done := make(chan bool, 1)
 	callQueue <- func() {
