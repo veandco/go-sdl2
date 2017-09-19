@@ -203,8 +203,8 @@ func LoadMUSType_RW(src *sdl.RWops, type_ MusicType, freesrc int) (mus *Music, e
 
 // QuickLoad_WAV
 // (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_21.html)
-func QuickLoad_WAV(mem unsafe.Pointer) (chunk *Chunk, err error) {
-	_mem := (*C.Uint8)(mem)
+func QuickLoad_WAV(mem []byte) (chunk *Chunk, err error) {
+	_mem := (*C.Uint8)(&mem[0])
 	chunk = (*Chunk)(unsafe.Pointer(C.Mix_QuickLoad_WAV(_mem)))
 	if chunk == nil {
 		err = sdl.GetError()
