@@ -26,8 +26,11 @@ const (
 	PRESSED  = 1
 )
 
-// Queue of functions that are thread-sensitive
-var callQueue = make(chan func())
+// Calls a function in the main thread. It is only properly initialized inside
+// sdl.Main(..). As a default, it panics. It is used by sdl.Do(..) below.
+var callInMain = func(f func()) {
+	panic("sdl.Main(main func()) must be called before sdl.Do(f func())")
+}
 
 func init() {
 	// Make sure the main goroutine is bound to the main thread.
@@ -60,33 +63,36 @@ func init() {
 // 		os.Exit(exitcode)
 // 	}
 func Main(main func()) {
-	exitch := make(chan bool, 1)
+	// Queue of functions that are thread-sensitive
+	callQueue := make(chan func())
+
+	// Properly initialize callInMain for use by sdl.Do(..)
+	callInMain = func(f func()) {
+		done := make(chan bool, 1)
+		callQueue <- func() {
+			f()
+			done <- true
+		}
+		<-done
+	}
+
 	go func() {
 		main()
 		// fmt.Println("END") // to check if os.Exit(..) is called by main() above
-		exitch <- true
+		close(callQueue)
 	}()
-	for {
-		select {
-		case f := <-callQueue:
-			f()
-		case <-exitch:
-			return
-		}
+
+	for f := range callQueue {
+		f()
 	}
 }
 
 // Do the specified function in the main thread.
 // For this function to work, you must have correctly used sdl.Main(..) in your
 // main() function. Calling this function before/without sdl.Main(..) will cause
-// your code to block indefinitely.
+// a panic.
 func Do(f func()) {
-	done := make(chan bool, 1)
-	callQueue <- func() {
-		f()
-		done <- true
-	}
-	<-done
+	callInMain(f)
 }
 
 // Init (https://wiki.libsdl.org/SDL_Init)
