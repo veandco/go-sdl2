@@ -26,8 +26,12 @@ const (
 	PRESSED  = 1
 )
 
-// Queue of functions that are thread-sensitive
-var callQueue = make(chan func())
+var (
+	// Queue of functions that are thread-sensitive
+	callQueue chan func() // initialize only if sdl.Main(..) is called
+	// Channel to force thread-sensitive functions to execute one at a time
+	done      chan bool   // initialize only if sdl.Main(..) is called
+)
 
 func init() {
 	// Make sure the main goroutine is bound to the main thread.
@@ -60,20 +64,15 @@ func init() {
 // 		os.Exit(exitcode)
 // 	}
 func Main(main func()) {
-	exitch := make(chan bool, 1)
+	callQueue, done = make(chan func()), make(chan bool, 1)
+
 	go func() {
+		defer close(callQueue) // this channel is no longer needed after main()
 		main()
 		// fmt.Println("END") // to check if os.Exit(..) is called by main() above
-		exitch <- true
 	}()
-	for {
-		select {
-		case f := <-callQueue:
-			f()
-		case <-exitch:
-			return
-		}
-	}
+
+	for f := range callQueue { f() }
 }
 
 // Do the specified function in the main thread.
@@ -81,7 +80,6 @@ func Main(main func()) {
 // main() function. Calling this function before/without sdl.Main(..) will cause
 // your code to block indefinitely.
 func Do(f func()) {
-	done := make(chan bool, 1)
 	callQueue <- func() {
 		f()
 		done <- true
