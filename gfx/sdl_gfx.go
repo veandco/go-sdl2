@@ -33,8 +33,8 @@ func min(a ...int) int {
 	b := a[0]
 
 	for i := 1; i < len(a); i++ {
-		if b < a[0] {
-			b = a[0]
+		if b > a[i] {
+			b = a[i]
 		}
 	}
 
