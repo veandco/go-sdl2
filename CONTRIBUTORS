@@ -41,6 +41,7 @@ Here's the list of contributors with their respective Github URLs.
 * [Lars Scheme](https://github.com/gonutz)
 * [Emil Laine](https://github.com/emlai)
 * [Sergey Parshukov](https://github.com/jBugman)
+* [Casey DeLorme](https://github.com/cdelorme)
 * [Andreas T. Jonsson](https://github.com/andreas-jonsson)
 * [Milan Nikolic](https://github.com/gen2brain)
 * [Mike Gerow](https://github.com/gerow)
@@ -50,5 +51,12 @@ Here's the list of contributors with their respective Github URLs.
 * [Julien Castelain](https://github.com/julien)
 * [Robert Wallis](https://github.com/robert-wallis)
 * [Chae-Young Song](https://github.com/chaeyoungsong)
+* [Robert Wallis](https://github.com/robert-wallis)
+* [Lennart Buhl](https://github.com/r41d)
+* [Giovanni Bajo](https://github.com/rasky)
+* [Laurent Vaucher](https://github.com/slowfrog)
+* [Mike](https://github.com/barbeque)
+* [Tomas Virgl](https://github.com/tvi)
+* [Aye Aye Maung](https://github.com/ZeroXLR)
 
 _if anyone is missing, let me know!.. or you can add yourself in :)_
