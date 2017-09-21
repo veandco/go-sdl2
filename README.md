@@ -121,13 +121,6 @@ For Android, see https://github.com/gen2brain/go-sdl2-android-example.
 
 There is currently no support for iOS yet.
 
-__How do I contribute?__  
-You can contribute by a lot of ways from improving README, fixing typos, coding style, specific bugs, performance optimizations. However, it is preferred that you break up your commits to single logical change using `git add -p` so it is easier to review the patch. The larger the change, the more necessary it is for the commit to be broken up to tiny little pieces. If your change is large but consistent throughout (e.g. fixing a specific coding style that happens on almost every file), that can be counted as single logical change.
-
-You can generally start by forking the repository, and then sending pull requests. But unfortunately this is a Go project, and the absolute import statements make forking a bit more complicated. [Here](http://blog.campoy.cat/2014/03/github-and-go-forking-pull-requests-and.html) are some instructions, how you can work with that. Generally pull requests are very welcome.
-
-Last but not least, we're starting to use commit messages that looks like this: `sdl: fixed some typos in render.go` or `examples: render_goroutine: fixed a dereferenced nil pointer` where it starts with folder hierarchy. It's not something strictly required but we would prefer it to be followed.
-
 License
 =======
 Go-SDL2 is BSD 3-clause licensed.
