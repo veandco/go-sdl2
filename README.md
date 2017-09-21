@@ -8,6 +8,7 @@ Requirements
 * [SDL2_mixer (optional)](http://www.libsdl.org/projects/SDL_mixer/)
 * [SDL2_image (optional)](http://www.libsdl.org/projects/SDL_image/)
 * [SDL2_ttf (optional)](http://www.libsdl.org/projects/SDL_ttf/)
+* [SDL2_gfx (optional)](http://www.ferzkopp.net/wordpress/2016/01/02/sdl_gfx-sdl2_gfx/)
 
 Below is some commands that can be used to install the required packages in
 some Linux distributions. Some older versions of the distributions such as
