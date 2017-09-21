@@ -64,7 +64,7 @@ func GetFramerate(manager *FPSmanager) (int, bool) {
 }
 
 func GetFramecount(manager *FPSmanager) (int, bool) {
-	count := int(C.SDL_getFramerate(manager.cptr()))
+	count := int(C.SDL_getFramecount(manager.cptr()))
 	return count, count >= 0
 }
 
