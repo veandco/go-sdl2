@@ -104,7 +104,7 @@ func (joy *Joystick) NumButtons() int {
 	return (int)(C.SDL_JoystickNumButtons(joy.cptr()))
 }
 
-func Update() {
+func JoystickUpdate() {
 	C.SDL_JoystickUpdate()
 }
 
