@@ -104,6 +104,7 @@ func (joy *Joystick) NumButtons() int {
 	return (int)(C.SDL_JoystickNumButtons(joy.cptr()))
 }
 
+// JoystickUpdate (https://wiki.libsdl.org/SDL_JoystickUpdate)
 func JoystickUpdate() {
 	C.SDL_JoystickUpdate()
 }
