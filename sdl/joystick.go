@@ -43,7 +43,7 @@ func JoystickOpen(index JoystickID) *Joystick {
 	return (*Joystick)(C.SDL_JoystickOpen(C.int(index)))
 }
 
-// Joystick (https://wiki.libsdl.org/SDL_JoystickName)
+// JoystickName (https://wiki.libsdl.org/SDL_JoystickName)
 func (joy *Joystick) Name() string {
 	return (C.GoString)(C.SDL_JoystickName(joy.cptr()))
 }
@@ -74,32 +74,32 @@ func JoystickGetGUIDFromString(pchGUID string) JoystickGUID {
 	return (JoystickGUID)(C.SDL_JoystickGetGUIDFromString(_pchGUID))
 }
 
-// Joystick (https://wiki.libsdl.org/SDL_JoystickGetAttached)
+// JoystickGetAttached (https://wiki.libsdl.org/SDL_JoystickGetAttached)
 func (joy *Joystick) GetAttached() bool {
 	return C.SDL_JoystickGetAttached(joy.cptr()) > 0
 }
 
-// Joystick (https://wiki.libsdl.org/SDL_JoystickInstanceID)
+// JoystickInstanceID (https://wiki.libsdl.org/SDL_JoystickInstanceID)
 func (joy *Joystick) InstanceID() JoystickID {
 	return (JoystickID)(C.SDL_JoystickInstanceID(joy.cptr()))
 }
 
-// Joystick (https://wiki.libsdl.org/SDL_JoystickNumAxes)
+// JoystickNumAxes (https://wiki.libsdl.org/SDL_JoystickNumAxes)
 func (joy *Joystick) NumAxes() int {
 	return (int)(C.SDL_JoystickNumAxes(joy.cptr()))
 }
 
-// Joystick (https://wiki.libsdl.org/SDL_JoystickNumBalls)
+// JoystickNumBalls (https://wiki.libsdl.org/SDL_JoystickNumBalls)
 func (joy *Joystick) NumBalls() int {
 	return (int)(C.SDL_JoystickNumBalls(joy.cptr()))
 }
 
-// Joystick (https://wiki.libsdl.org/SDL_JoystickNumHats)
+// JoystickNumHats (https://wiki.libsdl.org/SDL_JoystickNumHats)
 func (joy *Joystick) NumHats() int {
 	return (int)(C.SDL_JoystickNumHats(joy.cptr()))
 }
 
-// Joystick (https://wiki.libsdl.org/SDL_JoystickNumButtons)
+// JoystickNumButtons (https://wiki.libsdl.org/SDL_JoystickNumButtons)
 func (joy *Joystick) NumButtons() int {
 	return (int)(C.SDL_JoystickNumButtons(joy.cptr()))
 }
@@ -114,29 +114,29 @@ func JoystickEventState(state int) int {
 	return (int)(C.SDL_JoystickEventState(C.int(state)))
 }
 
-// Joystick (https://wiki.libsdl.org/SDL_JoystickGetAxis)
+// JoystickGetAxis (https://wiki.libsdl.org/SDL_JoystickGetAxis)
 func (joy *Joystick) GetAxis(axis int) int16 {
 	return (int16)(C.SDL_JoystickGetAxis(joy.cptr(), C.int(axis)))
 }
 
-// Joystick (https://wiki.libsdl.org/SDL_JoystickGetHat)
+// JoystickGetHat (https://wiki.libsdl.org/SDL_JoystickGetHat)
 func (joy *Joystick) GetHat(hat int) byte {
 	return (byte)(C.SDL_JoystickGetHat(joy.cptr(), C.int(hat)))
 }
 
-// Joystick (https://wiki.libsdl.org/SDL_JoystickGetBall)
+// JoystickGetBall (https://wiki.libsdl.org/SDL_JoystickGetBall)
 func (joy *Joystick) GetBall(ball int, dx, dy *int) int {
 	_dx := (*C.int)(unsafe.Pointer(dx))
 	_dy := (*C.int)(unsafe.Pointer(dy))
 	return (int)(C.SDL_JoystickGetBall(joy.cptr(), C.int(ball), _dx, _dy))
 }
 
-// Joystick (https://wiki.libsdl.org/SDL_JoystickGetButton)
+// JoystickGetButton (https://wiki.libsdl.org/SDL_JoystickGetButton)
 func (joy *Joystick) GetButton(button int) byte {
 	return (byte)(C.SDL_JoystickGetButton(joy.cptr(), C.int(button)))
 }
 
-// Joystick (https://wiki.libsdl.org/SDL_JoystickClose)
+// JoystickClose (https://wiki.libsdl.org/SDL_JoystickClose)
 func (joy *Joystick) Close() {
 	C.SDL_JoystickClose(joy.cptr())
 }
