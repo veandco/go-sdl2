@@ -1,6 +1,9 @@
 package sdl
 
-import "testing"
+import (
+	"testing"
+	"sync"
+)
 
 const (
 	TIMER_RESOLUTION = "32"
@@ -69,5 +72,60 @@ func TestClearHints(t *testing.T) {
 		if GetHint(HINT_TIMER_RESOLUTION) != "" {
 			t.Errorf("return value for GetHint(HINT_TIMER_RESOLUTION) after ClearHints() is wrong")
 		}
+	})
+}
+
+func TestAddHintCallback(t *testing.T) {
+	Do(func() {
+		var wg sync.WaitGroup
+
+		AddHintCallback(HINT_ALLOW_TOPMOST, func(data interface{}, name, oldValue, newValue string) {
+			t.Log("HINT_ALLOW_TOPMOST:", data, name, oldValue, newValue)
+			if newValue != "" {
+				if newValue != "1" && data.(int) != 12 {
+					t.Fail()
+				}
+				wg.Done()
+			}
+		}, 12)
+		wg.Add(1)
+
+		AddHintCallback(HINT_RENDER_VSYNC, func(data interface{}, name, oldValue, newValue string) {
+			t.Log("HINT_RENDER_VSYNC:", data, name, oldValue, newValue)
+			if newValue != "" {
+				if newValue != "1" && data.(int) != 34 {
+					t.Fail()
+				}
+				wg.Done()
+			}
+		}, 34)
+		wg.Add(1)
+
+		SetHint(HINT_ALLOW_TOPMOST, "1")
+		SetHint(HINT_RENDER_VSYNC, "1")
+
+		wg.Wait()
+	})
+}
+
+func TestDelHintCallback(t *testing.T) {
+	Do(func() {
+		AddHintCallback(HINT_ALLOW_TOPMOST, func(data interface{}, name, oldValue, newValue string) {
+			if newValue == "1" {
+				t.Fail()
+			}
+		}, nil)
+
+		AddHintCallback(HINT_RENDER_VSYNC, func(data interface{}, name, oldValue, newValue string) {
+			if newValue == "1" {
+				t.Fail()
+			}
+		}, nil)
+
+		DelHintCallback(HINT_ALLOW_TOPMOST)
+		DelHintCallback(HINT_RENDER_VSYNC)
+
+		SetHint(HINT_ALLOW_TOPMOST, "1")
+		SetHint(HINT_RENDER_VSYNC, "1")
 	})
 }

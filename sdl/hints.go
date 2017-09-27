@@ -2,6 +2,7 @@ package sdl
 
 /*
 #include "sdl_wrapper.h"
+#include "hints.h"
 
 #if !(SDL_VERSION_ATLEAST(2,0,4))
 #define SDL_HINT_NO_SIGNAL_HANDLERS ""
@@ -92,6 +93,14 @@ const (
 	HINT_OVERRIDE = C.SDL_HINT_OVERRIDE
 )
 
+type HintCallback func(data interface{}, name, oldValue, newValue string)
+type HintCallbackAndData struct {
+	callback HintCallback
+	data interface{}
+}
+
+var hintCallbacks = make(map[string]HintCallbackAndData)
+
 // HintPriority (https://wiki.libsdl.org/SDL_HintPriority)
 type HintPriority C.SDL_HintPriority
 
@@ -129,8 +138,29 @@ func ClearHints() {
 	C.SDL_ClearHints()
 }
 
-/* TODO:
-typedef void (*SDL_HintCallback)(void *userdata, const char *name, const char *oldValue, const char *newValue);
-extern DECLSPEC void SDLCALL SDL_AddHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
-extern DECLSPEC void SDLCALL SDL_DelHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
-*/
+// AddHintCallback (https://wiki.libsdl.org/SDL_AddHintCallback)
+func AddHintCallback(name string, fn HintCallback, data interface{}) {
+	_name := C.CString(name)
+	hintCallbacks[name] = HintCallbackAndData{
+		callback: fn,
+		data: data,
+	}
+	C.addHintCallback(_name)
+}
+
+// DelHintCallback (https://wiki.libsdl.org/SDL_DelHintCallback)
+func DelHintCallback(name string) {
+	_name := C.CString(name)
+	delete(hintCallbacks, name)
+	C.delHintCallback(_name)
+}
+
+//export GoHintCallback
+func GoHintCallback(_name, _oldValue, _newValue *C.char) {
+	name := C.GoString(_name)
+	oldValue := C.GoString(_oldValue)
+	newValue := C.GoString(_newValue)
+	if cb, ok := hintCallbacks[name]; ok {
+		cb.callback(cb.data, name, oldValue, newValue)
+	}
+}
