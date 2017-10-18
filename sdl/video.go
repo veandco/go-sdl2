@@ -16,6 +16,13 @@ static void SDL_GL_GetDrawableSize(SDL_Window *window, int *w, int *h)
 	*h = 0;
 }
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,5))
+#pragma message("SDL_SetWindowResizable is not supported before SDL 2.0.5")
+static void SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable)
+{
+}
+#endif
 */
 import "C"
 import "unsafe"
