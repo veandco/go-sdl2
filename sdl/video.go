@@ -411,6 +411,15 @@ func (window *Window) GetPosition() (x, y int) {
 	return int(_x), int(_y)
 }
 
+// Window (https://wiki.libsdl.org/SDL_SetWindowResizable)
+func (window *Window) SetResizable(resizable bool) {
+    var _resizable C.SDL_bool = C.SDL_FALSE
+    if resizable {
+        _resizable = C.SDL_TRUE
+    }
+    C.SDL_SetWindowResizable(window.cptr(), _resizable)
+}
+
 // Window (https://wiki.libsdl.org/SDL_SetWindowSize)
 func (window *Window) SetSize(w int, h int) {
 	C.SDL_SetWindowSize(window.cptr(), C.int(w), C.int(h))
