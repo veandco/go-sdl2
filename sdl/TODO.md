@@ -61,3 +61,7 @@ Hints
 
 - [ ] SDL_HINT_WINDOWS_INTRESOURCE_ICON
 - [ ] SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL
+
+## Miscellaneous
+
+- [ ] Add ability to set window title bar color on runtime
