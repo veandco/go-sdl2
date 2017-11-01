@@ -240,6 +240,21 @@ func (texture *Texture) Update(rect *Rect, pixels []byte, pitch int) error {
 	return nil
 }
 
+// Texture (https://wiki.libsdl.org/SDL_UpdateYUVTexture)
+func (texture *Texture) UpdateYUV(rect *Rect, yPlane []byte, yPitch int, uPlane []byte, uPitch int, vPlane []byte, vPitch int) error {
+	_yPlane := (*C.Uint8)(unsafe.Pointer(&yPlane[0]))
+	_yPitch := C.int(yPitch)
+	_uPlane := (*C.Uint8)(unsafe.Pointer(&uPlane[0]))
+	_uPitch := C.int(uPitch)
+	_vPlane := (*C.Uint8)(unsafe.Pointer(&vPlane[0]))
+	_vPitch := C.int(vPitch)
+	_ret := C.SDL_UpdateYUVTexture(texture.cptr(), rect.cptr(), _yPlane, _yPitch, _uPlane, _uPitch, _vPlane, _vPitch)
+	if _ret < 0 {
+		return GetError()
+	}
+	return nil
+}
+
 // Texture (https://wiki.libsdl.org/SDL_LockTexture)
 func (texture *Texture) Lock(rect *Rect) ([]byte, int, error) {
 	var _pitch C.int
