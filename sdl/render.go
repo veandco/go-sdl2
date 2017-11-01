@@ -1,6 +1,17 @@
 package sdl
 
-// #include "sdl_wrapper.h"
+/*
+#include "sdl_wrapper.h"
+
+#if !(SDL_VERSION_ATLEAST(2,0,1))
+#pragma message("SDL_UpdateYUVTexture is not supported before SDL 2.0.1")
+static inline char* SDL_UpdateYUVTexture()
+{
+	return NULL;
+}
+#endif
+
+*/
 import "C"
 import "reflect"
 import "unsafe"
