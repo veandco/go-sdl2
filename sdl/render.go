@@ -5,7 +5,7 @@ package sdl
 
 #if !(SDL_VERSION_ATLEAST(2,0,1))
 #pragma message("SDL_UpdateYUVTexture is not supported before SDL 2.0.1")
-static inline char* SDL_UpdateYUVTexture(SDL_Texture* texture, const SDL_Rect* rect, const Uint8* Yplane, int Ypitch, const Uint8* Uplane, int Upitch, const Uint8* Vplane, int Vpitch)
+static inline int SDL_UpdateYUVTexture(SDL_Texture* texture, const SDL_Rect* rect, const Uint8* Yplane, int Ypitch, const Uint8* Uplane, int Upitch, const Uint8* Vplane, int Vpitch)
 {
 	return -1;
 }
