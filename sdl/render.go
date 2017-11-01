@@ -1,6 +1,17 @@
 package sdl
 
-// #include "sdl_wrapper.h"
+/*
+#include "sdl_wrapper.h"
+
+#if !(SDL_VERSION_ATLEAST(2,0,1))
+#pragma message("SDL_UpdateYUVTexture is not supported before SDL 2.0.1")
+static inline int SDL_UpdateYUVTexture(SDL_Texture* texture, const SDL_Rect* rect, const Uint8* Yplane, int Ypitch, const Uint8* Uplane, int Upitch, const Uint8* Vplane, int Vpitch)
+{
+	return -1;
+}
+#endif
+
+*/
 import "C"
 import "reflect"
 import "unsafe"
@@ -234,6 +245,21 @@ func (texture *Texture) Update(rect *Rect, pixels []byte, pitch int) error {
 	_pixels := unsafe.Pointer(&pixels[0])
 	_pitch := C.int(pitch)
 	_ret := C.SDL_UpdateTexture(texture.cptr(), rect.cptr(), _pixels, _pitch)
+	if _ret < 0 {
+		return GetError()
+	}
+	return nil
+}
+
+// Texture (https://wiki.libsdl.org/SDL_UpdateYUVTexture)
+func (texture *Texture) UpdateYUV(rect *Rect, yPlane []byte, yPitch int, uPlane []byte, uPitch int, vPlane []byte, vPitch int) error {
+	_yPlane := (*C.Uint8)(unsafe.Pointer(&yPlane[0]))
+	_yPitch := C.int(yPitch)
+	_uPlane := (*C.Uint8)(unsafe.Pointer(&uPlane[0]))
+	_uPitch := C.int(uPitch)
+	_vPlane := (*C.Uint8)(unsafe.Pointer(&vPlane[0]))
+	_vPitch := C.int(vPitch)
+	_ret := C.SDL_UpdateYUVTexture(texture.cptr(), rect.cptr(), _yPlane, _yPitch, _uPlane, _uPitch, _vPlane, _vPitch)
 	if _ret < 0 {
 		return GetError()
 	}
