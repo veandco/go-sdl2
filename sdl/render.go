@@ -570,7 +570,8 @@ func (renderer *Renderer) Destroy() {
 	C.SDL_DestroyRenderer(renderer.cptr())
 }
 
-func (texture *Texture) GL_BindTexture(texw, texh *float32) error {
+// Texture (https://wiki.libsdl.org/SDL_GL_BindTexture)
+func (texture *Texture) GLBind(texw, texh *float32) error {
 	_texw := (*C.float)(unsafe.Pointer(texw))
 	_texh := (*C.float)(unsafe.Pointer(texh))
 	_ret := C.SDL_GL_BindTexture(texture.cptr(), _texw, _texh)
@@ -580,7 +581,8 @@ func (texture *Texture) GL_BindTexture(texw, texh *float32) error {
 	return nil
 }
 
-func (texture *Texture) GL_UnbindTexture() error {
+// Texture (https://wiki.libsdl.org/SDL_GL_UnbindTexture)
+func (texture *Texture) GLUnbind() error {
 	_ret := C.SDL_GL_UnbindTexture(texture.cptr())
 	if _ret < 0 {
 		return GetError()
