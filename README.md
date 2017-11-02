@@ -102,8 +102,8 @@ For more complete examples, see inside the _examples_ folder. Run any of the .go
 
 FAQ
 ===
-__Why does my program exits with code 3221225781 on Windows?__  
-You need to put the `SDL2.dll` in the same folder as your program.
+__Why does the program not run on Windows?__  
+Try putting the [runtime libraries](http://libsdl.org/download-2.0.php) (e.g. `SDL2.dll` and friends) in the same folder as your program.
 
 __Why does my program crash randomly or hang?__  
 Putting `runtime.LockOSThread()` at the start of your main() usually solves the problem (see [SDL2 FAQ](https://wiki.libsdl.org/FAQDevelopment) about multi-threading).
