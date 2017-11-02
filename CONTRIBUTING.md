@@ -11,6 +11,10 @@ These are loose checklist that contributors can follow.
 
    We're starting to use commit messages that looks like this: `sdl: fixed some typos in render.go` or `examples: render_goroutine: fixed a dereferenced nil pointer` where it starts with folder hierarchy. It's not something strictly required but we would prefer it to be followed.
 
+3. Compatibility with SDL 2.0.0
+
+   The binding should compile with the oldest version SDL2. If there's a function added to the binding but is not supported by the older SDL2 version, a stub function must be provided. See `sdl/filesystem.go` for an example.
+
 ## How to contribute
 You can start by forking the repository, modify the fork, push the change to your fork, and then send pull requests. [Here](http://blog.campoy.cat/2014/03/github-and-go-forking-pull-requests-and.html) are some instructions on how you can work with your own fork.
 
