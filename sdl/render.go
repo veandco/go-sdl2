@@ -356,7 +356,7 @@ func (renderer *Renderer) SetLogicalSize(w int, h int) error {
 	return nil
 }
 
-// GetLogicalSize Use returns device independent resolution for rendering.
+// GetLogicalSize returns device independent resolution for rendering.
 // (https://wiki.libsdl.org/SDL_RenderGetLogicalSize)
 func (renderer *Renderer) GetLogicalSize() (w, h int) {
 	_w := (*C.int)(unsafe.Pointer(&w))
