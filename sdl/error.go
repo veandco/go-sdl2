@@ -14,7 +14,7 @@ const (
 	LASTERROR             = C.SDL_LASTERROR   // the highest numbered predefined error
 )
 
-// ErrorCode is an SDL error code for common errors.
+// ErrorCode is an error code used in SDL error messages.
 type ErrorCode uint32
 type cErrorCode C.SDL_errorcode
 
@@ -41,7 +41,7 @@ func ClearError() {
 	C.SDL_ClearError()
 }
 
-// Error sets the SDL error message to the predefined string specified by code.
+// Error sets the SDL error message to the specified error code.
 func Error(code ErrorCode) {
 	C.SDL_Error(code.c())
 }
