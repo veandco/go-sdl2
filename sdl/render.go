@@ -16,31 +16,43 @@ import "C"
 import "reflect"
 import "unsafe"
 
+// An enumeration of flags used when creating a rendering context.
+// (https://wiki.libsdl.org/SDL_RendererFlags)
 const (
-	RENDERER_SOFTWARE      = C.SDL_RENDERER_SOFTWARE
-	RENDERER_ACCELERATED   = C.SDL_RENDERER_ACCELERATED
-	RENDERER_PRESENTVSYNC  = C.SDL_RENDERER_PRESENTVSYNC
-	RENDERER_TARGETTEXTURE = C.SDL_RENDERER_TARGETTEXTURE
-
-	TEXTUREACCESS_STATIC    = C.SDL_TEXTUREACCESS_STATIC
-	TEXTUREACCESS_STREAMING = C.SDL_TEXTUREACCESS_STREAMING
-	TEXTUREACCESS_TARGET    = C.SDL_TEXTUREACCESS_TARGET
-
-	TEXTUREMODULATE_NONE  = C.SDL_TEXTUREMODULATE_NONE
-	TEXTUREMODULATE_COLOR = C.SDL_TEXTUREMODULATE_COLOR
-	TEXTUREMODULATE_ALPHA = C.SDL_TEXTUREMODULATE_ALPHA
+	RENDERER_SOFTWARE      = C.SDL_RENDERER_SOFTWARE      // the renderer is a software fallback
+	RENDERER_ACCELERATED   = C.SDL_RENDERER_ACCELERATED   // the renderer uses hardware acceleration
+	RENDERER_PRESENTVSYNC  = C.SDL_RENDERER_PRESENTVSYNC  // present is synchronized with the refresh rate
+	RENDERER_TARGETTEXTURE = C.SDL_RENDERER_TARGETTEXTURE // the renderer supports rendering to texture
 )
 
+// An enumeration of texture access patterns..
+// (https://wiki.libsdl.org/SDL_TextureAccess)
 const (
-	FLIP_NONE       RendererFlip = C.SDL_FLIP_NONE
-	FLIP_HORIZONTAL              = C.SDL_FLIP_HORIZONTAL
-	FLIP_VERTICAL                = C.SDL_FLIP_VERTICAL
+	TEXTUREACCESS_STATIC    = C.SDL_TEXTUREACCESS_STATIC    // changes rarely, not lockable
+	TEXTUREACCESS_STREAMING = C.SDL_TEXTUREACCESS_STREAMING // changes frequently, lockable
+	TEXTUREACCESS_TARGET    = C.SDL_TEXTUREACCESS_TARGET    // can be used as a render target
+)
+
+// An enumeration of the texture channel modulation used in Renderer.Copy().
+// (https://wiki.libsdl.org/SDL_TextureModulate)
+const (
+	TEXTUREMODULATE_NONE  = C.SDL_TEXTUREMODULATE_NONE  // no modulation
+	TEXTUREMODULATE_COLOR = C.SDL_TEXTUREMODULATE_COLOR // srcC = srcC * color
+	TEXTUREMODULATE_ALPHA = C.SDL_TEXTUREMODULATE_ALPHA // srcA = srcA * alpha
+)
+
+// An enumeration of flags that can be used in the flip parameter for Renderer.CopyEx().
+// (https://wiki.libsdl.org/SDL_RendererFlip)
+const (
+	FLIP_NONE       RendererFlip = C.SDL_FLIP_NONE       // do not flip
+	FLIP_HORIZONTAL              = C.SDL_FLIP_HORIZONTAL // flip horizontally
+	FLIP_VERTICAL                = C.SDL_FLIP_VERTICAL   // flip vertically
 )
 
 // RendererInfo contains information on the capabilities of a render driver or the current render context.
 // (https://wiki.libsdl.org/SDL_RendererInfo)
 type RendererInfo struct {
-	Name string
+	Name string // the name of the renderer
 	RendererInfoData
 }
 
@@ -49,12 +61,14 @@ type cRendererInfo struct {
 	RendererInfoData
 }
 
+// RendererInfoData contains information on the capabilities of a render driver or the current render context.
+// (https://wiki.libsdl.org/SDL_RendererInfo)
 type RendererInfoData struct {
-	Flags             uint32
-	NumTextureFormats uint32
-	TextureFormats    [16]int32
-	MaxTextureWidth   int32
-	MaxTextureHeight  int32
+	Flags             uint32    // a mask of supported renderer flags
+	NumTextureFormats uint32    // the number of available texture formats
+	TextureFormats    [16]int32 // the available texture formats
+	MaxTextureWidth   int32     // the maximum texture width
+	MaxTextureHeight  int32     // the maximum texture height
 }
 
 func (info *RendererInfo) cptr() *C.SDL_RendererInfo {
