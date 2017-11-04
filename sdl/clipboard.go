@@ -4,7 +4,8 @@ package sdl
 import "C"
 import "unsafe"
 
-// SetClipboardText (https://wiki.libsdl.org/SDL_SetClipboardText)
+// SetClipboardText puts UTF-8 text into the clipboard.
+// (https://wiki.libsdl.org/SDL_SetClipboardText)
 func SetClipboardText(text string) error {
 	_text := C.CString(text)
 	defer C.free(unsafe.Pointer(_text))
@@ -14,7 +15,8 @@ func SetClipboardText(text string) error {
 	return nil
 }
 
-// GetClipboardText (https://wiki.libsdl.org/SDL_GetClipboardText)
+// GetClipboardText returns UTF-8 text from the clipboard.
+// (https://wiki.libsdl.org/SDL_GetClipboardText)
 func GetClipboardText() (string, error) {
 	text := C.SDL_GetClipboardText()
 	if text == nil {
@@ -25,7 +27,8 @@ func GetClipboardText() (string, error) {
 	return _text, nil
 }
 
-// HasClipboardText (https://wiki.libsdl.org/SDL_HasClipboardText)
+// HasClipboardText reports whether the clipboard exists and contains a text string that is non-empty.
+// (https://wiki.libsdl.org/SDL_HasClipboardText)
 func HasClipboardText() bool {
 	return C.SDL_HasClipboardText() > 0
 }
