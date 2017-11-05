@@ -21,14 +21,16 @@ static inline char* SDL_GetPrefPath(const char *org, const char *app)
 import "C"
 import "unsafe"
 
-// GetBasePath (https://wiki.libsdl.org/SDL_GetBasePath)
+// GetBasePath returns the directory where the application was run from. This is where the application data directory is.
+// (https://wiki.libsdl.org/SDL_GetBasePath)
 func GetBasePath() string {
 	_val := C.SDL_GetBasePath()
 	defer C.SDL_free(unsafe.Pointer(_val))
 	return C.GoString(_val)
 }
 
-// GetPrefPath (https://wiki.libsdl.org/SDL_GetPrefPath)
+// GetPrefPath returns the "pref dir". This is meant to be where the application can write personal files (Preferences and save games, etc.) that are specific to the application. This directory is unique per user and per application.
+// (https://wiki.libsdl.org/SDL_GetPrefPath)
 func GetPrefPath(org, app string) string {
 	_org := C.CString(org)
 	_app := C.CString(app)
