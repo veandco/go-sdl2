@@ -51,7 +51,7 @@ func OutOfMemory() {
 	Error(ENOMEM)
 }
 
-// Unsupported sets SDL error message to UNSUPPORTED (unknown SDL error).
+// Unsupported sets SDL error message to UNSUPPORTED (that operation is not supported).
 func Unsupported() {
 	Error(UNSUPPORTED)
 }
