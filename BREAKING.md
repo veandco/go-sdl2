@@ -4,6 +4,6 @@
 
 + Renamed `Texture.GL_BindTexture()` and `Texture.GL_UnbindTexture()` to `Texture.GLBind()` and `Texture.GLUnbind()` respectively
 + Renamed `LoadWAV_RW()` to `LoadWAVRW()`
-+ Renamed `TouchId` to `TouchID` in `MultiGestureEvent` stuct
++ Renamed `TouchId` to `TouchID` in `MultiGestureEvent` struct
 
 - Unexported `Padding` in  `AudioSpec` struct
