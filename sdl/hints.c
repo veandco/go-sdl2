@@ -5,7 +5,7 @@
 
 void hintCallback(void *userdata, const char *name, const char *oldValue, const char *newValue)
 {
-	GoHintCallback((char *) name, (char *) oldValue, (char *) newValue);
+	goHintCallback((char *) name, (char *) oldValue, (char *) newValue);
 }
 
 void addHintCallback(const char *name)
