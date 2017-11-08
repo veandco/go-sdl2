@@ -30,7 +30,7 @@ func TestAudioDevices(t *testing.T) {
 }
 
 func TestAudioInitQuit(t *testing.T) {
-	Do(func(){
+	Do(func() {
 		// figure out what driver will work
 		if err := InitSubSystem(INIT_AUDIO); err != nil {
 			t.Fatalf("InitSubSystem(INIT_AUDIO): %v", err)
@@ -66,28 +66,28 @@ func TestAudioInitQuit(t *testing.T) {
 	})
 }
 
-func TestLoadWAV_RW(t *testing.T) {
+func TestLoadWAVRW(t *testing.T) {
 	// load WAV from *RWOps pointing to WAV data
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&squareWave))
 	src := RWFromMem(unsafe.Pointer(sliceHeader.Data), len(squareWave))
-	buf, spec := LoadWAV_RW(src, false, &AudioSpec{})
+	buf, spec := LoadWAVRW(src, false, &AudioSpec{})
 
 	// test returned []byte
 	want := []byte{0, 0, 0, 0, 255, 255, 255, 255}
 	if buf == nil {
-		t.Errorf("LoadWAV_RW() returned nil []byte")
+		t.Errorf("LoadWAVRW() returned nil []byte")
 	} else {
 		if bytes.Compare(buf, want) != 0 {
-			t.Errorf("LoadWAV_RW() returned %v; want %v", buf, want)
+			t.Errorf("LoadWAVRW() returned %v; want %v", buf, want)
 		}
 		FreeWAV(buf) // make sure we can free without error
 	}
 
 	// test returned *AudioSpec
 	if spec == nil {
-		t.Errorf("LoadWAV_RW() returned nil *AudioSpec")
+		t.Errorf("LoadWAVRW() returned nil *AudioSpec")
 	} else if spec.Freq != 8363 { // no need to test all the spec fields
-		t.Errorf("LoadWAV_RW() returned *AudioSpec with Freq %d; want %d",
+		t.Errorf("LoadWAVRW() returned *AudioSpec with Freq %d; want %d",
 			spec.Freq, 8363)
 	}
 }

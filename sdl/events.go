@@ -391,13 +391,13 @@ type DropEvent struct {
 	File      string // the file name
 	WindowID  uint32 // the window that was dropped on, if any
 }
-
-type cDropEvent struct {
+type tDropEvent struct {
 	Type      uint32
 	Timestamp uint32
 	File      unsafe.Pointer
 	WindowID  uint32
 }
+type cDropEvent C.SDL_DropEvent
 
 // RenderEvent contains render event information.
 // (https://wiki.libsdl.org/SDL_EventType)
@@ -582,7 +582,7 @@ func goEvent(cevent *CEvent) Event {
 	case MULTIGESTURE:
 		return (*MultiGestureEvent)(unsafe.Pointer(cevent))
 	case DROPFILE:
-		e := (*cDropEvent)(unsafe.Pointer(cevent))
+		e := (*tDropEvent)(unsafe.Pointer(cevent))
 		event := DropEvent{Type: e.Type, Timestamp: e.Timestamp, File: string(C.GoString((*C.char)(e.File))), WindowID: e.WindowID}
 		C.SDL_free(e.File)
 		return &event
