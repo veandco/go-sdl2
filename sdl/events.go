@@ -386,12 +386,18 @@ type cDollarGestureEvent C.SDL_DollarGestureEvent
 // DropEvent contains an event used to request a file open by the system.
 // (https://wiki.libsdl.org/SDL_DropEvent)
 type DropEvent struct {
-	Type      uint32         // DROPFILE, DROPTEXT, DROPBEGIN, DROPCOMPLETE
-	Timestamp uint32         // timestamp of the event
-	File      unsafe.Pointer // the file name
-	WindowID  uint32         // the window that was dropped on, if any
+	Type      uint32 // DROPFILE, DROPTEXT, DROPBEGIN, DROPCOMPLETE
+	Timestamp uint32 // timestamp of the event
+	File      string // the file name
+	WindowID  uint32 // the window that was dropped on, if any
 }
-type cDropEvent C.SDL_DropEvent
+
+type cDropEvent struct {
+	Type      uint32
+	Timestamp uint32
+	File      unsafe.Pointer
+	WindowID  uint32
+}
 
 // RenderEvent contains render event information.
 // (https://wiki.libsdl.org/SDL_EventType)
@@ -576,7 +582,10 @@ func goEvent(cevent *CEvent) Event {
 	case MULTIGESTURE:
 		return (*MultiGestureEvent)(unsafe.Pointer(cevent))
 	case DROPFILE:
-		return (*DropEvent)(unsafe.Pointer(cevent))
+		e := (*cDropEvent)(unsafe.Pointer(cevent))
+		event := DropEvent{Type: e.Type, Timestamp: e.Timestamp, File: string(C.GoString((*C.char)(e.File))), WindowID: e.WindowID}
+		C.SDL_free(e.File)
+		return &event
 	case RENDER_TARGETS_RESET:
 		return (*RenderEvent)(unsafe.Pointer(cevent))
 	case QUIT:
