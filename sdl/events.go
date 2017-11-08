@@ -91,7 +91,7 @@ const (
 
 	// These are for your use, and should be allocated with RegisterEvents()
 	USEREVENT = C.SDL_USEREVENT // a user-specified event
-	LASTEVENT = C.SDL_LASTEVENT // only for bounding internal arrays
+	LASTEVENT = C.SDL_LASTEVENT // (only for bounding internal arrays)
 )
 
 // Actions for PeepEvents().

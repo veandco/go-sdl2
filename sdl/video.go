@@ -27,144 +27,168 @@ static void SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable)
 import "C"
 import "unsafe"
 
+// An enumeration of window states.
+// (https://wiki.libsdl.org/SDL_WindowFlags)
 const (
-	WINDOW_FULLSCREEN         = C.SDL_WINDOW_FULLSCREEN
-	WINDOW_OPENGL             = C.SDL_WINDOW_OPENGL
-	WINDOW_SHOWN              = C.SDL_WINDOW_SHOWN
-	WINDOW_HIDDEN             = C.SDL_WINDOW_HIDDEN
-	WINDOW_BORDERLESS         = C.SDL_WINDOW_BORDERLESS
-	WINDOW_RESIZABLE          = C.SDL_WINDOW_RESIZABLE
-	WINDOW_MINIMIZED          = C.SDL_WINDOW_MINIMIZED
-	WINDOW_MAXIMIZED          = C.SDL_WINDOW_MAXIMIZED
-	WINDOW_INPUT_GRABBED      = C.SDL_WINDOW_INPUT_GRABBED
-	WINDOW_INPUT_FOCUS        = C.SDL_WINDOW_INPUT_FOCUS
-	WINDOW_MOUSE_FOCUS        = C.SDL_WINDOW_MOUSE_FOCUS
-	WINDOW_FULLSCREEN_DESKTOP = C.SDL_WINDOW_FULLSCREEN_DESKTOP
-	WINDOW_FOREIGN            = C.SDL_WINDOW_FOREIGN
-	WINDOW_ALLOW_HIGHDPI      = C.SDL_WINDOW_ALLOW_HIGHDPI
+	WINDOW_FULLSCREEN         = C.SDL_WINDOW_FULLSCREEN         // fullscreen window
+	WINDOW_OPENGL             = C.SDL_WINDOW_OPENGL             // window usable with OpenGL context
+	WINDOW_SHOWN              = C.SDL_WINDOW_SHOWN              // window is visible
+	WINDOW_HIDDEN             = C.SDL_WINDOW_HIDDEN             // window is not visible
+	WINDOW_BORDERLESS         = C.SDL_WINDOW_BORDERLESS         // no window decoration
+	WINDOW_RESIZABLE          = C.SDL_WINDOW_RESIZABLE          // window can be resized
+	WINDOW_MINIMIZED          = C.SDL_WINDOW_MINIMIZED          // window is minimized
+	WINDOW_MAXIMIZED          = C.SDL_WINDOW_MAXIMIZED          // window is maximized
+	WINDOW_INPUT_GRABBED      = C.SDL_WINDOW_INPUT_GRABBED      // window has grabbed input focus
+	WINDOW_INPUT_FOCUS        = C.SDL_WINDOW_INPUT_FOCUS        // window has input focus
+	WINDOW_MOUSE_FOCUS        = C.SDL_WINDOW_MOUSE_FOCUS        // window has mouse focus
+	WINDOW_FULLSCREEN_DESKTOP = C.SDL_WINDOW_FULLSCREEN_DESKTOP // fullscreen window at the current desktop resolution
+	WINDOW_FOREIGN            = C.SDL_WINDOW_FOREIGN            // window not created by SDL
+	WINDOW_ALLOW_HIGHDPI      = C.SDL_WINDOW_ALLOW_HIGHDPI      // window should be created in high-DPI mode if supported (>= SDL 2.0.1)
 )
 
+// An enumeration of window events.
+// (https://wiki.libsdl.org/SDL_WindowEventID)
 const (
-	WINDOWEVENT_NONE         = C.SDL_WINDOWEVENT_NONE
-	WINDOWEVENT_SHOWN        = C.SDL_WINDOWEVENT_SHOWN
-	WINDOWEVENT_HIDDEN       = C.SDL_WINDOWEVENT_HIDDEN
-	WINDOWEVENT_EXPOSED      = C.SDL_WINDOWEVENT_EXPOSED
-	WINDOWEVENT_MOVED        = C.SDL_WINDOWEVENT_MOVED
-	WINDOWEVENT_RESIZED      = C.SDL_WINDOWEVENT_RESIZED
-	WINDOWEVENT_SIZE_CHANGED = C.SDL_WINDOWEVENT_SIZE_CHANGED
-	WINDOWEVENT_MINIMIZED    = C.SDL_WINDOWEVENT_MINIMIZED
-	WINDOWEVENT_MAXIMIZED    = C.SDL_WINDOWEVENT_MAXIMIZED
-	WINDOWEVENT_RESTORED     = C.SDL_WINDOWEVENT_RESTORED
-	WINDOWEVENT_ENTER        = C.SDL_WINDOWEVENT_ENTER
-	WINDOWEVENT_LEAVE        = C.SDL_WINDOWEVENT_LEAVE
-	WINDOWEVENT_FOCUS_GAINED = C.SDL_WINDOWEVENT_FOCUS_GAINED
-	WINDOWEVENT_FOCUS_LOST   = C.SDL_WINDOWEVENT_FOCUS_LOST
-	WINDOWEVENT_CLOSE        = C.SDL_WINDOWEVENT_CLOSE
+	WINDOWEVENT_NONE         = C.SDL_WINDOWEVENT_NONE         // (never used)
+	WINDOWEVENT_SHOWN        = C.SDL_WINDOWEVENT_SHOWN        // window has been shown
+	WINDOWEVENT_HIDDEN       = C.SDL_WINDOWEVENT_HIDDEN       // window has been hidden
+	WINDOWEVENT_EXPOSED      = C.SDL_WINDOWEVENT_EXPOSED      // window has been exposed and should be redrawn
+	WINDOWEVENT_MOVED        = C.SDL_WINDOWEVENT_MOVED        // window has been moved to data1, data2
+	WINDOWEVENT_RESIZED      = C.SDL_WINDOWEVENT_RESIZED      // window has been resized to data1xdata2; this event is always preceded by WINDOWEVENT_SIZE_CHANGED
+	WINDOWEVENT_SIZE_CHANGED = C.SDL_WINDOWEVENT_SIZE_CHANGED // window size has changed, either as a result of an API call or through the system or user changing the window size; this event is followed by WINDOWEVENT_RESIZED if the size was changed by an external event, i.e. the user or the window manager
+	WINDOWEVENT_MINIMIZED    = C.SDL_WINDOWEVENT_MINIMIZED    // window has been minimized
+	WINDOWEVENT_MAXIMIZED    = C.SDL_WINDOWEVENT_MAXIMIZED    // window has been maximized
+	WINDOWEVENT_RESTORED     = C.SDL_WINDOWEVENT_RESTORED     // window has been restored to normal size and position
+	WINDOWEVENT_ENTER        = C.SDL_WINDOWEVENT_ENTER        // window has gained mouse focus
+	WINDOWEVENT_LEAVE        = C.SDL_WINDOWEVENT_LEAVE        // window has lost mouse focus
+	WINDOWEVENT_FOCUS_GAINED = C.SDL_WINDOWEVENT_FOCUS_GAINED // window has gained keyboard focus
+	WINDOWEVENT_FOCUS_LOST   = C.SDL_WINDOWEVENT_FOCUS_LOST   // window has lost keyboard focus
+	WINDOWEVENT_CLOSE        = C.SDL_WINDOWEVENT_CLOSE        // the window manager requests that the window be closed
 )
 
+// Window position flags.
+// (https://wiki.libsdl.org/SDL_CreateWindow)
 const (
-	WINDOWPOS_UNDEFINED_MASK = C.SDL_WINDOWPOS_UNDEFINED_MASK
-	WINDOWPOS_UNDEFINED      = C.SDL_WINDOWPOS_UNDEFINED
-	WINDOWPOS_CENTERED_MASK  = C.SDL_WINDOWPOS_CENTERED_MASK
-	WINDOWPOS_CENTERED       = C.SDL_WINDOWPOS_CENTERED
+	WINDOWPOS_UNDEFINED_MASK = C.SDL_WINDOWPOS_UNDEFINED_MASK // used to indicate that you don't care what the window position is
+	WINDOWPOS_UNDEFINED      = C.SDL_WINDOWPOS_UNDEFINED      // used to indicate that you don't care what the window position is
+	WINDOWPOS_CENTERED_MASK  = C.SDL_WINDOWPOS_CENTERED_MASK  // used to indicate that the window position should be centered
+	WINDOWPOS_CENTERED       = C.SDL_WINDOWPOS_CENTERED       // used to indicate that the window position should be centered
 )
 
+// An enumeration of message box flags (e.g. if supported message box will display warning icon).
+// (https://wiki.libsdl.org/SDL_MessageBoxFlags)
 const (
-	MESSAGEBOX_ERROR       = C.SDL_MESSAGEBOX_ERROR
-	MESSAGEBOX_WARNING     = C.SDL_MESSAGEBOX_WARNING
-	MESSAGEBOX_INFORMATION = C.SDL_MESSAGEBOX_INFORMATION
+	MESSAGEBOX_ERROR       = C.SDL_MESSAGEBOX_ERROR       // error dialog
+	MESSAGEBOX_WARNING     = C.SDL_MESSAGEBOX_WARNING     // warning dialog
+	MESSAGEBOX_INFORMATION = C.SDL_MESSAGEBOX_INFORMATION // informational dialog
 )
 
+// Flags for MessageBoxButtonData.
 const (
-	MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT = C.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT
-	MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT = C.SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
+	MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT = C.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT // marks the default button when return is hit
+	MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT = C.SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT // marks the default button when escape is hit
 )
 
+// OpenGL configuration attributes.
+// (https://wiki.libsdl.org/SDL_GL_SetAttribute)
 const (
-	GL_RED_SIZE                   = C.SDL_GL_RED_SIZE
-	GL_GREEN_SIZE                 = C.SDL_GL_GREEN_SIZE
-	GL_BLUE_SIZE                  = C.SDL_GL_BLUE_SIZE
-	GL_ALPHA_SIZE                 = C.SDL_GL_ALPHA_SIZE
-	GL_BUFFER_SIZE                = C.SDL_GL_BUFFER_SIZE
-	GL_DOUBLEBUFFER               = C.SDL_GL_DOUBLEBUFFER
-	GL_DEPTH_SIZE                 = C.SDL_GL_DEPTH_SIZE
-	GL_STENCIL_SIZE               = C.SDL_GL_STENCIL_SIZE
-	GL_ACCUM_RED_SIZE             = C.SDL_GL_ACCUM_RED_SIZE
-	GL_ACCUM_GREEN_SIZE           = C.SDL_GL_ACCUM_GREEN_SIZE
-	GL_ACCUM_BLUE_SIZE            = C.SDL_GL_ACCUM_BLUE_SIZE
-	GL_ACCUM_ALPHA_SIZE           = C.SDL_GL_ALPHA_SIZE
-	GL_STEREO                     = C.SDL_GL_STEREO
-	GL_MULTISAMPLEBUFFERS         = C.SDL_GL_MULTISAMPLEBUFFERS
-	GL_MULTISAMPLESAMPLES         = C.SDL_GL_MULTISAMPLESAMPLES
-	GL_ACCELERATED_VISUAL         = C.SDL_GL_ACCELERATED_VISUAL
-	GL_RETAINED_BACKING           = C.SDL_GL_RETAINED_BACKING
-	GL_CONTEXT_MAJOR_VERSION      = C.SDL_GL_CONTEXT_MAJOR_VERSION
-	GL_CONTEXT_MINOR_VERSION      = C.SDL_GL_CONTEXT_MINOR_VERSION
-	GL_CONTEXT_EGL                = C.SDL_GL_CONTEXT_EGL
-	GL_CONTEXT_FLAGS              = C.SDL_GL_CONTEXT_FLAGS
-	GL_CONTEXT_PROFILE_MASK       = C.SDL_GL_CONTEXT_PROFILE_MASK
-	GL_SHARE_WITH_CURRENT_CONTEXT = C.SDL_GL_SHARE_WITH_CURRENT_CONTEXT
+	GL_RED_SIZE                   = C.SDL_GL_RED_SIZE                   // the minimum number of bits for the red channel of the color buffer; defaults to 3
+	GL_GREEN_SIZE                 = C.SDL_GL_GREEN_SIZE                 // the minimum number of bits for the green channel of the color buffer; defaults to 3
+	GL_BLUE_SIZE                  = C.SDL_GL_BLUE_SIZE                  // the minimum number of bits for the blue channel of the color buffer; defaults to 2
+	GL_ALPHA_SIZE                 = C.SDL_GL_ALPHA_SIZE                 // the minimum number of bits for the alpha channel of the color buffer; defaults to 0
+	GL_BUFFER_SIZE                = C.SDL_GL_BUFFER_SIZE                // the minimum number of bits for frame buffer size; defaults to 0
+	GL_DOUBLEBUFFER               = C.SDL_GL_DOUBLEBUFFER               // whether the output is single or double buffered; defaults to double buffering on
+	GL_DEPTH_SIZE                 = C.SDL_GL_DEPTH_SIZE                 // the minimum number of bits in the depth buffer; defaults to 16
+	GL_STENCIL_SIZE               = C.SDL_GL_STENCIL_SIZE               // the minimum number of bits in the stencil buffer; defaults to 0
+	GL_ACCUM_RED_SIZE             = C.SDL_GL_ACCUM_RED_SIZE             // the minimum number of bits for the red channel of the accumulation buffer; defaults to 0
+	GL_ACCUM_GREEN_SIZE           = C.SDL_GL_ACCUM_GREEN_SIZE           // the minimum number of bits for the green channel of the accumulation buffer; defaults to 0
+	GL_ACCUM_BLUE_SIZE            = C.SDL_GL_ACCUM_BLUE_SIZE            // the minimum number of bits for the blue channel of the accumulation buffer; defaults to 0
+	GL_ACCUM_ALPHA_SIZE           = C.SDL_GL_ALPHA_SIZE                 // the minimum number of bits for the alpha channel of the accumulation buffer; defaults to 0
+	GL_STEREO                     = C.SDL_GL_STEREO                     // whether the output is stereo 3D; defaults to off
+	GL_MULTISAMPLEBUFFERS         = C.SDL_GL_MULTISAMPLEBUFFERS         // the number of buffers used for multisample anti-aliasing; defaults to 0; see Remarks for details
+	GL_MULTISAMPLESAMPLES         = C.SDL_GL_MULTISAMPLESAMPLES         // the number of samples used around the current pixel used for multisample anti-aliasing; defaults to 0; see Remarks for details
+	GL_ACCELERATED_VISUAL         = C.SDL_GL_ACCELERATED_VISUAL         // set to 1 to require hardware acceleration, set to 0 to force software rendering; defaults to allow either
+	GL_RETAINED_BACKING           = C.SDL_GL_RETAINED_BACKING           // not used (deprecated)
+	GL_CONTEXT_MAJOR_VERSION      = C.SDL_GL_CONTEXT_MAJOR_VERSION      // OpenGL context major version
+	GL_CONTEXT_MINOR_VERSION      = C.SDL_GL_CONTEXT_MINOR_VERSION      // OpenGL context minor version
+	GL_CONTEXT_EGL                = C.SDL_GL_CONTEXT_EGL                // not used (deprecated)
+	GL_CONTEXT_FLAGS              = C.SDL_GL_CONTEXT_FLAGS              // some combination of 0 or more of elements of the GLcontextFlag enumeration; defaults to 0 (https://wiki.libsdl.org/SDL_GLcontextFlag)
+	GL_CONTEXT_PROFILE_MASK       = C.SDL_GL_CONTEXT_PROFILE_MASK       // type of GL context (Core, Compatibility, ES); default value depends on platform (https://wiki.libsdl.org/SDL_GLprofile)
+	GL_SHARE_WITH_CURRENT_CONTEXT = C.SDL_GL_SHARE_WITH_CURRENT_CONTEXT // OpenGL context sharing; defaults to 0
 )
 
+// An enumeration of OpenGL profiles.
+// (https://wiki.libsdl.org/SDL_GLprofile)
 const (
-	GL_CONTEXT_PROFILE_CORE          = C.SDL_GL_CONTEXT_PROFILE_CORE
-	GL_CONTEXT_PROFILE_COMPATIBILITY = C.SDL_GL_CONTEXT_PROFILE_COMPATIBILITY
-	GL_CONTEXT_PROFILE_ES            = C.SDL_GL_CONTEXT_PROFILE_ES
+	GL_CONTEXT_PROFILE_CORE          = C.SDL_GL_CONTEXT_PROFILE_CORE          // OpenGL core profile - deprecated functions are disabled
+	GL_CONTEXT_PROFILE_COMPATIBILITY = C.SDL_GL_CONTEXT_PROFILE_COMPATIBILITY // OpenGL compatibility profile - deprecated functions are allowed
+	GL_CONTEXT_PROFILE_ES            = C.SDL_GL_CONTEXT_PROFILE_ES            // OpenGL ES profile - only a subset of the base OpenGL functionality is available
 )
 
+// An enumeration of OpenGL context configuration flags.
+// (https://wiki.libsdl.org/SDL_GLcontextFlag)
 const (
-	GL_CONTEXT_DEBUG_FLAG              = C.SDL_GL_CONTEXT_DEBUG_FLAG
-	GL_CONTEXT_FORWARD_COMPATIBLE_FLAG = C.SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG
-	GL_CONTEXT_ROBUST_ACCESS_FLAG      = C.SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG
-	GL_CONTEXT_RESET_ISOLATION_FLAG    = C.SDL_GL_CONTEXT_RESET_ISOLATION_FLAG
+	GL_CONTEXT_DEBUG_FLAG              = C.SDL_GL_CONTEXT_DEBUG_FLAG              // intended to put the GL into a "debug" mode which might offer better developer insights, possibly at a loss of performance
+	GL_CONTEXT_FORWARD_COMPATIBLE_FLAG = C.SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG // intended to put the GL into a "forward compatible" mode, which means that no deprecated functionality will be supported, possibly at a gain in performance, and only applies to GL 3.0 and later contexts
+	GL_CONTEXT_ROBUST_ACCESS_FLAG      = C.SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG      // intended to require a GL context that supports the GL_ARB_robustness extension--a mode that offers a few APIs that are safer than the usual defaults (think snprintf() vs sprintf())
+	GL_CONTEXT_RESET_ISOLATION_FLAG    = C.SDL_GL_CONTEXT_RESET_ISOLATION_FLAG    // intended to require the GL to make promises about what to do in the face of driver or hardware failure
 )
 
-// DisplayMode (https://wiki.libsdl.org/SDL_DisplayMode)
+// DisplayMode contains the description of a display mode.
+// (https://wiki.libsdl.org/SDL_DisplayMode)
 type DisplayMode struct {
-	Format      uint32
-	W           int32
-	H           int32
-	RefreshRate int32
-	DriverData  unsafe.Pointer
+	Format      uint32         // one of the PixelFormatEnum values (https://wiki.libsdl.org/SDL_PixelFormatEnum)
+	W           int32          // width, in screen coordinates
+	H           int32          // height, in screen coordinates
+	RefreshRate int32          // refresh rate (in Hz), or 0 for unspecified
+	DriverData  unsafe.Pointer // driver-specific data, initialize to 0
 }
 type cDisplayMode C.SDL_DisplayMode
 
+// Window is a type used to identify a window.
 type Window C.SDL_Window
+
+// GLContext is an opaque handle to an OpenGL context.
 type GLContext C.SDL_GLContext
 
-// GLattr (https://wiki.libsdl.org/SDL_GLattr)
+// GLattr is an OpenGL configuration attribute.
+//(https://wiki.libsdl.org/SDL_GLattr)
 type GLattr C.SDL_GLattr
 
-// MessageBoxColor (https://wiki.libsdl.org/SDL_MessageBoxColor)
+// MessageBoxColor contains RGB value used in an MessageBoxColorScheme.
+// (https://wiki.libsdl.org/SDL_MessageBoxColor)
 type MessageBoxColor struct {
-	R uint8
-	G uint8
-	B uint8
+	R uint8 // the red component in the range 0-255
+	G uint8 // the green component in the range 0-255
+	B uint8 // the blue component in the range 0-255
 }
 type cMessageBoxColor C.SDL_MessageBoxColor
 
-// MessageBoxColorScheme (https://wiki.libsdl.org/SDL_MessageBoxColorScheme)
+// MessageBoxColorScheme contains a set of colors to use for message box dialogs.
+// (https://wiki.libsdl.org/SDL_MessageBoxColorScheme)
 type MessageBoxColorScheme struct {
-	Colors [5]MessageBoxColor
+	Colors [5]MessageBoxColor // background, text, button border, button background, button selected
 }
 type cMessageBoxColorScheme C.SDL_MessageBoxColorScheme
 
-// MessageBoxButtonData (https://wiki.libsdl.org/SDL_MessageBoxButtonData)
+// MessageBoxButtonData contains individual button data for a message box.
+// (https://wiki.libsdl.org/SDL_MessageBoxButtonData)
 type MessageBoxButtonData struct {
-	Flags    uint32
-	ButtonId int32
-	Text     string
+	Flags    uint32 // MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
+	ButtonID int32  // user defined button id (value returned via ShowMessageBox())
+	Text     string // the UTF-8 button text
 }
 
-// MessageBoxData (https://wiki.libsdl.org/SDL_MessageBoxData)
+// MessageBoxData contains title, text, window and other data for a message box.
+// (https://wiki.libsdl.org/SDL_MessageBoxData)
 type MessageBoxData struct {
-	Flags       uint32
-	Window      *Window
-	Title       string
-	Message     string
-	NumButtons  int32
-	Buttons     []MessageBoxButtonData
-	ColorScheme *MessageBoxColorScheme
+	Flags       uint32                 // MESSAGEBOX_ERROR, MESSAGEBOX_WARNING, MESSAGEBOX_INFORMATION
+	Window      *Window                // an parent window, can be nil
+	Title       string                 // an UTF-8 title
+	Message     string                 // an UTF-8 message text
+	NumButtons  int32                  // the number of buttons
+	Buttons     []MessageBoxButtonData // an array of MessageBoxButtonData with size of numbuttons
+	ColorScheme *MessageBoxColorScheme // a MessageBoxColorScheme, can be nil to use system settings
 }
 
 type cMessageBoxData struct {
@@ -177,8 +201,8 @@ type cMessageBoxData struct {
 	ColorScheme *C.SDL_MessageBoxColorScheme
 }
 
-func (w *Window) cptr() *C.SDL_Window {
-	return (*C.SDL_Window)(unsafe.Pointer(w))
+func (window *Window) cptr() *C.SDL_Window {
+	return (*C.SDL_Window)(unsafe.Pointer(window))
 }
 
 func (dm *DisplayMode) cptr() *C.SDL_DisplayMode {
@@ -205,12 +229,14 @@ func (attr GLattr) c() C.SDL_GLattr {
 	return C.SDL_GLattr(attr)
 }
 
-// GetDisplayName (https://wiki.libsdl.org/SDL_GetDisplayName)
+// GetDisplayName returns the name of a display in UTF-8 encoding.
+// (https://wiki.libsdl.org/SDL_GetDisplayName)
 func GetDisplayName(displayIndex int) string {
 	return C.GoString(C.SDL_GetDisplayName(C.int(displayIndex)))
 }
 
-// GetNumVideoDisplays (https://wiki.libsdl.org/SDL_GetNumVideoDisplays)
+// GetNumVideoDisplays returns the number of available video displays.
+// (https://wiki.libsdl.org/SDL_GetNumVideoDisplays)
 func GetNumVideoDisplays() (int, error) {
 	n := int(C.SDL_GetNumVideoDisplays())
 	if n < 0 {
@@ -219,7 +245,8 @@ func GetNumVideoDisplays() (int, error) {
 	return n, nil
 }
 
-// GetNumVideoDrivers (https://wiki.libsdl.org/SDL_GetNumVideoDrivers)
+// GetNumVideoDrivers returns the number of video drivers compiled into SDL.
+// (https://wiki.libsdl.org/SDL_GetNumVideoDrivers)
 func GetNumVideoDrivers() (int, error) {
 	n := int(C.SDL_GetNumVideoDrivers())
 	if n < 0 {
@@ -228,12 +255,14 @@ func GetNumVideoDrivers() (int, error) {
 	return n, nil
 }
 
-// GetVideoDriver (https://wiki.libsdl.org/SDL_GetVideoDriver)
+// GetVideoDriver returns the name of a built in video driver.
+// (https://wiki.libsdl.org/SDL_GetVideoDriver)
 func GetVideoDriver(index int) string {
 	return string(C.GoString(C.SDL_GetVideoDriver(C.int(index))))
 }
 
-// VideoInit (https://wiki.libsdl.org/SDL_VideoInit)
+// VideoInit initializes the video subsystem, optionally specifying a video driver.
+// (https://wiki.libsdl.org/SDL_VideoInit)
 func VideoInit(driverName string) error {
 	if C.SDL_VideoInit(C.CString(driverName)) != 0 {
 		return GetError()
@@ -241,17 +270,20 @@ func VideoInit(driverName string) error {
 	return nil
 }
 
-// VideoQuit (https://wiki.libsdl.org/SDL_VideoQuit)
+// VideoQuit shuts down the video subsystem, if initialized with VideoInit().
+// (https://wiki.libsdl.org/SDL_VideoQuit)
 func VideoQuit() {
 	C.SDL_VideoQuit()
 }
 
-// GetCurrentVideoDriver (https://wiki.libsdl.org/SDL_GetCurrentVideoDriver)
+// GetCurrentVideoDriver returns the name of the currently initialized video driver.
+// (https://wiki.libsdl.org/SDL_GetCurrentVideoDriver)
 func GetCurrentVideoDriver() string {
 	return string(C.GoString(C.SDL_GetCurrentVideoDriver()))
 }
 
-// GetNumDisplayModes (https://wiki.libsdl.org/SDL_GetNumDisplayModes)
+// GetNumDisplayModes returns the number of available display modes.
+// (https://wiki.libsdl.org/SDL_GetNumDisplayModes)
 func GetNumDisplayModes(displayIndex int) (int, error) {
 	n := int(C.SDL_GetNumDisplayModes(C.int(displayIndex)))
 	if n < 0 {
@@ -260,7 +292,8 @@ func GetNumDisplayModes(displayIndex int) (int, error) {
 	return n, nil
 }
 
-// GetDisplayBounds (https://wiki.libsdl.org/SDL_GetDisplayBounds)
+// GetDisplayBounds returns the desktop area represented by a display, with the primary display located at 0,0.
+// (https://wiki.libsdl.org/SDL_GetDisplayBounds)
 func GetDisplayBounds(displayIndex int, rect *Rect) error {
 	if C.SDL_GetDisplayBounds(C.int(displayIndex), rect.cptr()) != 0 {
 		return GetError()
@@ -268,7 +301,8 @@ func GetDisplayBounds(displayIndex int, rect *Rect) error {
 	return nil
 }
 
-// GetDisplayMode (https://wiki.libsdl.org/SDL_GetDisplayMode)
+// GetDisplayMode retruns information about a specific display mode.
+// (https://wiki.libsdl.org/SDL_GetDisplayMode)
 func GetDisplayMode(displayIndex int, modeIndex int, mode *DisplayMode) error {
 	if C.SDL_GetDisplayMode(C.int(displayIndex), C.int(modeIndex), mode.cptr()) != 0 {
 		return GetError()
@@ -276,7 +310,8 @@ func GetDisplayMode(displayIndex int, modeIndex int, mode *DisplayMode) error {
 	return nil
 }
 
-// GetDesktopDisplayMode (https://wiki.libsdl.org/SDL_GetDesktopDisplayMode)
+// GetDesktopDisplayMode returns information about the desktop display mode.
+// (https://wiki.libsdl.org/SDL_GetDesktopDisplayMode)
 func GetDesktopDisplayMode(displayIndex int, mode *DisplayMode) error {
 	if C.SDL_GetDesktopDisplayMode(C.int(displayIndex), mode.cptr()) != 0 {
 		return GetError()
@@ -284,7 +319,8 @@ func GetDesktopDisplayMode(displayIndex int, mode *DisplayMode) error {
 	return nil
 }
 
-// GetCurrentDisplayMode (https://wiki.libsdl.org/SDL_GetCurrentDisplayMode)
+// GetCurrentDisplayMode returns information about the current display mode.
+// (https://wiki.libsdl.org/SDL_GetCurrentDisplayMode)
 func GetCurrentDisplayMode(displayIndex int, mode *DisplayMode) error {
 	if C.SDL_GetCurrentDisplayMode(C.int(displayIndex), mode.cptr()) != 0 {
 		return GetError()
@@ -292,7 +328,8 @@ func GetCurrentDisplayMode(displayIndex int, mode *DisplayMode) error {
 	return nil
 }
 
-// GetClosestDisplayMode (https://wiki.libsdl.org/SDL_GetClosestDisplayMode)
+// GetClosestDisplayMode returns the closest match to the requested display mode.
+// (https://wiki.libsdl.org/SDL_GetClosestDisplayMode)
 func GetClosestDisplayMode(displayIndex int, mode *DisplayMode, closest *DisplayMode) (*DisplayMode, error) {
 	m := (*DisplayMode)(unsafe.Pointer((C.SDL_GetClosestDisplayMode(C.int(displayIndex), mode.cptr(), closest.cptr()))))
 	if m == nil {
@@ -301,7 +338,8 @@ func GetClosestDisplayMode(displayIndex int, mode *DisplayMode, closest *Display
 	return m, nil
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowDisplayIndex)
+// GetDisplayIndex returns the index of the display associated with the window.
+// (https://wiki.libsdl.org/SDL_GetWindowDisplayIndex)
 func (window *Window) GetDisplayIndex() (int, error) {
 	i := int(C.SDL_GetWindowDisplayIndex(window.cptr()))
 	if i < 0 {
@@ -310,7 +348,8 @@ func (window *Window) GetDisplayIndex() (int, error) {
 	return i, nil
 }
 
-// Window (https://wiki.libsdl.org/SDL_SetWindowDisplayMode)
+// SetDisplayMode sets the display mode to use when the window is visible at fullscreen.
+// (https://wiki.libsdl.org/SDL_SetWindowDisplayMode)
 func (window *Window) SetDisplayMode(mode *DisplayMode) error {
 	if C.SDL_SetWindowDisplayMode(window.cptr(), mode.cptr()) != 0 {
 		return GetError()
@@ -318,7 +357,8 @@ func (window *Window) SetDisplayMode(mode *DisplayMode) error {
 	return nil
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowDisplayMode)
+// GetDisplayMode fills in information about the display mode to use when the window is visible at fullscreen.
+// (https://wiki.libsdl.org/SDL_GetWindowDisplayMode)
 func (window *Window) GetDisplayMode(mode *DisplayMode) error {
 	if C.SDL_GetWindowDisplayMode(window.cptr(), mode.cptr()) != 0 {
 		return GetError()
@@ -326,7 +366,8 @@ func (window *Window) GetDisplayMode(mode *DisplayMode) error {
 	return nil
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowPixelFormat)
+// GetPixelFormat returns the pixel format associated with the window.
+// (https://wiki.libsdl.org/SDL_GetWindowPixelFormat)
 func (window *Window) GetPixelFormat() (uint32, error) {
 	f := (uint32)(C.SDL_GetWindowPixelFormat(window.cptr()))
 	if f == PIXELFORMAT_UNKNOWN {
@@ -335,7 +376,8 @@ func (window *Window) GetPixelFormat() (uint32, error) {
 	return f, nil
 }
 
-// CreateWindow (https://wiki.libsdl.org/SDL_CreateWindow)
+// CreateWindow creates a window with the specified position, dimensions, and flags.
+// (https://wiki.libsdl.org/SDL_CreateWindow)
 func CreateWindow(title string, x int, y int, w int, h int, flags uint32) (*Window, error) {
 	_title := C.CString(title)
 	var _window = C.SDL_CreateWindow(_title, C.int(x), C.int(y), C.int(w), C.int(h), C.Uint32(flags))
@@ -345,7 +387,8 @@ func CreateWindow(title string, x int, y int, w int, h int, flags uint32) (*Wind
 	return (*Window)(unsafe.Pointer(_window)), nil
 }
 
-// CreateWindowFrom (https://wiki.libsdl.org/SDL_CreateWindowFrom)
+// CreateWindowFrom creates an SDL window from an existing native window.
+// (https://wiki.libsdl.org/SDL_CreateWindowFrom)
 func CreateWindowFrom(data unsafe.Pointer) (*Window, error) {
 	_window := C.SDL_CreateWindowFrom(data)
 	if _window == nil {
@@ -354,17 +397,20 @@ func CreateWindowFrom(data unsafe.Pointer) (*Window, error) {
 	return (*Window)(unsafe.Pointer(_window)), nil
 }
 
-// Window (https://wiki.libsdl.org/SDL_DestroyWindow)
+// Destroy destroys the window.
+// (https://wiki.libsdl.org/SDL_DestroyWindow)
 func (window *Window) Destroy() {
 	C.SDL_DestroyWindow(window.cptr())
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowID)
+// GetID returns the numeric ID of the window, for logging purposes.
+//  (https://wiki.libsdl.org/SDL_GetWindowID)
 func (window *Window) GetID() uint32 {
 	return (uint32)(C.SDL_GetWindowID(window.cptr()))
 }
 
-// GetWindowFromID (https://wiki.libsdl.org/SDL_GetWindowFromID)
+// GetWindowFromID returns a window from a stored ID.
+// (https://wiki.libsdl.org/SDL_GetWindowFromID)
 func GetWindowFromID(id uint32) (*Window, error) {
 	_window := C.SDL_GetWindowFromID(C.Uint32(id))
 	if _window == nil {
@@ -373,132 +419,155 @@ func GetWindowFromID(id uint32) (*Window, error) {
 	return (*Window)(unsafe.Pointer((_window))), nil
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowFlags)
+// GetFlags returns the window flags.
+// (https://wiki.libsdl.org/SDL_GetWindowFlags)
 func (window *Window) GetFlags() uint32 {
 	return (uint32)(C.SDL_GetWindowFlags(window.cptr()))
 }
 
-// Window (https://wiki.libsdl.org/SDL_SetWindowTitle)
+// SetTitle sets the title of the window.
+// (https://wiki.libsdl.org/SDL_SetWindowTitle)
 func (window *Window) SetTitle(title string) {
 	_title := C.CString(title)
 	C.SDL_SetWindowTitle(window.cptr(), _title)
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowTitle)
+// GetTitle returns the title of the window.
+// (https://wiki.libsdl.org/SDL_GetWindowTitle)
 func (window *Window) GetTitle() string {
 	return string(C.GoString(C.SDL_GetWindowTitle(window.cptr())))
 }
 
-// Window (https://wiki.libsdl.org/SDL_SetWindowIcon)
+// SetIcon sets the icon for the window.
+// (https://wiki.libsdl.org/SDL_SetWindowIcon)
 func (window *Window) SetIcon(icon *Surface) {
 	C.SDL_SetWindowIcon(window.cptr(), icon.cptr())
 }
 
-// Window (https://wiki.libsdl.org/SDL_SetWindowData)
+// SetData associates an arbitrary named pointer with the window.
+// (https://wiki.libsdl.org/SDL_SetWindowData)
 func (window *Window) SetData(name string, userdata unsafe.Pointer) unsafe.Pointer {
 	_name := C.CString(name)
 	return unsafe.Pointer(C.SDL_SetWindowData(window.cptr(), _name, userdata))
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowData)
+// GetData returns the data pointer associated with the window.
+// (https://wiki.libsdl.org/SDL_GetWindowData)
 func (window *Window) GetData(name string) unsafe.Pointer {
 	_name := C.CString(name)
 	return unsafe.Pointer(C.SDL_GetWindowData(window.cptr(), _name))
 }
 
-// Window (https://wiki.libsdl.org/SDL_SetWindowPosition)
+// SetPosition sets the position of the window.
+// (https://wiki.libsdl.org/SDL_SetWindowPosition)
 func (window *Window) SetPosition(x int, y int) {
 	C.SDL_SetWindowPosition(window.cptr(), C.int(x), C.int(y))
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowPosition)
+// GetPosition returns the position of the window.
+// (https://wiki.libsdl.org/SDL_GetWindowPosition)
 func (window *Window) GetPosition() (x, y int) {
 	var _x, _y C.int
 	C.SDL_GetWindowPosition(window.cptr(), &_x, &_y)
 	return int(_x), int(_y)
 }
 
-// Window (https://wiki.libsdl.org/SDL_SetWindowResizable)
+// SetResizable sets the user-resizable state of the window.
+// (https://wiki.libsdl.org/SDL_SetWindowResizable)
 func (window *Window) SetResizable(resizable bool) {
-    var _resizable C.SDL_bool = C.SDL_FALSE
-    if resizable {
-        _resizable = C.SDL_TRUE
-    }
-    C.SDL_SetWindowResizable(window.cptr(), _resizable)
+	var _resizable C.SDL_bool = C.SDL_FALSE
+	if resizable {
+		_resizable = C.SDL_TRUE
+	}
+	C.SDL_SetWindowResizable(window.cptr(), _resizable)
 }
 
-// Window (https://wiki.libsdl.org/SDL_SetWindowSize)
+// SetSize sets the size of the window's client area.
+// (https://wiki.libsdl.org/SDL_SetWindowSize)
 func (window *Window) SetSize(w int, h int) {
 	C.SDL_SetWindowSize(window.cptr(), C.int(w), C.int(h))
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowSize)
+// GetSize returns the size of the window's client area.
+// (https://wiki.libsdl.org/SDL_GetWindowSize)
 func (window *Window) GetSize() (w, h int) {
 	var _w, _h C.int
 	C.SDL_GetWindowSize(window.cptr(), &_w, &_h)
 	return int(_w), int(_h)
 }
 
-// Window (https://wiki.libsdl.org/SDL_SetWindowMinimumSize)
+// SetMinimumSize sets the minimum size of the window's client area.
+// (https://wiki.libsdl.org/SDL_SetWindowMinimumSize)
 func (window *Window) SetMinimumSize(minW int, minH int) {
 	C.SDL_SetWindowMinimumSize(window.cptr(), C.int(minW), C.int(minH))
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowMinimumSize)
+// GetMinimumSize returns the minimum size of the window's client area.
+// (https://wiki.libsdl.org/SDL_GetWindowMinimumSize)
 func (window *Window) GetMinimumSize() (w, h int) {
 	var _w, _h C.int
 	C.SDL_GetWindowMinimumSize(window.cptr(), &_w, &_h)
 	return int(_w), int(_h)
 }
 
-// Window (https://wiki.libsdl.org/SDL_SetWindowMaximumSize)
+// SetMaximumSize sets the maximum size of the window's client area.
+// (https://wiki.libsdl.org/SDL_SetWindowMaximumSize)
 func (window *Window) SetMaximumSize(maxW int, maxH int) {
 	C.SDL_SetWindowMaximumSize(window.cptr(), C.int(maxW), C.int(maxH))
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowMaximumSize)
+// GetMaximumSize returns the maximum size of the window's client area.
+// (https://wiki.libsdl.org/SDL_GetWindowMaximumSize)
 func (window *Window) GetMaximumSize() (w, h int) {
 	var _w, _h C.int
 	C.SDL_GetWindowMaximumSize(window.cptr(), &_w, &_h)
 	return int(_w), int(_h)
 }
 
-// Window (https://wiki.libsdl.org/SDL_SetWindowBordered)
+// SetBordered sets the border state of the window.
+// (https://wiki.libsdl.org/SDL_SetWindowBordered)
 func (window *Window) SetBordered(bordered bool) {
 	C.SDL_SetWindowBordered(window.cptr(), (C.SDL_bool)(Btoi(bordered)))
 }
 
-// Window (https://wiki.libsdl.org/SDL_ShowWindow)
+// Show shows the window.
+// (https://wiki.libsdl.org/SDL_ShowWindow)
 func (window *Window) Show() {
 	C.SDL_ShowWindow(window.cptr())
 }
 
-// Window (https://wiki.libsdl.org/SDL_HideWindow)
+// Hide hides the window.
+// (https://wiki.libsdl.org/SDL_HideWindow)
 func (window *Window) Hide() {
 	C.SDL_HideWindow(window.cptr())
 }
 
-// Window (https://wiki.libsdl.org/SDL_RaiseWindow)
+// Raise raises the window above other windows and set the input focus.
+// (https://wiki.libsdl.org/SDL_RaiseWindow)
 func (window *Window) Raise() {
 	C.SDL_RaiseWindow(window.cptr())
 }
 
-// Window (https://wiki.libsdl.org/SDL_MaximizeWindow)
+// Maximize makes the window as large as possible.
+// (https://wiki.libsdl.org/SDL_MaximizeWindow)
 func (window *Window) Maximize() {
 	C.SDL_MaximizeWindow(window.cptr())
 }
 
-// Window (https://wiki.libsdl.org/SDL_MinimizeWindow)
+// Minimize minimizes the window to an iconic representation.
+// (https://wiki.libsdl.org/SDL_MinimizeWindow)
 func (window *Window) Minimize() {
 	C.SDL_MinimizeWindow(window.cptr())
 }
 
-// Window (https://wiki.libsdl.org/SDL_RestoreWindow)
+// Restore restores the size and position of a minimized or maximized window.
+// (https://wiki.libsdl.org/SDL_RestoreWindow)
 func (window *Window) Restore() {
 	C.SDL_RestoreWindow(window.cptr())
 }
 
-// Window (https://wiki.libsdl.org/SDL_SetWindowFullscreen)
+// SetFullscreen sets the window's fullscreen state.
+// (https://wiki.libsdl.org/SDL_SetWindowFullscreen)
 func (window *Window) SetFullscreen(flags uint32) error {
 	if C.SDL_SetWindowFullscreen(window.cptr(), C.Uint32(flags)) != 0 {
 		return GetError()
@@ -506,7 +575,8 @@ func (window *Window) SetFullscreen(flags uint32) error {
 	return nil
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowSurface)
+// GetSurface returns the SDL surface associated with the window.
+// (https://wiki.libsdl.org/SDL_GetWindowSurface)
 func (window *Window) GetSurface() (*Surface, error) {
 	surface := (*Surface)(unsafe.Pointer(C.SDL_GetWindowSurface(window.cptr())))
 	if surface == nil {
@@ -515,7 +585,8 @@ func (window *Window) GetSurface() (*Surface, error) {
 	return surface, nil
 }
 
-// Window (https://wiki.libsdl.org/SDL_UpdateWindowSurface)
+// UpdateSurface copies the window surface to the screen.
+// (https://wiki.libsdl.org/SDL_UpdateWindowSurface)
 func (window *Window) UpdateSurface() error {
 	if C.SDL_UpdateWindowSurface(window.cptr()) != 0 {
 		return GetError()
@@ -523,7 +594,8 @@ func (window *Window) UpdateSurface() error {
 	return nil
 }
 
-// Window (https://wiki.libsdl.org/SDL_UpdateWindowSurfaceRects)
+// UpdateSurfaceRects copies areas of the window surface to the screen.
+// (https://wiki.libsdl.org/SDL_UpdateWindowSurfaceRects)
 func (window *Window) UpdateSurfaceRects(rects []Rect) error {
 	if C.SDL_UpdateWindowSurfaceRects(window.cptr(), rects[0].cptr(), C.int(len(rects))) != 0 {
 		return GetError()
@@ -531,17 +603,20 @@ func (window *Window) UpdateSurfaceRects(rects []Rect) error {
 	return nil
 }
 
-// Window (https://wiki.libsdl.org/SDL_SetWindowGrab)
+// SetGrab sets the window's input grab mode.
+// (https://wiki.libsdl.org/SDL_SetWindowGrab)
 func (window *Window) SetGrab(grabbed bool) {
 	C.SDL_SetWindowGrab(window.cptr(), C.SDL_bool((Btoi(grabbed))))
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowGrab)
+// GetGrab returns the window's input grab mode.
+// (https://wiki.libsdl.org/SDL_GetWindowGrab)
 func (window *Window) GetGrab() bool {
 	return C.SDL_GetWindowGrab(window.cptr()) != 0
 }
 
-// Window (https://wiki.libsdl.org/SDL_SetWindowBrightness)
+// SetBrightness sets the brightness (gamma multiplier) for the display that owns the given window.
+// (https://wiki.libsdl.org/SDL_SetWindowBrightness)
 func (window *Window) SetBrightness(brightness float32) error {
 	if C.SDL_SetWindowBrightness(window.cptr(), C.float(brightness)) != 0 {
 		return GetError()
@@ -549,12 +624,14 @@ func (window *Window) SetBrightness(brightness float32) error {
 	return nil
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowBrightness)
+// GetBrightness returns the brightness (gamma multiplier) for the display that owns the given window.
+// (https://wiki.libsdl.org/SDL_GetWindowBrightness)
 func (window *Window) GetBrightness() float32 {
 	return float32(C.SDL_GetWindowBrightness(window.cptr()))
 }
 
-// Window (https://wiki.libsdl.org/SDL_SetWindowGammaRamp)
+// SetGammaRamp sets the gamma ramp for the display that owns the given window.
+// (https://wiki.libsdl.org/SDL_SetWindowGammaRamp)
 func (window *Window) SetGammaRamp(red, green, blue *[256]uint16) error {
 	if C.SDL_SetWindowGammaRamp(
 		window.cptr(),
@@ -567,7 +644,8 @@ func (window *Window) SetGammaRamp(red, green, blue *[256]uint16) error {
 	return nil
 }
 
-// Window (https://wiki.libsdl.org/SDL_GetWindowGammaRamp)
+// GetGammaRamp returns the gamma ramp for the display that owns a given window.
+// (https://wiki.libsdl.org/SDL_GetWindowGammaRamp)
 func (window *Window) GetGammaRamp() (red, green, blue *[256]uint16, err error) {
 	if C.SDL_GetWindowGammaRamp(
 		window.cptr(),
@@ -580,7 +658,8 @@ func (window *Window) GetGammaRamp() (red, green, blue *[256]uint16, err error) 
 	return red, green, blue, nil
 }
 
-// ShowSimpleMessageBox (https://wiki.libsdl.org/SDL_ShowSimpleMessageBox)
+// ShowSimpleMessageBox displays a simple modal message box.
+// (https://wiki.libsdl.org/SDL_ShowSimpleMessageBox)
 func ShowSimpleMessageBox(flags uint32, title, message string, window *Window) error {
 	_title := C.CString(title)
 	defer C.free(unsafe.Pointer(_title))
@@ -592,8 +671,9 @@ func ShowSimpleMessageBox(flags uint32, title, message string, window *Window) e
 	return nil
 }
 
-// ShowMessageBox (https://wiki.libsdl.org/SDL_ShowMessageBox)
-func ShowMessageBox(data *MessageBoxData) (err error, buttonid int32) {
+// ShowMessageBox creates a modal message box.
+// (https://wiki.libsdl.org/SDL_ShowMessageBox)
+func ShowMessageBox(data *MessageBoxData) (buttonid int32, err error) {
 	_title := C.CString(data.Title)
 	defer C.free(unsafe.Pointer(_title))
 	_message := C.CString(data.Message)
@@ -611,7 +691,7 @@ func ShowMessageBox(data *MessageBoxData) (err error, buttonid int32) {
 		ctext := C.CString(btn.Text)
 		cbtn := C.SDL_MessageBoxButtonData{
 			flags:    C.Uint32(btn.Flags),
-			buttonid: C.int(btn.ButtonId),
+			buttonid: C.int(btn.ButtonID),
 			text:     ctext,
 		}
 
@@ -630,29 +710,32 @@ func ShowMessageBox(data *MessageBoxData) (err error, buttonid int32) {
 	}
 
 	if buttonid := int32(C.ShowMessageBox(cdata)); buttonid < 0 {
-		return GetError(), buttonid
-	} else {
-		return nil, buttonid
+		return buttonid, GetError()
 	}
+	return buttonid, nil
 }
 
-// IsScreenSaverEnabled (https://wiki.libsdl.org/SDL_IsScreenSaverEnabled)
+// IsScreenSaverEnabled reports whether the screensaver is currently enabled.
+// (https://wiki.libsdl.org/SDL_IsScreenSaverEnabled)
 func IsScreenSaverEnabled() bool {
 	return C.SDL_IsScreenSaverEnabled() != 0
 }
 
-// EnableScreenSaver (https://wiki.libsdl.org/SDL_EnableScreenSaver)
+// EnableScreenSaver allows the screen to be blanked by a screen saver.
+// (https://wiki.libsdl.org/SDL_EnableScreenSaver)
 func EnableScreenSaver() {
 	C.SDL_EnableScreenSaver()
 }
 
-// DisableScreenSaver (https://wiki.libsdl.org/SDL_DisableScreenSaver)
+// DisableScreenSaver prevents the screen from being blanked by a screen saver.
+// (https://wiki.libsdl.org/SDL_DisableScreenSaver)
 func DisableScreenSaver() {
 	C.SDL_DisableScreenSaver()
 }
 
-// GL_LoadLibrary (https://wiki.libsdl.org/SDL_GL_LoadLibrary)
-func GL_LoadLibrary(path string) error {
+// GLLoadLibrary dynamically loads an OpenGL library.
+// (https://wiki.libsdl.org/SDL_GL_LoadLibrary)
+func GLLoadLibrary(path string) error {
 	_path := C.CString(path)
 	if C.SDL_GL_LoadLibrary(_path) != 0 {
 		return GetError()
@@ -660,33 +743,38 @@ func GL_LoadLibrary(path string) error {
 	return nil
 }
 
-// GL_GetProcAddress (https://wiki.libsdl.org/SDL_GL_GetProcAddress)
-func GL_GetProcAddress(proc string) unsafe.Pointer {
+// GLGetProcAddress returns an OpenGL function by name.
+// (https://wiki.libsdl.org/SDL_GL_GetProcAddress)
+func GLGetProcAddress(proc string) unsafe.Pointer {
 	_proc := C.CString(proc)
 	return unsafe.Pointer(C.SDL_GL_GetProcAddress(_proc))
 }
 
-// GL_UnloadLibrary (https://wiki.libsdl.org/SDL_GL_UnloadLibrary)
-func GL_UnloadLibrary() {
+// GLUnloadLibrary unloads the OpenGL library previously loaded by GLLoadLibrary().
+// (https://wiki.libsdl.org/SDL_GL_UnloadLibrary)
+func GLUnloadLibrary() {
 	C.SDL_GL_UnloadLibrary()
 }
 
-// GL_ExtensionSupported (https://wiki.libsdl.org/SDL_GL_ExtensionSupported)
-func GL_ExtensionSupported(extension string) bool {
+// GLExtensionSupported reports whether an OpenGL extension is supported for the current context.
+// (https://wiki.libsdl.org/SDL_GL_ExtensionSupported)
+func GLExtensionSupported(extension string) bool {
 	_extension := C.CString(extension)
 	return C.SDL_GL_ExtensionSupported(_extension) != 0
 }
 
-// GL_SetAttribute (https://wiki.libsdl.org/SDL_GL_SetAttribute)
-func GL_SetAttribute(attr GLattr, value int) error {
+// GLSetAttribute sets an OpenGL window attribute before window creation.
+// (https://wiki.libsdl.org/SDL_GL_SetAttribute)
+func GLSetAttribute(attr GLattr, value int) error {
 	if C.SDL_GL_SetAttribute(attr.c(), C.int(value)) != 0 {
 		return GetError()
 	}
 	return nil
 }
 
-// GL_GetAttribute (https://wiki.libsdl.org/SDL_GL_GetAttribute)
-func GL_GetAttribute(attr GLattr) (int, error) {
+// GLGetAttribute returns the actual value for an attribute from the current context.
+// (https://wiki.libsdl.org/SDL_GL_GetAttribute)
+func GLGetAttribute(attr GLattr) (int, error) {
 	var _value C.int
 	if C.SDL_GL_GetAttribute(attr.c(), &_value) != 0 {
 		return int(_value), GetError()
@@ -694,8 +782,9 @@ func GL_GetAttribute(attr GLattr) (int, error) {
 	return int(_value), nil
 }
 
-// GL_CreateContext (https://wiki.libsdl.org/SDL_GL_CreateContext)
-func GL_CreateContext(window *Window) (GLContext, error) {
+// GLCreateContext creates an OpenGL context for use with an OpenGL window, and make it current.
+// (https://wiki.libsdl.org/SDL_GL_CreateContext)
+func GLCreateContext(window *Window) (GLContext, error) {
 	c := GLContext(C.SDL_GL_CreateContext(window.cptr()))
 	if c == nil {
 		return nil, GetError()
@@ -703,24 +792,27 @@ func GL_CreateContext(window *Window) (GLContext, error) {
 	return c, nil
 }
 
-// GL_MakeCurrent (https://wiki.libsdl.org/SDL_GL_MakeCurrent)
-func GL_MakeCurrent(window *Window, glcontext GLContext) error {
+// GLMakeCurrent sets up an OpenGL context for rendering into an OpenGL window.
+// (https://wiki.libsdl.org/SDL_GL_MakeCurrent)
+func GLMakeCurrent(window *Window, glcontext GLContext) error {
 	if C.SDL_GL_MakeCurrent(window.cptr(), C.SDL_GLContext(glcontext)) != 0 {
 		return GetError()
 	}
 	return nil
 }
 
-// GL_SetSwapInterval (https://wiki.libsdl.org/SDL_GL_SetSwapInterval)
-func GL_SetSwapInterval(interval int) error {
+// GLSetSwapInterval sets the swap interval for the current OpenGL context.
+// (https://wiki.libsdl.org/SDL_GL_SetSwapInterval)
+func GLSetSwapInterval(interval int) error {
 	if C.SDL_GL_SetSwapInterval(C.int(interval)) != 0 {
 		return GetError()
 	}
 	return nil
 }
 
-// GL_GetSwapInterval (https://wiki.libsdl.org/SDL_GL_GetSwapInterval)
-func GL_GetSwapInterval() (int, error) {
+// GLGetSwapInterval returns the swap interval for the current OpenGL context.
+// (https://wiki.libsdl.org/SDL_GL_GetSwapInterval)
+func GLGetSwapInterval() (int, error) {
 	i := int(C.SDL_GL_GetSwapInterval())
 	if i == -1 {
 		return i, GetError()
@@ -728,19 +820,22 @@ func GL_GetSwapInterval() (int, error) {
 	return i, nil
 }
 
-// GL_GetDrawableSize (https://wiki.libsdl.org/SDL_GL_GetDrawableSize)
-func GL_GetDrawableSize(window *Window) (w, h int) {
+// GLGetDrawableSize returns the size of a window's underlying drawable in pixels (for use with glViewport).
+// (https://wiki.libsdl.org/SDL_GL_GetDrawableSize)
+func GLGetDrawableSize(window *Window) (w, h int) {
 	var _w, _h C.int
 	C.SDL_GL_GetDrawableSize(window.cptr(), &_w, &_h)
 	return int(_w), int(_h)
 }
 
-// GL_SwapWindow (https://wiki.libsdl.org/SDL_GL_SwapWindow)
-func GL_SwapWindow(window *Window) {
+// GLSwapWindow updates a window with OpenGL rendering.
+// (https://wiki.libsdl.org/SDL_GL_SwapWindow)
+func GLSwapWindow(window *Window) {
 	C.SDL_GL_SwapWindow(window.cptr())
 }
 
-// GL_DeleteContext (https://wiki.libsdl.org/SDL_GL_DeleteContext)
-func GL_DeleteContext(context GLContext) {
+// GLDeleteContext deletes an OpenGL context.
+// (https://wiki.libsdl.org/SDL_GL_DeleteContext)
+func GLDeleteContext(context GLContext) {
 	C.SDL_GL_DeleteContext(C.SDL_GLContext(context))
 }

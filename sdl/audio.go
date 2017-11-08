@@ -117,7 +117,7 @@ type AudioSpec struct {
 	Channels uint8          // number of separate sound channels
 	Silence  uint8          // audio buffer silence value (calculated)
 	Samples  uint16         // audio buffer size in samples (power of 2)
-	padding  uint16         // necessary for some compile environments (internal use)
+	_        uint16         // padding
 	Size     uint32         // audio buffer size in bytes (calculated)
 	Callback AudioCallback  // the function to call when the audio device needs more data
 	UserData unsafe.Pointer // a pointer that is passed to callback (otherwise ignored by SDL)

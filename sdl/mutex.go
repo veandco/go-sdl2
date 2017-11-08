@@ -4,14 +4,17 @@ package sdl
 import "C"
 import "unsafe"
 
+// ThreadID is the thread identifier for a thread.
 type ThreadID uint64
 
+// Mutex is the SDL mutex structure.
 type Mutex struct {
 	Recursive int
 	Owner     ThreadID
 	Sem       *Sem
 }
 
+// Sem is the SDL semaphore structure.
 type Sem struct {
 	Count        uint32
 	WaitersCount uint32
@@ -19,6 +22,7 @@ type Sem struct {
 	CountNonzero *Cond
 }
 
+// Cond is the SDL condition variable structure.
 type Cond struct {
 	Lock     *Mutex
 	Waiting  int
@@ -39,7 +43,8 @@ func (c *Cond) cptr() *C.SDL_cond {
 	return (*C.SDL_cond)(unsafe.Pointer(c))
 }
 
-// CreateMutex (https://wiki.libsdl.org/SDL_CreateMutex)
+// CreateMutex creates a new mutex.
+// (https://wiki.libsdl.org/SDL_CreateMutex)
 func CreateMutex() (*Mutex, error) {
 	mutex := C.SDL_CreateMutex()
 	if mutex == nil {
@@ -48,27 +53,32 @@ func CreateMutex() (*Mutex, error) {
 	return (*Mutex)(unsafe.Pointer(mutex)), nil
 }
 
-// LockMutex (https://wiki.libsdl.org/SDL_LockMutex)
+// LockMutex locks a mutex created with CreateMutex().
+// (https://wiki.libsdl.org/SDL_LockMutex)
 func LockMutex(mutex *Mutex) int {
 	return int(C.SDL_LockMutex(mutex.cptr()))
 }
 
-// TryLockMutex (https://wiki.libsdl.org/SDL_TryLockMutex)
+// TryLockMutex tries to lock a mutex without blocking.
+// (https://wiki.libsdl.org/SDL_TryLockMutex)
 func TryLockMutex(mutex *Mutex) int {
 	return int(C.SDL_TryLockMutex(mutex.cptr()))
 }
 
-// UnlockMutex (https://wiki.libsdl.org/SDL_UnlockMutex)
+// UnlockMutex unlocks a mutex created with CreateMutex().
+// (https://wiki.libsdl.org/SDL_UnlockMutex)
 func UnlockMutex(mutex *Mutex) int {
 	return int(C.SDL_UnlockMutex(mutex.cptr()))
 }
 
-// DestroyMutex (https://wiki.libsdl.org/SDL_DestroyMutex)
+// DestroyMutex destroys a mutex created with CreateMutex().
+// (https://wiki.libsdl.org/SDL_DestroyMutex)
 func DestroyMutex(mutex *Mutex) {
 	C.SDL_DestroyMutex(mutex.cptr())
 }
 
-// CreateSemaphore (https://wiki.libsdl.org/SDL_CreateSemaphore)
+// CreateSemaphore creates a semaphore.
+// (https://wiki.libsdl.org/SDL_CreateSemaphore)
 func CreateSemaphore(initialValue uint32) (*Sem, error) {
 	sem := C.SDL_CreateSemaphore(C.Uint32(initialValue))
 	if sem == nil {
@@ -77,32 +87,38 @@ func CreateSemaphore(initialValue uint32) (*Sem, error) {
 	return (*Sem)(unsafe.Pointer(sem)), nil
 }
 
-// DestroySemaphore (https://wiki.libsdl.org/SDL_DestroySemaphore)
+// DestroySemaphore destroys a semaphore.
+// (https://wiki.libsdl.org/SDL_DestroySemaphore)
 func DestroySemaphore(sem *Sem) {
 	C.SDL_DestroySemaphore(sem.cptr())
 }
 
-// SemWait (https://wiki.libsdl.org/SDL_SemWait)
+// SemWait waits until a semaphore has a positive value and then decrements it.
+// (https://wiki.libsdl.org/SDL_SemWait)
 func SemWait(sem *Sem) int {
 	return int(C.SDL_SemWait(sem.cptr()))
 }
 
-// SemTryWait (https://wiki.libsdl.org/SDL_SemTryWait)
+// SemTryWait sees if a semaphore has a positive value and decrement it if it does.
+// (https://wiki.libsdl.org/SDL_SemTryWait)
 func SemTryWait(sem *Sem) int {
 	return int(C.SDL_SemTryWait(sem.cptr()))
 }
 
-// SemWaitTimeout (https://wiki.libsdl.org/SDL_SemWaitTimeout)
+// SemWaitTimeout waits until a semaphore has a positive value and then decrements it.
+// (https://wiki.libsdl.org/SDL_SemWaitTimeout)
 func SemWaitTimeout(sem *Sem, ms uint32) int {
 	return int(C.SDL_SemWaitTimeout(sem.cptr(), C.Uint32(ms)))
 }
 
-// SemPost (https://wiki.libsdl.org/SDL_SemPost)
+// SemPost atomically increments a semaphore's value and wake waiting threads.
+// (https://wiki.libsdl.org/SDL_SemPost)
 func SemPost(sem *Sem) int {
 	return int(C.SDL_SemPost(sem.cptr()))
 }
 
-// SemValue (https://wiki.libsdl.org/SDL_SemValue)
+// SemValue returns the current value of a semaphore.
+// (https://wiki.libsdl.org/SDL_SemValue)
 func SemValue(sem *Sem) uint32 {
 	return uint32(C.SDL_SemValue(sem.cptr()))
 }
@@ -112,27 +128,32 @@ func CreateCond() *Cond {
 	return (*Cond)(unsafe.Pointer(C.SDL_CreateCond()))
 }
 
-// DestroyCond (https://wiki.libsdl.org/SDL_DestroyCond)
+// DestroyCond creates a condition variable.
+// (https://wiki.libsdl.org/SDL_DestroyCond)
 func DestroyCond(cond *Cond) {
 	C.SDL_DestroyCond(cond.cptr())
 }
 
-// CondSignal (https://wiki.libsdl.org/SDL_CondSignal)
+// CondSignal restarts one of the threads that are waiting on the condition variable.
+// (https://wiki.libsdl.org/SDL_CondSignal)
 func CondSignal(cond *Cond) int {
 	return int(C.SDL_CondSignal(cond.cptr()))
 }
 
-// CondBroadcast (https://wiki.libsdl.org/SDL_CondBroadcast)
+// CondBroadcast restarts all threads that are waiting on the condition variable.
+// (https://wiki.libsdl.org/SDL_CondBroadcast)
 func CondBroadcast(cond *Cond) int {
 	return int(C.SDL_CondBroadcast(cond.cptr()))
 }
 
-// CondWait (https://wiki.libsdl.org/SDL_CondWait)
+// CondWait waits until a condition variable is signaled.
+// (https://wiki.libsdl.org/SDL_CondWait)
 func CondWait(cond *Cond, mutex *Mutex) int {
 	return int(C.SDL_CondWait(cond.cptr(), mutex.cptr()))
 }
 
-// CondWaitTimeout (https://wiki.libsdl.org/SDL_CondWaitTimeout)
+// CondWaitTimeout waits until a condition variable is signaled or a specified amount of time has passed.
+// (https://wiki.libsdl.org/SDL_CondWaitTimeout)
 func CondWaitTimeout(cond *Cond, mutex *Mutex, ms uint32) int {
 	return int(C.SDL_CondWaitTimeout(cond.cptr(), mutex.cptr(), C.Uint32(ms)))
 }

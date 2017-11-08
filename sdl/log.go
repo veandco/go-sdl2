@@ -48,67 +48,77 @@ import "C"
 import "fmt"
 import "unsafe"
 
+// An enumeration of the predefined log categories.
+// (https://wiki.libsdl.org/SDL_LOG_CATEGORY)
 const (
-	LOG_CATEGORY_APPLICATION = iota
-	LOG_CATEGORY_ERROR
-	LOG_CATEGORY_ASSERT
-	LOG_CATEGORY_SYSTEM
-	LOG_CATEGORY_AUDIO
-	LOG_CATEGORY_VIDEO
-	LOG_CATEGORY_RENDER
-	LOG_CATEGORY_INPUT
-	LOG_CATEGORY_TEST
-	LOG_CATEGORY_RESERVED1
-	LOG_CATEGORY_RESERVED2
-	LOG_CATEGORY_RESERVED3
-	LOG_CATEGORY_RESERVED4
-	LOG_CATEGORY_RESERVED5
-	LOG_CATEGORY_RESERVED6
-	LOG_CATEGORY_RESERVED7
-	LOG_CATEGORY_RESERVED8
-	LOG_CATEGORY_RESERVED9
-	LOG_CATEGORY_RESERVED10
-	LOG_CATEGORY_CUSTOM
+	LOG_CATEGORY_APPLICATION = iota // application log
+	LOG_CATEGORY_ERROR              // error log
+	LOG_CATEGORY_ASSERT             // assert log
+	LOG_CATEGORY_SYSTEM             // system log
+	LOG_CATEGORY_AUDIO              // audio log
+	LOG_CATEGORY_VIDEO              // video log
+	LOG_CATEGORY_RENDER             // render log
+	LOG_CATEGORY_INPUT              // input log
+	LOG_CATEGORY_TEST               // test log
+	LOG_CATEGORY_RESERVED1          // reserved for future SDL library use
+	LOG_CATEGORY_RESERVED2          // reserved for future SDL library use
+	LOG_CATEGORY_RESERVED3          // reserved for future SDL library use
+	LOG_CATEGORY_RESERVED4          // reserved for future SDL library use
+	LOG_CATEGORY_RESERVED5          // reserved for future SDL library use
+	LOG_CATEGORY_RESERVED6          // reserved for future SDL library use
+	LOG_CATEGORY_RESERVED7          // reserved for future SDL library use
+	LOG_CATEGORY_RESERVED8          // reserved for future SDL library use
+	LOG_CATEGORY_RESERVED9          // reserved for future SDL library use
+	LOG_CATEGORY_RESERVED10         // reserved for future SDL library use
+	LOG_CATEGORY_CUSTOM             // reserved for application use
 )
 
+// An enumeration of the predefined log priorities.
+// (https://wiki.libsdl.org/SDL_LogPriority)
 const (
-	LOG_PRIORITY_VERBOSE = iota + 1
-	LOG_PRIORITY_DEBUG
-	LOG_PRIORITY_INFO
-	LOG_PRIORITY_WARN
-	LOG_PRIORITY_ERROR
-	LOG_PRIORITY_CRITICAL
-	NUM_LOG_PRIORITIES
+	LOG_PRIORITY_VERBOSE  = iota + 1 // verbose
+	LOG_PRIORITY_DEBUG               // debug
+	LOG_PRIORITY_INFO                // info
+	LOG_PRIORITY_WARN                // warn
+	LOG_PRIORITY_ERROR               // error
+	LOG_PRIORITY_CRITICAL            // critical
+	NUM_LOG_PRIORITIES               // (internal use)
 )
 
-// LogPriority (https://wiki.libsdl.org/SDL_LogPriority)
+// LogPriority is a predefined log priority.
+// (https://wiki.libsdl.org/SDL_LogPriority)
 type LogPriority C.SDL_LogPriority
 
 func (p LogPriority) c() C.SDL_LogPriority {
 	return C.SDL_LogPriority(p)
 }
 
-// LogSetAllPriority (https://wiki.libsdl.org/SDL_LogSetAllPriority)
+// LogSetAllPriority sets the priority of all log categories.
+// (https://wiki.libsdl.org/SDL_LogSetAllPriority)
 func LogSetAllPriority(p LogPriority) {
 	C.SDL_LogSetAllPriority(p.c())
 }
 
-// LogSetPriority (https://wiki.libsdl.org/SDL_LogSetPriority)
+// LogSetPriority sets the priority of a particular log category.
+// (https://wiki.libsdl.org/SDL_LogSetPriority)
 func LogSetPriority(category int, p LogPriority) {
 	C.SDL_LogSetPriority(C.int(category), p.c())
 }
 
-// LogGetPriority (https://wiki.libsdl.org/SDL_LogGetPriority)
+// LogGetPriority returns the priority of a particular log category.
+// (https://wiki.libsdl.org/SDL_LogGetPriority)
 func LogGetPriority(category int) LogPriority {
 	return LogPriority(C.SDL_LogGetPriority(C.int(category)))
 }
 
-// LogResetPriorities (https://wiki.libsdl.org/SDL_LogResetPriorities)
+// LogResetPriorities resets all priorities to default.
+// (https://wiki.libsdl.org/SDL_LogResetPriorities)
 func LogResetPriorities() {
 	C.SDL_LogResetPriorities()
 }
 
-// Log (https://wiki.libsdl.org/SDL_Log)
+// Log logs a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.
+// (https://wiki.libsdl.org/SDL_Log)
 func Log(str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -118,7 +128,8 @@ func Log(str string, args ...interface{}) {
 	C._SDL_Log(cstr)
 }
 
-// LogVerbose (https://wiki.libsdl.org/SDL_LogVerbose)
+// LogVerbose logs a message with LOG_PRIORITY_VERBOSE.
+// (https://wiki.libsdl.org/SDL_LogVerbose)
 func LogVerbose(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -128,7 +139,8 @@ func LogVerbose(cat int, str string, args ...interface{}) {
 	C._SDL_LogVerbose(C.int(cat), cstr)
 }
 
-// LogDebug (https://wiki.libsdl.org/SDL_LogDebug)
+// LogDebug logs a message with LOG_PRIORITY_DEBUG.
+// (https://wiki.libsdl.org/SDL_LogDebug)
 func LogDebug(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -138,7 +150,8 @@ func LogDebug(cat int, str string, args ...interface{}) {
 	C._SDL_LogDebug(C.int(cat), cstr)
 }
 
-// LogInfo (https://wiki.libsdl.org/SDL_LogInfo)
+// LogInfo logs a message with LOG_PRIORITY_INFO.
+// (https://wiki.libsdl.org/SDL_LogInfo)
 func LogInfo(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -148,7 +161,8 @@ func LogInfo(cat int, str string, args ...interface{}) {
 	C._SDL_LogInfo(C.int(cat), cstr)
 }
 
-// LogWarn (https://wiki.libsdl.org/SDL_LogWarn)
+// LogWarn logs a message with LOG_PRIORITY_WARN.
+// (https://wiki.libsdl.org/SDL_LogWarn)
 func LogWarn(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -158,7 +172,8 @@ func LogWarn(cat int, str string, args ...interface{}) {
 	C._SDL_LogWarn(C.int(cat), cstr)
 }
 
-// LogError (https://wiki.libsdl.org/SDL_LogError)
+// LogError logs a message with LOG_PRIORITY_ERROR.
+// (https://wiki.libsdl.org/SDL_LogError)
 func LogError(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -168,7 +183,8 @@ func LogError(cat int, str string, args ...interface{}) {
 	C._SDL_LogError(C.int(cat), cstr)
 }
 
-// LogCritical (https://wiki.libsdl.org/SDL_LogCritical)
+// LogCritical logs a message with LOG_PRIORITY_CRITICAL.
+// (https://wiki.libsdl.org/SDL_LogCritical)
 func LogCritical(cat int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -178,7 +194,8 @@ func LogCritical(cat int, str string, args ...interface{}) {
 	C._SDL_LogCritical(C.int(cat), cstr)
 }
 
-// LogMessage (https://wiki.libsdl.org/SDL_LogMessage)
+// LogMessage logs a message with the specified category and priority.
+// (https://wiki.libsdl.org/SDL_LogMessage)
 func LogMessage(cat int, pri LogPriority, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -188,6 +205,7 @@ func LogMessage(cat int, pri LogPriority, str string, args ...interface{}) {
 	C._SDL_LogMessage(C.int(cat), C.SDL_LogPriority(pri), cstr)
 }
 
+// LogOutputFunction is the function to call instead of the default
 type LogOutputFunction func(data interface{}, cat int, pri LogPriority, message string)
 
 type logOutputFunctionCtx struct {
@@ -209,12 +227,14 @@ var (
 	logOutputDataCache     interface{}
 )
 
-// LogGetOutputFunction (https://wiki.libsdl.org/SDL_LogGetOutputFunction)
+// LogGetOutputFunction returns the current log output function.
+// (https://wiki.libsdl.org/SDL_LogGetOutputFunction)
 func LogGetOutputFunction() (LogOutputFunction, interface{}) {
 	return logOutputFunctionCache, logOutputDataCache
 }
 
-// LogSetOutputFunction (https://wiki.libsdl.org/SDL_LogSetOutputFunction)
+// LogSetOutputFunction replaces the default log output function with one of your own.
+// (https://wiki.libsdl.org/SDL_LogSetOutputFunction)
 func LogSetOutputFunction(f LogOutputFunction, data interface{}) {
 	ctx := &logOutputFunctionCtx{
 		f: f,
