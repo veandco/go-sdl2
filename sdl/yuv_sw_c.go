@@ -2,7 +2,8 @@ package sdl
 
 import "unsafe"
 
-type SW_YUVTexture struct {
+// SWYUVTexture is the software implementation of the YUV texture support.
+type SWYUVTexture struct {
 	Format       uint32
 	TargetFormat uint32
 	W            int
