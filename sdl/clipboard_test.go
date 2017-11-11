@@ -3,7 +3,7 @@ package sdl
 import "testing"
 
 func TestClipboard(t *testing.T) {
-	Do(func(){
+	Do(func() {
 		Init(INIT_VIDEO)
 		defer Quit()
 
