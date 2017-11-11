@@ -116,17 +116,17 @@ func TestIntersectLines(t *testing.T) {
 
 	var tests = []struct {
 		want bool
-		in   struct{ x1, y1, x2, y2 int }
-		out  struct{ x1, y1, x2, y2 int }
+		in   struct{ x1, y1, x2, y2 int32 }
+		out  struct{ x1, y1, x2, y2 int32 }
 		r    *Rect
 	}{
 		{want: false,
-			in:  struct{ x1, y1, x2, y2 int }{15, 15, 25, 25},
-			out: struct{ x1, y1, x2, y2 int }{15, 15, 25, 25},
+			in:  struct{ x1, y1, x2, y2 int32 }{15, 15, 25, 25},
+			out: struct{ x1, y1, x2, y2 int32 }{15, 15, 25, 25},
 			r:   &Rect{X: 0, Y: 0, W: 10, H: 10}},
 		{want: true,
-			in:  struct{ x1, y1, x2, y2 int }{-1, -1, 11, 11},
-			out: struct{ x1, y1, x2, y2 int }{0, 0, 9, 9},
+			in:  struct{ x1, y1, x2, y2 int32 }{-1, -1, 11, 11},
+			out: struct{ x1, y1, x2, y2 int32 }{0, 0, 9, 9},
 			r:   &Rect{X: 0, Y: 0, W: 10, H: 10}}}
 
 	for _, test := range tests {

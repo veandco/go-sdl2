@@ -378,7 +378,7 @@ func (window *Window) GetPixelFormat() (uint32, error) {
 
 // CreateWindow creates a window with the specified position, dimensions, and flags.
 // (https://wiki.libsdl.org/SDL_CreateWindow)
-func CreateWindow(title string, x int, y int, w int, h int, flags uint32) (*Window, error) {
+func CreateWindow(title string, x, y, w, h int32, flags uint32) (*Window, error) {
 	_title := C.CString(title)
 	var _window = C.SDL_CreateWindow(_title, C.int(x), C.int(y), C.int(w), C.int(h), C.Uint32(flags))
 	if _window == nil {
@@ -460,16 +460,16 @@ func (window *Window) GetData(name string) unsafe.Pointer {
 
 // SetPosition sets the position of the window.
 // (https://wiki.libsdl.org/SDL_SetWindowPosition)
-func (window *Window) SetPosition(x int, y int) {
+func (window *Window) SetPosition(x, y int32) {
 	C.SDL_SetWindowPosition(window.cptr(), C.int(x), C.int(y))
 }
 
 // GetPosition returns the position of the window.
 // (https://wiki.libsdl.org/SDL_GetWindowPosition)
-func (window *Window) GetPosition() (x, y int) {
+func (window *Window) GetPosition() (x, y int32) {
 	var _x, _y C.int
 	C.SDL_GetWindowPosition(window.cptr(), &_x, &_y)
-	return int(_x), int(_y)
+	return int32(_x), int32(_y)
 }
 
 // SetResizable sets the user-resizable state of the window.
@@ -484,44 +484,44 @@ func (window *Window) SetResizable(resizable bool) {
 
 // SetSize sets the size of the window's client area.
 // (https://wiki.libsdl.org/SDL_SetWindowSize)
-func (window *Window) SetSize(w int, h int) {
+func (window *Window) SetSize(w, h int32) {
 	C.SDL_SetWindowSize(window.cptr(), C.int(w), C.int(h))
 }
 
 // GetSize returns the size of the window's client area.
 // (https://wiki.libsdl.org/SDL_GetWindowSize)
-func (window *Window) GetSize() (w, h int) {
+func (window *Window) GetSize() (w, h int32) {
 	var _w, _h C.int
 	C.SDL_GetWindowSize(window.cptr(), &_w, &_h)
-	return int(_w), int(_h)
+	return int32(_w), int32(_h)
 }
 
 // SetMinimumSize sets the minimum size of the window's client area.
 // (https://wiki.libsdl.org/SDL_SetWindowMinimumSize)
-func (window *Window) SetMinimumSize(minW int, minH int) {
+func (window *Window) SetMinimumSize(minW, minH int32) {
 	C.SDL_SetWindowMinimumSize(window.cptr(), C.int(minW), C.int(minH))
 }
 
 // GetMinimumSize returns the minimum size of the window's client area.
 // (https://wiki.libsdl.org/SDL_GetWindowMinimumSize)
-func (window *Window) GetMinimumSize() (w, h int) {
+func (window *Window) GetMinimumSize() (w, h int32) {
 	var _w, _h C.int
 	C.SDL_GetWindowMinimumSize(window.cptr(), &_w, &_h)
-	return int(_w), int(_h)
+	return int32(_w), int32(_h)
 }
 
 // SetMaximumSize sets the maximum size of the window's client area.
 // (https://wiki.libsdl.org/SDL_SetWindowMaximumSize)
-func (window *Window) SetMaximumSize(maxW int, maxH int) {
+func (window *Window) SetMaximumSize(maxW, maxH int32) {
 	C.SDL_SetWindowMaximumSize(window.cptr(), C.int(maxW), C.int(maxH))
 }
 
 // GetMaximumSize returns the maximum size of the window's client area.
 // (https://wiki.libsdl.org/SDL_GetWindowMaximumSize)
-func (window *Window) GetMaximumSize() (w, h int) {
+func (window *Window) GetMaximumSize() (w, h int32) {
 	var _w, _h C.int
 	C.SDL_GetWindowMaximumSize(window.cptr(), &_w, &_h)
-	return int(_w), int(_h)
+	return int32(_w), int32(_h)
 }
 
 // SetBordered sets the border state of the window.
@@ -822,10 +822,10 @@ func GLGetSwapInterval() (int, error) {
 
 // GLGetDrawableSize returns the size of a window's underlying drawable in pixels (for use with glViewport).
 // (https://wiki.libsdl.org/SDL_GL_GetDrawableSize)
-func GLGetDrawableSize(window *Window) (w, h int) {
+func GLGetDrawableSize(window *Window) (w, h int32) {
 	var _w, _h C.int
 	C.SDL_GL_GetDrawableSize(window.cptr(), &_w, &_h)
-	return int(_w), int(_h)
+	return int32(_w), int32(_h)
 }
 
 // GLSwapWindow updates a window with OpenGL rendering.
