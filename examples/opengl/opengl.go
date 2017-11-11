@@ -10,7 +10,7 @@ import (
 
 func main() {
 	var winTitle string = "Go-SDL2 + Go-GL"
-	var winWidth, winHeight int = 800, 600
+	var winWidth, winHeight int32 = 800, 600
 	var window *sdl.Window
 	var context sdl.GLContext
 	var event sdl.Event
@@ -32,11 +32,11 @@ func main() {
 		panic(err)
 	}
 	defer window.Destroy()
-	context, err = sdl.GL_CreateContext(window)
+	context, err = sdl.GLCreateContext(window)
 	if err != nil {
 		panic(err)
 	}
-	defer sdl.GL_DeleteContext(context)
+	defer sdl.GLDeleteContext(context)
 
 	gl.Enable(gl.DEPTH_TEST)
 	gl.ClearColor(0.2, 0.2, 0.3, 1.0)
@@ -55,7 +55,7 @@ func main() {
 			}
 		}
 		drawgl()
-		sdl.GL_SwapWindow(window)
+		sdl.GLSwapWindow(window)
 	}
 }
 

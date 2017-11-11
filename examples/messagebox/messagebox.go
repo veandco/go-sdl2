@@ -8,18 +8,18 @@ import (
 
 func main() {
 	buttons := []sdl.MessageBoxButtonData{
-		{ 0, 0, "no" },
-		{ sdl.MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "yes" },
-		{ sdl.MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 2, "cancel" },
+		{0, 0, "no"},
+		{sdl.MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "yes"},
+		{sdl.MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 2, "cancel"},
 	}
 
 	colorScheme := sdl.MessageBoxColorScheme{
 		Colors: [5]sdl.MessageBoxColor{
-			sdl.MessageBoxColor{ 255,   0,   0 },
-			sdl.MessageBoxColor{   0, 255,   0 },
-			sdl.MessageBoxColor{ 255, 255,   0 },
-			sdl.MessageBoxColor{   0,   0, 255 },
-			sdl.MessageBoxColor{ 255,   0, 255 },
+			sdl.MessageBoxColor{255, 0, 0},
+			sdl.MessageBoxColor{0, 255, 0},
+			sdl.MessageBoxColor{255, 255, 0},
+			sdl.MessageBoxColor{0, 0, 255},
+			sdl.MessageBoxColor{255, 0, 255},
 		},
 	}
 
@@ -35,7 +35,7 @@ func main() {
 
 	var buttonid int32
 	var err error
-	if err, buttonid = sdl.ShowMessageBox(&messageboxdata); err != nil {
+	if buttonid, err = sdl.ShowMessageBox(&messageboxdata); err != nil {
 		fmt.Println("error displaying message box")
 		return
 	}

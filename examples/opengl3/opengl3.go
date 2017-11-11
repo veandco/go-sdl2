@@ -71,11 +71,11 @@ func main() {
 		panic(err)
 	}
 	defer window.Destroy()
-	context, err = sdl.GL_CreateContext(window)
+	context, err = sdl.GLCreateContext(window)
 	if err != nil {
 		panic(err)
 	}
-	defer sdl.GL_DeleteContext(context)
+	defer sdl.GLDeleteContext(context)
 
 	gl.Init()
 	gl.Viewport(0, 0, gl.Sizei(winWidth), gl.Sizei(winHeight))
@@ -136,7 +136,7 @@ func main() {
 			}
 		}
 		drawgl()
-		sdl.GL_SwapWindow(window)
+		sdl.GLSwapWindow(window)
 	}
 }
 

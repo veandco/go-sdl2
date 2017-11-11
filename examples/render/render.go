@@ -9,7 +9,7 @@ import (
 )
 
 var winTitle string = "Go-SDL2 Render"
-var winWidth, winHeight int = 800, 600
+var winWidth, winHeight int32 = 800, 600
 
 func run() int {
 	var window *sdl.Window

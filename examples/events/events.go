@@ -9,7 +9,7 @@ import (
 )
 
 var winTitle string = "Go-SDL2 Events"
-var winWidth, winHeight int = 800, 600
+var winWidth, winHeight int32 = 800, 600
 var joysticks [16]*sdl.Joystick
 
 func run() int {

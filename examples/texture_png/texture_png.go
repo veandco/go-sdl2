@@ -4,13 +4,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/img"
+	"github.com/veandco/go-sdl2/sdl"
 	"os"
 )
 
 var winTitle string = "Go-SDL2 Texture"
-var winWidth, winHeight int = 800, 600
+var winWidth, winHeight int32 = 800, 600
 var imageName string = "../../assets/test.png"
 
 func run() int {
