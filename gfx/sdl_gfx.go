@@ -72,14 +72,14 @@ func FramerateDelay(manager *FPSmanager) uint32 {
 	return uint32(C.SDL_framerateDelay(manager.cptr()))
 }
 
-func PixelColor(renderer *sdl.Renderer, x, y int, color sdl.Color) bool {
+func PixelColor(renderer *sdl.Renderer, x, y int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_color := C.Uint32(gfxColor(color))
 	return C.pixelColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _color) == 0
 }
 
-func PixelRGBA(renderer *sdl.Renderer, x, y int, r, g, b, a uint8) bool {
+func PixelRGBA(renderer *sdl.Renderer, x, y int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_r := C.Uint8(r)
@@ -89,7 +89,7 @@ func PixelRGBA(renderer *sdl.Renderer, x, y int, r, g, b, a uint8) bool {
 	return C.pixelRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _r, _g, _b, _a) == 0
 }
 
-func HlineColor(renderer *sdl.Renderer, x1, x2, y int, color sdl.Color) bool {
+func HlineColor(renderer *sdl.Renderer, x1, x2, y int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_x2 := C.Sint16(x2)
 	_y := C.Sint16(y)
@@ -97,7 +97,7 @@ func HlineColor(renderer *sdl.Renderer, x1, x2, y int, color sdl.Color) bool {
 	return C.hlineColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _x2, _y, _color) == 0
 }
 
-func HlineRGBA(renderer *sdl.Renderer, x1, x2, y int, r, g, b, a uint8) bool {
+func HlineRGBA(renderer *sdl.Renderer, x1, x2, y int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_x2 := C.Sint16(x2)
 	_y := C.Sint16(y)
@@ -108,7 +108,7 @@ func HlineRGBA(renderer *sdl.Renderer, x1, x2, y int, r, g, b, a uint8) bool {
 	return C.hlineRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _x2, _y, _r, _g, _b, _a) == 0
 }
 
-func VlineColor(renderer *sdl.Renderer, x, y1, y2 int, color sdl.Color) bool {
+func VlineColor(renderer *sdl.Renderer, x, y1, y2 int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y1 := C.Sint16(y1)
 	_y2 := C.Sint16(y2)
@@ -116,7 +116,7 @@ func VlineColor(renderer *sdl.Renderer, x, y1, y2 int, color sdl.Color) bool {
 	return C.vlineColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y1, _y2, _color) == 0
 }
 
-func VlineRGBA(renderer *sdl.Renderer, x, y1, y2 int, r, g, b, a uint8) bool {
+func VlineRGBA(renderer *sdl.Renderer, x, y1, y2 int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y1 := C.Sint16(y1)
 	_y2 := C.Sint16(y2)
@@ -127,7 +127,7 @@ func VlineRGBA(renderer *sdl.Renderer, x, y1, y2 int, r, g, b, a uint8) bool {
 	return C.vlineRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y1, _y2, _r, _g, _b, _a) == 0
 }
 
-func RectangleColor(renderer *sdl.Renderer, x1, y1, x2, y2 int, color sdl.Color) bool {
+func RectangleColor(renderer *sdl.Renderer, x1, y1, x2, y2 int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -136,7 +136,7 @@ func RectangleColor(renderer *sdl.Renderer, x1, y1, x2, y2 int, color sdl.Color)
 	return C.rectangleColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _color) == 0
 }
 
-func RectangleRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int, r, g, b, a uint8) bool {
+func RectangleRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -148,7 +148,7 @@ func RectangleRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int, r, g, b, a uint8)
 	return C.rectangleRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _r, _g, _b, _a) == 0
 }
 
-func RoundedRectangleColor(renderer *sdl.Renderer, x1, y1, x2, y2, rad int, color sdl.Color) bool {
+func RoundedRectangleColor(renderer *sdl.Renderer, x1, y1, x2, y2, rad int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -158,7 +158,7 @@ func RoundedRectangleColor(renderer *sdl.Renderer, x1, y1, x2, y2, rad int, colo
 	return C.roundedRectangleColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _rad, _color) == 0
 }
 
-func RoundedRectangleRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, rad int, r, g, b, a uint8) bool {
+func RoundedRectangleRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, rad int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -171,7 +171,7 @@ func RoundedRectangleRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, rad int, r, g,
 	return C.roundedRectangleRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _rad, _r, _g, _b, _a) == 0
 }
 
-func BoxColor(renderer *sdl.Renderer, x1, y1, x2, y2 int, color sdl.Color) bool {
+func BoxColor(renderer *sdl.Renderer, x1, y1, x2, y2 int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -180,7 +180,7 @@ func BoxColor(renderer *sdl.Renderer, x1, y1, x2, y2 int, color sdl.Color) bool 
 	return C.boxColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _color) == 0
 }
 
-func BoxRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int, r, g, b, a uint8) bool {
+func BoxRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -192,7 +192,7 @@ func BoxRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int, r, g, b, a uint8) bool 
 	return C.boxRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _r, _g, _b, _a) == 0
 }
 
-func RoundedBoxColor(renderer *sdl.Renderer, x1, y1, x2, y2, rad int, color sdl.Color) bool {
+func RoundedBoxColor(renderer *sdl.Renderer, x1, y1, x2, y2, rad int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -202,7 +202,7 @@ func RoundedBoxColor(renderer *sdl.Renderer, x1, y1, x2, y2, rad int, color sdl.
 	return C.roundedBoxColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _rad, _color) == 0
 }
 
-func RoundedBoxRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, rad int, r, g, b, a uint8) bool {
+func RoundedBoxRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, rad int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -215,7 +215,7 @@ func RoundedBoxRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, rad int, r, g, b, a 
 	return C.roundedBoxRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _rad, _r, _g, _b, _a) == 0
 }
 
-func LineColor(renderer *sdl.Renderer, x1, y1, x2, y2 int, color sdl.Color) bool {
+func LineColor(renderer *sdl.Renderer, x1, y1, x2, y2 int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -224,7 +224,7 @@ func LineColor(renderer *sdl.Renderer, x1, y1, x2, y2 int, color sdl.Color) bool
 	return C.lineColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _color) == 0
 }
 
-func LineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int, r, g, b, a uint8) bool {
+func LineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -236,7 +236,7 @@ func LineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int, r, g, b, a uint8) bool
 	return C.lineRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _r, _g, _b, _a) == 0
 }
 
-func AALineColor(renderer *sdl.Renderer, x1, y1, x2, y2 int, color sdl.Color) bool {
+func AALineColor(renderer *sdl.Renderer, x1, y1, x2, y2 int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -245,7 +245,7 @@ func AALineColor(renderer *sdl.Renderer, x1, y1, x2, y2 int, color sdl.Color) bo
 	return C.aalineColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _color) == 0
 }
 
-func AALineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int, r, g, b, a uint8) bool {
+func AALineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -257,7 +257,7 @@ func AALineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int, r, g, b, a uint8) bo
 	return C.aalineRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _r, _g, _b, _a) == 0
 }
 
-func ThickLineColor(renderer *sdl.Renderer, x1, y1, x2, y2, width int, color sdl.Color) bool {
+func ThickLineColor(renderer *sdl.Renderer, x1, y1, x2, y2, width int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -267,7 +267,7 @@ func ThickLineColor(renderer *sdl.Renderer, x1, y1, x2, y2, width int, color sdl
 	return C.thickLineColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _width, _color) == 0
 }
 
-func ThickLineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, width int, r, g, b, a uint8) bool {
+func ThickLineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, width int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -280,7 +280,7 @@ func ThickLineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, width int, r, g, b, a
 	return C.thickLineRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _width, _r, _g, _b, _a) == 0
 }
 
-func CircleColor(renderer *sdl.Renderer, x, y, rad int, color sdl.Color) bool {
+func CircleColor(renderer *sdl.Renderer, x, y, rad int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rad := C.Sint16(rad)
@@ -288,7 +288,7 @@ func CircleColor(renderer *sdl.Renderer, x, y, rad int, color sdl.Color) bool {
 	return C.circleColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rad, _color) == 0
 }
 
-func CircleRGBA(renderer *sdl.Renderer, x, y, rad int, r, g, b, a uint8) bool {
+func CircleRGBA(renderer *sdl.Renderer, x, y, rad int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rad := C.Sint16(rad)
@@ -299,7 +299,7 @@ func CircleRGBA(renderer *sdl.Renderer, x, y, rad int, r, g, b, a uint8) bool {
 	return C.circleRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rad, _r, _g, _b, _a) == 0
 }
 
-func ArcColor(renderer *sdl.Renderer, x, y, rad, start, end int, color sdl.Color) bool {
+func ArcColor(renderer *sdl.Renderer, x, y, rad, start, end int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rad := C.Sint16(rad)
@@ -309,7 +309,7 @@ func ArcColor(renderer *sdl.Renderer, x, y, rad, start, end int, color sdl.Color
 	return C.arcColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rad, _start, _end, _color) == 0
 }
 
-func ArcRGBA(renderer *sdl.Renderer, x, y, rad, start, end int, r, g, b, a uint8) bool {
+func ArcRGBA(renderer *sdl.Renderer, x, y, rad, start, end int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rad := C.Sint16(rad)
@@ -322,7 +322,7 @@ func ArcRGBA(renderer *sdl.Renderer, x, y, rad, start, end int, r, g, b, a uint8
 	return C.arcRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rad, _start, _end, _r, _g, _b, _a) == 0
 }
 
-func AACircleColor(renderer *sdl.Renderer, x, y, rad int, color sdl.Color) bool {
+func AACircleColor(renderer *sdl.Renderer, x, y, rad int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rad := C.Sint16(rad)
@@ -330,7 +330,7 @@ func AACircleColor(renderer *sdl.Renderer, x, y, rad int, color sdl.Color) bool 
 	return C.aacircleColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rad, _color) == 0
 }
 
-func AACircleRGBA(renderer *sdl.Renderer, x, y, rad int, r, g, b, a uint8) bool {
+func AACircleRGBA(renderer *sdl.Renderer, x, y, rad int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rad := C.Sint16(rad)
@@ -341,7 +341,7 @@ func AACircleRGBA(renderer *sdl.Renderer, x, y, rad int, r, g, b, a uint8) bool 
 	return C.aacircleRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rad, _r, _g, _b, _a) == 0
 }
 
-func FilledCircleColor(renderer *sdl.Renderer, x, y, rad int, color sdl.Color) bool {
+func FilledCircleColor(renderer *sdl.Renderer, x, y, rad int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rad := C.Sint16(rad)
@@ -349,7 +349,7 @@ func FilledCircleColor(renderer *sdl.Renderer, x, y, rad int, color sdl.Color) b
 	return C.filledCircleColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rad, _color) == 0
 }
 
-func FilledCircleRGBA(renderer *sdl.Renderer, x, y, rad int, r, g, b, a uint8) bool {
+func FilledCircleRGBA(renderer *sdl.Renderer, x, y, rad int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rad := C.Sint16(rad)
@@ -360,7 +360,7 @@ func FilledCircleRGBA(renderer *sdl.Renderer, x, y, rad int, r, g, b, a uint8) b
 	return C.filledCircleRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rad, _r, _g, _b, _a) == 0
 }
 
-func EllipseColor(renderer *sdl.Renderer, x, y, rx, ry int, color sdl.Color) bool {
+func EllipseColor(renderer *sdl.Renderer, x, y, rx, ry int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rx := C.Sint16(rx)
@@ -369,7 +369,7 @@ func EllipseColor(renderer *sdl.Renderer, x, y, rx, ry int, color sdl.Color) boo
 	return C.ellipseColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rx, _ry, _color) == 0
 }
 
-func EllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int, r, g, b, a uint8) bool {
+func EllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rx := C.Sint16(rx)
@@ -381,7 +381,7 @@ func EllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int, r, g, b, a uint8) boo
 	return C.ellipseRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rx, _ry, _r, _g, _b, _a) == 0
 }
 
-func AAEllipseColor(renderer *sdl.Renderer, x, y, rx, ry int, color sdl.Color) bool {
+func AAEllipseColor(renderer *sdl.Renderer, x, y, rx, ry int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rx := C.Sint16(rx)
@@ -390,7 +390,7 @@ func AAEllipseColor(renderer *sdl.Renderer, x, y, rx, ry int, color sdl.Color) b
 	return C.aaellipseColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rx, _ry, _color) == 0
 }
 
-func AAEllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int, r, g, b, a uint8) bool {
+func AAEllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rx := C.Sint16(rx)
@@ -402,7 +402,7 @@ func AAEllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int, r, g, b, a uint8) b
 	return C.aaellipseRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rx, _ry, _r, _g, _b, _a) == 0
 }
 
-func FilledEllipseColor(renderer *sdl.Renderer, x, y, rx, ry int, color sdl.Color) bool {
+func FilledEllipseColor(renderer *sdl.Renderer, x, y, rx, ry int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rx := C.Sint16(rx)
@@ -411,7 +411,7 @@ func FilledEllipseColor(renderer *sdl.Renderer, x, y, rx, ry int, color sdl.Colo
 	return C.filledEllipseColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rx, _ry, _color) == 0
 }
 
-func FilledEllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int, r, g, b, a uint8) bool {
+func FilledEllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rx := C.Sint16(rx)
@@ -423,7 +423,7 @@ func FilledEllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int, r, g, b, a uint
 	return C.filledEllipseRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rx, _ry, _r, _g, _b, _a) == 0
 }
 
-func PieColor(renderer *sdl.Renderer, x, y, rad, start, end int, color sdl.Color) bool {
+func PieColor(renderer *sdl.Renderer, x, y, rad, start, end int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rad := C.Sint16(rad)
@@ -433,7 +433,7 @@ func PieColor(renderer *sdl.Renderer, x, y, rad, start, end int, color sdl.Color
 	return C.pieColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rad, _start, _end, _color) == 0
 }
 
-func PieRGBA(renderer *sdl.Renderer, x, y, rad, start, end int, r, g, b, a uint8) bool {
+func PieRGBA(renderer *sdl.Renderer, x, y, rad, start, end int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rad := C.Sint16(rad)
@@ -446,7 +446,7 @@ func PieRGBA(renderer *sdl.Renderer, x, y, rad, start, end int, r, g, b, a uint8
 	return C.pieRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rad, _start, _end, _r, _g, _b, _a) == 0
 }
 
-func FilledPieColor(renderer *sdl.Renderer, x, y, rad, start, end int, color sdl.Color) bool {
+func FilledPieColor(renderer *sdl.Renderer, x, y, rad, start, end int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rad := C.Sint16(rad)
@@ -456,7 +456,7 @@ func FilledPieColor(renderer *sdl.Renderer, x, y, rad, start, end int, color sdl
 	return C.filledPieColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rad, _start, _end, _color) == 0
 }
 
-func FilledPieRGBA(renderer *sdl.Renderer, x, y, rad, start, end int, r, g, b, a uint8) bool {
+func FilledPieRGBA(renderer *sdl.Renderer, x, y, rad, start, end int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_rad := C.Sint16(rad)
@@ -469,7 +469,7 @@ func FilledPieRGBA(renderer *sdl.Renderer, x, y, rad, start, end int, r, g, b, a
 	return C.filledPieRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _rad, _start, _end, _r, _g, _b, _a) == 0
 }
 
-func TrigonColor(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int, color sdl.Color) bool {
+func TrigonColor(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -480,7 +480,7 @@ func TrigonColor(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int, color sdl.C
 	return C.trigonColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _x3, _y3, _color) == 0
 }
 
-func TrigonRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int, r, g, b, a uint8) bool {
+func TrigonRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -494,7 +494,7 @@ func TrigonRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int, r, g, b, a u
 	return C.trigonRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _x3, _y3, _r, _g, _b, _a) == 0
 }
 
-func FilledTrigonColor(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int, color sdl.Color) bool {
+func FilledTrigonColor(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -505,7 +505,7 @@ func FilledTrigonColor(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int, color
 	return C.filledTrigonColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x1, _y1, _x2, _y2, _x3, _y3, _color) == 0
 }
 
-func FilledTrigonRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int, r, g, b, a uint8) bool {
+func FilledTrigonRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
 	_x2 := C.Sint16(x2)
@@ -622,7 +622,7 @@ func SetFontRotation(rotation uint32) {
 	C.gfxPrimitivesSetFontRotation(_rotation)
 }
 
-func CharacterColor(renderer *sdl.Renderer, x, y int, c byte, color sdl.Color) bool {
+func CharacterColor(renderer *sdl.Renderer, x, y int32, c byte, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_c := C.char(c)
@@ -630,7 +630,7 @@ func CharacterColor(renderer *sdl.Renderer, x, y int, c byte, color sdl.Color) b
 	return C.characterColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _c, _color) == 0
 }
 
-func CharacterRGBA(renderer *sdl.Renderer, x, y int, c, r, g, b, a uint8) bool {
+func CharacterRGBA(renderer *sdl.Renderer, x, y int32, c, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_c := C.char(c)
@@ -641,7 +641,7 @@ func CharacterRGBA(renderer *sdl.Renderer, x, y int, c, r, g, b, a uint8) bool {
 	return C.characterRGBA((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _c, _r, _g, _b, _a) == 0
 }
 
-func StringColor(renderer *sdl.Renderer, x, y int, s string, color sdl.Color) bool {
+func StringColor(renderer *sdl.Renderer, x, y int32, s string, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_s := C.CString(s)
@@ -649,7 +649,7 @@ func StringColor(renderer *sdl.Renderer, x, y int, s string, color sdl.Color) bo
 	return C.stringColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _x, _y, _s, _color) == 0
 }
 
-func StringRGBA(renderer *sdl.Renderer, x, y int, s string, r, g, b, a uint8) bool {
+func StringRGBA(renderer *sdl.Renderer, x, y int32, s string, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
 	_s := C.CString(s)
@@ -906,7 +906,7 @@ func ZoomSurface(src *sdl.Surface, zoomx, zoomy float64, smooth int) *sdl.Surfac
 	return (*sdl.Surface)(unsafe.Pointer(C.zoomSurface((*C.SDL_Surface)(unsafe.Pointer(src)), _zoomx, _zoomy, _smooth)))
 }
 
-func ZoomSurfaceSize(width, height int, zoomx, zoomy float64) (dstwidth int, dstheight int) {
+func ZoomSurfaceSize(width, height int32, zoomx, zoomy float64) (dstwidth, dstheight int) {
 	_width := C.int(width)
 	_height := C.int(height)
 	_zoomx := C.double(zoomx)

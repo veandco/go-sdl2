@@ -1,8 +1,8 @@
 package sdl
 
 import (
-	"os"
 	"fmt"
+	"os"
 	"runtime"
 	"testing"
 )

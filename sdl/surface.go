@@ -63,7 +63,7 @@ func CreateRGBSurface(flags uint32, width, height, depth int32, Rmask, Gmask, Bm
 
 // CreateRGBSurfaceFrom allocate a new RGB surface with existing pixel data.
 // (https://wiki.libsdl.org/SDL_CreateRGBSurfaceFrom)
-func CreateRGBSurfaceFrom(pixels unsafe.Pointer, width, height, depth, pitch int, Rmask, Gmask, Bmask, Amask uint32) (*Surface, error) {
+func CreateRGBSurfaceFrom(pixels unsafe.Pointer, width, height int32, depth, pitch int, Rmask, Gmask, Bmask, Amask uint32) (*Surface, error) {
 	surface := (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurfaceFrom(
 		pixels,
 		C.int(width),
@@ -261,7 +261,7 @@ func (surface *Surface) ConvertFormat(pixelFormat uint32, flags uint32) (*Surfac
 
 // ConvertPixels copies a block of pixels of one format to another format.
 // (https://wiki.libsdl.org/SDL_ConvertPixels)
-func ConvertPixels(width, height int, srcFormat uint32, src unsafe.Pointer, srcPitch int,
+func ConvertPixels(width, height int32, srcFormat uint32, src unsafe.Pointer, srcPitch int,
 	dstFormat uint32, dst unsafe.Pointer, dstPitch int) error {
 	if C.SDL_ConvertPixels(C.int(width), C.int(height), C.Uint32(srcFormat), src, C.int(srcPitch), C.Uint32(dstFormat), dst, C.int(dstPitch)) != 0 {
 		return GetError()

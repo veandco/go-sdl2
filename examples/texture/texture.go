@@ -9,7 +9,7 @@ import (
 )
 
 var winTitle string = "Go-SDL2 Texture"
-var winWidth, winHeight int = 800, 600
+var winWidth, winHeight int32 = 800, 600
 var imageName string = "../../assets/test.bmp"
 
 func run() int {
