@@ -9,7 +9,7 @@ import (
 )
 
 var winTitle string = "Text"
-var winWidth, winHeight int = 800, 600
+var winWidth, winHeight int32 = 800, 600
 
 func run() int {
 	var window *sdl.Window

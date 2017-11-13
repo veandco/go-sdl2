@@ -109,7 +109,7 @@ func GetRenderDriverInfo(index int, info *RendererInfo) int {
 
 // CreateWindowAndRenderer returns a new window and default renderer.
 // (https://wiki.libsdl.org/SDL_CreateWindowAndRenderer)
-func CreateWindowAndRenderer(w, h int, flags uint32) (*Window, *Renderer, error) {
+func CreateWindowAndRenderer(w, h int32, flags uint32) (*Window, *Renderer, error) {
 	var window *C.SDL_Window
 	var renderer *C.SDL_Renderer
 	ret := C.SDL_CreateWindowAndRenderer(C.int(w), C.int(h), C.Uint32(flags), &window, &renderer)
@@ -168,7 +168,7 @@ func (renderer *Renderer) GetInfo() (RendererInfo, error) {
 
 // GetOutputSize returns the output size in pixels of a rendering context.
 // (https://wiki.libsdl.org/SDL_GetRendererOutputSize)
-func (renderer *Renderer) GetOutputSize() (w, h int, err error) {
+func (renderer *Renderer) GetOutputSize() (w, h int32, err error) {
 	_w := (*C.int)(unsafe.Pointer(&w))
 	_h := (*C.int)(unsafe.Pointer(&h))
 	_ret := C.SDL_GetRendererOutputSize(renderer.cptr(), _w, _h)
@@ -180,7 +180,7 @@ func (renderer *Renderer) GetOutputSize() (w, h int, err error) {
 
 // CreateTexture returns a new texture for a rendering context.
 // (https://wiki.libsdl.org/SDL_CreateTexture)
-func (renderer *Renderer) CreateTexture(format uint32, access int, w int, h int) (*Texture, error) {
+func (renderer *Renderer) CreateTexture(format uint32, access int, w, h int32) (*Texture, error) {
 	_format := C.Uint32(format)
 	_access := C.int(access)
 	_w := C.int(w)
@@ -362,7 +362,7 @@ func (renderer *Renderer) GetRenderTarget() *Texture {
 
 // SetLogicalSize sets a device independent resolution for rendering.
 // (https://wiki.libsdl.org/SDL_RenderSetLogicalSize)
-func (renderer *Renderer) SetLogicalSize(w int, h int) error {
+func (renderer *Renderer) SetLogicalSize(w, h int32) error {
 	_ret := C.SDL_RenderSetLogicalSize(renderer.cptr(), C.int(w), C.int(h))
 	if _ret < 0 {
 		return GetError()
@@ -372,7 +372,7 @@ func (renderer *Renderer) SetLogicalSize(w int, h int) error {
 
 // GetLogicalSize returns device independent resolution for rendering.
 // (https://wiki.libsdl.org/SDL_RenderGetLogicalSize)
-func (renderer *Renderer) GetLogicalSize() (w, h int) {
+func (renderer *Renderer) GetLogicalSize() (w, h int32) {
 	_w := (*C.int)(unsafe.Pointer(&w))
 	_h := (*C.int)(unsafe.Pointer(&h))
 	C.SDL_RenderGetLogicalSize(renderer.cptr(), _w, _h)
@@ -506,7 +506,7 @@ func (renderer *Renderer) Clear() error {
 
 // DrawPoint draws a point on the current rendering target.
 // (https://wiki.libsdl.org/SDL_RenderDrawPoint)
-func (renderer *Renderer) DrawPoint(x, y int) error {
+func (renderer *Renderer) DrawPoint(x, y int32) error {
 	_ret := C.SDL_RenderDrawPoint(renderer.cptr(), C.int(x), C.int(y))
 	if _ret < 0 {
 		return GetError()
@@ -526,7 +526,7 @@ func (renderer *Renderer) DrawPoints(points []Point) error {
 
 // DrawLine draws a line on the current rendering target.
 // (https://wiki.libsdl.org/SDL_RenderDrawLine)
-func (renderer *Renderer) DrawLine(x1, y1, x2, y2 int) error {
+func (renderer *Renderer) DrawLine(x1, y1, x2, y2 int32) error {
 	_x1 := C.int(x1)
 	_y1 := C.int(y1)
 	_x2 := C.int(x2)

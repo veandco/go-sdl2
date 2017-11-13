@@ -1,8 +1,8 @@
 package sdl
 
 import (
-	"testing"
 	"sync"
+	"testing"
 )
 
 const (
@@ -111,13 +111,13 @@ func TestAddHintCallback(t *testing.T) {
 func TestDelHintCallback(t *testing.T) {
 	Do(func() {
 		AddHintCallback(HINT_ALLOW_TOPMOST, func(data interface{}, name, oldValue, newValue string) {
-			if newValue == "1" {
+			if newValue == "2" {
 				t.Fail()
 			}
 		}, nil)
 
 		AddHintCallback(HINT_RENDER_VSYNC, func(data interface{}, name, oldValue, newValue string) {
-			if newValue == "1" {
+			if newValue == "2" {
 				t.Fail()
 			}
 		}, nil)
@@ -125,7 +125,7 @@ func TestDelHintCallback(t *testing.T) {
 		DelHintCallback(HINT_ALLOW_TOPMOST)
 		DelHintCallback(HINT_RENDER_VSYNC)
 
-		SetHint(HINT_ALLOW_TOPMOST, "1")
-		SetHint(HINT_RENDER_VSYNC, "1")
+		SetHint(HINT_ALLOW_TOPMOST, "2")
+		SetHint(HINT_RENDER_VSYNC, "2")
 	})
 }

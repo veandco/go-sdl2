@@ -68,23 +68,23 @@ func GetMouseFocus() *Window {
 
 // GetMouseState returns the current state of the mouse.
 // (https://wiki.libsdl.org/SDL_GetMouseState)
-func GetMouseState() (x, y int, state uint32) {
+func GetMouseState() (x, y int32, state uint32) {
 	var _x, _y C.int
 	_state := uint32(C.SDL_GetMouseState(&_x, &_y))
-	return int(_x), int(_y), _state
+	return int32(_x), int32(_y), _state
 }
 
 // GetRelativeMouseState returns the relative state of the mouse.
 // (https://wiki.libsdl.org/SDL_GetRelativeMouseState)
-func GetRelativeMouseState() (x, y int, state uint32) {
+func GetRelativeMouseState() (x, y int32, state uint32) {
 	var _x, _y C.int
 	_state := uint32(C.SDL_GetRelativeMouseState(&_x, &_y))
-	return int(_x), int(_y), _state
+	return int32(_x), int32(_y), _state
 }
 
 // WarpMouseInWindow moves the mouse to the given position within the window.
 // (https://wiki.libsdl.org/SDL_WarpMouseInWindow)
-func (window *Window) WarpMouseInWindow(x, y int) {
+func (window *Window) WarpMouseInWindow(x, y int32) {
 	C.SDL_WarpMouseInWindow(window.cptr(), C.int(x), C.int(y))
 }
 
@@ -102,7 +102,7 @@ func GetRelativeMouseMode() bool {
 
 // CreateCursor creates a cursor using the specified bitmap data and mask (in MSB format).
 // (https://wiki.libsdl.org/SDL_CreateCursor)
-func CreateCursor(data, mask *uint8, w, h, hotX, hotY int) *Cursor {
+func CreateCursor(data, mask *uint8, w, h, hotX, hotY int32) *Cursor {
 	_data := (*C.Uint8)(unsafe.Pointer(data))
 	_mask := (*C.Uint8)(unsafe.Pointer(mask))
 	return (*Cursor)(C.SDL_CreateCursor(_data, _mask, C.int(w), C.int(h), C.int(hotX), C.int(hotY)))
@@ -110,7 +110,7 @@ func CreateCursor(data, mask *uint8, w, h, hotX, hotY int) *Cursor {
 
 // CreateColorCursor creates a color cursor.
 // (https://wiki.libsdl.org/SDL_CreateColorCursor)
-func CreateColorCursor(surface *Surface, hotX, hotY int) *Cursor {
+func CreateColorCursor(surface *Surface, hotX, hotY int32) *Cursor {
 	return (*Cursor)(C.SDL_CreateColorCursor(surface.cptr(), C.int(hotX), C.int(hotY)))
 }
 

@@ -151,7 +151,7 @@ func (joy *Joystick) GetHat(hat int) byte {
 
 // GetBall returns the ball axis change since the last poll.
 // (https://wiki.libsdl.org/SDL_JoystickGetBall)
-func (joy *Joystick) GetBall(ball int, dx, dy *int) int {
+func (joy *Joystick) GetBall(ball int, dx, dy *int32) int {
 	_dx := (*C.int)(unsafe.Pointer(dx))
 	_dy := (*C.int)(unsafe.Pointer(dy))
 	return (int)(C.SDL_JoystickGetBall(joy.cptr(), C.int(ball), _dx, _dy))
