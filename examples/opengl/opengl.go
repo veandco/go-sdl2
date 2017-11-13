@@ -22,10 +22,6 @@ func main() {
 	}
 	defer sdl.Quit()
 
-	if err = gl.Init(); err != nil {
-		panic(err)
-	}
-
 	window, err = sdl.CreateWindow(winTitle, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		winWidth, winHeight, sdl.WINDOW_OPENGL)
 	if err != nil {
@@ -37,6 +33,10 @@ func main() {
 		panic(err)
 	}
 	defer sdl.GLDeleteContext(context)
+
+	if err = gl.Init(); err != nil {
+		panic(err)
+	}
 
 	gl.Enable(gl.DEPTH_TEST)
 	gl.ClearColor(0.2, 0.2, 0.3, 1.0)
