@@ -25,6 +25,9 @@ On __Fedora 20 and above__, type:
 On __Arch Linux__, type:  
 `pacman -S sdl2{,_mixer,_image,_ttf}`
 
+On __Gentoo__, type:  
+`emerge -av libsdl2 sdl2-{gfx,image,mixer,ttf}`
+
 On __Mac OS X__, install SDL2 via [Homebrew](http://brew.sh) like so:  
 `brew install sdl2{,_image,_ttf,_mixer} pkg-config`
 
