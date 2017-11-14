@@ -22,8 +22,12 @@
 + Renamed `GL_DeleteContext()` to `GLDeleteContext()`
 + Renamed `LoadBMP_RW()` to `LoadBMPRW()`
 + Renamed `SaveBMP_RW()` to `SaveBMPRW()`
++ Renamed `Id` to `ID` in `Finger` struct
++ Renamed `SW_YUVTexture` to `SWYUVTexture`
 + Moved error to the last return value in `ShowMessageBox()`
 
 - Unexported `Padding` in `AudioSpec` struct
 - Unexported `goHintCallback`
 - Unexported `Flags`, `Locked` and `LockData` in `Surface` struct
+- Unexported `Rloss`, `Gloss`, `Bloss`, `Aloss`, `Rshift`, `Gshift`, `Bshift`, `Ashift`, `RefCount`, `Next` in `PixelFormat` struct
+- Unexported `Version`, `RefCount` in `Palette` struct
