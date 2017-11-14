@@ -16,8 +16,7 @@ Ubuntu 13.10 may also be used but it may miss an optional package such as
 _libsdl2-ttf-dev_ on Ubuntu 13.10's case which is available in Ubuntu 14.04.
 
 On __Ubuntu 14.04 and above__, type:  
-`apt-get install libsdl2{,-mixer,-image,-ttf}-dev`  
-_Note: Ubuntu 14.04 currently has broken header file in the SDL2 package that disables people from compiling against it. It will be needed to either patch the header file or install SDL2 from source._
+`apt install libsdl2{,-mixer,-image,-ttf,-gfx}-dev`
 
 On __Fedora 20 and above__, type:  
 `yum install SDL2{,_mixer,_image,_ttf}-devel`
