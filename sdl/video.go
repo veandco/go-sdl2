@@ -15,6 +15,14 @@ static void SDL_GL_GetDrawableSize(SDL_Window *window, int *w, int *h)
 	*w = 0;
 	*h = 0;
 }
+
+#pragma message("SDL_WINDOW_ALLOW_HIGHDPI is not supported before SDL 2.0.1")
+#define SDL_WINDOW_ALLOW_HIGHDPI (0)
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,4))
+#pragma message("SDL_WINDOW_MOUSE_CAPTURE is not supported before SDL 2.0.4")
+#define SDL_WINDOW_MOUSE_CAPTURE (0)
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,5))
@@ -22,6 +30,26 @@ static void SDL_GL_GetDrawableSize(SDL_Window *window, int *w, int *h)
 static void SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable)
 {
 }
+
+#pragma message("SDL_WINDOW_ALWAYS_ON_TOP is not supported before SDL 2.0.5")
+#define SDL_WINDOW_ALWAYS_ON_TOP (0)
+
+#pragma message("SDL_WINDOW_SKIP_TASKBAR is not supported before SDL 2.0.5")
+#define SDL_WINDOW_SKIP_TASKBAR (0)
+
+#pragma message("SDL_WINDOW_UTILITY is not supported before SDL 2.0.5")
+#define SDL_WINDOW_UTILITY (0)
+
+#pragma message("SDL_WINDOW_TOOLTIP is not supported before SDL 2.0.5")
+#define SDL_WINDOW_TOOLTIP (0)
+
+#pragma message("SDL_WINDOW_POPUP_MENU is not supported before SDL 2.0.5")
+#define SDL_WINDOW_POPUP_MENU (0)
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,6))
+#pragma message("SDL_WINDOW_VULKAN is not supported before SDL 2.0.6")
+#define SDL_WINDOW_VULKAN (0)
 #endif
 */
 import "C"
@@ -44,6 +72,13 @@ const (
 	WINDOW_FULLSCREEN_DESKTOP = C.SDL_WINDOW_FULLSCREEN_DESKTOP // fullscreen window at the current desktop resolution
 	WINDOW_FOREIGN            = C.SDL_WINDOW_FOREIGN            // window not created by SDL
 	WINDOW_ALLOW_HIGHDPI      = C.SDL_WINDOW_ALLOW_HIGHDPI      // window should be created in high-DPI mode if supported (>= SDL 2.0.1)
+	WINDOW_MOUSE_CAPTURE      = C.SDL_WINDOW_MOUSE_CAPTURE      // window has mouse captured (unrelated to INPUT_GRABBED, >= SDL 2.0.4)
+	WINDOW_ALWAYS_ON_TOP      = C.SDL_WINDOW_ALWAYS_ON_TOP      // window should always be above others (X11 only, >= SDL 2.0.5)
+	WINDOW_SKIP_TASKBAR       = C.SDL_WINDOW_SKIP_TASKBAR       // window should not be added to the taskbar (X11 only, >= SDL 2.0.5)
+	WINDOW_UTILITY            = C.SDL_WINDOW_UTILITY            // window should be treated as a utility window (X11 only, >= SDL 2.0.5)
+	WINDOW_TOOLTIP            = C.SDL_WINDOW_TOOLTIP            // window should be treated as a tooltip (X11 only, >= SDL 2.0.5)
+	WINDOW_POPUP_MENU         = C.SDL_WINDOW_POPUP_MENU         // window should be treated as a popup menu (X11 only, >= SDL 2.0.5)
+	WINDOW_VULKAN             = C.SDL_WINDOW_VULKAN             // window usable for Vulkan surface (>= SDL 2.0.6)
 )
 
 // An enumeration of window events.
