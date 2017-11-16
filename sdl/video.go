@@ -45,6 +45,12 @@ static void SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable)
 
 #pragma message("SDL_WINDOW_POPUP_MENU is not supported before SDL 2.0.5")
 #define SDL_WINDOW_POPUP_MENU (0)
+
+#pragma message("SDL_WINDOWEVENT_TAKE_FOCUS is not supported before SDL 2.0.5")
+#define SDL_WINDOWEVENT_TAKE_FOCUS (0)
+
+#pragma message("SDL_WINDOWEVENT_HIT_TEST is not supported before SDL 2.0.5")
+#define SDL_WINDOWEVENT_HIT_TEST (0)
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,6))
@@ -99,6 +105,8 @@ const (
 	WINDOWEVENT_FOCUS_GAINED = C.SDL_WINDOWEVENT_FOCUS_GAINED // window has gained keyboard focus
 	WINDOWEVENT_FOCUS_LOST   = C.SDL_WINDOWEVENT_FOCUS_LOST   // window has lost keyboard focus
 	WINDOWEVENT_CLOSE        = C.SDL_WINDOWEVENT_CLOSE        // the window manager requests that the window be closed
+	WINDOWEVENT_TAKE_FOCUS   = C.SDL_WINDOWEVENT_TAKE_FOCUS   // window is being offered a focus (should SDL_SetWindowInputFocus() on itself or a subwindow, or ignore) (>= SDL 2.0.5)
+	WINDOWEVENT_HIT_TEST     = C.SDL_WINDOWEVENT_HIT_TEST     // window had a hit test that wasn't SDL_HITTEST_NORMAL (>= SDL 2.0.5)
 )
 
 // Window position flags.
