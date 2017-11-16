@@ -37,6 +37,12 @@ const (
 	NUM_SYSTEM_CURSORS      = C.SDL_NUM_SYSTEM_CURSORS      // (only for bounding internal arrays)
 )
 
+// Scroll direction types for the Scroll event
+const (
+	MOUSEWHEEL_NORMAL  = C.SDL_MOUSEWHEEL_NORMAL  // the scroll direction is normal
+	MOUSEWHEEL_FLIPPED = C.SDL_MOUSEWHEEL_FLIPPED // the scroll direction is flipped / natural
+)
+
 // Used as a mask when testing buttons in buttonstate.
 const (
 	BUTTON_LEFT   = C.SDL_BUTTON_LEFT   // left mouse button
