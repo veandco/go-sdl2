@@ -62,6 +62,12 @@ static void SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable)
 #if !(SDL_VERSION_ATLEAST(2,0,6))
 #pragma message("SDL_WINDOW_VULKAN is not supported before SDL 2.0.6")
 #define SDL_WINDOW_VULKAN (0)
+
+#pragma message("SDL_GL_CONTEXT_RESET_NOTIFICATION is not supported before SDL 2.0.6")
+#define SDL_GL_CONTEXT_RESET_NOTIFICATION (0)
+
+#pragma message("SDL_GL_CONTEXT_NO_ERROR is not supported before SDL 2.0.6")
+#define SDL_GL_CONTEXT_NO_ERROR (0)
 #endif
 */
 import "C"
@@ -166,6 +172,8 @@ const (
 	GL_SHARE_WITH_CURRENT_CONTEXT = C.SDL_GL_SHARE_WITH_CURRENT_CONTEXT // OpenGL context sharing; defaults to 0
 	GL_FRAMEBUFFER_SRGB_CAPABLE   = C.SDL_GL_FRAMEBUFFER_SRGB_CAPABLE   // requests sRGB capable visual; defaults to 0 (>= SDL 2.0.1)
 	GL_CONTEXT_RELEASE_BEHAVIOR   = C.SDL_GL_CONTEXT_RELEASE_BEHAVIOR   // sets context the release behavior; defaults to 1 (>= SDL 2.0.4)
+	GL_CONTEXT_RESET_NOTIFICATION = C.SDL_GL_CONTEXT_RESET_NOTIFICATION // (>= SDL 2.0.6)
+	GL_CONTEXT_NO_ERROR           = C.SDL_GL_CONTEXT_NO_ERROR           // (>= SDL 2.0.6)
 )
 
 // An enumeration of OpenGL profiles.
