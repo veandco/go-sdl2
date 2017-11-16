@@ -18,11 +18,17 @@ static void SDL_GL_GetDrawableSize(SDL_Window *window, int *w, int *h)
 
 #pragma message("SDL_WINDOW_ALLOW_HIGHDPI is not supported before SDL 2.0.1")
 #define SDL_WINDOW_ALLOW_HIGHDPI (0)
+
+#pragma message("SDL_GL_FRAMEBUFFER_SRGB_CAPABLE is not supported before SDL 2.0.1")
+#define SDL_GL_FRAMEBUFFER_SRGB_CAPABLE (0)
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,4))
 #pragma message("SDL_WINDOW_MOUSE_CAPTURE is not supported before SDL 2.0.4")
 #define SDL_WINDOW_MOUSE_CAPTURE (0)
+
+#pragma message("SDL_GL_CONTEXT_RELEASE_BEHAVIOR is not supported before SDL 2.0.4")
+#define SDL_GL_CONTEXT_RELEASE_BEHAVIOR (0)
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,5))
@@ -158,6 +164,8 @@ const (
 	GL_CONTEXT_FLAGS              = C.SDL_GL_CONTEXT_FLAGS              // some combination of 0 or more of elements of the GLcontextFlag enumeration; defaults to 0 (https://wiki.libsdl.org/SDL_GLcontextFlag)
 	GL_CONTEXT_PROFILE_MASK       = C.SDL_GL_CONTEXT_PROFILE_MASK       // type of GL context (Core, Compatibility, ES); default value depends on platform (https://wiki.libsdl.org/SDL_GLprofile)
 	GL_SHARE_WITH_CURRENT_CONTEXT = C.SDL_GL_SHARE_WITH_CURRENT_CONTEXT // OpenGL context sharing; defaults to 0
+	GL_FRAMEBUFFER_SRGB_CAPABLE   = C.SDL_GL_FRAMEBUFFER_SRGB_CAPABLE   // requests sRGB capable visual; defaults to 0 (>= SDL 2.0.1)
+	GL_CONTEXT_RELEASE_BEHAVIOR   = C.SDL_GL_CONTEXT_RELEASE_BEHAVIOR   // sets context the release behavior; defaults to 1 (>= SDL 2.0.4)
 )
 
 // An enumeration of OpenGL profiles.
