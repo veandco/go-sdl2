@@ -16,6 +16,12 @@ static int SDL_CaptureMouse(SDL_bool enabled)
 	return -1;
 }
 #endif
+
+#pragma message("SDL_MOUSEWHEEL_NORMAL is not supported before SDL 2.0.4")
+#define SDL_MOUSEWHEEL_NORMAL (0)
+
+#pragma message("SDL_MOUSEWHEEL_FLIPPED is not supported before SDL 2.0.4")
+#define SDL_MOUSEWHEEL_FLIPPED (0)
 */
 import "C"
 import "unsafe"
