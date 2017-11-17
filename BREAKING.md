@@ -43,6 +43,10 @@
 + Renamed `LoadXV_RW()` to `LoadXVRW()`
 + Renamed `LoadWEBP_RW()` to `LoadWEBPRW()`
 + Renamed `SavePNG_RW()` to `SavePNGRW()`
++ Renamed `RenderUTF8_Solid()` to `RenderUTF8Solid()`
++ Renamed `RenderUTF8_Shaded()` to `RenderUTF8Shaded()`
++ Renamed `RenderUTF8_Blended()` to `RenderUTF8Blended()`
++ Renamed `RenderUTF8_Blended_Wrapped()` to `RenderUTF8BlendedWrapped()`
 + Moved error to the last return value in `ShowMessageBox()`
 + Change Mutex, Sem, Cond to have methods instead of functions
 
