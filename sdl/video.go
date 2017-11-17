@@ -15,6 +15,20 @@ static void SDL_GL_GetDrawableSize(SDL_Window *window, int *w, int *h)
 	*w = 0;
 	*h = 0;
 }
+
+#pragma message("SDL_WINDOW_ALLOW_HIGHDPI is not supported before SDL 2.0.1")
+#define SDL_WINDOW_ALLOW_HIGHDPI (0)
+
+#pragma message("SDL_GL_FRAMEBUFFER_SRGB_CAPABLE is not supported before SDL 2.0.1")
+#define SDL_GL_FRAMEBUFFER_SRGB_CAPABLE (0)
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,4))
+#pragma message("SDL_WINDOW_MOUSE_CAPTURE is not supported before SDL 2.0.4")
+#define SDL_WINDOW_MOUSE_CAPTURE (0)
+
+#pragma message("SDL_GL_CONTEXT_RELEASE_BEHAVIOR is not supported before SDL 2.0.4")
+#define SDL_GL_CONTEXT_RELEASE_BEHAVIOR (0)
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,5))
@@ -22,6 +36,38 @@ static void SDL_GL_GetDrawableSize(SDL_Window *window, int *w, int *h)
 static void SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable)
 {
 }
+
+#pragma message("SDL_WINDOW_ALWAYS_ON_TOP is not supported before SDL 2.0.5")
+#define SDL_WINDOW_ALWAYS_ON_TOP (0)
+
+#pragma message("SDL_WINDOW_SKIP_TASKBAR is not supported before SDL 2.0.5")
+#define SDL_WINDOW_SKIP_TASKBAR (0)
+
+#pragma message("SDL_WINDOW_UTILITY is not supported before SDL 2.0.5")
+#define SDL_WINDOW_UTILITY (0)
+
+#pragma message("SDL_WINDOW_TOOLTIP is not supported before SDL 2.0.5")
+#define SDL_WINDOW_TOOLTIP (0)
+
+#pragma message("SDL_WINDOW_POPUP_MENU is not supported before SDL 2.0.5")
+#define SDL_WINDOW_POPUP_MENU (0)
+
+#pragma message("SDL_WINDOWEVENT_TAKE_FOCUS is not supported before SDL 2.0.5")
+#define SDL_WINDOWEVENT_TAKE_FOCUS (0)
+
+#pragma message("SDL_WINDOWEVENT_HIT_TEST is not supported before SDL 2.0.5")
+#define SDL_WINDOWEVENT_HIT_TEST (0)
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,6))
+#pragma message("SDL_WINDOW_VULKAN is not supported before SDL 2.0.6")
+#define SDL_WINDOW_VULKAN (0)
+
+#pragma message("SDL_GL_CONTEXT_RESET_NOTIFICATION is not supported before SDL 2.0.6")
+#define SDL_GL_CONTEXT_RESET_NOTIFICATION (0)
+
+#pragma message("SDL_GL_CONTEXT_NO_ERROR is not supported before SDL 2.0.6")
+#define SDL_GL_CONTEXT_NO_ERROR (0)
 #endif
 */
 import "C"
@@ -44,6 +90,13 @@ const (
 	WINDOW_FULLSCREEN_DESKTOP = C.SDL_WINDOW_FULLSCREEN_DESKTOP // fullscreen window at the current desktop resolution
 	WINDOW_FOREIGN            = C.SDL_WINDOW_FOREIGN            // window not created by SDL
 	WINDOW_ALLOW_HIGHDPI      = C.SDL_WINDOW_ALLOW_HIGHDPI      // window should be created in high-DPI mode if supported (>= SDL 2.0.1)
+	WINDOW_MOUSE_CAPTURE      = C.SDL_WINDOW_MOUSE_CAPTURE      // window has mouse captured (unrelated to INPUT_GRABBED, >= SDL 2.0.4)
+	WINDOW_ALWAYS_ON_TOP      = C.SDL_WINDOW_ALWAYS_ON_TOP      // window should always be above others (X11 only, >= SDL 2.0.5)
+	WINDOW_SKIP_TASKBAR       = C.SDL_WINDOW_SKIP_TASKBAR       // window should not be added to the taskbar (X11 only, >= SDL 2.0.5)
+	WINDOW_UTILITY            = C.SDL_WINDOW_UTILITY            // window should be treated as a utility window (X11 only, >= SDL 2.0.5)
+	WINDOW_TOOLTIP            = C.SDL_WINDOW_TOOLTIP            // window should be treated as a tooltip (X11 only, >= SDL 2.0.5)
+	WINDOW_POPUP_MENU         = C.SDL_WINDOW_POPUP_MENU         // window should be treated as a popup menu (X11 only, >= SDL 2.0.5)
+	WINDOW_VULKAN             = C.SDL_WINDOW_VULKAN             // window usable for Vulkan surface (>= SDL 2.0.6)
 )
 
 // An enumeration of window events.
@@ -64,6 +117,8 @@ const (
 	WINDOWEVENT_FOCUS_GAINED = C.SDL_WINDOWEVENT_FOCUS_GAINED // window has gained keyboard focus
 	WINDOWEVENT_FOCUS_LOST   = C.SDL_WINDOWEVENT_FOCUS_LOST   // window has lost keyboard focus
 	WINDOWEVENT_CLOSE        = C.SDL_WINDOWEVENT_CLOSE        // the window manager requests that the window be closed
+	WINDOWEVENT_TAKE_FOCUS   = C.SDL_WINDOWEVENT_TAKE_FOCUS   // window is being offered a focus (should SDL_SetWindowInputFocus() on itself or a subwindow, or ignore) (>= SDL 2.0.5)
+	WINDOWEVENT_HIT_TEST     = C.SDL_WINDOWEVENT_HIT_TEST     // window had a hit test that wasn't SDL_HITTEST_NORMAL (>= SDL 2.0.5)
 )
 
 // Window position flags.
@@ -115,6 +170,10 @@ const (
 	GL_CONTEXT_FLAGS              = C.SDL_GL_CONTEXT_FLAGS              // some combination of 0 or more of elements of the GLcontextFlag enumeration; defaults to 0 (https://wiki.libsdl.org/SDL_GLcontextFlag)
 	GL_CONTEXT_PROFILE_MASK       = C.SDL_GL_CONTEXT_PROFILE_MASK       // type of GL context (Core, Compatibility, ES); default value depends on platform (https://wiki.libsdl.org/SDL_GLprofile)
 	GL_SHARE_WITH_CURRENT_CONTEXT = C.SDL_GL_SHARE_WITH_CURRENT_CONTEXT // OpenGL context sharing; defaults to 0
+	GL_FRAMEBUFFER_SRGB_CAPABLE   = C.SDL_GL_FRAMEBUFFER_SRGB_CAPABLE   // requests sRGB capable visual; defaults to 0 (>= SDL 2.0.1)
+	GL_CONTEXT_RELEASE_BEHAVIOR   = C.SDL_GL_CONTEXT_RELEASE_BEHAVIOR   // sets context the release behavior; defaults to 1 (>= SDL 2.0.4)
+	GL_CONTEXT_RESET_NOTIFICATION = C.SDL_GL_CONTEXT_RESET_NOTIFICATION // (>= SDL 2.0.6)
+	GL_CONTEXT_NO_ERROR           = C.SDL_GL_CONTEXT_NO_ERROR           // (>= SDL 2.0.6)
 )
 
 // An enumeration of OpenGL profiles.
