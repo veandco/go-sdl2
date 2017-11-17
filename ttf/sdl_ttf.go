@@ -1,3 +1,4 @@
+// Package ttf is a TrueType font rendering library that is used with the SDL library, and almost as portable. It depends on freetype2 to handle the TrueType font data. It allows a programmer to use multiple TrueType fonts without having to code a font rendering routine themselves. With the power of outline fonts and antialiasing, high quality text output can be obtained without much effort.
 package ttf
 
 //#cgo windows LDFLAGS: -lSDL2 -lSDL2_ttf
