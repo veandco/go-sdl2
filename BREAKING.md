@@ -24,6 +24,25 @@
 + Renamed `SaveBMP_RW()` to `SaveBMPRW()`
 + Renamed `Id` to `ID` in `Finger` struct
 + Renamed `SW_YUVTexture` to `SWYUVTexture`
++ Renamed `LoadTyped_RW` to `LoadTypedRW`
++ Renamed `Load_RW` to `LoadRW`
++ Renamed `LoadTexture_RW` to `LoadTextureRW`
++ Renamed `LoadICO_RW()` to `LoadICORW()`
++ Renamed `LoadCUR_RW()` to `LoadCURRW()`
++ Renamed `LoadBMP_RW()` to `LoadBMPRW()`
++ Renamed `LoadGIF_RW()` to `LoadGIFRW()`
++ Renamed `LoadJPG_RW()` to `LoadJPGRW()`
++ Renamed `LoadLBM_RW()` to `LoadLBMRW()`
++ Renamed `LoadPCX_RW()` to `LoadPCXRW()`
++ Renamed `LoadPNG_RW()` to `LoadPNGRW()`
++ Renamed `LoadPNM_RW()` to `LoadPNMRW()`
++ Renamed `LoadTGA_RW()` to `LoadTGARW()`
++ Renamed `LoadTIF_RW()` to `LoadTIFRW()`
++ Renamed `LoadXCF_RW()` to `LoadXCFRW()`
++ Renamed `LoadXPM_RW()` to `LoadXPMRW()`
++ Renamed `LoadXV_RW()` to `LoadXVRW()`
++ Renamed `LoadWEBP_RW()` to `LoadWEBPRW()`
++ Renamed `SavePNG_RW()` to `SavePNGRW()`
 + Moved error to the last return value in `ShowMessageBox()`
 
 - Unexported `Padding` in `AudioSpec` struct
