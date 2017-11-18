@@ -7,6 +7,17 @@ package sdl
 #if !SDL_VERSION_ATLEAST(2,0,2)
 #define SDL_RENDER_TARGETS_RESET (0x2000)
 #endif
+
+#if !SDL_VERSION_ATLEAST(2,0,4)
+#pragma message("SDL_DROPTEXT is not supported before SDL 2.0.4")
+#define SDL_DROPTEXT (0)
+
+#pragma message("SDL_DROPBEGIN is not supported before SDL 2.0.4")
+#define SDL_DROPBEGIN (0)
+
+#pragma message("SDL_DROPCOMPLETE is not supported before SDL 2.0.4")
+#define SDL_DROPCOMPLETE (0)
+#endif
 */
 import "C"
 import "unsafe"
@@ -84,7 +95,10 @@ const (
 	CLIPBOARDUPDATE = C.SDL_CLIPBOARDUPDATE // the clipboard changed
 
 	// Drag and drop events
-	DROPFILE = C.SDL_DROPFILE // the system requests a file open
+	DROPFILE     = C.SDL_DROPFILE     // the system requests a file open
+	DROPTEXT     = C.SDL_DROPTEXT     // text/plain drag-and-drop event
+	DROPBEGIN    = C.SDL_DROPBEGIN    // a new set of drops is beginning (NULL filename)
+	DROPCOMPLETE = C.SDL_DROPCOMPLETE // current set of drops is now complete (NULL filename)
 
 	// Render events
 	RENDER_TARGETS_RESET = C.SDL_RENDER_TARGETS_RESET // the render targets have been reset and their contents need to be updated (>= SDL 2.0.2)
