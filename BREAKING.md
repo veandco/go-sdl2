@@ -26,6 +26,7 @@
 + Renamed `SW_YUVTexture` to `SWYUVTexture`
 + Moved error to the last return value in `ShowMessageBox()`
 + Change Mutex, Sem, Cond to have methods instead of functions
++ Merge `KeyUpEvent` and `KeyDownEvent` into `KeyboardEvent`
 
 - Unexported `Padding` in `AudioSpec` struct
 - Unexported `goHintCallback`
