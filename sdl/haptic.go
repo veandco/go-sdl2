@@ -213,8 +213,12 @@ func HapticName(index int) string {
 
 // HapticOpen opens a haptic device for use.
 // (https://wiki.libsdl.org/SDL_HapticOpen)
-func HapticOpen(index int) *Haptic {
-	return (*Haptic)(unsafe.Pointer(C.SDL_HapticOpen(C.int(index))))
+func HapticOpen(index int) (*Haptic, error) {
+	haptic := (*Haptic)(unsafe.Pointer(C.SDL_HapticOpen(C.int(index))))
+	if haptic != nil {
+		return haptic, nil
+	}
+	return nil, GetError()
 }
 
 // HapticOpened reports whether the haptic device at the designated index has been opened.
@@ -239,8 +243,12 @@ func MouseIsHaptic() (bool, error) {
 
 // HapticOpenFromMouse open a haptic device from the current mouse.
 // (https://wiki.libsdl.org/SDL_HapticOpenFromMouse)
-func HapticOpenFromMouse() *Haptic {
-	return (*Haptic)(unsafe.Pointer(C.SDL_HapticOpenFromMouse()))
+func HapticOpenFromMouse() (*Haptic, error) {
+	haptic := (*Haptic)(unsafe.Pointer(C.SDL_HapticOpenFromMouse()))
+	if haptic != nil {
+		return haptic, nil
+	}
+	return nil, GetError()
 }
 
 // JoystickIsHaptic reports whether a joystick has haptic features.
