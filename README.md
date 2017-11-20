@@ -18,8 +18,8 @@ _libsdl2-ttf-dev_ on Ubuntu 13.10's case which is available in Ubuntu 14.04.
 On __Ubuntu 14.04 and above__, type:  
 `apt install libsdl2{,-mixer,-image,-ttf,-gfx}-dev`
 
-On __Fedora 20 and above__, type:  
-`yum install SDL2{,_mixer,_image,_ttf}-devel`
+On __Fedora 25 and above__, type:  
+`yum install SDL2{,_mixer,_image,_ttf,_gfx}-devel`
 
 On __Arch Linux__, type:  
 `pacman -S sdl2{,_mixer,_image,_ttf,_gfx}`
