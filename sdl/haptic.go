@@ -219,8 +219,9 @@ func HapticOpen(index int) *Haptic {
 
 // HapticOpened reports whether the haptic device at the designated index has been opened.
 // (https://wiki.libsdl.org/SDL_HapticOpened)
-func HapticOpened(index int) int {
-	return int(C.SDL_HapticOpened(C.int(index)))
+func HapticOpened(index int) (bool, error) {
+	ret := int(C.SDL_HapticOpened(C.int(index)))
+	return ret == C.SDL_TRUE, errorFromInt(ret)
 }
 
 // HapticIndex returns the index of a haptic device.
@@ -231,8 +232,9 @@ func HapticIndex(h *Haptic) int {
 
 // MouseIsHaptic reports whether or not the current mouse has haptic capabilities.
 // (https://wiki.libsdl.org/SDL_MouseIsHaptic)
-func MouseIsHaptic() int {
-	return int(C.SDL_MouseIsHaptic())
+func MouseIsHaptic() (bool, error) {
+	ret := int(C.SDL_MouseIsHaptic())
+	return ret == C.SDL_TRUE, errorFromInt(ret)
 }
 
 // HapticOpenFromMouse open a haptic device from the current mouse.
@@ -243,8 +245,9 @@ func HapticOpenFromMouse() *Haptic {
 
 // JoystickIsHaptic reports whether a joystick has haptic features.
 // (https://wiki.libsdl.org/SDL_JoystickIsHaptic)
-func JoystickIsHaptic(joy *Joystick) int {
-	return int(C.SDL_JoystickIsHaptic(joy.cptr()))
+func JoystickIsHaptic(joy *Joystick) (bool, error) {
+	ret := int(C.SDL_JoystickIsHaptic(joy.cptr()))
+	return ret == C.SDL_TRUE, errorFromInt(ret)
 }
 
 // HapticOpenFromJoystick opens a haptic device for use from a joystick device.
@@ -285,35 +288,37 @@ func (h *Haptic) Query() uint {
 
 // EffectSupported reports whether an effect is supported by a haptic device.
 // (https://wiki.libsdl.org/SDL_HapticEffectSupported)
-func (h *Haptic) EffectSupported(he *HapticEffect) int {
+func (h *Haptic) EffectSupported(he *HapticEffect) (bool, error) {
 	_he := (*C.SDL_HapticEffect)(unsafe.Pointer(he))
-	return int(C.SDL_HapticEffectSupported(h.cptr(), _he))
+	ret := int(C.SDL_HapticEffectSupported(h.cptr(), _he))
+	return ret == C.SDL_TRUE, errorFromInt(ret)
 }
 
 // NewEffect creates a new haptic effect on a specified device.
 // (https://wiki.libsdl.org/SDL_HapticNewEffect)
-func (h *Haptic) NewEffect(he *HapticEffect) int {
+func (h *Haptic) NewEffect(he *HapticEffect) (int, error) {
 	_he := (*C.SDL_HapticEffect)(unsafe.Pointer(he))
-	return int(C.SDL_HapticNewEffect(h.cptr(), _he))
+	ret := int(C.SDL_HapticNewEffect(h.cptr(), _he))
+	return ret, errorFromInt(ret)
 }
 
 // UpdateEffect updates the properties of an effect.
 // (https://wiki.libsdl.org/SDL_HapticUpdateEffect)
-func (h *Haptic) UpdateEffect(effect int, data *HapticEffect) int {
+func (h *Haptic) UpdateEffect(effect int, data *HapticEffect) error {
 	_data := (*C.SDL_HapticEffect)(unsafe.Pointer(data))
-	return int(C.SDL_HapticUpdateEffect(h.cptr(), C.int(effect), _data))
+	return errorFromInt(int(C.SDL_HapticUpdateEffect(h.cptr(), C.int(effect), _data)))
 }
 
 // RunEffect runs the haptic effect on its associated haptic device.
 // (https://wiki.libsdl.org/SDL_HapticRunEffect)
-func (h *Haptic) RunEffect(effect int, iterations uint32) int {
-	return int(C.SDL_HapticRunEffect(h.cptr(), C.int(effect), C.Uint32(iterations)))
+func (h *Haptic) RunEffect(effect int, iterations uint32) error {
+	return errorFromInt(int(C.SDL_HapticRunEffect(h.cptr(), C.int(effect), C.Uint32(iterations))))
 }
 
 // StopEffect stops the haptic effect on its associated haptic device.
 // (https://wiki.libsdl.org/SDL_HapticStopEffect)
-func (h *Haptic) StopEffect(effect int) int {
-	return int(C.SDL_HapticStopEffect(h.cptr(), C.int(effect)))
+func (h *Haptic) StopEffect(effect int) error {
+	return errorFromInt(int(C.SDL_HapticStopEffect(h.cptr(), C.int(effect))))
 }
 
 // DestroyEffect destroys a haptic effect on the device.
@@ -330,54 +335,55 @@ func (h *Haptic) GetEffectStatus(effect int) int {
 
 // SetGain sets the global gain of the specified haptic device.
 // (https://wiki.libsdl.org/SDL_HapticSetGain)
-func (h *Haptic) SetGain(gain int) int {
-	return int(C.SDL_HapticSetGain(h.cptr(), C.int(gain)))
+func (h *Haptic) SetGain(gain int) error {
+	return errorFromInt(int(C.SDL_HapticSetGain(h.cptr(), C.int(gain))))
 }
 
 // SetAutocenter sets the global autocenter of the device.
 // (https://wiki.libsdl.org/SDL_HapticSetAutocenter)
-func (h *Haptic) SetAutocenter(autocenter int) int {
-	return int(C.SDL_HapticSetAutocenter(h.cptr(), C.int(autocenter)))
+func (h *Haptic) SetAutocenter(autocenter int) error {
+	return errorFromInt(int(C.SDL_HapticSetAutocenter(h.cptr(), C.int(autocenter))))
 }
 
 // Pause pauses a haptic device.
 // (https://wiki.libsdl.org/SDL_HapticPause)
-func (h *Haptic) Pause() int {
-	return int(C.SDL_HapticPause(h.cptr()))
+func (h *Haptic) Pause() error {
+	return errorFromInt(int(C.SDL_HapticPause(h.cptr())))
 }
 
 // Unpause unpauses a haptic device.
 // (https://wiki.libsdl.org/SDL_HapticUnpause)
-func (h *Haptic) Unpause() int {
-	return int(C.SDL_HapticUnpause(h.cptr()))
+func (h *Haptic) Unpause() error {
+	return errorFromInt(int(C.SDL_HapticUnpause(h.cptr())))
 }
 
 // StopAll stops all the currently playing effects on a haptic device.
 // (https://wiki.libsdl.org/SDL_HapticStopAll)
-func (h *Haptic) StopAll() int {
-	return int(C.SDL_HapticStopAll(h.cptr()))
+func (h *Haptic) StopAll() error {
+	return errorFromInt(int(C.SDL_HapticStopAll(h.cptr())))
 }
 
 // RumbleSupported reports whether rumble is supported on a haptic device.
 // (https://wiki.libsdl.org/SDL_HapticRumbleSupported)
-func (h *Haptic) RumbleSupported() int {
-	return int(C.SDL_HapticRumbleSupported(h.cptr()))
+func (h *Haptic) RumbleSupported() (ok bool, err error) {
+	ret := int(C.SDL_HapticRumbleSupported(h.cptr()))
+	return ret == C.SDL_TRUE, errorFromInt(ret)
 }
 
 // RumbleInit initializes the haptic device for simple rumble playback.
 // (https://wiki.libsdl.org/SDL_HapticRumbleInit)
-func (h *Haptic) RumbleInit() int {
-	return int(C.SDL_HapticRumbleInit(h.cptr()))
+func (h *Haptic) RumbleInit() error {
+	return errorFromInt(int(C.SDL_HapticRumbleInit(h.cptr())))
 }
 
 // RumblePlay runs a simple rumble effect on a haptic device.
 // (https://wiki.libsdl.org/SDL_HapticRumblePlay)
-func (h *Haptic) RumblePlay(strength float32, length uint32) int {
-	return int(C.SDL_HapticRumblePlay(h.cptr(), C.float(strength), C.Uint32(length)))
+func (h *Haptic) RumblePlay(strength float32, length uint32) error {
+	return errorFromInt(int(C.SDL_HapticRumblePlay(h.cptr(), C.float(strength), C.Uint32(length))))
 }
 
 // RumbleStop stops the simple rumble on a haptic device.
 // (https://wiki.libsdl.org/SDL_HapticRumbleStop)
-func (h *Haptic) RumbleStop() int {
-	return int(C.SDL_HapticRumbleStop(h.cptr()))
+func (h *Haptic) RumbleStop() error {
+	return errorFromInt(int(C.SDL_HapticRumbleStop(h.cptr())))
 }
