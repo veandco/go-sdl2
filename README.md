@@ -22,7 +22,7 @@ On __Fedora 20 and above__, type:
 `yum install SDL2{,_mixer,_image,_ttf}-devel`
 
 On __Arch Linux__, type:  
-`pacman -S sdl2{,_mixer,_image,_ttf}`
+`pacman -S sdl2{,_mixer,_image,_ttf,_gfx}`
 
 On __Gentoo__, type:  
 `emerge -av libsdl2 sdl2-{gfx,image,mixer,ttf}`
