@@ -27,6 +27,7 @@
 + Moved error to the last return value in `ShowMessageBox()`
 + Change Mutex, Sem, Cond to have methods instead of functions
 + Merge `KeyUpEvent` and `KeyDownEvent` into `KeyboardEvent`
++ Haptic functions now return bool and/or error instead of int
 
 - Unexported `Padding` in `AudioSpec` struct
 - Unexported `goHintCallback`
