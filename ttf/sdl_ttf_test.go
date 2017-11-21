@@ -36,7 +36,7 @@ func TestTTF(t *testing.T) {
 	defer font.Close()
 
 	for i := 0; i < 10000; i++ {
-		if solid, err = font.RenderUTF8_Solid(randomString(t), sdl.Color{255, 0, 0, 255}); err != nil {
+		if solid, err = font.RenderUTF8Solid(randomString(t), sdl.Color{255, 0, 0, 255}); err != nil {
 			t.Errorf("Failed to render text: %s\n", err)
 		}
 		defer solid.Free()

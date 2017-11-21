@@ -1,3 +1,4 @@
+// Package sdl is SDL2 wrapped for Go users. It enables interoperability between Go and the SDL2 library which is written in C. That means the original SDL2 installation is required for this to work. SDL2 is a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D.
 package sdl
 
 // #cgo windows LDFLAGS: -lSDL2

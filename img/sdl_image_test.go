@@ -212,23 +212,23 @@ func TestLoad_RW(t *testing.T) {
 	// test expected success
 	rwops := sdl.RWFromMem(unsafe.Pointer(&testPNG[0]), len(testPNG))
 	defer rwops.RWclose()
-	surf, err := Load_RW(rwops, false)
+	surf, err := LoadRW(rwops, false)
 	if surf != nil {
 		defer surf.Free()
 	}
 	if surf == nil || err != nil {
-		t.Errorf("Load_RW() == %v, %v; want surface without error", surf, err)
+		t.Errorf("LoadRW() == %v, %v; want surface without error", surf, err)
 	}
 
 	// test expected failure
 	rwops = sdl.RWFromMem(unsafe.Pointer(&testBadData[0]), len(testBadData))
 	defer rwops.RWclose()
-	surf, err = Load_RW(rwops, false)
+	surf, err = LoadRW(rwops, false)
 	if surf != nil {
 		defer surf.Free()
 	}
 	if surf != nil || err == nil {
-		t.Errorf("Load_RW() == %v, %v; want error without surface", surf, err)
+		t.Errorf("LoadRW() == %v, %v; want error without surface", surf, err)
 	}
 }
 
@@ -236,12 +236,12 @@ func TestLoadFormat(t *testing.T) {
 	defer Quit()
 
 	tests := []loadTest{
-		{"BMP", LoadBMP_RW, testBMP}, {"GIF", LoadGIF_RW, testGIF},
-		{"ICO", LoadICO_RW, testICO}, {"JPG", LoadJPG_RW, testJPG},
-		{"PCX", LoadPCX_RW, testPCX}, {"PNG", LoadPNG_RW, testPNG},
-		{"PNM", LoadPNM_RW, testPNM}, {"TGA", LoadTGA_RW, testTGA},
-		{"TIF", LoadTIF_RW, testTIF}, {"XCF", LoadXCF_RW, testXCF},
-		{"XPM", LoadXPM_RW, testXPM},
+		{"BMP", LoadBMPRW, testBMP}, {"GIF", LoadGIFRW, testGIF},
+		{"ICO", LoadICORW, testICO}, {"JPG", LoadJPGRW, testJPG},
+		{"PCX", LoadPCXRW, testPCX}, {"PNG", LoadPNGRW, testPNG},
+		{"PNM", LoadPNMRW, testPNM}, {"TGA", LoadTGARW, testTGA},
+		{"TIF", LoadTIFRW, testTIF}, {"XCF", LoadXCFRW, testXCF},
+		{"XPM", LoadXPMRW, testXPM},
 		// WEBP is undocumented and panics, so none of that.
 	}
 
@@ -254,7 +254,7 @@ func TestLoadFormat(t *testing.T) {
 			defer surf.Free()
 		}
 		if surf == nil || err != nil {
-			t.Errorf("Load%s_RW() == %v, %v; want surface without error",
+			t.Errorf("Load%sRW() == %v, %v; want surface without error",
 				test.name, surf, err)
 		}
 
@@ -271,7 +271,7 @@ func TestLoadFormat(t *testing.T) {
 			defer surf.Free()
 		}
 		if surf != nil || err == nil {
-			t.Errorf("Load%s_RW() == %v, %v; want error without surface",
+			t.Errorf("Load%sRW() == %v, %v; want error without surface",
 				test.name, surf, err)
 		}
 	}
@@ -283,24 +283,24 @@ func TestLoadTyped_RW(t *testing.T) {
 	// test expected success
 	rwops := sdl.RWFromMem(unsafe.Pointer(&testPNG[0]), len(testPNG))
 	defer rwops.RWclose()
-	surf, err := LoadTyped_RW(rwops, false, "PNG")
+	surf, err := LoadTypedRW(rwops, false, "PNG")
 	if surf != nil {
 		defer surf.Free()
 	}
 	if surf == nil || err != nil {
-		t.Errorf("LoadTyped_RW(%#v) == %v, %v; want surface without error",
+		t.Errorf("LoadTypedRW(%#v) == %v, %v; want surface without error",
 			"PNG", surf, err)
 	}
 
 	// test expected failure
 	rwops = sdl.RWFromMem(unsafe.Pointer(&testBadData[0]), len(testBadData))
 	defer rwops.RWclose()
-	surf, err = LoadTyped_RW(rwops, false, "PNG")
+	surf, err = LoadTypedRW(rwops, false, "PNG")
 	if surf != nil {
 		defer surf.Free()
 	}
 	if surf != nil || err == nil {
-		t.Errorf("LoadTyped_RW(%#v) == %v, %v; want error without surface",
+		t.Errorf("LoadTypedRW(%#v) == %v, %v; want error without surface",
 			"PNG", surf, err)
 	}
 }
