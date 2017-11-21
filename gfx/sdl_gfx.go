@@ -1096,7 +1096,7 @@ func ZoomSurface(src *sdl.Surface, zoomx, zoomy float64, smooth int) *sdl.Surfac
 	return (*sdl.Surface)(unsafe.Pointer(C.zoomSurface((*C.SDL_Surface)(unsafe.Pointer(src)), _zoomx, _zoomy, _smooth)))
 }
 
-// ZoomSurfaceSize calculates the size of the target surface for a zoomSurface() call. The minimum size of the target surface is 1. The input factors can be positive or negative.
+// ZoomSurfaceSize calculates the size of the target surface for a gfx.ZoomSurface() call. The minimum size of the target surface is 1. The input factors can be positive or negative.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__rotozoom_8c.html#a8ba40859c1a977dae87488dd8be1bf9a)
 func ZoomSurfaceSize(width, height int32, zoomx, zoomy float64) (dstwidth, dstheight int) {
 	_width := C.int(width)

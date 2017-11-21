@@ -47,6 +47,11 @@
 + Renamed `RenderUTF8_Shaded()` to `RenderUTF8Shaded()`
 + Renamed `RenderUTF8_Blended()` to `RenderUTF8Blended()`
 + Renamed `RenderUTF8_Blended_Wrapped()` to `RenderUTF8BlendedWrapped()`
++ Renamed `LoadWAV_RW()` to `LoadWAVRW()`
++ Renamed `LoadMUS_RW()` to `LoadMUSRW()`
++ Renamed `LoadMUSType_RW()` to `LoadMUSTypeRW()`
++ Renamed `QuickLoad_WAV()` to `QuickLoadWAV()`
++ Renamed `QuickLoad_RAW()` to `QuickLoadRAW()`
 + Moved error to the last return value in `ShowMessageBox()`
 + Change Mutex, Sem, Cond to have methods instead of functions
 

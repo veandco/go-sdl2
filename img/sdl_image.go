@@ -1,4 +1,4 @@
-// Package img is simple library to load images of various formats as SDL surfaces.
+// Package img is a simple library to load images of various formats as SDL surfaces.
 package img
 
 //#cgo linux freebsd darwin pkg-config: sdl2
@@ -11,7 +11,7 @@ import "unsafe"
 import "errors"
 import "github.com/veandco/go-sdl2/sdl"
 
-// Flags which may be passed to Init() to load support of image formats, can be bitwise OR'd together.
+// Flags which may be passed to img.Init() to load support of image formats, can be bitwise OR'd together.
 const (
 	INIT_JPG  = 0x00000001 // JPG
 	INIT_PNG  = 0x00000002 // PNG
@@ -32,13 +32,13 @@ func Init(flags int) int {
 	return int(C.IMG_Init(_flags))
 }
 
-// Quit unloads libraries loaded with Init().
+// Quit unloads libraries loaded with img.Init().
 // (http://www.libsdl.org/projects/SDL_image/docs/SDL_image_9.html)
 func Quit() {
 	C.IMG_Quit()
 }
 
-// GetError returns the last error that occurred, or an empty string if there hasn't been an error message set since the last call to ClearError().
+// GetError returns the last error that occurred, or an empty string if there hasn't been an error message set since the last call to sdl.ClearError().
 // (http://www.libsdl.org/projects/SDL_image/docs/SDL_image_45.html)
 func GetError() error {
 	e := C.IMG_GetError()
