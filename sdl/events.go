@@ -7,6 +7,17 @@ package sdl
 #if !SDL_VERSION_ATLEAST(2,0,2)
 #define SDL_RENDER_TARGETS_RESET (0x2000)
 #endif
+
+#if !SDL_VERSION_ATLEAST(2,0,4)
+#pragma message("SDL_DROPTEXT is not supported before SDL 2.0.4")
+#define SDL_DROPTEXT (0)
+
+#pragma message("SDL_DROPBEGIN is not supported before SDL 2.0.4")
+#define SDL_DROPBEGIN (0)
+
+#pragma message("SDL_DROPCOMPLETE is not supported before SDL 2.0.4")
+#define SDL_DROPCOMPLETE (0)
+#endif
 */
 import "C"
 import "unsafe"
@@ -84,7 +95,10 @@ const (
 	CLIPBOARDUPDATE = C.SDL_CLIPBOARDUPDATE // the clipboard changed
 
 	// Drag and drop events
-	DROPFILE = C.SDL_DROPFILE // the system requests a file open
+	DROPFILE     = C.SDL_DROPFILE     // the system requests a file open
+	DROPTEXT     = C.SDL_DROPTEXT     // text/plain drag-and-drop event
+	DROPBEGIN    = C.SDL_DROPBEGIN    // a new set of drops is beginning (NULL filename)
+	DROPCOMPLETE = C.SDL_DROPCOMPLETE // current set of drops is now complete (NULL filename)
 
 	// Render events
 	RENDER_TARGETS_RESET = C.SDL_RENDER_TARGETS_RESET // the render targets have been reset and their contents need to be updated (>= SDL 2.0.2)
@@ -145,10 +159,10 @@ type cWindowEvent C.SDL_WindowEvent
 
 //TODO: Key{Up,Down}Event only differ in 'Type' - a boolean field would be enough to distinguish up/down events
 
-// KeyDownEvent contains keyboard key down event information.
+// KeyboardEvent contains keyboard key down event information.
 // (https://wiki.libsdl.org/SDL_KeyboardEvent)
-type KeyDownEvent struct {
-	Type      uint32 // KEYDOWN
+type KeyboardEvent struct {
+	Type      uint32 // KEYUP / KEYDOWN
 	Timestamp uint32 // timestamp of the event
 	WindowID  uint32 // the window with keyboard focus, if any
 	State     uint8  // PRESSED, RELEASED
@@ -158,19 +172,6 @@ type KeyDownEvent struct {
 	Keysym    Keysym // Keysym representing the key that was pressed or released
 }
 type cKeyboardEvent C.SDL_KeyboardEvent
-
-// KeyUpEvent contains keyboard key up event information.
-// (https://wiki.libsdl.org/SDL_KeyboardEvent)
-type KeyUpEvent struct {
-	Type      uint32 // KEYUP
-	Timestamp uint32 // timestamp of the event
-	WindowID  uint32 // the window with keyboard focus, if any
-	State     uint8  // PRESSED, RELEASED
-	Repeat    uint8  // non-zero if this is a key repeat
-	_         uint8  // padding
-	_         uint8  // padding
-	Keysym    Keysym // Keysym representing the key that was pressed or released
-}
 
 // TextEditingEvent contains keyboard text editing event information.
 // (https://wiki.libsdl.org/SDL_TextEditingEvent)
@@ -546,9 +547,9 @@ func goEvent(cevent *CEvent) Event {
 	case SYSWMEVENT:
 		return (*SysWMEvent)(unsafe.Pointer(cevent))
 	case KEYDOWN:
-		return (*KeyDownEvent)(unsafe.Pointer(cevent))
+		fallthrough
 	case KEYUP:
-		return (*KeyUpEvent)(unsafe.Pointer(cevent))
+		return (*KeyboardEvent)(unsafe.Pointer(cevent))
 	case TEXTEDITING:
 		return (*TextEditingEvent)(unsafe.Pointer(cevent))
 	case TEXTINPUT:
