@@ -28,7 +28,7 @@ func main() {
 	}
 
 	// Load WAV from data (memory)
-	chunk, err := mix.QuickLoad_WAV(data)
+	chunk, err := mix.QuickLoadWAV(data)
 	if err != nil {
 		log.Println(err)
 	}
