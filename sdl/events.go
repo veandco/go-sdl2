@@ -30,6 +30,9 @@ package sdl
 #pragma message("SDL_RENDER_DEVICE_RESET is not supported before SDL 2.0.4")
 #define SDL_RENDER_DEVICE_RESET (0)
 
+#pragma message("SDL_AudioDeviceEvent is not supported before SDL 2.0.4")
+#define SDL_AudioDeviceEvent (SDL_CommonEvent)
+
 #endif
 */
 import "C"
