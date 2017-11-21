@@ -10,25 +10,25 @@ package sdl
 
 #if !SDL_VERSION_ATLEAST(2,0,4)
 #pragma message("SDL_KEYMAPCHANGED is not supported before SDL 2.0.4")
-#define SDL_KEYMAPCHANGED (0)
+#define SDL_KEYMAPCHANGED (0x304)
 
 #pragma message("SDL_DROPTEXT is not supported before SDL 2.0.4")
-#define SDL_DROPTEXT (0)
+#define SDL_DROPTEXT (0x1001)
 
 #pragma message("SDL_DROPBEGIN is not supported before SDL 2.0.4")
-#define SDL_DROPBEGIN (0)
+#define SDL_DROPBEGIN (0x1002)
 
 #pragma message("SDL_DROPCOMPLETE is not supported before SDL 2.0.4")
-#define SDL_DROPCOMPLETE (0)
+#define SDL_DROPCOMPLETE (0x1003)
 
 #pragma message("SDL_AUDIODEVICEADDED is not supported before SDL 2.0.4")
-#define SDL_AUDIODEVICEADDED (0)
+#define SDL_AUDIODEVICEADDED (0x1100)
 
 #pragma message("SDL_AUDIODEVICEREMOVED is not supported before SDL 2.0.4")
-#define SDL_AUDIODEVICEREMOVED (0)
+#define SDL_AUDIODEVICEREMOVED (0x1101)
 
 #pragma message("SDL_RENDER_DEVICE_RESET is not supported before SDL 2.0.4")
-#define SDL_RENDER_DEVICE_RESET (0)
+#define SDL_RENDER_DEVICE_RESET (0x2001)
 
 #pragma message("SDL_AudioDeviceEvent is not supported before SDL 2.0.4")
 typedef struct SDL_AudioDeviceEvent
