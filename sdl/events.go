@@ -26,6 +26,10 @@ package sdl
 
 #pragma message("SDL_AUDIODEVICEREMOVED is not supported before SDL 2.0.4")
 #define SDL_AUDIODEVICEREMOVED (0)
+
+#pragma message("SDL_RENDER_DEVICE_RESET is not supported before SDL 2.0.4")
+#define SDL_RENDER_DEVICE_RESET (0)
+
 #endif
 */
 import "C"
