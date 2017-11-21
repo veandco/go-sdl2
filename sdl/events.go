@@ -31,8 +31,16 @@ package sdl
 #define SDL_RENDER_DEVICE_RESET (0)
 
 #pragma message("SDL_AudioDeviceEvent is not supported before SDL 2.0.4")
-#define SDL_AudioDeviceEvent (SDL_CommonEvent)
-
+typedef struct SDL_AudioDeviceEvent
+{
+    Uint32 type;
+    Uint32 timestamp;
+    Uint32 which;
+    Uint8  iscapture;
+    Uint8  padding1;
+    Uint8  padding2;
+    Uint8  padding3;
+} SDL_AudioDeviceEvent;
 #endif
 */
 import "C"
