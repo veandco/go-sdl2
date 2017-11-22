@@ -70,8 +70,7 @@ func TestStructABI(t *testing.T) {
 		{WindowEvent{}, cWindowEvent{}, nil},
 
 		// EVENTS
-		{KeyDownEvent{}, cKeyboardEvent{}, nil},
-		{KeyUpEvent{}, cKeyboardEvent{}, nil},
+		{KeyboardEvent{}, cKeyboardEvent{}, nil},
 		{MouseButtonEvent{}, cMouseButtonEvent{}, nil},
 		{MouseMotionEvent{}, cMouseMotionEvent{}, nil},
 		{MouseWheelEvent{}, cMouseWheelEvent{}, mouseWheelEventEdgeCase},
@@ -84,6 +83,7 @@ func TestStructABI(t *testing.T) {
 		{ControllerAxisEvent{}, cControllerAxisEvent{}, nil},
 		{ControllerButtonEvent{}, cControllerButtonEvent{}, nil},
 		{ControllerDeviceEvent{}, cControllerDeviceEvent{}, nil},
+		{AudioDeviceEvent{}, cAudioDeviceEvent{}, nil},
 		{TouchFingerEvent{}, cTouchFingerEvent{}, nil},
 		{MultiGestureEvent{}, cMultiGestureEvent{}, nil},
 		{DollarGestureEvent{}, cDollarGestureEvent{}, nil},
