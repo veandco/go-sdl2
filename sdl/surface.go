@@ -5,7 +5,7 @@ package sdl
 
 #if !(SDL_VERSION_ATLEAST(2,0,5))
 #pragma message("SDL_CreateRGBSurfaceWithFormat is not supported before SDL 2.0.5")
-static inline SDL_Surface* SDL_UpdateYUVTexture(Uint32 flags, int width, int height, int depth, Uint32 format)
+static inline SDL_Surface* SDL_CreateRGBSurfaceWithFormat(Uint32 flags, int width, int height, int depth, Uint32 format)
 {
 	return NULL;
 }
