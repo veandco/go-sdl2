@@ -9,6 +9,12 @@ static inline SDL_Surface* SDL_UpdateYUVTexture(Uint32 flags, int width, height,
 {
 	return NULL;
 }
+
+#pragma message("SDL_CreateRGBSurfaceWithFormatFrom is not supported before SDL 2.0.5")
+static inline SDL_Surface* SDL_CreateRGBSurfaceWithFormatFrom(void* pixels, int width, height, depth, pitch, Uint32 format)
+{
+	return NULL;
+}
 #endif
 */
 import "C"
@@ -96,6 +102,22 @@ func CreateRGBSurfaceWithFormat(flags uint32, width, height, depth int32, format
 		C.int(width),
 		C.int(height),
 		C.int(depth),
+		C.Uint32(format))))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
+}
+
+// CreateRGBSurfaceWithFormatFrom allocates an RGB surface from provided pixel data.
+// (https://wiki.libsdl.org/SDL_CreateRGBSurfaceWithFormatFrom)
+func CreateRGBSurfaceWithFormatFrom(pixels unsafe.Pointer, width, height, depth, pitch int, format uint32) (*Surface, error) {
+	surface := (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurfaceWithFormatFrom(
+		pixels,
+		C.int(width),
+		C.int(height),
+		C.int(depth),
+		C.int(pitch),
 		C.Uint32(format))))
 	if surface == nil {
 		return nil, GetError()
