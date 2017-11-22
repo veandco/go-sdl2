@@ -18,7 +18,7 @@ func TestGetCPUCacheLineSize(t *testing.T) {
 }
 
 func TestGetSystemRAM(t *testing.T) {
-	if GetSystemRAM() <= 0 {
+	if VERSION_ATLEAST(2,0,1) && GetSystemRAM() <= 0 {
 		t.Error("GetSystemRAM(): wrong return value")
 	}
 }
