@@ -111,7 +111,7 @@ func CreateRGBSurfaceWithFormat(flags uint32, width, height, depth int32, format
 
 // CreateRGBSurfaceWithFormatFrom allocates an RGB surface from provided pixel data.
 // (https://wiki.libsdl.org/SDL_CreateRGBSurfaceWithFormatFrom)
-func CreateRGBSurfaceWithFormatFrom(pixels unsafe.Pointer, width, height, depth, pitch int, format uint32) (*Surface, error) {
+func CreateRGBSurfaceWithFormatFrom(pixels unsafe.Pointer, width, height, depth, pitch int32, format uint32) (*Surface, error) {
 	surface := (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurfaceWithFormatFrom(
 		pixels,
 		C.int(width),
