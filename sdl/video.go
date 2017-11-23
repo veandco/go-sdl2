@@ -71,7 +71,9 @@ static void SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable)
 #endif
 */
 import "C"
-import "unsafe"
+import (
+	"unsafe"
+)
 
 // An enumeration of window states.
 // (https://wiki.libsdl.org/SDL_WindowFlags)
@@ -321,7 +323,8 @@ func GetVideoDriver(index int) string {
 // VideoInit initializes the video subsystem, optionally specifying a video driver.
 // (https://wiki.libsdl.org/SDL_VideoInit)
 func VideoInit(driverName string) error {
-	return errorFromInt(int(C.SDL_VideoInit(C.CString(driverName))))
+	return errorFromInt(int(
+		C.SDL_VideoInit(C.CString(driverName))))
 }
 
 // VideoQuit shuts down the video subsystem, if initialized with VideoInit().
@@ -350,25 +353,29 @@ func GetNumDisplayModes(displayIndex int) (int, error) {
 // GetDisplayBounds returns the desktop area represented by a display, with the primary display located at 0,0.
 // (https://wiki.libsdl.org/SDL_GetDisplayBounds)
 func GetDisplayBounds(displayIndex int, rect *Rect) error {
-	return errorFromInt(int(C.SDL_GetDisplayBounds(C.int(displayIndex), rect.cptr())))
+	return errorFromInt(int(
+		C.SDL_GetDisplayBounds(C.int(displayIndex), rect.cptr())))
 }
 
 // GetDisplayMode retruns information about a specific display mode.
 // (https://wiki.libsdl.org/SDL_GetDisplayMode)
 func GetDisplayMode(displayIndex int, modeIndex int, mode *DisplayMode) error {
-	return errorFromInt(int(C.SDL_GetDisplayMode(C.int(displayIndex), C.int(modeIndex), mode.cptr())))
+	return errorFromInt(int(
+		C.SDL_GetDisplayMode(C.int(displayIndex), C.int(modeIndex), mode.cptr())))
 }
 
 // GetDesktopDisplayMode returns information about the desktop display mode.
 // (https://wiki.libsdl.org/SDL_GetDesktopDisplayMode)
 func GetDesktopDisplayMode(displayIndex int, mode *DisplayMode) error {
-	return errorFromInt(int(C.SDL_GetDesktopDisplayMode(C.int(displayIndex), mode.cptr())))
+	return errorFromInt(int(
+		C.SDL_GetDesktopDisplayMode(C.int(displayIndex), mode.cptr())))
 }
 
 // GetCurrentDisplayMode returns information about the current display mode.
 // (https://wiki.libsdl.org/SDL_GetCurrentDisplayMode)
 func GetCurrentDisplayMode(displayIndex int, mode *DisplayMode) error {
-	return errorFromInt(int(C.SDL_GetCurrentDisplayMode(C.int(displayIndex), mode.cptr())))
+	return errorFromInt(int(
+		C.SDL_GetCurrentDisplayMode(C.int(displayIndex), mode.cptr())))
 }
 
 // GetClosestDisplayMode returns the closest match to the requested display mode.
@@ -391,13 +398,15 @@ func (window *Window) GetDisplayIndex() (int, error) {
 // SetDisplayMode sets the display mode to use when the window is visible at fullscreen.
 // (https://wiki.libsdl.org/SDL_SetWindowDisplayMode)
 func (window *Window) SetDisplayMode(mode *DisplayMode) error {
-	return errorFromInt(int(C.SDL_SetWindowDisplayMode(window.cptr(), mode.cptr())))
+	return errorFromInt(int(
+		C.SDL_SetWindowDisplayMode(window.cptr(), mode.cptr())))
 }
 
 // GetDisplayMode fills in information about the display mode to use when the window is visible at fullscreen.
 // (https://wiki.libsdl.org/SDL_GetWindowDisplayMode)
 func (window *Window) GetDisplayMode(mode *DisplayMode) error {
-	return errorFromInt(int(C.SDL_GetWindowDisplayMode(window.cptr(), mode.cptr())))
+	return errorFromInt(int(
+		C.SDL_GetWindowDisplayMode(window.cptr(), mode.cptr())))
 }
 
 // GetPixelFormat returns the pixel format associated with the window.
@@ -433,10 +442,14 @@ func CreateWindowFrom(data unsafe.Pointer) (*Window, error) {
 // Destroy destroys the window.
 // (https://wiki.libsdl.org/SDL_DestroyWindow)
 func (window *Window) Destroy() error {
-	if window == nil {
-		return GetError()
-	}
+	lastErr := GetError()
+	ClearError()
 	C.SDL_DestroyWindow(window.cptr())
+	err := GetError()
+	if err != nil {
+		return err
+	}
+	SetError(lastErr)
 	return nil
 }
 
@@ -607,7 +620,8 @@ func (window *Window) Restore() {
 // SetFullscreen sets the window's fullscreen state.
 // (https://wiki.libsdl.org/SDL_SetWindowFullscreen)
 func (window *Window) SetFullscreen(flags uint32) error {
-	return errorFromInt(int(C.SDL_SetWindowFullscreen(window.cptr(), C.Uint32(flags))))
+	return errorFromInt(int(
+		C.SDL_SetWindowFullscreen(window.cptr(), C.Uint32(flags))))
 }
 
 // GetSurface returns the SDL surface associated with the window.
@@ -623,13 +637,15 @@ func (window *Window) GetSurface() (*Surface, error) {
 // UpdateSurface copies the window surface to the screen.
 // (https://wiki.libsdl.org/SDL_UpdateWindowSurface)
 func (window *Window) UpdateSurface() error {
-	return errorFromInt(int(C.SDL_UpdateWindowSurface(window.cptr())))
+	return errorFromInt(int(
+		C.SDL_UpdateWindowSurface(window.cptr())))
 }
 
 // UpdateSurfaceRects copies areas of the window surface to the screen.
 // (https://wiki.libsdl.org/SDL_UpdateWindowSurfaceRects)
 func (window *Window) UpdateSurfaceRects(rects []Rect) error {
-	return errorFromInt(int(C.SDL_UpdateWindowSurfaceRects(window.cptr(), rects[0].cptr(), C.int(len(rects)))))
+	return errorFromInt(int(
+		C.SDL_UpdateWindowSurfaceRects(window.cptr(), rects[0].cptr(), C.int(len(rects)))))
 }
 
 // SetGrab sets the window's input grab mode.
@@ -647,7 +663,8 @@ func (window *Window) GetGrab() bool {
 // SetBrightness sets the brightness (gamma multiplier) for the display that owns the given window.
 // (https://wiki.libsdl.org/SDL_SetWindowBrightness)
 func (window *Window) SetBrightness(brightness float32) error {
-	return errorFromInt(int(C.SDL_SetWindowBrightness(window.cptr(), C.float(brightness))))
+	return errorFromInt(int(
+		C.SDL_SetWindowBrightness(window.cptr(), C.float(brightness))))
 }
 
 // GetBrightness returns the brightness (gamma multiplier) for the display that owns the given window.
@@ -659,11 +676,12 @@ func (window *Window) GetBrightness() float32 {
 // SetGammaRamp sets the gamma ramp for the display that owns the given window.
 // (https://wiki.libsdl.org/SDL_SetWindowGammaRamp)
 func (window *Window) SetGammaRamp(red, green, blue *[256]uint16) error {
-	return errorFromInt(int(C.SDL_SetWindowGammaRamp(
-		window.cptr(),
-		(*C.Uint16)(unsafe.Pointer(red)),
-		(*C.Uint16)(unsafe.Pointer(green)),
-		(*C.Uint16)(unsafe.Pointer(blue)))))
+	return errorFromInt(int(
+		C.SDL_SetWindowGammaRamp(
+			window.cptr(),
+			(*C.Uint16)(unsafe.Pointer(red)),
+			(*C.Uint16)(unsafe.Pointer(green)),
+			(*C.Uint16)(unsafe.Pointer(blue)))))
 }
 
 // GetGammaRamp returns the gamma ramp for the display that owns a given window.
@@ -684,7 +702,8 @@ func ShowSimpleMessageBox(flags uint32, title, message string, window *Window) e
 	defer C.free(unsafe.Pointer(_title))
 	_message := C.CString(message)
 	defer C.free(unsafe.Pointer(_message))
-	return errorFromInt(int(C.SDL_ShowSimpleMessageBox(C.Uint32(flags), _title, _message, window.cptr())))
+	return errorFromInt(int(
+		C.SDL_ShowSimpleMessageBox(C.Uint32(flags), _title, _message, window.cptr())))
 }
 
 // ShowMessageBox creates a modal message box.
@@ -750,7 +769,8 @@ func DisableScreenSaver() {
 // GLLoadLibrary dynamically loads an OpenGL library.
 // (https://wiki.libsdl.org/SDL_GL_LoadLibrary)
 func GLLoadLibrary(path string) error {
-	return errorFromInt(int(C.SDL_GL_LoadLibrary(C.CString(path))))
+	return errorFromInt(int(
+		C.SDL_GL_LoadLibrary(C.CString(path))))
 }
 
 // GLGetProcAddress returns an OpenGL function by name.
@@ -774,7 +794,8 @@ func GLExtensionSupported(extension string) bool {
 // GLSetAttribute sets an OpenGL window attribute before window creation.
 // (https://wiki.libsdl.org/SDL_GL_SetAttribute)
 func GLSetAttribute(attr GLattr, value int) error {
-	return errorFromInt(int(C.SDL_GL_SetAttribute(attr.c(), C.int(value))))
+	return errorFromInt(int(
+		C.SDL_GL_SetAttribute(attr.c(), C.int(value))))
 }
 
 // GLGetAttribute returns the actual value for an attribute from the current context.
@@ -800,13 +821,15 @@ func GLCreateContext(window *Window) (GLContext, error) {
 // GLMakeCurrent sets up an OpenGL context for rendering into an OpenGL window.
 // (https://wiki.libsdl.org/SDL_GL_MakeCurrent)
 func GLMakeCurrent(window *Window, glcontext GLContext) error {
-	return errorFromInt(int(C.SDL_GL_MakeCurrent(window.cptr(), C.SDL_GLContext(glcontext))))
+	return errorFromInt(int(
+		C.SDL_GL_MakeCurrent(window.cptr(), C.SDL_GLContext(glcontext))))
 }
 
 // GLSetSwapInterval sets the swap interval for the current OpenGL context.
 // (https://wiki.libsdl.org/SDL_GL_SetSwapInterval)
 func GLSetSwapInterval(interval int) error {
-	return errorFromInt(int(C.SDL_GL_SetSwapInterval(C.int(interval))))
+	return errorFromInt(int(
+		C.SDL_GL_SetSwapInterval(C.int(interval))))
 }
 
 // GLGetSwapInterval returns the swap interval for the current OpenGL context.

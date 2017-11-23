@@ -61,6 +61,10 @@
 + `GetCurrentVideoDriver()` returns (string, error) instead of string
 + `Window.Destroy()` returns error
 + `Window.GetID()` returns (uint32, error) instead of uint32
++ `GetNumRenderDrivers()` returns (int, error) instead of int
++ `GetRenderDriverInfo()` returns (int, error) instead of int
++ `Texture.Destroy()` returns error
++ `Renderer.Destroy()` returns error
 
 - Unexported `Padding` in `AudioSpec` struct
 - Unexported `goHintCallback`

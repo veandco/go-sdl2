@@ -1,5 +1,12 @@
 package sdl
 
+/*
+#include "sdl_wrapper.h"
+
+void GoSetError(const char *fmt) {
+  SDL_SetError("%s", fmt);
+}
+*/
 // #include "sdl_wrapper.h"
 import "C"
 import "errors"
@@ -33,6 +40,16 @@ func GetError() error {
 		}
 	}
 	return nil
+}
+
+// SetError set the SDL error message.
+// (https://wiki.libsdl.org/SDL_SetError)
+func SetError(err error) {
+	if err != nil {
+		C.GoSetError(C.CString(err.Error()))
+		return
+	}
+	C.GoSetError(nil)
 }
 
 // ClearError clears any previous error message.
