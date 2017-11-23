@@ -54,10 +54,10 @@
 + Renamed `QuickLoad_WAV()` to `QuickLoadWAV()`
 + Renamed `QuickLoad_RAW()` to `QuickLoadRAW()`
 + Moved error to the last return value in `ShowMessageBox()`
-+ Change Mutex, Sem, Cond to have methods instead of functions
++ Changed Mutex, Sem, Cond to have methods instead of functions
 + Merged `KeyUpEvent` and `KeyDownEvent` into `KeyboardEvent`
 + Haptic functions now return bool and/or error instead of int
-+ Change `GameControllerMapping()` into `GameController.Mapping()`
++ Changed `GameControllerMapping()` into `GameController.Mapping()`
 + `GetDisplayName()` returns (string, error) instead of string
 + `GetCurrentVideoDriver()` returns (string, error) instead of string
 + `Window.Destroy()` returns error
