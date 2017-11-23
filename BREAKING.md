@@ -57,6 +57,7 @@
 + Change Mutex, Sem, Cond to have methods instead of functions
 + Merged `KeyUpEvent` and `KeyDownEvent` into `KeyboardEvent`
 + Haptic functions now return bool and/or error instead of int
++ Change `GameControllerMapping()` into `GameController.Mapping()`
 + `GetDisplayName()` returns (string, error) instead of string
 + `GetCurrentVideoDriver()` returns (string, error) instead of string
 + `Window.Destroy()` returns error

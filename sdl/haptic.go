@@ -225,7 +225,10 @@ func HapticOpen(index int) (*Haptic, error) {
 // (https://wiki.libsdl.org/SDL_HapticOpened)
 func HapticOpened(index int) (bool, error) {
 	ret := int(C.SDL_HapticOpened(C.int(index)))
-	return ret == C.SDL_TRUE, errorFromInt(ret)
+	if ret == 0 {
+		return false, GetError()
+	}
+	return ret == 1, nil
 }
 
 // HapticIndex returns the index of a haptic device.
