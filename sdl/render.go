@@ -11,9 +11,11 @@ static inline int SDL_UpdateYUVTexture(SDL_Texture* texture, const SDL_Rect* rec
 }
 #endif
 */
-import "C"
-import "reflect"
-import "unsafe"
+import (
+	"C"
+	"reflect"
+	"unsafe"
+)
 
 // An enumeration of flags used when creating a rendering context.
 // (https://wiki.libsdl.org/SDL_RendererFlags)
