@@ -10,7 +10,6 @@ static inline int SDL_UpdateYUVTexture(SDL_Texture* texture, const SDL_Rect* rec
 	return -1;
 }
 #endif
-
 */
 import "C"
 import "reflect"
