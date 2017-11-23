@@ -70,10 +70,8 @@ static void SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable)
 #define SDL_GL_CONTEXT_NO_ERROR (0)
 #endif
 */
-import (
-	"C"
-	"unsafe"
-)
+import "C"
+import "unsafe"
 
 // An enumeration of window states.
 // (https://wiki.libsdl.org/SDL_WindowFlags)

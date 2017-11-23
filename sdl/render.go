@@ -11,8 +11,8 @@ static inline int SDL_UpdateYUVTexture(SDL_Texture* texture, const SDL_Rect* rec
 }
 #endif
 */
+import "C"
 import (
-	"C"
 	"reflect"
 	"unsafe"
 )
