@@ -725,8 +725,8 @@ func ShowMessageBox(data *MessageBoxData) (buttonid int32, err error) {
 		colorScheme: data.ColorScheme.cptr(),
 	}
 
-	buttonid = C.ShowMessageBox(cdata)
-	return int32(buttonid), errorFromInt(int(buttonid))
+	buttonid = int32(C.ShowMessageBox(cdata))
+	return buttonid, errorFromInt(int(buttonid))
 }
 
 // IsScreenSaverEnabled reports whether the screensaver is currently enabled.
