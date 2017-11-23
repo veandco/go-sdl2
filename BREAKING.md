@@ -2,7 +2,8 @@
 
 ### v0.2..master
 
-+ Renamed `Texture.GL_BindTexture()` and `Texture.GL_UnbindTexture()` to `Texture.GLBind()` and `Texture.GLUnbind()` respectively
++ Renamed `Texture.GL_BindTexture()` to `Texture.GLBind()`
++ Renamed `Texture.GL_UnbindTexture()` to `Texture.GLUnbind()`
 + Renamed `LoadWAV_RW()` to `LoadWAVRW()`
 + Renamed `TouchId` to `TouchID` in `MultiGestureEvent` struct
 + Renamed `Unicode` to `unused` in `Keysym` struct (must have been a typo)
@@ -54,8 +55,12 @@
 + Renamed `QuickLoad_RAW()` to `QuickLoadRAW()`
 + Moved error to the last return value in `ShowMessageBox()`
 + Change Mutex, Sem, Cond to have methods instead of functions
-+ Merge `KeyUpEvent` and `KeyDownEvent` into `KeyboardEvent`
++ Merged `KeyUpEvent` and `KeyDownEvent` into `KeyboardEvent`
 + Haptic functions now return bool and/or error instead of int
++ `GetDisplayName()` returns (string, error) instead of string
++ `GetCurrentVideoDriver()` returns (string, error) instead of string
++ `Window.Destroy()` returns error
++ `Window.GetID()` returns (uint32, error) instead of uint32
 
 - Unexported `Padding` in `AudioSpec` struct
 - Unexported `goHintCallback`
