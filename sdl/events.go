@@ -627,7 +627,7 @@ func goEvent(cevent *CEvent) Event {
 		return (*DollarGestureEvent)(unsafe.Pointer(cevent))
 	case DROPFILE, DROPTEXT, DROPBEGIN, DROPCOMPLETE:
 		e := (*tDropEvent)(unsafe.Pointer(cevent))
-		event := DropEvent{Type: e.Type, Timestamp: e.Timestamp, File: string(C.GoString((*C.char)(e.File))), WindowID: e.WindowID}
+		event := DropEvent{Type: e.Type, Timestamp: e.Timestamp, File: C.GoString((*C.char)(e.File)), WindowID: e.WindowID}
 		C.SDL_free(e.File)
 		return &event
 	case RENDER_TARGETS_RESET, RENDER_DEVICE_RESET:

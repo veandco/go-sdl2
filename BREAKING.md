@@ -2,7 +2,8 @@
 
 ### v0.2..master
 
-+ Renamed `Texture.GL_BindTexture()` and `Texture.GL_UnbindTexture()` to `Texture.GLBind()` and `Texture.GLUnbind()` respectively
++ Renamed `Texture.GL_BindTexture()` to `Texture.GLBind()`
++ Renamed `Texture.GL_UnbindTexture()` to `Texture.GLUnbind()`
 + Renamed `LoadWAV_RW()` to `LoadWAVRW()`
 + Renamed `TouchId` to `TouchID` in `MultiGestureEvent` struct
 + Renamed `Unicode` to `unused` in `Keysym` struct (must have been a typo)
@@ -53,10 +54,18 @@
 + Renamed `QuickLoad_WAV()` to `QuickLoadWAV()`
 + Renamed `QuickLoad_RAW()` to `QuickLoadRAW()`
 + Moved error to the last return value in `ShowMessageBox()`
-+ Change Mutex, Sem, Cond to have methods instead of functions
-+ Merge `KeyUpEvent` and `KeyDownEvent` into `KeyboardEvent`
++ Changed Mutex, Sem, Cond to have methods instead of functions
++ Merged `KeyUpEvent` and `KeyDownEvent` into `KeyboardEvent`
 + Haptic functions now return bool and/or error instead of int
-+ Change `GameControllerMapping()` into `GameController.Mapping()`
++ Changed `GameControllerMapping()` into `GameController.Mapping()`
++ `GetDisplayName()` returns (string, error) instead of string
++ `GetCurrentVideoDriver()` returns (string, error) instead of string
++ `Window.Destroy()` returns error
++ `Window.GetID()` returns (uint32, error) instead of uint32
++ `GetNumRenderDrivers()` returns (int, error) instead of int
++ `GetRenderDriverInfo()` returns (int, error) instead of int
++ `Texture.Destroy()` returns error
++ `Renderer.Destroy()` returns error
 
 - Unexported `Padding` in `AudioSpec` struct
 - Unexported `goHintCallback`
