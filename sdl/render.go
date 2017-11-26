@@ -307,7 +307,8 @@ func (texture *Texture) Lock(rect *Rect) ([]byte, int, error) {
 
 	pitch := int32(_pitch)
 	if rect != nil {
-		length = int((pitch / w) * rect.W * rect.H)
+		bytesPerPixel := pitch / w
+		length = int(bytesPerPixel * (w*rect.H - rect.X - (w - rect.X - rect.W)))
 	} else {
 		length = int(pitch * h)
 	}
