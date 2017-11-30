@@ -66,6 +66,7 @@
 + `GetRenderDriverInfo()` returns (int, error) instead of int
 + `Texture.Destroy()` returns error
 + `Renderer.Destroy()` returns error
++ `Renderer.GetViewport()` and `Renderer.GetClipRect()` now returns Rect instead of being passed a *Rect
 
 - Unexported `Padding` in `AudioSpec` struct
 - Unexported `goHintCallback`
