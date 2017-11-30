@@ -372,8 +372,9 @@ func (renderer *Renderer) SetViewport(rect *Rect) error {
 
 // GetViewport returns the drawing area for the current target.
 // (https://wiki.libsdl.org/SDL_RenderGetViewport)
-func (renderer *Renderer) GetViewport(rect *Rect) {
+func (renderer *Renderer) GetViewport() (rect Rect) {
 	C.SDL_RenderGetViewport(renderer.cptr(), rect.cptr())
+	return
 }
 
 // SetClipRect sets the clip rectangle for rendering on the specified target.
@@ -385,8 +386,9 @@ func (renderer *Renderer) SetClipRect(rect *Rect) error {
 
 // GetClipRect returns the clip rectangle for the current target.
 // (https://wiki.libsdl.org/SDL_RenderGetClipRect)
-func (renderer *Renderer) GetClipRect(rect *Rect) {
+func (renderer *Renderer) GetClipRect() (rect Rect) {
 	C.SDL_RenderGetClipRect(renderer.cptr(), rect.cptr())
+	return
 }
 
 // SetScale sets the drawing scale for rendering on the current target.
