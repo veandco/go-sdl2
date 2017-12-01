@@ -62,6 +62,8 @@ To get the bindings, type:
 or type this if you use Bash terminal:  
 `go get -v github.com/veandco/go-sdl2/{sdl,mix,img,ttf}`
 
+Due to `go-sdl2` being under active development, a lot of breaking changes are going to happen during v0.x. Therefore if you want to stay with the latest stable version, you should replace `github.com/veandco/go-sdl2` with `gopkg.in/veandco/go-sdl2.v0` so it will refer to the latest stable version e.g. `gopkg.in/veandco/go-sdl2.v0/sdl`.
+
 __Note__: If you didn't use the previous commands or use 'go install', you will experience long
 compilation time because Go doesn't keep the built binaries unless you install them.
 
@@ -98,9 +100,32 @@ func main() {
 }
 ```
 
-
-
 For more complete examples, see inside the _examples_ folder. Run any of the .go files with `go run`.
+
+
+Cross-compiling
+===============
+
+### Linux to Windows
+
+1. Install MinGW toolchain.
+   * On **Arch Linux**, it's simply `pacman -S mingw-w64`.
+2. Download the SDL2 development package for MinGW [here](http://libsdl.org/download-2.0.php) (and the others like *SDL_image*, *SDL_mixer*, etc.. [here](https://www.libsdl.org/projects/) if you use them).
+3. Extract the SDL2 development package and copy the `x86_64-w64-mingw32` folder inside recursively to the system's MinGW `x86_64-w64-mingw32` folder. You may also do the same for the `i686-w64-mingw32` folder.
+   * On **Arch Linux**, it's `cp -r x86_64-w64-mingw32 /usr`.
+4. Now you can start cross-compiling your Go program by running `env CGO_ENABLED="1" CC="/usr/bin/x86_64-w64-mingw32-gcc" GOOS="windows" CGO_LDFLAGS="-lmingw32 -lSDL2" CGO_CFLAGS="-D_REENTRANT" go build -x main.go`. You can change some of the parameters if you'd like to. In this example, it should produce a `main.exe` executable file.
+5. Before running the program, you need to put `SDL2.dll` from the [SDL2 runtime package](http://libsdl.org/download-2.0.php) (For others like *SDL_image*, *SDL_mixer*, etc.., look for them [here](https://www.libsdl.org/projects/)) for Windows in the same folder as your executable.
+6. Now you should be able to run the program using Wine or Windows!
+
+### macOS to Windows
+
+1. Install [Homebrew](https://brew.sh)
+2. Install MinGW through Homebrew via `brew install mingw-w64`
+3. Download the SDL2 development package for MinGW [here](http://libsdl.org/download-2.0.php) (and the others like *SDL_image*, *SDL_mixer*, etc.. [here](https://www.libsdl.org/projects/) if you use them).
+4. Extract the SDL2 development package and copy the `x86_64-w64-mingw` folder inside recursively to the system's MinGW `x86_64-w64-mingw32 folder. You may also do the same for the `i686-w64-mingw32` folder. The path to MinGW may be slightly different but the command should look something like `cp -r x86_64-w64-mingw32 /usr/local/Cellar/mingw-w64/5.0.3/toolchain-x86_64`.
+5. Now you can start cross-compiling your Go program by running `env CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc GOOS=windows CGO_LDFLAGS="-L/usr/local/Cellar/mingw-w64/5.0.3/toolchain-x86_64/x86_64-w64-mingw32/lib -lSDL2" CGO_CFLAGS="-I/usr/local/Cellar/mingw-w64/5.0.3/toolchain-x86_64/x86_64-w64-mingw32/include -D_REENTRANT" go build -x main.go`. You can change some of the parameters if you'd like to. In this example, it should produce a `main.exe` executable file.
+6. Before running the program, you need to put `SDL2.dll` from the [SDL2 runtime package](http://libsdl.org/download-2.0.php) (For others like *SDL_image*, *SDL_mixer*, etc.., look for them [here](https://www.libsdl.org/projects/)) for Windows in the same folder as your executable.
+7. Now you should be able to run the program using Wine or Windows!
 
 FAQ
 ===
