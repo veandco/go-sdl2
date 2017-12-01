@@ -67,6 +67,15 @@
 + `Texture.Destroy()` returns error
 + `Renderer.Destroy()` returns error
 + `Renderer.GetViewport()` and `Renderer.GetClipRect()` now returns Rect instead of being passed a *Rect
++ `NumHaptics()` returns (int, error) instead of int
++ `HapticName()` returns (string, error) instead of string
++ `HapticIndex()` returns (int, error) instead of int
++ `HapticOpenFromJoystick()` returns (*Haptic, error) instead of *Haptic
++ `Haptic.NumAxes()` returns (int, error) instead of int
++ `Haptic.NumEffects()` returns (int, error) instead of int
++ `Haptic.NumEffectsPlaying()` returns (int, error) instead of int
++ `Haptic.Query()` returns (uint32, error) instead of uint
++ `Haptic.GetEffectStatus()` returns (int, error) instead of int
 
 - Unexported `Padding` in `AudioSpec` struct
 - Unexported `goHintCallback`
