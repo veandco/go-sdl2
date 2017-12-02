@@ -250,16 +250,6 @@ type MessageBoxData struct {
 	ColorScheme *MessageBoxColorScheme // a MessageBoxColorScheme, can be nil to use system settings
 }
 
-type cMessageBoxData struct {
-	Flags       uint32
-	Window      *C.SDL_Window
-	Title       *C.char
-	Message     *C.char
-	NumButtons  int32
-	Buttons     *C.SDL_MessageBoxButtonData
-	ColorScheme *C.SDL_MessageBoxColorScheme
-}
-
 func (window *Window) cptr() *C.SDL_Window {
 	return (*C.SDL_Window)(unsafe.Pointer(window))
 }
