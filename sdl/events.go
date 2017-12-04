@@ -12,15 +12,6 @@ package sdl
 #pragma message("SDL_KEYMAPCHANGED is not supported before SDL 2.0.4")
 #define SDL_KEYMAPCHANGED (0x304)
 
-#pragma message("SDL_DROPTEXT is not supported before SDL 2.0.4")
-#define SDL_DROPTEXT (0x1001)
-
-#pragma message("SDL_DROPBEGIN is not supported before SDL 2.0.4")
-#define SDL_DROPBEGIN (0x1002)
-
-#pragma message("SDL_DROPCOMPLETE is not supported before SDL 2.0.4")
-#define SDL_DROPCOMPLETE (0x1003)
-
 #pragma message("SDL_AUDIODEVICEADDED is not supported before SDL 2.0.4")
 #define SDL_AUDIODEVICEADDED (0x1100)
 
@@ -41,6 +32,17 @@ typedef struct SDL_AudioDeviceEvent
     Uint8  padding2;
     Uint8  padding3;
 } SDL_AudioDeviceEvent;
+#endif
+
+#if !SDL_VERSION_ATLEAST(2,0,5)
+#pragma message("SDL_DROPTEXT is not supported before SDL 2.0.5")
+#define SDL_DROPTEXT (0x1001)
+
+#pragma message("SDL_DROPBEGIN is not supported before SDL 2.0.5")
+#define SDL_DROPBEGIN (0x1002)
+
+#pragma message("SDL_DROPCOMPLETE is not supported before SDL 2.0.5")
+#define SDL_DROPCOMPLETE (0x1003)
 #endif
 */
 import "C"
