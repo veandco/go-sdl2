@@ -32,24 +32,24 @@ func run() int {
 	defer window.Destroy()
 
 	if font, err = ttf.OpenFont("../../assets/test.ttf", 32); err != nil {
-		fmt.Fprint(os.Stderr, "Failed to open font: %s\n", err)
+		fmt.Fprintf(os.Stderr, "Failed to open font: %s\n", err)
 		return 4
 	}
 	defer font.Close()
 
-	if solid, err = font.RenderUTF8Solid("Hello, World!", sdl.Color{255, 0, 0, 255}); err != nil {
-		fmt.Fprint(os.Stderr, "Failed to render text: %s\n", err)
+	if solid, err = font.RenderUTF8_Solid("Hello, World!", sdl.Color{255, 0, 0, 255}); err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to render text: %s\n", err)
 		return 5
 	}
 	defer solid.Free()
 
 	if surface, err = window.GetSurface(); err != nil {
-		fmt.Fprint(os.Stderr, "Failed to get window surface: %s\n", err)
+		fmt.Fprintf(os.Stderr, "Failed to get window surface: %s\n", err)
 		return 6
 	}
 
 	if err = solid.Blit(nil, surface, nil); err != nil {
-		fmt.Fprint(os.Stderr, "Failed to put text on window surface: %s\n", err)
+		fmt.Fprintf(os.Stderr, "Failed to put text on window surface: %s\n", err)
 		return 7
 	}
 
