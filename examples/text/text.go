@@ -37,7 +37,7 @@ func run() int {
 	}
 	defer font.Close()
 
-	if solid, err = font.RenderUTF8_Solid("Hello, World!", sdl.Color{255, 0, 0, 255}); err != nil {
+	if solid, err = font.RenderUTF8Solid("Hello, World!", sdl.Color{255, 0, 0, 255}); err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to render text: %s\n", err)
 		return 5
 	}
