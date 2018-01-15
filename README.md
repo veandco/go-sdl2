@@ -144,6 +144,8 @@ On __Mac OS X__, this is easy to correct. First remove the faulty mixer: `brew r
 
 On __Other Operating Systems__, you will need to compile smpeg and SDL_mixer from source with the MP3 option enabled. You can find smpeg in the `external` directory of SDL_mixer. Refer to issue [#148](https://github.com/veandco/go-sdl2/issues/148) for instructions.
 
+_Note that there seems to be a problem with SDL_mixer 2.0.2 so you can also try to revert back to 2.0.1 and see if it solves your problem_
+
 __Does go-sdl2 support compiling on mobile platforms like Android and iOS?__  
 For Android, see https://github.com/gen2brain/go-sdl2-android-example.
 
