@@ -43,7 +43,7 @@ On __Windows__,
         - Inside the folder, copy the `i686-w64-mingw32` and/or `x86_64-w64-mingw32` depending on the architecture you chose into your mingw-w64 folder e.g. `C:\Program Files\mingw-w64\x86_64-6.3.0-win32-seh-rt_v5-rev1\mingw64`  
 3. Setup Path environment variable  
         - Put your mingw-w64 binaries location into your system Path environment variable. e.g. `C:\Program Files\mingw-w64\x86_64-6.3.0-win32-seh-rt_v5-rev1\mingw64\bin` and `C:\Program Files\mingw-w64\x86_64-6.3.0-win32-seh-rt_v5-rev1\mingw64\x86_64-w64-mingw32\bin`  
-4. Open up a terminal such as `Git Bash` and run `go get -v github.com/veandco/go-sdl2/sdl`. To prove that it's working correctly, you can change directory by running `cd go/src/github.com/veandco/go-sdl2/examples/events` and run `go run events.go`. A window should pop up and you can see event logs printed when moving your mouse over it or typing on your keyboard.  
+4. Open up a terminal such as `Git Bash` and run `go get -v github.com/veandco/go-sdl2/sdl`.
 5. (Optional) You can repeat __Step 2__ for [SDL_image](https://www.libsdl.org/projects/SDL_image), [SDL_mixer](https://www.libsdl.org/projects/SDL_mixer), [SDL_ttf](https://www.libsdl.org/projects/SDL_ttf)  
         - NOTE: pre-build the libraries for faster compilation by running `go install github.com/veandco/go-sdl2/{sdl,img,mix,ttf}`  
 
@@ -100,7 +100,7 @@ func main() {
 }
 ```
 
-For more complete examples, see inside the _examples_ folder. Run any of the .go files with `go run`.
+For more complete examples, see https://github.com/veandco/go-sdl2-examples. You can run any of the .go files with `go run`.
 
 
 Cross-compiling
@@ -135,7 +135,7 @@ Try putting the [runtime libraries](http://libsdl.org/download-2.0.php) (e.g. `S
 __Why does my program crash randomly or hang?__  
 Putting `runtime.LockOSThread()` at the start of your main() usually solves the problem (see [SDL2 FAQ](https://wiki.libsdl.org/FAQDevelopment) about multi-threading).
 
-UPDATE: Recent update added a call queue system where you can put thread-sensitive code and have it called synchronously on the same OS thread. See the `render_queue` or `render_goroutines` examples to see how it works.
+UPDATE: Recent update added a call queue system where you can put thread-sensitive code and have it called synchronously on the same OS thread. See the `render_queue` or `render_goroutines` examples from https://github.com/veandco/go-sdl2-examples to see how it works.
 
 __Why can't SDL_mixer seem to play MP3 audio file?__  
 Your installed SDL_mixer probably doesn't support MP3 file.
