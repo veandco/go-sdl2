@@ -44,11 +44,10 @@ static int SDL_SetWindowOpacity(SDL_Window* window, float opacity)
 }
 
 #pragma message("SDL_GetWindowOpacity is not supported before SDL 2.0.5")
-static int SDL_GetWindowOpacity(SDL_Window* window, float opacity)
+static int SDL_GetWindowOpacity(SDL_Window* window, float *opacity)
 {
 	return -1;
 }
-
 
 #pragma message("SDL_WINDOW_ALWAYS_ON_TOP is not supported before SDL 2.0.5")
 #define SDL_WINDOW_ALWAYS_ON_TOP (0)
