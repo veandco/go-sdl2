@@ -37,6 +37,18 @@ static void SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable)
 {
 }
 
+#pragma message("SDL_SetWindowOpacity is not supported before SDL 2.0.5")
+static int SDL_SetWindowOpacity(SDL_Window* window, float opacity)
+{
+	return -1;
+}
+
+#pragma message("SDL_GetWindowOpacity is not supported before SDL 2.0.5")
+static int SDL_GetWindowOpacity(SDL_Window* window, float *opacity)
+{
+	return -1;
+}
+
 #pragma message("SDL_WINDOW_ALWAYS_ON_TOP is not supported before SDL 2.0.5")
 #define SDL_WINDOW_ALWAYS_ON_TOP (0)
 
@@ -681,6 +693,20 @@ func (window *Window) GetGammaRamp() (red, green, blue *[256]uint16, err error) 
 		(*C.Uint16)(unsafe.Pointer(green)),
 		(*C.Uint16)(unsafe.Pointer(blue))))
 	return red, green, blue, errorFromInt(code)
+}
+
+// SetWindowOpacity sets the opacity of the window.
+// (https://wiki.libsdl.org/SDL_SetWindowOpacity)
+func (window *Window) SetWindowOpacity(opacity float32) error {
+	return errorFromInt(int(
+		C.SDL_SetWindowOpacity(window.cptr(), C.float(opacity))))
+}
+
+// GetWindowOpacity returns the opacity of the window.
+// (https://wiki.libsdl.org/SDL_GetWindowOpacity)
+func (window *Window) GetWindowOpacity() (opacity float32, err error) {
+	return opacity, errorFromInt(int(
+		C.SDL_GetWindowOpacity(window.cptr(), (*C.float)(unsafe.Pointer(&opacity)))))
 }
 
 // ShowSimpleMessageBox displays a simple modal message box.
