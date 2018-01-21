@@ -91,12 +91,6 @@ func GameControllerMappingForGUID(guid JoystickGUID) string {
 	return C.GoString(C.SDL_GameControllerMappingForGUID(guid.c()))
 }
 
-// GameControllerMapping returns the current mapping of a Game Controller.
-//  (https://wiki.libsdl.org/SDL_GameControllerMapping)
-func GameControllerMapping(ctrl *GameController) string {
-	return C.GoString(C.SDL_GameControllerMapping(ctrl.cptr()))
-}
-
 // IsGameController reports whether the given joystick is supported by the game controller interface.
 // (https://wiki.libsdl.org/SDL_IsGameController)
 func IsGameController(index int) bool {
@@ -125,6 +119,12 @@ func (ctrl *GameController) Name() string {
 // (https://wiki.libsdl.org/SDL_GameControllerGetAttached)
 func (ctrl *GameController) GetAttached() bool {
 	return C.SDL_GameControllerGetAttached(ctrl.cptr()) > 0
+}
+
+// Mapping returns the current mapping of a Game Controller.
+// (https://wiki.libsdl.org/SDL_GameControllerMapping)
+func (ctrl *GameController) Mapping() string {
+	return C.GoString(C.SDL_GameControllerMapping(ctrl.cptr()))
 }
 
 // GetJoystick returns the Joystick ID from a Game Controller. The game controller builds on the Joystick API, but to be able to use the Joystick's functions with a gamepad, you need to use this first to get the joystick object.

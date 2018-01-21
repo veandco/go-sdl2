@@ -2,6 +2,20 @@ package sdl
 
 /*
 #include "sdl_wrapper.h"
+
+#if !(SDL_VERSION_ATLEAST(2,0,5))
+#pragma message("SDL_CreateRGBSurfaceWithFormat is not supported before SDL 2.0.5")
+static inline SDL_Surface* SDL_CreateRGBSurfaceWithFormat(Uint32 flags, int width, int height, int depth, Uint32 format)
+{
+	return NULL;
+}
+
+#pragma message("SDL_CreateRGBSurfaceWithFormatFrom is not supported before SDL 2.0.5")
+static inline SDL_Surface* SDL_CreateRGBSurfaceWithFormatFrom(void* pixels, int width, int height, int depth, int pitch, Uint32 format)
+{
+	return NULL;
+}
+#endif
 */
 import "C"
 import "unsafe"
@@ -74,6 +88,37 @@ func CreateRGBSurfaceFrom(pixels unsafe.Pointer, width, height int32, depth, pit
 		C.Uint32(Gmask),
 		C.Uint32(Bmask),
 		C.Uint32(Amask))))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
+}
+
+// CreateRGBSurfaceWithFormat allocates an RGB surface.
+// (https://wiki.libsdl.org/SDL_CreateRGBSurfaceWithFormat)
+func CreateRGBSurfaceWithFormat(flags uint32, width, height, depth int32, format uint32) (*Surface, error) {
+	surface := (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurfaceWithFormat(
+		C.Uint32(flags),
+		C.int(width),
+		C.int(height),
+		C.int(depth),
+		C.Uint32(format))))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
+}
+
+// CreateRGBSurfaceWithFormatFrom allocates an RGB surface from provided pixel data.
+// (https://wiki.libsdl.org/SDL_CreateRGBSurfaceWithFormatFrom)
+func CreateRGBSurfaceWithFormatFrom(pixels unsafe.Pointer, width, height, depth, pitch int32, format uint32) (*Surface, error) {
+	surface := (*Surface)(unsafe.Pointer(C.SDL_CreateRGBSurfaceWithFormatFrom(
+		pixels,
+		C.int(width),
+		C.int(height),
+		C.int(depth),
+		C.int(pitch),
+		C.Uint32(format))))
 	if surface == nil {
 		return nil, GetError()
 	}

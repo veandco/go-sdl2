@@ -1,3 +1,4 @@
+// Package sdl is SDL2 wrapped for Go users. It enables interoperability between Go and the SDL2 library which is written in C. That means the original SDL2 installation is required for this to work. SDL2 is a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D.
 package sdl
 
 // #cgo windows LDFLAGS: -lSDL2
@@ -10,16 +11,18 @@ import (
 )
 
 // These are the flags which may be passed to SDL_Init().
+// (https://wiki.libsdl.org/SDL_Init)
 const (
-	INIT_TIMER          = 0x00000001
-	INIT_AUDIO          = 0x00000010
-	INIT_VIDEO          = 0x00000020
-	INIT_JOYSTICK       = 0x00000200
-	INIT_HAPTIC         = 0x00001000
-	INIT_GAMECONTROLLER = 0x00002000
-	INIT_NOPARACHUTE    = 0x00100000
-	INIT_EVERYTHING     = INIT_TIMER | INIT_AUDIO | INIT_VIDEO | INIT_JOYSTICK |
-		INIT_HAPTIC | INIT_GAMECONTROLLER
+	INIT_TIMER          = 0x00000001 // timer subsystem
+	INIT_AUDIO          = 0x00000010 // audio subsystem
+	INIT_VIDEO          = 0x00000020 // video subsystem; automatically initializes the events subsystem
+	INIT_JOYSTICK       = 0x00000200 // joystick subsystem; automatically initializes the events subsystem
+	INIT_HAPTIC         = 0x00001000 // haptic (force feedback) subsystem
+	INIT_GAMECONTROLLER = 0x00002000 // controller subsystem; automatically initializes the joystick subsystem
+	INIT_EVENTS         = 0x00004000 // events subsystem
+	INIT_NOPARACHUTE    = 0x00100000 // compatibility; this flag is ignored
+
+	INIT_EVERYTHING = INIT_TIMER | INIT_AUDIO | INIT_VIDEO | INIT_EVENTS | INIT_JOYSTICK | INIT_HAPTIC | INIT_GAMECONTROLLER // all of the above subsystems
 )
 
 const (
@@ -141,4 +144,12 @@ func WasInit(flags uint32) uint32 {
 // (https://wiki.libsdl.org/SDL_GetPlatform)
 func GetPlatform() string {
 	return string(C.GoString(C.SDL_GetPlatform()))
+}
+
+// errorFromInt returns GetError() if passed negative value, otherwise it returns nil.
+func errorFromInt(code int) error {
+	if code < 0 {
+		return GetError()
+	}
+	return nil
 }

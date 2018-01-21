@@ -59,5 +59,6 @@ Here's the list of contributors with their respective Github URLs.
 * [Tomas Virgl](https://github.com/tvi)
 * [Aye Aye Maung](https://github.com/ZeroXLR)
 * [Anton Malashin](https://github.com/malashin)
+* [John Perkins](https://github.com/mpath)
 
 _if anyone is missing, let me know!.. or you can add yourself in :)_

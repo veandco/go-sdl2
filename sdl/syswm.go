@@ -13,6 +13,21 @@ package sdl
 #define SDL_SYSWM_WAYLAND SDL_SYSWM_UNKNOWN
 #define SDL_SYSWM_MIR SDL_SYSWM_UNKNOWN
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,3))
+#pragma message("SDL_SYSWM_WINRT is not supported before SDL 2.0.3")
+#define SDL_SYSWM_WINRT (0)
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,4))
+#pragma message("SDL_SYSWM_ANDROID is not supported before SDL 2.0.4")
+#define SDL_SYSWM_ANDROID (0)
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,5))
+#pragma message("SDL_SYSWM_VIVANTE is not supported before SDL 2.0.5")
+#define SDL_SYSWM_VIVANTE (0)
+#endif
 */
 import "C"
 import "unsafe"
@@ -27,6 +42,9 @@ const (
 	SYSWM_UIKIT    = C.SDL_SYSWM_UIKIT    // Apple iOS
 	SYSWM_WAYLAND  = C.SDL_SYSWM_WAYLAND  // Wayland (>= SDL 2.0.2)
 	SYSWM_MIR      = C.SDL_SYSWM_MIR      // Mir (>= SDL 2.0.2)
+	SYSWM_WINRT    = C.SDL_SYSWM_WINRT    // WinRT (>= SDL 2.0.3)
+	SYSWM_ANDROID  = C.SDL_SYSWM_ANDROID  // Android (>= SDL 2.0.4)
+	SYSWM_VIVANTE  = C.SDL_SYSWM_VIVANTE  // Vivante (>= SDL 2.0.5)
 )
 
 // SysWMInfo contains system-dependent information about a window.

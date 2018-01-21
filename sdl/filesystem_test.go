@@ -5,6 +5,10 @@ import (
 )
 
 func TestGetBasePath(t *testing.T) {
+	if !VERSION_ATLEAST(2,0,1) {
+		return
+	}
+
 	Do(func() {
 		Init(INIT_EVERYTHING)
 		path := GetBasePath()

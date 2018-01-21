@@ -15,6 +15,12 @@ static int SDL_CaptureMouse(SDL_bool enabled)
 {
 	return -1;
 }
+
+#pragma message("SDL_MOUSEWHEEL_NORMAL is not supported before SDL 2.0.4")
+#define SDL_MOUSEWHEEL_NORMAL (0)
+
+#pragma message("SDL_MOUSEWHEEL_FLIPPED is not supported before SDL 2.0.4")
+#define SDL_MOUSEWHEEL_FLIPPED (0)
 #endif
 */
 import "C"
@@ -35,6 +41,12 @@ const (
 	SYSTEM_CURSOR_NO        = C.SDL_SYSTEM_CURSOR_NO        // slashed circle or crossbones
 	SYSTEM_CURSOR_HAND      = C.SDL_SYSTEM_CURSOR_HAND      // hand
 	NUM_SYSTEM_CURSORS      = C.SDL_NUM_SYSTEM_CURSORS      // (only for bounding internal arrays)
+)
+
+// Scroll direction types for the Scroll event
+const (
+	MOUSEWHEEL_NORMAL  = C.SDL_MOUSEWHEEL_NORMAL  // the scroll direction is normal
+	MOUSEWHEEL_FLIPPED = C.SDL_MOUSEWHEEL_FLIPPED // the scroll direction is flipped / natural
 )
 
 // Used as a mask when testing buttons in buttonstate.

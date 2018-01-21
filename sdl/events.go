@@ -7,6 +7,43 @@ package sdl
 #if !SDL_VERSION_ATLEAST(2,0,2)
 #define SDL_RENDER_TARGETS_RESET (0x2000)
 #endif
+
+#if !SDL_VERSION_ATLEAST(2,0,4)
+#pragma message("SDL_KEYMAPCHANGED is not supported before SDL 2.0.4")
+#define SDL_KEYMAPCHANGED (0x304)
+
+#pragma message("SDL_AUDIODEVICEADDED is not supported before SDL 2.0.4")
+#define SDL_AUDIODEVICEADDED (0x1100)
+
+#pragma message("SDL_AUDIODEVICEREMOVED is not supported before SDL 2.0.4")
+#define SDL_AUDIODEVICEREMOVED (0x1101)
+
+#pragma message("SDL_RENDER_DEVICE_RESET is not supported before SDL 2.0.4")
+#define SDL_RENDER_DEVICE_RESET (0x2001)
+
+#pragma message("SDL_AudioDeviceEvent is not supported before SDL 2.0.4")
+typedef struct SDL_AudioDeviceEvent
+{
+    Uint32 type;
+    Uint32 timestamp;
+    Uint32 which;
+    Uint8  iscapture;
+    Uint8  padding1;
+    Uint8  padding2;
+    Uint8  padding3;
+} SDL_AudioDeviceEvent;
+#endif
+
+#if !SDL_VERSION_ATLEAST(2,0,5)
+#pragma message("SDL_DROPTEXT is not supported before SDL 2.0.5")
+#define SDL_DROPTEXT (0x1001)
+
+#pragma message("SDL_DROPBEGIN is not supported before SDL 2.0.5")
+#define SDL_DROPBEGIN (0x1002)
+
+#pragma message("SDL_DROPCOMPLETE is not supported before SDL 2.0.5")
+#define SDL_DROPCOMPLETE (0x1003)
+#endif
 */
 import "C"
 import "unsafe"
@@ -42,10 +79,11 @@ const (
 	SYSWMEVENT  = C.SDL_SYSWMEVENT  // system specific event
 
 	// Keyboard events
-	KEYDOWN     = C.SDL_KEYDOWN     // key pressed
-	KEYUP       = C.SDL_KEYUP       // key released
-	TEXTEDITING = C.SDL_TEXTEDITING // keyboard text editing (composition)
-	TEXTINPUT   = C.SDL_TEXTINPUT   // keyboard text input
+	KEYDOWN       = C.SDL_KEYDOWN       // key pressed
+	KEYUP         = C.SDL_KEYUP         // key released
+	TEXTEDITING   = C.SDL_TEXTEDITING   // keyboard text editing (composition)
+	TEXTINPUT     = C.SDL_TEXTINPUT     // keyboard text input
+	KEYMAPCHANGED = C.SDL_KEYMAPCHANGED // keymap changed due to a system event such as an input language or keyboard layout change (>= SDL 2.0.4)
 
 	// Mouse events
 	MOUSEMOTION     = C.SDL_MOUSEMOTION     // mouse moved
@@ -84,10 +122,18 @@ const (
 	CLIPBOARDUPDATE = C.SDL_CLIPBOARDUPDATE // the clipboard changed
 
 	// Drag and drop events
-	DROPFILE = C.SDL_DROPFILE // the system requests a file open
+	DROPFILE     = C.SDL_DROPFILE     // the system requests a file open
+	DROPTEXT     = C.SDL_DROPTEXT     // text/plain drag-and-drop event
+	DROPBEGIN    = C.SDL_DROPBEGIN    // a new set of drops is beginning (NULL filename)
+	DROPCOMPLETE = C.SDL_DROPCOMPLETE // current set of drops is now complete (NULL filename)
+
+	// Audio hotplug events
+	AUDIODEVICEADDED   = C.SDL_AUDIODEVICEADDED   // a new audio device is available (>= SDL 2.0.4)
+	AUDIODEVICEREMOVED = C.SDL_AUDIODEVICEREMOVED // an audio device has been removed (>= SDL 2.0.4)
 
 	// Render events
 	RENDER_TARGETS_RESET = C.SDL_RENDER_TARGETS_RESET // the render targets have been reset and their contents need to be updated (>= SDL 2.0.2)
+	RENDER_DEVICE_RESET  = C.SDL_RENDER_DEVICE_RESET  // the device has been reset and all textures need to be recreated (>= SDL 2.0.4)
 
 	// These are for your use, and should be allocated with RegisterEvents()
 	USEREVENT = C.SDL_USEREVENT // a user-specified event
@@ -145,10 +191,10 @@ type cWindowEvent C.SDL_WindowEvent
 
 //TODO: Key{Up,Down}Event only differ in 'Type' - a boolean field would be enough to distinguish up/down events
 
-// KeyDownEvent contains keyboard key down event information.
+// KeyboardEvent contains keyboard key down event information.
 // (https://wiki.libsdl.org/SDL_KeyboardEvent)
-type KeyDownEvent struct {
-	Type      uint32 // KEYDOWN
+type KeyboardEvent struct {
+	Type      uint32 // KEYDOWN, KEYUP
 	Timestamp uint32 // timestamp of the event
 	WindowID  uint32 // the window with keyboard focus, if any
 	State     uint8  // PRESSED, RELEASED
@@ -158,19 +204,6 @@ type KeyDownEvent struct {
 	Keysym    Keysym // Keysym representing the key that was pressed or released
 }
 type cKeyboardEvent C.SDL_KeyboardEvent
-
-// KeyUpEvent contains keyboard key up event information.
-// (https://wiki.libsdl.org/SDL_KeyboardEvent)
-type KeyUpEvent struct {
-	Type      uint32 // KEYUP
-	Timestamp uint32 // timestamp of the event
-	WindowID  uint32 // the window with keyboard focus, if any
-	State     uint8  // PRESSED, RELEASED
-	Repeat    uint8  // non-zero if this is a key repeat
-	_         uint8  // padding
-	_         uint8  // padding
-	Keysym    Keysym // Keysym representing the key that was pressed or released
-}
 
 // TextEditingEvent contains keyboard text editing event information.
 // (https://wiki.libsdl.org/SDL_TextEditingEvent)
@@ -297,7 +330,7 @@ type cJoyButtonEvent C.SDL_JoyButtonEvent
 // JoyDeviceEvent contains joystick device event information.
 // (https://wiki.libsdl.org/SDL_JoyDeviceEvent)
 type JoyDeviceEvent struct {
-	Type      uint32     // JOYDEVICEADDED, SDL_JOYDEVICEREMOVED
+	Type      uint32     // JOYDEVICEADDED, JOYDEVICEREMOVED
 	Timestamp uint32     // the timestamp of the event
 	Which     JoystickID // the joystick device index for the JOYDEVICEADDED event or the instance id for the JOYDEVICEREMOVED event
 }
@@ -338,6 +371,19 @@ type ControllerDeviceEvent struct {
 	Which     JoystickID // the joystick device index for the CONTROLLERDEVICEADDED event or instance id for the CONTROLLERDEVICEREMOVED or CONTROLLERDEVICEREMAPPED event
 }
 type cControllerDeviceEvent C.SDL_ControllerDeviceEvent
+
+// AudioDeviceEvent contains audio device event information.
+// (https://wiki.libsdl.org/SDL_AudioDeviceEvent)
+type AudioDeviceEvent struct {
+	Type      uint32 // AUDIODEVICEADDED, AUDIODEVICEREMOVED
+	Timestamp uint32 // the timestamp of the event
+	Which     uint32 // the audio device index for the AUDIODEVICEADDED event (valid until next GetNumAudioDevices() call), AudioDeviceID for the AUDIODEVICEREMOVED event
+	IsCapture uint8  // zero if an audio output device, non-zero if an audio capture device
+	_         uint8  // padding
+	_         uint8  // padding
+	_         uint8  // padding
+}
+type cAudioDeviceEvent C.SDL_AudioDeviceEvent
 
 // TouchFingerEvent contains finger touch event information.
 // (https://wiki.libsdl.org/SDL_TouchFingerEvent)
@@ -545,10 +591,8 @@ func goEvent(cevent *CEvent) Event {
 		return (*WindowEvent)(unsafe.Pointer(cevent))
 	case SYSWMEVENT:
 		return (*SysWMEvent)(unsafe.Pointer(cevent))
-	case KEYDOWN:
-		return (*KeyDownEvent)(unsafe.Pointer(cevent))
-	case KEYUP:
-		return (*KeyUpEvent)(unsafe.Pointer(cevent))
+	case KEYDOWN, KEYUP:
+		return (*KeyboardEvent)(unsafe.Pointer(cevent))
 	case TEXTEDITING:
 		return (*TextEditingEvent)(unsafe.Pointer(cevent))
 	case TEXTINPUT:
@@ -575,18 +619,20 @@ func goEvent(cevent *CEvent) Event {
 		return (*ControllerButtonEvent)(unsafe.Pointer(cevent))
 	case CONTROLLERDEVICEADDED, CONTROLLERDEVICEREMOVED, CONTROLLERDEVICEREMAPPED:
 		return (*ControllerDeviceEvent)(unsafe.Pointer(cevent))
-	case FINGERDOWN, FINGERUP, FINGERMOTION:
+	case AUDIODEVICEADDED, AUDIODEVICEREMOVED:
+		return (*AudioDeviceEvent)(unsafe.Pointer(cevent))
+	case FINGERMOTION, FINGERDOWN, FINGERUP:
 		return (*TouchFingerEvent)(unsafe.Pointer(cevent))
-	case DOLLARGESTURE, DOLLARRECORD:
-		return (*DollarGestureEvent)(unsafe.Pointer(cevent))
 	case MULTIGESTURE:
 		return (*MultiGestureEvent)(unsafe.Pointer(cevent))
-	case DROPFILE:
+	case DOLLARGESTURE, DOLLARRECORD:
+		return (*DollarGestureEvent)(unsafe.Pointer(cevent))
+	case DROPFILE, DROPTEXT, DROPBEGIN, DROPCOMPLETE:
 		e := (*tDropEvent)(unsafe.Pointer(cevent))
-		event := DropEvent{Type: e.Type, Timestamp: e.Timestamp, File: string(C.GoString((*C.char)(e.File))), WindowID: e.WindowID}
+		event := DropEvent{Type: e.Type, Timestamp: e.Timestamp, File: C.GoString((*C.char)(e.File)), WindowID: e.WindowID}
 		C.SDL_free(e.File)
 		return &event
-	case RENDER_TARGETS_RESET:
+	case RENDER_TARGETS_RESET, RENDER_DEVICE_RESET:
 		return (*RenderEvent)(unsafe.Pointer(cevent))
 	case QUIT:
 		return (*QuitEvent)(unsafe.Pointer(cevent))
