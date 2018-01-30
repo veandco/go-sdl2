@@ -64,8 +64,7 @@ or type this if you use Bash terminal:
 
 Due to `go-sdl2` being under active development, a lot of breaking changes are going to happen during v0.x. Therefore if you want to stay with the latest stable version, you should replace `github.com/veandco/go-sdl2` with `gopkg.in/veandco/go-sdl2.v0` so it will refer to the latest stable version e.g. `gopkg.in/veandco/go-sdl2.v0/sdl`.
 
-__Note__: If you didn't use the previous commands or use 'go install', you will experience long
-compilation time because Go doesn't keep the built binaries unless you install them.
+__Note__: In order to speed up the compilation time of your program, you should run `go install github.com/veandco/go-sdl2/sdl` after the aforementioned `go get` commands. Running the `go install` command will compile and *keep the binary* for `go-sdl2/sdl`. If you don't run the `go install` command then go will compile `go-sdl2/sdl` each time you build your program.
 
 Example
 =======
