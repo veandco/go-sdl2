@@ -316,10 +316,10 @@ func PauseAudioDevice(dev AudioDeviceID, pauseOn bool) {
 
 // LoadWAVRW loads a WAVE from the data source, automatically freeing that source if freeSrc is true.
 // (https://wiki.libsdl.org/SDL_LoadWAV_RW)
-func LoadWAVRW(src *RWops, freeSrc bool, spec *AudioSpec) ([]byte, *AudioSpec) {
+func LoadWAVRW(src *RWops, freeSrc bool) ([]byte, *AudioSpec) {
 	var _audioBuf *C.Uint8
 	var _audioLen C.Uint32
-	audioSpec := (*AudioSpec)(unsafe.Pointer(C.SDL_LoadWAV_RW(src.cptr(), C.int(Btoi(freeSrc)), spec.cptr(), &_audioBuf, &_audioLen)))
+	audioSpec := (*AudioSpec)(unsafe.Pointer(C.SDL_LoadWAV_RW(src.cptr(), C.int(Btoi(freeSrc)), (&AudioSpec{}).cptr(), &_audioBuf, &_audioLen)))
 
 	var b []byte
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
@@ -331,7 +331,7 @@ func LoadWAVRW(src *RWops, freeSrc bool, spec *AudioSpec) ([]byte, *AudioSpec) {
 
 // LoadWAV loads a WAVE from a file.
 // (https://wiki.libsdl.org/SDL_LoadWAV)
-func LoadWAV(file string, spec *AudioSpec) ([]byte, *AudioSpec) {
+func LoadWAV(file string) ([]byte, *AudioSpec) {
 	_file := C.CString(file)
 	_rb := C.CString("rb")
 	defer C.free(unsafe.Pointer(_file))
@@ -339,7 +339,7 @@ func LoadWAV(file string, spec *AudioSpec) ([]byte, *AudioSpec) {
 
 	var _audioBuf *C.Uint8
 	var _audioLen C.Uint32
-	audioSpec := (*AudioSpec)(unsafe.Pointer(C.SDL_LoadWAV_RW(C.SDL_RWFromFile(_file, _rb), 1, spec.cptr(), &_audioBuf, &_audioLen)))
+	audioSpec := (*AudioSpec)(unsafe.Pointer(C.SDL_LoadWAV_RW(C.SDL_RWFromFile(_file, _rb), 1, (&AudioSpec{}).cptr(), &_audioBuf, &_audioLen)))
 
 	var b []byte
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
