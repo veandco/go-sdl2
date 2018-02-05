@@ -30,7 +30,7 @@ func TestTTF(t *testing.T) {
 		t.Errorf("Failed to initialize TTF: %s\n", err)
 	}
 
-	if font, err = OpenFont("../assets/test.ttf", 32); err != nil {
+	if font, err = OpenFont("../.go-sdl2-examples/assets/test.ttf", 32); err != nil {
 		t.Errorf("Failed to open font: %s\n", err)
 	}
 	defer font.Close()

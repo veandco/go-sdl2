@@ -77,7 +77,7 @@
 + `Haptic.Query()` returns (uint32, error) instead of uint
 + `Haptic.GetEffectStatus()` returns (int, error) instead of int
 + `LoadWAV()` requires string instead of (string ,\*AudioSpec)
-+ `LoadWAVRV()` requires (\*RWops, bool) instead of (\*RWops, bool ,\*AudioSpec)
++ `LoadWAVRW()` requires (\*RWops, bool) instead of (\*RWops, bool ,\*AudioSpec)
 
 
 - Unexported `Padding` in `AudioSpec` struct
