@@ -29,6 +29,13 @@ static void SDL_GL_GetDrawableSize(SDL_Window *window, int *w, int *h)
 
 #pragma message("SDL_GL_CONTEXT_RELEASE_BEHAVIOR is not supported before SDL 2.0.4")
 #define SDL_GL_CONTEXT_RELEASE_BEHAVIOR (0)
+
+#pragma message("SDL_GetDisplayDPI is not supported before SDL 2.0.4")
+static int SDL_GetDisplayDPI(int displayIndex, float* ddpi, float* hdpi, float* vdpi)
+{
+	return -1;
+}
+
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,5))
@@ -45,6 +52,12 @@ static int SDL_SetWindowOpacity(SDL_Window* window, float opacity)
 
 #pragma message("SDL_GetWindowOpacity is not supported before SDL 2.0.5")
 static int SDL_GetWindowOpacity(SDL_Window* window, float *opacity)
+{
+	return -1;
+}
+
+#pragma message("SDL_GetDisplayUsableBounds is not supported before SDL 2.0.5")
+static int SDL_GetDisplayUsableBounds(int displayIndex, SDL_Rect* rect)
 {
 	return -1;
 }
@@ -357,6 +370,13 @@ func GetDisplayBounds(displayIndex int, rect *Rect) error {
 		C.SDL_GetDisplayBounds(C.int(displayIndex), rect.cptr())))
 }
 
+// GetDisplayUsableBounds returns the usable desktop area represented by a display, with the primary display located at 0,0.
+// (https://wiki.libsdl.org/SDL_GetDisplayUsableBounds)
+func GetDisplayUsableBounds(displayIndex int, rect *Rect) error {
+	return errorFromInt(int(
+		C.SDL_GetDisplayUsableBounds(C.int(displayIndex), rect.cptr())))
+}
+
 // GetDisplayMode retruns information about a specific display mode.
 // (https://wiki.libsdl.org/SDL_GetDisplayMode)
 func GetDisplayMode(displayIndex int, modeIndex int, mode *DisplayMode) error {
@@ -386,6 +406,14 @@ func GetClosestDisplayMode(displayIndex int, mode *DisplayMode, closest *Display
 		return nil, GetError()
 	}
 	return m, nil
+}
+
+// GetDisplayDPI returns the dots/pixels-per-inch for a display.
+// (https://wiki.libsdl.org/SDL_GetDisplayDPI)
+func GetDisplayDPI(displayIndex int) (ddpi, hdpi, vdpi float32, err error) {
+	err = errorFromInt(int(
+		C.SDL_GetDisplayDPI(C.int(displayIndex), (*C.float)(unsafe.Pointer(&ddpi)), (*C.float)(unsafe.Pointer(&hdpi)), (*C.float)(unsafe.Pointer(&vdpi)))))
+	return
 }
 
 // GetDisplayIndex returns the index of the display associated with the window.
