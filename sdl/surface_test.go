@@ -34,7 +34,7 @@ func TestSurface(t *testing.T) {
 
 		Delay(50)
 
-		if image, err = LoadBMP("../assets/test.bmp"); err != nil {
+		if image, err = LoadBMP("../.go-sdl2-examples/assets/test.bmp"); err != nil {
 			t.Error(err)
 		}
 		defer image.Free()
