@@ -300,7 +300,7 @@ func (joy *Joystick) GetAxis(axis int) int16 {
 	return (int16)(C.SDL_JoystickGetAxis(joy.cptr(), C.int(axis)))
 }
 
-// GetAxisInitialState reports whether
+// GetAxisInitialState returns the initial state of an axis control on a joystick, ok is true if this axis has any initial value.
 func (joy *Joystick) GetAxisInitialState(axis int) (state int16, ok bool) {
 	_state := C.Sint16(state)
 	ok = C.SDL_JoystickGetAxisInitialState(joy.cptr(), C.int(axis), &_state) > 0
