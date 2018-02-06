@@ -12,9 +12,11 @@ CPU Info
 
 Game Controller
 
-- [ ] SDL_GameControllerGetVendor()
-- [ ] SDL_GameControllerGetProduct()
-- [ ] SDL_GameControllerGetProductVersion()
+- [x] SDL_GameControllerGetVendor()
+- [x] SDL_GameControllerGetProduct()
+- [x] SDL_GameControllerGetProductVersion()
+- [x] SDL_GameControllerNumMappings()
+- [x] SDL_GameControllerMappingForIndex()
 
 Hints
 
@@ -26,16 +28,16 @@ Hints
 
 Joystick
 
-- [ ] SDL_JoystickGetDeviceVendor()
-- [ ] SDL_JoystickGetDeviceProduct()
-- [ ] SDL_JoystickGetDeviceProductVersion()
-- [ ] SDL_JoystickGetDeviceType()
-- [ ] SDL_JoystickGetDeviceInstanceID()
-- [ ] SDL_JoystickGetVendor()
-- [ ] SDL_JoystickGetProduct()
-- [ ] SDL_JoystickGetProductVersion()
-- [ ] SDL_JoystickGetType()
-- [ ] SDL_JoystickGetAxisInitialState()
+- [x] SDL_JoystickGetDeviceVendor()
+- [x] SDL_JoystickGetDeviceProduct()
+- [x] SDL_JoystickGetDeviceProductVersion()
+- [x] SDL_JoystickGetDeviceType()
+- [x] SDL_JoystickGetDeviceInstanceID()
+- [x] SDL_JoystickGetVendor()
+- [x] SDL_JoystickGetProduct()
+- [x] SDL_JoystickGetProductVersion()
+- [x] SDL_JoystickGetType()
+- [x] SDL_JoystickGetAxisInitialState()
 
 RW Ops
 

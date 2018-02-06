@@ -1,6 +1,40 @@
 package sdl
 
-// #include "sdl_wrapper.h"
+/*
+#include "sdl_wrapper.h"
+
+#if !(SDL_VERSION_ATLEAST(2,0,6))
+#pragma message("SDL_GameControllerGetVendor is not supported before SDL 2.0.6")
+static Uint16 SDL_GameControllerGetVendor(SDL_GameController *gamecontroller)
+{
+	return 0;
+}
+
+#pragma message("SDL_GameControllerGetProduct is not supported before SDL 2.0.6")
+static Uint16 SDL_GameControllerGetProduct(SDL_GameController *gamecontroller)
+{
+	return 0;
+}
+
+#pragma message("SDL_GameControllerGetProductVersion is not supported before SDL 2.0.6")
+static Uint16 SDL_GameControllerGetProductVersion(SDL_GameController *gamecontroller)
+{
+	return 0;
+}
+
+#pragma message("SDL_GameControllerNumMappings is not supported before SDL 2.0.6")
+static int SDL_GameControllerNumMappings(void)
+{
+	return 0;
+}
+
+#pragma message("SDL_GameControllerMappingForIndex is not supported before SDL 2.0.6")
+static char* SDL_GameControllerMappingForIndex(int mapping_index)
+{
+	return NULL;
+}
+#endif
+*/
 import "C"
 import "unsafe"
 import "encoding/binary"
@@ -85,10 +119,24 @@ func GameControllerAddMapping(mappingString string) int {
 	return int(C.SDL_GameControllerAddMapping(_mappingString))
 }
 
+// GameControllerNumMappings returns the number of mappings installed.
+func GameControllerNumMappings() int {
+	return int(C.SDL_GameControllerNumMappings())
+}
+
+// GameControllerMappingForIndex returns the game controller mapping string at a particular index.
+func GameControllerMappingForIndex(index int) string {
+	mappingString := C.SDL_GameControllerMappingForIndex(C.int(index))
+	defer C.free(unsafe.Pointer(mappingString))
+	return C.GoString(mappingString)
+}
+
 // GameControllerMappingForGUID returns the game controller mapping string for a given GUID.
 // (https://wiki.libsdl.org/SDL_GameControllerMappingForGUID)
 func GameControllerMappingForGUID(guid JoystickGUID) string {
-	return C.GoString(C.SDL_GameControllerMappingForGUID(guid.c()))
+	mappingString := C.SDL_GameControllerMappingForGUID(guid.c())
+	defer C.free(unsafe.Pointer(mappingString))
+	return C.GoString(mappingString)
 }
 
 // IsGameController reports whether the given joystick is supported by the game controller interface.
@@ -115,6 +163,21 @@ func (ctrl *GameController) Name() string {
 	return C.GoString(C.SDL_GameControllerName(ctrl.cptr()))
 }
 
+// GetVendor returns the USB vendor ID of an opened controller, if available, 0 otherwise.
+func (ctrl *GameController) GetVendor() int {
+	return int(C.SDL_GameControllerGetVendor(ctrl.cptr()))
+}
+
+// GetProduct returns the USB product ID of an opened controller, if available, 0 otherwise.
+func (ctrl *GameController) GetProduct() int {
+	return int(C.SDL_GameControllerGetProduct(ctrl.cptr()))
+}
+
+// GetProductVersion returns the product version of an opened controller, if available, 0 otherwise.
+func (ctrl *GameController) GetProductVersion() int {
+	return int(C.SDL_GameControllerGetProductVersion(ctrl.cptr()))
+}
+
 // GetAttached reports whether a controller has been opened and is currently connected.
 // (https://wiki.libsdl.org/SDL_GameControllerGetAttached)
 func (ctrl *GameController) GetAttached() bool {
@@ -124,7 +187,9 @@ func (ctrl *GameController) GetAttached() bool {
 // Mapping returns the current mapping of a Game Controller.
 // (https://wiki.libsdl.org/SDL_GameControllerMapping)
 func (ctrl *GameController) Mapping() string {
-	return C.GoString(C.SDL_GameControllerMapping(ctrl.cptr()))
+	mappingString := C.SDL_GameControllerMapping(ctrl.cptr())
+	defer C.free(unsafe.Pointer(mappingString))
+	return C.GoString(mappingString)
 }
 
 // GetJoystick returns the Joystick ID from a Game Controller. The game controller builds on the Joystick API, but to be able to use the Joystick's functions with a gamepad, you need to use this first to get the joystick object.
