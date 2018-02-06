@@ -138,7 +138,7 @@ UPDATE: Recent update added a call queue system where you can put thread-sensiti
 __Why can't SDL_mixer seem to play MP3 audio file?__  
 Your installed SDL_mixer probably doesn't support MP3 file.
 
-On __macOS__, this is easy to correct. First remove the faulty mixer: `brew remove sdl2_mixer`, then reinstall it with the MP3 option: `brew install sdl2_mixer --with-flac --with-fluid-synth --with-libmikmod --with-libmodplug --with-smpeg2`. If necessary, check which options you can enable with `brew info sdl2_mixer`.
+On __macOS__, this is easy to correct. First remove the faulty mixer: `brew remove sdl2_mixer`, then reinstall it with the MP3 option: `brew install sdl2_mixer --with-flac --with-fluid-synth --with-libmikmod --with-libmodplug --with-smpeg2`. If necessary, check which options you can enable with `brew info sdl2_mixer`. You could also try installing sdl2\_mixer with mpg123 by running `brew install sdl2_mixer --with-mpg123`.
 
 On __Other Operating Systems__, you will need to compile smpeg and SDL_mixer from source with the MP3 option enabled. You can find smpeg in the `external` directory of SDL_mixer. Refer to issue [#148](https://github.com/veandco/go-sdl2/issues/148) for instructions.
 
