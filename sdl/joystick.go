@@ -50,19 +50,19 @@ static SDL_JoystickID SDL_JoystickGetDeviceInstanceID(int device_index)
 }
 
 #pragma message("SDL_JoystickGetVendor is not supported before SDL 2.0.6")
-static Uint16 SDL_JoystickGetVendor(int device_index)
+static Uint16 SDL_JoystickGetVendor(SDL_Joystick *joystick)
 {
 	return 0;
 }
 
 #pragma message("SDL_JoystickGetProduct is not supported before SDL 2.0.6")
-static Uint16 SDL_JoystickGetProduct(int device_index)
+static Uint16 SDL_JoystickGetProduct(SDL_Joystick *joystick)
 {
 	return 0;
 }
 
 #pragma message("SDL_JoystickGetProductVersion is not supported before SDL 2.0.6")
-static Uint16 SDL_JoystickGetProductVersion(int device_index)
+static Uint16 SDL_JoystickGetProductVersion(SDL_Joystick *joystick)
 {
 	return 0;
 }
