@@ -163,24 +163,24 @@ func (ctrl *GameController) Name() string {
 	return C.GoString(C.SDL_GameControllerName(ctrl.cptr()))
 }
 
-// GetVendor returns the USB vendor ID of an opened controller, if available, 0 otherwise.
-func (ctrl *GameController) GetVendor() int {
+// Vendor returns the USB vendor ID of an opened controller, if available, 0 otherwise.
+func (ctrl *GameController) Vendor() int {
 	return int(C.SDL_GameControllerGetVendor(ctrl.cptr()))
 }
 
-// GetProduct returns the USB product ID of an opened controller, if available, 0 otherwise.
-func (ctrl *GameController) GetProduct() int {
+// Product returns the USB product ID of an opened controller, if available, 0 otherwise.
+func (ctrl *GameController) Product() int {
 	return int(C.SDL_GameControllerGetProduct(ctrl.cptr()))
 }
 
-// GetProductVersion returns the product version of an opened controller, if available, 0 otherwise.
-func (ctrl *GameController) GetProductVersion() int {
+// ProductVersion returns the product version of an opened controller, if available, 0 otherwise.
+func (ctrl *GameController) ProductVersion() int {
 	return int(C.SDL_GameControllerGetProductVersion(ctrl.cptr()))
 }
 
-// GetAttached reports whether a controller has been opened and is currently connected.
+// Attached reports whether a controller has been opened and is currently connected.
 // (https://wiki.libsdl.org/SDL_GameControllerGetAttached)
-func (ctrl *GameController) GetAttached() bool {
+func (ctrl *GameController) Attached() bool {
 	return C.SDL_GameControllerGetAttached(ctrl.cptr()) > 0
 }
 
@@ -192,9 +192,9 @@ func (ctrl *GameController) Mapping() string {
 	return C.GoString(mappingString)
 }
 
-// GetJoystick returns the Joystick ID from a Game Controller. The game controller builds on the Joystick API, but to be able to use the Joystick's functions with a gamepad, you need to use this first to get the joystick object.
+// Joystick returns the Joystick ID from a Game Controller. The game controller builds on the Joystick API, but to be able to use the Joystick's functions with a gamepad, you need to use this first to get the joystick object.
 // (https://wiki.libsdl.org/SDL_GameControllerGetJoystick)
-func (ctrl *GameController) GetJoystick() *Joystick {
+func (ctrl *GameController) Joystick() *Joystick {
 	return (*Joystick)(unsafe.Pointer(C.SDL_GameControllerGetJoystick(ctrl.cptr())))
 }
 
@@ -224,15 +224,15 @@ func GameControllerGetStringForAxis(axis GameControllerAxis) string {
 	return C.GoString(C.SDL_GameControllerGetStringForAxis(axis.c()))
 }
 
-// GetBindForAxis returns the SDL joystick layer binding for a controller button mapping.
+// BindForAxis returns the SDL joystick layer binding for a controller button mapping.
 // (https://wiki.libsdl.org/SDL_GameControllerGetBindForAxis)
-func (ctrl *GameController) GetBindForAxis(axis GameControllerAxis) GameControllerButtonBind {
+func (ctrl *GameController) BindForAxis(axis GameControllerAxis) GameControllerButtonBind {
 	return GameControllerButtonBind(C.SDL_GameControllerGetBindForAxis(ctrl.cptr(), axis.c()))
 }
 
-// GetAxis returns the current state of an axis control on a game controller.
+// Axis returns the current state of an axis control on a game controller.
 // (https://wiki.libsdl.org/SDL_GameControllerGetAxis)
-func (ctrl *GameController) GetAxis(axis GameControllerAxis) int16 {
+func (ctrl *GameController) Axis(axis GameControllerAxis) int16 {
 	return int16(C.SDL_GameControllerGetAxis(ctrl.cptr(), axis.c()))
 }
 
@@ -250,15 +250,15 @@ func GameControllerGetStringForButton(btn GameControllerButton) string {
 	return C.GoString(C.SDL_GameControllerGetStringForButton(btn.c()))
 }
 
-// GetBindForButton returns the SDL joystick layer binding for this controller button mapping.
+// BindForButton returns the SDL joystick layer binding for this controller button mapping.
 // (https://wiki.libsdl.org/SDL_GameControllerGetBindForButton)
-func (ctrl *GameController) GetBindForButton(btn GameControllerButton) GameControllerButtonBind {
+func (ctrl *GameController) BindForButton(btn GameControllerButton) GameControllerButtonBind {
 	return GameControllerButtonBind(C.SDL_GameControllerGetBindForButton(ctrl.cptr(), btn.c()))
 }
 
-// GetButton returns the current state of a button on a game controller.
+// Button returns the current state of a button on a game controller.
 // (https://wiki.libsdl.org/SDL_GameControllerGetButton)
-func (ctrl *GameController) GetButton(btn GameControllerButton) byte {
+func (ctrl *GameController) Button(btn GameControllerButton) byte {
 	return byte(C.SDL_GameControllerGetButton(ctrl.cptr(), btn.c()))
 }
 
