@@ -3,21 +3,29 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,4))
+#pragma message("SDL_GameControllerFromInstanceID is not supported before SDL 2.0.4")
+static SDL_GameController* SDL_GameControllerFromInstanceID(SDL_JoystickID joyid)
+{
+	return NULL;
+}
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,6))
 #pragma message("SDL_GameControllerGetVendor is not supported before SDL 2.0.6")
-static Uint16 SDL_GameControllerGetVendor(SDL_GameController *gamecontroller)
+static Uint16 SDL_GameControllerGetVendor(SDL_GameController* gamecontroller)
 {
 	return 0;
 }
 
 #pragma message("SDL_GameControllerGetProduct is not supported before SDL 2.0.6")
-static Uint16 SDL_GameControllerGetProduct(SDL_GameController *gamecontroller)
+static Uint16 SDL_GameControllerGetProduct(SDL_GameController* gamecontroller)
 {
 	return 0;
 }
 
 #pragma message("SDL_GameControllerGetProductVersion is not supported before SDL 2.0.6")
-static Uint16 SDL_GameControllerGetProductVersion(SDL_GameController *gamecontroller)
+static Uint16 SDL_GameControllerGetProductVersion(SDL_GameController* gamecontroller)
 {
 	return 0;
 }
@@ -142,7 +150,7 @@ func GameControllerMappingForGUID(guid JoystickGUID) string {
 // IsGameController reports whether the given joystick is supported by the game controller interface.
 // (https://wiki.libsdl.org/SDL_IsGameController)
 func IsGameController(index int) bool {
-	return C.SDL_IsGameController(C.int(index)) > 0
+	return C.SDL_IsGameController(C.int(index)) == C.SDL_TRUE
 }
 
 // GameControllerNameForIndex returns the implementation dependent name for the game controller.
@@ -154,7 +162,13 @@ func GameControllerNameForIndex(index int) string {
 // GameControllerOpen opens a gamecontroller for use.
 // (https://wiki.libsdl.org/SDL_GameControllerOpen)
 func GameControllerOpen(index int) *GameController {
-	return (*GameController)(unsafe.Pointer(C.SDL_GameControllerOpen(C.int(index))))
+	return (*GameController)(C.SDL_GameControllerOpen(C.int(index)))
+}
+
+// GameControllerFromInstanceID returns the GameController associated with an instance id.
+// (https://wiki.libsdl.org/SDL_GameControllerFromInstanceID)
+func GameControllerFromInstanceID(joyid JoystickID) *GameController {
+	return (*GameController)(C.SDL_GameControllerFromInstanceID(joyid.c()))
 }
 
 // Name returns the implementation dependent name for an opened game controller.
@@ -181,7 +195,7 @@ func (ctrl *GameController) ProductVersion() int {
 // Attached reports whether a controller has been opened and is currently connected.
 // (https://wiki.libsdl.org/SDL_GameControllerGetAttached)
 func (ctrl *GameController) Attached() bool {
-	return C.SDL_GameControllerGetAttached(ctrl.cptr()) > 0
+	return C.SDL_GameControllerGetAttached(ctrl.cptr()) == C.SDL_TRUE
 }
 
 // Mapping returns the current mapping of a Game Controller.

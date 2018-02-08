@@ -3,6 +3,32 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,4))
+#pragma message("SDL_JoystickPowerLevel is not supported before SDL 2.0.4")
+typedef enum
+{
+    SDL_JOYSTICK_POWER_UNKNOWN = -1,
+    SDL_JOYSTICK_POWER_EMPTY,
+    SDL_JOYSTICK_POWER_LOW,
+    SDL_JOYSTICK_POWER_MEDIUM,
+    SDL_JOYSTICK_POWER_FULL,
+    SDL_JOYSTICK_POWER_WIRED,
+    SDL_JOYSTICK_POWER_MAX
+} SDL_JoystickPowerLevel;
+
+#pragma message("SDL_JoystickCurrentPowerLevel is not supported before SDL 2.0.4")
+static SDL_JoystickPowerLevel SDL_JoystickCurrentPowerLevel(SDL_Joystick* joystick)
+{
+	return SDL_JOYSTICK_POWER_UNKNOWN;
+}
+
+#pragma message("SDL_JoystickFromInstanceID is not supported before SDL 2.0.4")
+static SDL_Joystick* SDL_JoystickFromInstanceID(SDL_JoystickID joyid)
+{
+	return NULL;
+}
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,6))
 #pragma message("SDL_JoystickType is not supported before SDL 2.0.6")
 typedef enum
@@ -50,31 +76,31 @@ static SDL_JoystickID SDL_JoystickGetDeviceInstanceID(int device_index)
 }
 
 #pragma message("SDL_JoystickGetVendor is not supported before SDL 2.0.6")
-static Uint16 SDL_JoystickGetVendor(SDL_Joystick *joystick)
+static Uint16 SDL_JoystickGetVendor(SDL_Joystick* joystick)
 {
 	return 0;
 }
 
 #pragma message("SDL_JoystickGetProduct is not supported before SDL 2.0.6")
-static Uint16 SDL_JoystickGetProduct(SDL_Joystick *joystick)
+static Uint16 SDL_JoystickGetProduct(SDL_Joystick* joystick)
 {
 	return 0;
 }
 
 #pragma message("SDL_JoystickGetProductVersion is not supported before SDL 2.0.6")
-static Uint16 SDL_JoystickGetProductVersion(SDL_Joystick *joystick)
+static Uint16 SDL_JoystickGetProductVersion(SDL_Joystick* joystick)
 {
 	return 0;
 }
 
 #pragma message("SDL_JoystickGetType is not supported before SDL 2.0.6")
-static SDL_JoystickType SDL_JoystickGetType(SDL_Joystick *joystick)
+static SDL_JoystickType SDL_JoystickGetType(SDL_Joystick* joystick)
 {
 	return SDL_JOYSTICK_TYPE_UNKNOWN;
 }
 
 #pragma message("SDL_JoystickGetAxisInitialState is not supported before SDL 2.0.6")
-static SDL_bool SDL_JoystickGetAxisInitialState(SDL_Joystick *joystick, int axis, Sint16 *state)
+static SDL_bool SDL_JoystickGetAxisInitialState(SDL_Joystick* joystick, int axis, Sint16* state)
 {
 	return SDL_FALSE;
 }
@@ -111,6 +137,18 @@ const (
 	JOYSTICK_TYPE_THROTTLE       = C.SDL_JOYSTICK_TYPE_THROTTLE
 )
 
+// An enumeration of battery levels of a joystick.
+// (https://wiki.libsdl.org/SDL_JoystickPowerLevel)
+const (
+	JOYSTICK_POWER_UNKNOWN = C.SDL_JOYSTICK_POWER_UNKNOWN
+	JOYSTICK_POWER_EMPTY   = C.SDL_JOYSTICK_POWER_EMPTY
+	JOYSTICK_POWER_LOW     = C.SDL_JOYSTICK_POWER_LOW
+	JOYSTICK_POWER_MEDIUM  = C.SDL_JOYSTICK_POWER_MEDIUM
+	JOYSTICK_POWER_FULL    = C.SDL_JOYSTICK_POWER_FULL
+	JOYSTICK_POWER_WIRED   = C.SDL_JOYSTICK_POWER_WIRED
+	JOYSTICK_POWER_MAX     = C.SDL_JOYSTICK_POWER_MAX
+)
+
 // Joystick is an SDL joystick.
 type Joystick C.SDL_Joystick
 
@@ -123,12 +161,19 @@ type JoystickID C.SDL_JoystickID
 // JoystickType is a type of a joystick.
 type JoystickType C.SDL_JoystickType
 
+// JoystickPowerLevel is a battery level of a joystick.
+type JoystickPowerLevel C.SDL_JoystickPowerLevel
+
 func (joy *Joystick) cptr() *C.SDL_Joystick {
 	return (*C.SDL_Joystick)(unsafe.Pointer(joy))
 }
 
 func (guid JoystickGUID) c() C.SDL_JoystickGUID {
 	return C.SDL_JoystickGUID(guid)
+}
+
+func (joyid JoystickID) c() C.SDL_JoystickID {
+	return C.SDL_JoystickID(joyid)
 }
 
 // NumJoysticks returns the number of joysticks attached to the system.
@@ -206,8 +251,14 @@ func JoystickEventState(state int) int {
 
 // JoystickOpen opens a joystick for use.
 // (https://wiki.libsdl.org/SDL_JoystickOpen)
-func JoystickOpen(index JoystickID) *Joystick {
+func JoystickOpen(index int) *Joystick {
 	return (*Joystick)(C.SDL_JoystickOpen(C.int(index)))
+}
+
+// JoystickFromInstanceID returns the Joystick associated with an instance id.
+// (https://wiki.libsdl.org/SDL_GameControllerFromInstanceID)
+func JoystickFromInstanceID(joyid JoystickID) *Joystick {
+	return (*Joystick)(C.SDL_JoystickFromInstanceID(joyid.c()))
 }
 
 // Name returns the implementation dependent name of a joystick.
@@ -245,7 +296,7 @@ func (joy *Joystick) Type() JoystickType {
 // Attached returns the status of a specified joystick.
 // (https://wiki.libsdl.org/SDL_JoystickGetAttached)
 func (joy *Joystick) Attached() bool {
-	return C.SDL_JoystickGetAttached(joy.cptr()) > 0
+	return C.SDL_JoystickGetAttached(joy.cptr()) == C.SDL_TRUE
 }
 
 // InstanceID returns the instance ID of an opened joystick.
@@ -286,9 +337,7 @@ func (joy *Joystick) Axis(axis int) int16 {
 
 // AxisInitialState returns the initial state of an axis control on a joystick, ok is true if this axis has any initial value.
 func (joy *Joystick) AxisInitialState(axis int) (state int16, ok bool) {
-	_state := C.Sint16(state)
-	ok = C.SDL_JoystickGetAxisInitialState(joy.cptr(), C.int(axis), &_state) > 0
-	state = int16(_state)
+	ok = C.SDL_JoystickGetAxisInitialState(joy.cptr(), C.int(axis), (*C.Sint16)(&state)) == C.SDL_TRUE
 	return
 }
 
@@ -316,4 +365,10 @@ func (joy *Joystick) Button(button int) byte {
 // (https://wiki.libsdl.org/SDL_JoystickClose)
 func (joy *Joystick) Close() {
 	C.SDL_JoystickClose(joy.cptr())
+}
+
+// CurrentPowerLevel returns the battery level of a joystick as JoystickPowerLevel.
+// (https://wiki.libsdl.org/SDL_JoystickCurrentPowerLevel)
+func (joy *Joystick) CurrentPowerLevel() JoystickPowerLevel {
+	return JoystickPowerLevel(C.SDL_JoystickCurrentPowerLevel(joy.cptr()))
 }
