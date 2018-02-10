@@ -45,13 +45,13 @@ static void SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable)
 }
 
 #pragma message("SDL_SetWindowOpacity is not supported before SDL 2.0.5")
-static int SDL_SetWindowOpacity(SDL_Window* window, float opacity)
+static int SDL_SetWindowOpacity(SDL_Window *window, float opacity)
 {
 	return -1;
 }
 
 #pragma message("SDL_GetWindowOpacity is not supported before SDL 2.0.5")
-static int SDL_GetWindowOpacity(SDL_Window* window, float *opacity)
+static int SDL_GetWindowOpacity(SDL_Window *window, float *opacity)
 {
 	return -1;
 }
