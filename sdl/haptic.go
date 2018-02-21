@@ -43,7 +43,7 @@ type Haptic C.SDL_Haptic
 // (https://wiki.libsdl.org/SDL_HapticDirection)
 type HapticDirection struct {
 	Type byte     // the type of encoding
-	dir  [3]int32 // the encoded direction
+	Dir  [3]int32 // the encoded direction
 }
 
 // HapticConstant contains a template for a constant effect.
