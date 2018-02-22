@@ -43,7 +43,7 @@ type Haptic C.SDL_Haptic
 // (https://wiki.libsdl.org/SDL_HapticDirection)
 type HapticDirection struct {
 	Type byte     // the type of encoding
-	dir  [3]int32 // the encoded direction
+	Dir  [3]int32 // the encoded direction
 }
 
 // HapticConstant contains a template for a constant effect.
@@ -60,6 +60,10 @@ type HapticConstant struct {
 	AttackLevel  uint16          // level at the start of the attack
 	FadeLength   uint16          // duration of the fade
 	FadeLevel    uint16          // level at the end of the fade
+}
+
+func (he *HapticConstant) cHapticEffect() *C.SDL_HapticEffect {
+	return (*C.SDL_HapticEffect)(unsafe.Pointer(he))
 }
 
 // HapticPeriodic contains a template for a periodic effect.
@@ -81,6 +85,10 @@ type HapticPeriodic struct {
 	FadeLevel    uint16          // level at the end of the fade
 }
 
+func (he *HapticPeriodic) cHapticEffect() *C.SDL_HapticEffect {
+	return (*C.SDL_HapticEffect)(unsafe.Pointer(he))
+}
+
 // HapticCondition contains a template for a condition effect.
 // (https://wiki.libsdl.org/SDL_HapticCondition)
 type HapticCondition struct {
@@ -96,6 +104,10 @@ type HapticCondition struct {
 	LeftCoeff  [3]int16        // how fast to increase the force towards the negative side
 	Deadband   [3]uint16       // size of the dead zone; max 0xFFFF: whole axis-range when 0-centered
 	Center     [3]int16        // position of the dead zone
+}
+
+func (he *HapticCondition) cHapticEffect() *C.SDL_HapticEffect {
+	return (*C.SDL_HapticEffect)(unsafe.Pointer(he))
 }
 
 // HapticRamp contains a template for a ramp effect.
@@ -115,6 +127,10 @@ type HapticRamp struct {
 	FadeLevel    uint16          // level at the end of the fade
 }
 
+func (he *HapticRamp) cHapticEffect() *C.SDL_HapticEffect {
+	return (*C.SDL_HapticEffect)(unsafe.Pointer(he))
+}
+
 // HapticLeftRight contains a template for a left/right effect.
 // (https://wiki.libsdl.org/SDL_HapticLeftRight)
 type HapticLeftRight struct {
@@ -122,6 +138,10 @@ type HapticLeftRight struct {
 	Length         uint32 // duration of the effect
 	LargeMagnitude uint16 // control of the large controller motor
 	SmallMagnitude uint16 // control of the small controller motor
+}
+
+func (he *HapticLeftRight) cHapticEffect() *C.SDL_HapticEffect {
+	return (*C.SDL_HapticEffect)(unsafe.Pointer(he))
 }
 
 // HapticCustom contains a template for a custom effect.
@@ -143,56 +163,16 @@ type HapticCustom struct {
 	FadeLevel    uint16          // level at the end of the fade
 }
 
+func (he *HapticCustom) cHapticEffect() *C.SDL_HapticEffect {
+	return (*C.SDL_HapticEffect)(unsafe.Pointer(he))
+}
+
 // HapticEffect union that contains the generic template for any haptic effect.
 // (https://wiki.libsdl.org/SDL_HapticEffect)
 type HapticEffect C.SDL_HapticEffect
 
-// Type returns the effect type.
-// (https://wiki.libsdl.org/SDL_HapticEffect)
-func (he HapticEffect) Type() uint16 {
-	return *((*uint16)(unsafe.Pointer(&he[0])))
-}
-
-// Constant returns the constant effect.
-// (https://wiki.libsdl.org/SDL_HapticConstant)
-func (he HapticEffect) Constant() *HapticConstant {
-	return (*HapticConstant)(unsafe.Pointer(&he[0]))
-}
-
-// Periodic returns the periodic effect.
-// (https://wiki.libsdl.org/SDL_HapticPeriodic)
-func (he HapticEffect) Periodic() *HapticPeriodic {
-	return (*HapticPeriodic)(unsafe.Pointer(&he[0]))
-}
-
-// Condition returns the condition effect.
-// (https://wiki.libsdl.org/SDL_HapticCondition)
-func (he HapticEffect) Condition() *HapticCondition {
-	return (*HapticCondition)(unsafe.Pointer(&he[0]))
-}
-
-// Ramp returns the ramp effect.
-// (https://wiki.libsdl.org/SDL_HapticRamp)
-func (he HapticEffect) Ramp() *HapticRamp {
-	return (*HapticRamp)(unsafe.Pointer(&he[0]))
-}
-
-// LeftRight returns the left/right effect.
-// (https://wiki.libsdl.org/SDL_HapticLeftRight)
-func (he HapticEffect) LeftRight() *HapticLeftRight {
-	return (*HapticLeftRight)(unsafe.Pointer(&he[0]))
-}
-
-// Custom returns the custom effect.
-// (https://wiki.libsdl.org/SDL_HapticCustom)
-func (he HapticEffect) Custom() *HapticCustom {
-	return (*HapticCustom)(unsafe.Pointer(&he[0]))
-}
-
-// SetType sets the happtic effect type.
-// (https://wiki.libsdl.org/SDL_HapticEffect)
-func (he HapticEffect) SetType(typ uint16) {
-	*((*uint16)(unsafe.Pointer(&he[0]))) = typ
+type iHapticEffect interface {
+	cHapticEffect() *C.SDL_HapticEffect
 }
 
 func (h *Haptic) cptr() *C.SDL_Haptic {
@@ -315,31 +295,34 @@ func (h *Haptic) Query() (uint32, error) {
 }
 
 // EffectSupported reports whether an effect is supported by a haptic device.
+// Pass pointer to a Haptic struct (Constant|Periodic|Condition|Ramp|LeftRight|Custom) instead of HapticEffect union.
 // (https://wiki.libsdl.org/SDL_HapticEffectSupported)
-func (h *Haptic) EffectSupported(he *HapticEffect) (bool, error) {
+func (h *Haptic) EffectSupported(he iHapticEffect) (bool, error) {
 	ret := int(C.SDL_HapticEffectSupported(
 		h.cptr(),
-		(*C.SDL_HapticEffect)(unsafe.Pointer(he))))
+		he.cHapticEffect()))
 	return ret == C.SDL_TRUE, errorFromInt(ret)
 }
 
 // NewEffect creates a new haptic effect on a specified device.
+// Pass pointer to a Haptic struct (Constant|Periodic|Condition|Ramp|LeftRight|Custom) instead of HapticEffect union.
 // (https://wiki.libsdl.org/SDL_HapticNewEffect)
-func (h *Haptic) NewEffect(he *HapticEffect) (int, error) {
+func (h *Haptic) NewEffect(he iHapticEffect) (int, error) {
 	ret := int(C.SDL_HapticNewEffect(
 		h.cptr(),
-		(*C.SDL_HapticEffect)(unsafe.Pointer(he))))
+		he.cHapticEffect()))
 	return ret, errorFromInt(ret)
 }
 
 // UpdateEffect updates the properties of an effect.
+// Pass pointer to a Haptic struct (Constant|Periodic|Condition|Ramp|LeftRight|Custom) instead of HapticEffect union.
 // (https://wiki.libsdl.org/SDL_HapticUpdateEffect)
-func (h *Haptic) UpdateEffect(effect int, data *HapticEffect) error {
+func (h *Haptic) UpdateEffect(effect int, data iHapticEffect) error {
 	return errorFromInt(int(
 		C.SDL_HapticUpdateEffect(
 			h.cptr(),
 			C.int(effect),
-			(*C.SDL_HapticEffect)(unsafe.Pointer(data)))))
+			data.cHapticEffect())))
 }
 
 // RunEffect runs the haptic effect on its associated haptic device.
