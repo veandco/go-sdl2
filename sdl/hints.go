@@ -99,7 +99,7 @@ const (
 // HintCallback is the function to call when the hint value changes.
 type HintCallback func(data interface{}, name, oldValue, newValue string)
 
-// HintCallbackAndData contains a callback function and useradata.
+// HintCallbackAndData contains a callback function and userdata.
 type HintCallbackAndData struct {
 	callback HintCallback // the function to call when the hint value changes
 	data     interface{}  // data to pass to the callback function

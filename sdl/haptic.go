@@ -277,7 +277,7 @@ func (h *Haptic) NumEffects() (int, error) {
 	return i, errorFromInt(i)
 }
 
-// NumEffectsPlaying reutrns the number of effects a haptic device can play at the same time.
+// NumEffectsPlaying returns the number of effects a haptic device can play at the same time.
 // (https://wiki.libsdl.org/SDL_HapticNumEffectsPlaying)
 func (h *Haptic) NumEffectsPlaying() (int, error) {
 	i := int(C.SDL_HapticNumEffectsPlaying(h.cptr()))
