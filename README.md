@@ -40,12 +40,23 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	surface.FillRect(nil, 0)
 
 	rect := sdl.Rect{0, 0, 200, 200}
 	surface.FillRect(&rect, 0xffff0000)
 	window.UpdateSurface()
 
-	sdl.Delay(2500)
+	running := true
+	for running {
+		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
+			switch event.(type) {
+			case *sdl.QuitEvent:
+				println("Quit")
+				running = false
+				break
+			}
+		}
+	}
 }
 ```
 
