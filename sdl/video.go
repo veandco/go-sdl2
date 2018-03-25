@@ -365,37 +365,42 @@ func GetNumDisplayModes(displayIndex int) (int, error) {
 
 // GetDisplayBounds returns the desktop area represented by a display, with the primary display located at 0,0.
 // (https://wiki.libsdl.org/SDL_GetDisplayBounds)
-func GetDisplayBounds(displayIndex int, rect *Rect) error {
-	return errorFromInt(int(
-		C.SDL_GetDisplayBounds(C.int(displayIndex), rect.cptr())))
+func GetDisplayBounds(displayIndex int) (rect Rect, err error) {
+	err = errorFromInt(int(
+		C.SDL_GetDisplayBounds(C.int(displayIndex), (&rect).cptr())))
+	return
 }
 
 // GetDisplayUsableBounds returns the usable desktop area represented by a display, with the primary display located at 0,0.
 // (https://wiki.libsdl.org/SDL_GetDisplayUsableBounds)
-func GetDisplayUsableBounds(displayIndex int, rect *Rect) error {
-	return errorFromInt(int(
+func GetDisplayUsableBounds(displayIndex int) (rect Rect, err error) {
+	err = errorFromInt(int(
 		C.SDL_GetDisplayUsableBounds(C.int(displayIndex), rect.cptr())))
+	return
 }
 
 // GetDisplayMode retruns information about a specific display mode.
 // (https://wiki.libsdl.org/SDL_GetDisplayMode)
-func GetDisplayMode(displayIndex int, modeIndex int, mode *DisplayMode) error {
-	return errorFromInt(int(
-		C.SDL_GetDisplayMode(C.int(displayIndex), C.int(modeIndex), mode.cptr())))
+func GetDisplayMode(displayIndex int, modeIndex int) (mode DisplayMode, err error) {
+	err = errorFromInt(int(
+		C.SDL_GetDisplayMode(C.int(displayIndex), C.int(modeIndex), (&mode).cptr())))
+	return
 }
 
 // GetDesktopDisplayMode returns information about the desktop display mode.
 // (https://wiki.libsdl.org/SDL_GetDesktopDisplayMode)
-func GetDesktopDisplayMode(displayIndex int, mode *DisplayMode) error {
-	return errorFromInt(int(
-		C.SDL_GetDesktopDisplayMode(C.int(displayIndex), mode.cptr())))
+func GetDesktopDisplayMode(displayIndex int) (mode DisplayMode, err error) {
+	err = errorFromInt(int(
+		C.SDL_GetDesktopDisplayMode(C.int(displayIndex), (&mode).cptr())))
+	return
 }
 
 // GetCurrentDisplayMode returns information about the current display mode.
 // (https://wiki.libsdl.org/SDL_GetCurrentDisplayMode)
-func GetCurrentDisplayMode(displayIndex int, mode *DisplayMode) error {
-	return errorFromInt(int(
-		C.SDL_GetCurrentDisplayMode(C.int(displayIndex), mode.cptr())))
+func GetCurrentDisplayMode(displayIndex int) (mode DisplayMode, err error) {
+	err = errorFromInt(int(
+		C.SDL_GetCurrentDisplayMode(C.int(displayIndex), (&mode).cptr())))
+	return
 }
 
 // GetClosestDisplayMode returns the closest match to the requested display mode.
@@ -432,9 +437,10 @@ func (window *Window) SetDisplayMode(mode *DisplayMode) error {
 
 // GetDisplayMode fills in information about the display mode to use when the window is visible at fullscreen.
 // (https://wiki.libsdl.org/SDL_GetWindowDisplayMode)
-func (window *Window) GetDisplayMode(mode *DisplayMode) error {
-	return errorFromInt(int(
-		C.SDL_GetWindowDisplayMode(window.cptr(), mode.cptr())))
+func (window *Window) GetDisplayMode() (mode DisplayMode, err error) {
+	err = errorFromInt(int(
+		C.SDL_GetWindowDisplayMode(window.cptr(), (&mode).cptr())))
+	return
 }
 
 // GetPixelFormat returns the pixel format associated with the window.

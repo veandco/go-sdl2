@@ -7,7 +7,7 @@ import (
 
 // Both time.Sleep() and Delay() are only guaranteed to wait *at least* the
 // given duration, so all tests only check that time differentials are at least
-// a cerain value.
+// a certain value.
 
 func TestGetTicks(t *testing.T) {
 	before := GetTicks()
