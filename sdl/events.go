@@ -663,7 +663,7 @@ func WaitEventTimeout(timeout int) Event {
 	return goEvent(&cevent)
 }
 
-// WaitEvent swait indefinitely for the next available event.
+// WaitEvent waits indefinitely for the next available event.
 // (https://wiki.libsdl.org/SDL_WaitEvent)
 func WaitEvent() Event {
 	var cevent CEvent

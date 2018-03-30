@@ -85,12 +85,17 @@
 + `Texture.Destroy()` returns error
 + `Window.Destroy()` returns error
 + `Window.GetID()` returns (uint32, error) instead of uint32
++ `GetDisplayBounds` returns (Rect, error) instead of error
++ `GetDisplayUsableBounds` returns (Rect, error) instead of error
++ `GetDisplayMode` returns (DisplayMode, error) instead of error
++ `GetDesktopDisplayMode` returns (DisplayMode, error) instead of error
++ `GetCurrentDisplayMode` returns (DisplayMode, error) instead of error
++ `Window.GetDisplayMode` returns (DisplayMode, error) instead of error
 + Changed Mutex, Sem, Cond to have methods instead of functions
 + Changed `GameControllerMapping()` into `GameController.Mapping()`
 + Haptic functions now return bool and/or error instead of int
 + Merged `KeyUpEvent` and `KeyDownEvent` into `KeyboardEvent`
 + Moved error to the last return value in `ShowMessageBox()`
-
 
 - Unexported `Flags`, `Locked` and `LockData` in `Surface` struct
 - Unexported `Padding` in `AudioSpec` struct
