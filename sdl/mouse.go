@@ -158,8 +158,9 @@ func FreeCursor(cursor *Cursor) {
 
 // ShowCursor toggles whether or not the cursor is shown.
 // (https://wiki.libsdl.org/SDL_ShowCursor)
-func ShowCursor(toggle int) int {
-	return int(C.SDL_ShowCursor(C.int(toggle)))
+func ShowCursor(toggle int) (int, error) {
+	i := int(C.SDL_ShowCursor(C.int(toggle)))
+	return i, errorFromInt(i)
 }
 
 // CaptureMouse captures the mouse and tracks input outside an SDL window.

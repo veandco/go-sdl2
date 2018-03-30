@@ -157,8 +157,8 @@ func (surface *Surface) Unlock() {
 
 // LoadBMPRW loads a BMP image from a seekable SDL data stream (memory or file).
 // (https://wiki.libsdl.org/SDL_LoadBMP_RW)
-func LoadBMPRW(src *RWops, freeSrc int) (*Surface, error) {
-	surface := (*Surface)(unsafe.Pointer(C.SDL_LoadBMP_RW(src.cptr(), C.int(freeSrc))))
+func LoadBMPRW(src *RWops, freeSrc bool) (*Surface, error) {
+	surface := (*Surface)(unsafe.Pointer(C.SDL_LoadBMP_RW(src.cptr(), C.int(Btoi(freeSrc)))))
 	if surface == nil {
 		return nil, GetError()
 	}
@@ -168,13 +168,13 @@ func LoadBMPRW(src *RWops, freeSrc int) (*Surface, error) {
 // LoadBMP loads a surface from a BMP file.
 // (https://wiki.libsdl.org/SDL_LoadBMP)
 func LoadBMP(file string) (*Surface, error) {
-	return LoadBMPRW(RWFromFile(file, "rb"), 1)
+	return LoadBMPRW(RWFromFile(file, "rb"), true)
 }
 
 // SaveBMPRW save the surface to a seekable SDL data stream (memory or file) in BMP format.
 // (https://wiki.libsdl.org/SDL_SaveBMP_RW)
-func (surface *Surface) SaveBMPRW(dst *RWops, freeDst int) error {
-	if C.SDL_SaveBMP_RW(surface.cptr(), dst.cptr(), C.int(freeDst)) != 0 {
+func (surface *Surface) SaveBMPRW(dst *RWops, freeDst bool) error {
+	if C.SDL_SaveBMP_RW(surface.cptr(), dst.cptr(), C.int(Btoi(freeDst))) != 0 {
 		return GetError()
 	}
 	return nil
@@ -183,13 +183,13 @@ func (surface *Surface) SaveBMPRW(dst *RWops, freeDst int) error {
 // SaveBMP saves the surface to a BMP file.
 // (https://wiki.libsdl.org/SDL_SaveBMP)
 func (surface *Surface) SaveBMP(file string) error {
-	return surface.SaveBMPRW(RWFromFile(file, "wb"), 1)
+	return surface.SaveBMPRW(RWFromFile(file, "wb"), true)
 }
 
 // SetRLE sets the RLE acceleration hint for the surface.
 // (https://wiki.libsdl.org/SDL_SetSurfaceRLE)
-func (surface *Surface) SetRLE(flag int) error {
-	if C.SDL_SetSurfaceRLE(surface.cptr(), C.int(flag)) != 0 {
+func (surface *Surface) SetRLE(flag bool) error {
+	if C.SDL_SetSurfaceRLE(surface.cptr(), C.int(Btoi(flag))) != 0 {
 		return GetError()
 	}
 	return nil
@@ -197,8 +197,8 @@ func (surface *Surface) SetRLE(flag int) error {
 
 // SetColorKey sets the color key (transparent pixel) in the surface.
 // (https://wiki.libsdl.org/SDL_SetColorKey)
-func (surface *Surface) SetColorKey(flag int, key uint32) error {
-	if C.SDL_SetColorKey(surface.cptr(), C.int(flag), C.Uint32(key)) != 0 {
+func (surface *Surface) SetColorKey(flag bool, key uint32) error {
+	if C.SDL_SetColorKey(surface.cptr(), C.int(Btoi(flag)), C.Uint32(key)) != 0 {
 		return GetError()
 	}
 	return nil
