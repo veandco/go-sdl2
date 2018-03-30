@@ -130,83 +130,83 @@ func Log(str string, args ...interface{}) {
 
 // LogVerbose logs a message with LOG_PRIORITY_VERBOSE.
 // (https://wiki.libsdl.org/SDL_LogVerbose)
-func LogVerbose(cat int, str string, args ...interface{}) {
+func LogVerbose(category int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
 	defer C.free(unsafe.Pointer(cstr))
 
-	C._SDL_LogVerbose(C.int(cat), cstr)
+	C._SDL_LogVerbose(C.int(category), cstr)
 }
 
 // LogDebug logs a message with LOG_PRIORITY_DEBUG.
 // (https://wiki.libsdl.org/SDL_LogDebug)
-func LogDebug(cat int, str string, args ...interface{}) {
+func LogDebug(category int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
 	defer C.free(unsafe.Pointer(cstr))
 
-	C._SDL_LogDebug(C.int(cat), cstr)
+	C._SDL_LogDebug(C.int(category), cstr)
 }
 
 // LogInfo logs a message with LOG_PRIORITY_INFO.
 // (https://wiki.libsdl.org/SDL_LogInfo)
-func LogInfo(cat int, str string, args ...interface{}) {
+func LogInfo(category int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
 	defer C.free(unsafe.Pointer(cstr))
 
-	C._SDL_LogInfo(C.int(cat), cstr)
+	C._SDL_LogInfo(C.int(category), cstr)
 }
 
 // LogWarn logs a message with LOG_PRIORITY_WARN.
 // (https://wiki.libsdl.org/SDL_LogWarn)
-func LogWarn(cat int, str string, args ...interface{}) {
+func LogWarn(category int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
 	defer C.free(unsafe.Pointer(cstr))
 
-	C._SDL_LogWarn(C.int(cat), cstr)
+	C._SDL_LogWarn(C.int(category), cstr)
 }
 
 // LogError logs a message with LOG_PRIORITY_ERROR.
 // (https://wiki.libsdl.org/SDL_LogError)
-func LogError(cat int, str string, args ...interface{}) {
+func LogError(category int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
 	defer C.free(unsafe.Pointer(cstr))
 
-	C._SDL_LogError(C.int(cat), cstr)
+	C._SDL_LogError(C.int(category), cstr)
 }
 
 // LogCritical logs a message with LOG_PRIORITY_CRITICAL.
 // (https://wiki.libsdl.org/SDL_LogCritical)
-func LogCritical(cat int, str string, args ...interface{}) {
+func LogCritical(category int, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
 	defer C.free(unsafe.Pointer(cstr))
 
-	C._SDL_LogCritical(C.int(cat), cstr)
+	C._SDL_LogCritical(C.int(category), cstr)
 }
 
 // LogMessage logs a message with the specified category and priority.
 // (https://wiki.libsdl.org/SDL_LogMessage)
-func LogMessage(cat int, pri LogPriority, str string, args ...interface{}) {
+func LogMessage(category int, pri LogPriority, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
 	defer C.free(unsafe.Pointer(cstr))
 
-	C._SDL_LogMessage(C.int(cat), C.SDL_LogPriority(pri), cstr)
+	C._SDL_LogMessage(C.int(category), C.SDL_LogPriority(pri), cstr)
 }
 
 // LogOutputFunction is the function to call instead of the default
-type LogOutputFunction func(data interface{}, cat int, pri LogPriority, message string)
+type LogOutputFunction func(data interface{}, category int, pri LogPriority, message string)
 
 type logOutputFunctionCtx struct {
 	f LogOutputFunction
@@ -216,10 +216,10 @@ type logOutputFunctionCtx struct {
 // Yissakhar Z. Beck (DeedleFake)'s implementation
 //
 //export logOutputFunction
-func logOutputFunction(data unsafe.Pointer, cat C.int, pri C.SDL_LogPriority, message *C.char) {
+func logOutputFunction(data unsafe.Pointer, category C.int, pri C.SDL_LogPriority, message *C.char) {
 	ctx := (*logOutputFunctionCtx)(data)
 
-	ctx.f(ctx.d, int(cat), LogPriority(pri), C.GoString(message))
+	ctx.f(ctx.d, int(category), LogPriority(pri), C.GoString(message))
 }
 
 var (

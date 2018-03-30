@@ -65,8 +65,13 @@
 + Renamed `Texture.GL_UnbindTexture()` to `Texture.GLUnbind()`
 + Renamed `TouchId` to `TouchID` in `MultiGestureEvent` struct
 + Renamed `Unicode` to `unused` in `Keysym` struct (must have been a typo)
++ `GetCurrentDisplayMode` returns (DisplayMode, error) instead of error
 + `GetCurrentVideoDriver()` returns (string, error) instead of string
++ `GetDesktopDisplayMode` returns (DisplayMode, error) instead of error
++ `GetDisplayBounds` returns (Rect, error) instead of error
++ `GetDisplayMode` returns (DisplayMode, error) instead of error
 + `GetDisplayName()` returns (string, error) instead of string
++ `GetDisplayUsableBounds` returns (Rect, error) instead of error
 + `GetNumRenderDrivers()` returns (int, error) instead of int
 + `GetRenderDriverInfo()` returns (int, error) instead of int
 + `Haptic.GetEffectStatus()` returns (int, error) instead of int
@@ -77,20 +82,20 @@
 + `HapticIndex()` returns (int, error) instead of int
 + `HapticName()` returns (string, error) instead of string
 + `HapticOpenFromJoystick()` returns (\*Haptic, error) instead of \*Haptic
++ `LoadBMPRW()` requires (\*RWops, bool) instead of (\*RWops, int)
 + `LoadWAV()` requires string instead of (string ,\*AudioSpec)
 + `LoadWAVRW()` requires (\*RWops, bool) instead of (\*RWops, bool ,\*AudioSpec)
 + `NumHaptics()` returns (int, error) instead of int
 + `Renderer.Destroy()` returns error
 + `Renderer.GetViewport()` and `Renderer.GetClipRect()` now returns Rect instead of being passed a \*Rect
++ `ShowCursor` returns (int, error) instead of int
++ `Surface.SaveBMPRW()` requires (\*RWops, bool) instead of (\*RWops, int)
++ `Surface.SetColorKey()` requires (bool, uint32) instead of (int, uint32)
++ `Surface.SetRLE()` requires bool instead of int
 + `Texture.Destroy()` returns error
 + `Window.Destroy()` returns error
-+ `Window.GetID()` returns (uint32, error) instead of uint32
-+ `GetDisplayBounds` returns (Rect, error) instead of error
-+ `GetDisplayUsableBounds` returns (Rect, error) instead of error
-+ `GetDisplayMode` returns (DisplayMode, error) instead of error
-+ `GetDesktopDisplayMode` returns (DisplayMode, error) instead of error
-+ `GetCurrentDisplayMode` returns (DisplayMode, error) instead of error
 + `Window.GetDisplayMode` returns (DisplayMode, error) instead of error
++ `Window.GetID()` returns (uint32, error) instead of uint32
 + Changed Mutex, Sem, Cond to have methods instead of functions
 + Changed `GameControllerMapping()` into `GameController.Mapping()`
 + Haptic functions now return bool and/or error instead of int
