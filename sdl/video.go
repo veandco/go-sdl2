@@ -560,11 +560,7 @@ func (window *Window) GetPosition() (x, y int32) {
 // SetResizable sets the user-resizable state of the window.
 // (https://wiki.libsdl.org/SDL_SetWindowResizable)
 func (window *Window) SetResizable(resizable bool) {
-	var _resizable C.SDL_bool = C.SDL_FALSE
-	if resizable {
-		_resizable = C.SDL_TRUE
-	}
-	C.SDL_SetWindowResizable(window.cptr(), _resizable)
+	C.SDL_SetWindowResizable(window.cptr(), C.SDL_bool(Btoi(resizable)))
 }
 
 // SetSize sets the size of the window's client area.
@@ -612,7 +608,7 @@ func (window *Window) GetMaximumSize() (w, h int32) {
 // SetBordered sets the border state of the window.
 // (https://wiki.libsdl.org/SDL_SetWindowBordered)
 func (window *Window) SetBordered(bordered bool) {
-	C.SDL_SetWindowBordered(window.cptr(), (C.SDL_bool)(Btoi(bordered)))
+	C.SDL_SetWindowBordered(window.cptr(), C.SDL_bool(Btoi(bordered)))
 }
 
 // Show shows the window.
