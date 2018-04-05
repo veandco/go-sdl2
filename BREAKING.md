@@ -14,7 +14,7 @@
 + Renamed `GL_MakeCurrent()` to `GLMakeCurrent()`
 + Renamed `GL_SetAttribute()` to `GLSetAttribute()`
 + Renamed `GL_SetSwapInterval()` to `GLSetSwapInterval()`
-+ Renamed `GL_SwapWindow()` to `GLSwapWindow()`
++ Renamed `GL_SwapWindow()` to `GLSwap()`
 + Renamed `GL_UnloadLibrary()` to `GLUnloadLibrary()`
 + Renamed `GameController.GetAttached()` to `GameController.Attached()`
 + Renamed `GameController.GetAxis()` to `GameController.Axis()`
@@ -65,11 +65,12 @@
 + Renamed `Texture.GL_UnbindTexture()` to `Texture.GLUnbind()`
 + Renamed `TouchId` to `TouchID` in `MultiGestureEvent` struct
 + Renamed `Unicode` to `unused` in `Keysym` struct (must have been a typo)
-+ `GetCurrentDisplayMode` returns (DisplayMode, error) instead of error
++ `GLCreateContext()`, `GLMakeCurrent()`, `GLGetDrawableSize()`, `GLSwapWindow()` are now methods of `Window`
++ `GetCurrentDisplayMode()` returns (DisplayMode, error) instead of error
 + `GetCurrentVideoDriver()` returns (string, error) instead of string
-+ `GetDesktopDisplayMode` returns (DisplayMode, error) instead of error
-+ `GetDisplayBounds` returns (Rect, error) instead of error
-+ `GetDisplayMode` returns (DisplayMode, error) instead of error
++ `GetDesktopDisplayMode()` returns (DisplayMode, error) instead of error
++ `GetDisplayBounds()` returns (Rect, error) instead of error
++ `GetDisplayMode()` returns (DisplayMode, error) instead of error
 + `GetDisplayName()` returns (string, error) instead of string
 + `GetDisplayUsableBounds` returns (Rect, error) instead of error
 + `GetNumRenderDrivers()` returns (int, error) instead of int
@@ -88,13 +89,13 @@
 + `NumHaptics()` returns (int, error) instead of int
 + `Renderer.Destroy()` returns error
 + `Renderer.GetViewport()` and `Renderer.GetClipRect()` now returns Rect instead of being passed a \*Rect
-+ `ShowCursor` returns (int, error) instead of int
++ `ShowCursor()` returns (int, error) instead of int
 + `Surface.SaveBMPRW()` requires (\*RWops, bool) instead of (\*RWops, int)
 + `Surface.SetColorKey()` requires (bool, uint32) instead of (int, uint32)
 + `Surface.SetRLE()` requires bool instead of int
 + `Texture.Destroy()` returns error
 + `Window.Destroy()` returns error
-+ `Window.GetDisplayMode` returns (DisplayMode, error) instead of error
++ `Window.GetDisplayMode()` returns (DisplayMode, error) instead of error
 + `Window.GetID()` returns (uint32, error) instead of uint32
 + Changed Mutex, Sem, Cond to have methods instead of functions
 + Changed `GameControllerMapping()` into `GameController.Mapping()`

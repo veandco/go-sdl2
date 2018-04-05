@@ -854,7 +854,7 @@ func GLGetAttribute(attr GLattr) (int, error) {
 
 // GLCreateContext creates an OpenGL context for use with an OpenGL window, and make it current.
 // (https://wiki.libsdl.org/SDL_GL_CreateContext)
-func GLCreateContext(window *Window) (GLContext, error) {
+func (window *Window) GLCreateContext() (GLContext, error) {
 	c := GLContext(C.SDL_GL_CreateContext(window.cptr()))
 	if c == nil {
 		return nil, GetError()
@@ -864,7 +864,7 @@ func GLCreateContext(window *Window) (GLContext, error) {
 
 // GLMakeCurrent sets up an OpenGL context for rendering into an OpenGL window.
 // (https://wiki.libsdl.org/SDL_GL_MakeCurrent)
-func GLMakeCurrent(window *Window, glcontext GLContext) error {
+func (window *Window) GLMakeCurrent(glcontext GLContext) error {
 	return errorFromInt(int(
 		C.SDL_GL_MakeCurrent(window.cptr(), C.SDL_GLContext(glcontext))))
 }
@@ -885,15 +885,15 @@ func GLGetSwapInterval() (int, error) {
 
 // GLGetDrawableSize returns the size of a window's underlying drawable in pixels (for use with glViewport).
 // (https://wiki.libsdl.org/SDL_GL_GetDrawableSize)
-func GLGetDrawableSize(window *Window) (w, h int32) {
+func (window *Window) GLGetDrawableSize() (w, h int32) {
 	var _w, _h C.int
 	C.SDL_GL_GetDrawableSize(window.cptr(), &_w, &_h)
 	return int32(_w), int32(_h)
 }
 
-// GLSwapWindow updates a window with OpenGL rendering.
+// GLSwap updates a window with OpenGL rendering.
 // (https://wiki.libsdl.org/SDL_GL_SwapWindow)
-func GLSwapWindow(window *Window) {
+func (window *Window) GLSwap() {
 	C.SDL_GL_SwapWindow(window.cptr())
 }
 
