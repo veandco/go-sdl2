@@ -75,19 +75,19 @@ some Linux distributions. Some older versions of the distributions such as
 Ubuntu 13.10 may also be used but it may miss an optional package such as
 _libsdl2-ttf-dev_ on Ubuntu 13.10's case which is available in Ubuntu 14.04.
 
-On __Ubuntu 14.04 and above__, type:
+On __Ubuntu 14.04 and above__, type:\
 `apt install libsdl2{,-image,-mixer,-ttf,-gfx}-dev`
 
-On __Fedora 25 and above__, type:
+On __Fedora 25 and above__, type:\
 `yum install SDL2{,_image,_mixer,_ttf,_gfx}-devel`
 
-On __Arch Linux__, type:
+On __Arch Linux__, type:\
 `pacman -S sdl2{,_image,_mixer,_ttf,_gfx}`
 
-On __Gentoo__, type:
+On __Gentoo__, type:\
 `emerge -av libsdl2 sdl2-{image,mixer,ttf,gfx}`
 
-On __macOS__, install SDL2 via [Homebrew](http://brew.sh) like so:
+On __macOS__, install SDL2 via [Homebrew](http://brew.sh) like so:\
 `brew install sdl2{,_image,_mixer,_ttf,_gfx} pkg-config`
 
 On __Windows__,
@@ -112,14 +112,14 @@ On __Windows__,
 
 
 # Installation
-To get the bindings, type:
-`go get -v github.com/veandco/go-sdl2/sdl`
-`go get -v github.com/veandco/go-sdl2/img`
-`go get -v github.com/veandco/go-sdl2/mix`
-`go get -v github.com/veandco/go-sdl2/ttf`
+To get the bindings, type:\
+`go get -v github.com/veandco/go-sdl2/sdl`\
+`go get -v github.com/veandco/go-sdl2/img`\
+`go get -v github.com/veandco/go-sdl2/mix`\
+`go get -v github.com/veandco/go-sdl2/ttf`\
 `go get -v github.com/veandco/go-sdl2/gfx`
 
-or type this if you use Bash terminal:
+or type this if you use Bash terminal:\
 `go get -v github.com/veandco/go-sdl2/{sdl,img,mix,ttf}`
 
 Due to `go-sdl2` being under active development, a lot of breaking changes are going to happen during v0.x. Therefore if you want to stay with the latest stable version, you should replace `github.com/veandco/go-sdl2` with `gopkg.in/veandco/go-sdl2.v0` so it will refer to the latest stable version e.g. `gopkg.in/veandco/go-sdl2.v0/sdl`.
