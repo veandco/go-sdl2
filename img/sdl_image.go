@@ -1,9 +1,6 @@
 // Package img is a simple library to load images of various formats as SDL surfaces.
 package img
 
-//#cgo linux freebsd darwin pkg-config: sdl2
-//#cgo linux freebsd darwin LDFLAGS: -lSDL2_image
-//#cgo windows LDFLAGS: -lSDL2 -lSDL2_image
 //#include <stdlib.h>
 //#include "sdl_image_wrapper.h"
 import "C"
