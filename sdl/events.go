@@ -327,12 +327,20 @@ type JoyButtonEvent struct {
 }
 type cJoyButtonEvent C.SDL_JoyButtonEvent
 
-// JoyDeviceEvent contains joystick device event information.
+// JoyDeviceAddedEvent contains joystick device event information.
 // (https://wiki.libsdl.org/SDL_JoyDeviceEvent)
-type JoyDeviceEvent struct {
-	Type      uint32     // JOYDEVICEADDED, JOYDEVICEREMOVED
+type JoyDeviceAddedEvent struct {
+	Type      uint32 // JOYDEVICEADDED
+	Timestamp uint32 // the timestamp of the event
+	Which     int    // the joystick device index
+}
+
+// JoyDeviceRemovedEvent contains joystick device event information.
+// (https://wiki.libsdl.org/SDL_JoyDeviceEvent)
+type JoyDeviceRemovedEvent struct {
+	Type      uint32     // JOYDEVICEREMOVED
 	Timestamp uint32     // the timestamp of the event
-	Which     JoystickID // the joystick device index for the JOYDEVICEADDED event or the instance id for the JOYDEVICEREMOVED event
+	Which     JoystickID // the instance id
 }
 
 // ControllerAxisEvent contains game controller axis motion event information.
@@ -611,8 +619,10 @@ func goEvent(cevent *CEvent) Event {
 		return (*JoyHatEvent)(unsafe.Pointer(cevent))
 	case JOYBUTTONDOWN, JOYBUTTONUP:
 		return (*JoyButtonEvent)(unsafe.Pointer(cevent))
-	case JOYDEVICEADDED, JOYDEVICEREMOVED:
-		return (*JoyDeviceEvent)(unsafe.Pointer(cevent))
+	case JOYDEVICEADDED:
+		return (*JoyDeviceAddedEvent)(unsafe.Pointer(cevent))
+	case JOYDEVICEREMOVED:
+		return (*JoyDeviceRemovedEvent)(unsafe.Pointer(cevent))
 	case CONTROLLERAXISMOTION:
 		return (*ControllerAxisEvent)(unsafe.Pointer(cevent))
 	case CONTROLLERBUTTONDOWN, CONTROLLERBUTTONUP:

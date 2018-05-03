@@ -102,6 +102,7 @@
 + Haptic functions now return bool and/or error instead of int
 + Merged `KeyUpEvent` and `KeyDownEvent` into `KeyboardEvent`
 + Moved error to the last return value in `ShowMessageBox()`
++ Split `JoyDeviceEvent` into `JoyDeviceAddedEvent` and `JoyDeviceRemovedEvent`, since Which field can contain different types of data (int or JoystickID).
 
 - Unexported `Flags`, `Locked` and `LockData` in `Surface` struct
 - Unexported `Padding` in `AudioSpec` struct

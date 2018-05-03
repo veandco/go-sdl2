@@ -256,7 +256,7 @@ func JoystickOpen(index int) *Joystick {
 }
 
 // JoystickFromInstanceID returns the Joystick associated with an instance id.
-// (https://wiki.libsdl.org/SDL_GameControllerFromInstanceID)
+// (https://wiki.libsdl.org/SDL_JoystickFromInstanceID)
 func JoystickFromInstanceID(joyid JoystickID) *Joystick {
 	return (*Joystick)(C.SDL_JoystickFromInstanceID(joyid.c()))
 }
