@@ -169,9 +169,7 @@ func (he *HapticCustom) cHapticEffect() *C.SDL_HapticEffect {
 
 // HapticEffect union that contains the generic template for any haptic effect.
 // (https://wiki.libsdl.org/SDL_HapticEffect)
-type HapticEffect C.SDL_HapticEffect
-
-type iHapticEffect interface {
+type HapticEffect interface {
 	cHapticEffect() *C.SDL_HapticEffect
 }
 
@@ -297,7 +295,7 @@ func (h *Haptic) Query() (uint32, error) {
 // EffectSupported reports whether an effect is supported by a haptic device.
 // Pass pointer to a Haptic struct (Constant|Periodic|Condition|Ramp|LeftRight|Custom) instead of HapticEffect union.
 // (https://wiki.libsdl.org/SDL_HapticEffectSupported)
-func (h *Haptic) EffectSupported(he iHapticEffect) (bool, error) {
+func (h *Haptic) EffectSupported(he HapticEffect) (bool, error) {
 	ret := int(C.SDL_HapticEffectSupported(
 		h.cptr(),
 		he.cHapticEffect()))
@@ -307,7 +305,7 @@ func (h *Haptic) EffectSupported(he iHapticEffect) (bool, error) {
 // NewEffect creates a new haptic effect on a specified device.
 // Pass pointer to a Haptic struct (Constant|Periodic|Condition|Ramp|LeftRight|Custom) instead of HapticEffect union.
 // (https://wiki.libsdl.org/SDL_HapticNewEffect)
-func (h *Haptic) NewEffect(he iHapticEffect) (int, error) {
+func (h *Haptic) NewEffect(he HapticEffect) (int, error) {
 	ret := int(C.SDL_HapticNewEffect(
 		h.cptr(),
 		he.cHapticEffect()))
@@ -317,7 +315,7 @@ func (h *Haptic) NewEffect(he iHapticEffect) (int, error) {
 // UpdateEffect updates the properties of an effect.
 // Pass pointer to a Haptic struct (Constant|Periodic|Condition|Ramp|LeftRight|Custom) instead of HapticEffect union.
 // (https://wiki.libsdl.org/SDL_HapticUpdateEffect)
-func (h *Haptic) UpdateEffect(effect int, data iHapticEffect) error {
+func (h *Haptic) UpdateEffect(effect int, data HapticEffect) error {
 	return errorFromInt(int(
 		C.SDL_HapticUpdateEffect(
 			h.cptr(),
