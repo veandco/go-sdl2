@@ -158,7 +158,10 @@ const (
 
 // Event is a union of all event structures used in SDL.
 // (https://wiki.libsdl.org/SDL_Event)
-type Event interface{}
+type Event interface {
+	GetType() uint32      // GetType returns the event type
+	GetTimestamp() uint32 // GetTimestamp returns the timestamp of the event
+}
 
 // CEvent is a union of all event structures used in SDL.
 // (https://wiki.libsdl.org/SDL_Event)
@@ -172,6 +175,16 @@ type CEvent struct {
 type CommonEvent struct {
 	Type      uint32 // the event type
 	Timestamp uint32 // timestamp of the event
+}
+
+// GetType returns the event type.
+func (e *CommonEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *CommonEvent) GetTimestamp() uint32 {
+	return e.Timestamp
 }
 
 // WindowEvent contains window state change event data.
@@ -189,7 +202,15 @@ type WindowEvent struct {
 }
 type cWindowEvent C.SDL_WindowEvent
 
-//TODO: Key{Up,Down}Event only differ in 'Type' - a boolean field would be enough to distinguish up/down events
+// GetType returns the event type.
+func (e *WindowEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *WindowEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
 
 // KeyboardEvent contains keyboard key down event information.
 // (https://wiki.libsdl.org/SDL_KeyboardEvent)
@@ -205,6 +226,16 @@ type KeyboardEvent struct {
 }
 type cKeyboardEvent C.SDL_KeyboardEvent
 
+// GetType returns the event type.
+func (e *KeyboardEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *KeyboardEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // TextEditingEvent contains keyboard text editing event information.
 // (https://wiki.libsdl.org/SDL_TextEditingEvent)
 type TextEditingEvent struct {
@@ -217,6 +248,16 @@ type TextEditingEvent struct {
 }
 type cTextEditingEvent C.SDL_TextEditingEvent
 
+// GetType returns the event type.
+func (e *TextEditingEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *TextEditingEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // TextInputEvent contains keyboard text input event information.
 // (https://wiki.libsdl.org/SDL_TextInputEvent)
 type TextInputEvent struct {
@@ -226,6 +267,16 @@ type TextInputEvent struct {
 	Text      [C.SDL_TEXTINPUTEVENT_TEXT_SIZE]byte // the null-terminated input text in UTF-8 encoding
 }
 type cTextInputEvent C.SDL_TextInputEvent
+
+// GetType returns the event type.
+func (e *TextInputEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *TextInputEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
 
 // MouseMotionEvent contains mouse motion event information.
 // (https://wiki.libsdl.org/SDL_MouseMotionEvent)
@@ -241,6 +292,16 @@ type MouseMotionEvent struct {
 	YRel      int32  // relative motion in the Y direction
 }
 type cMouseMotionEvent C.SDL_MouseMotionEvent
+
+// GetType returns the event type.
+func (e *MouseMotionEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *MouseMotionEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
 
 // MouseButtonEvent contains mouse button event information.
 // (https://wiki.libsdl.org/SDL_MouseButtonEvent)
@@ -258,6 +319,16 @@ type MouseButtonEvent struct {
 }
 type cMouseButtonEvent C.SDL_MouseButtonEvent
 
+// GetType returns the event type.
+func (e *MouseButtonEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *MouseButtonEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // MouseWheelEvent contains mouse wheel event information.
 // (https://wiki.libsdl.org/SDL_MouseWheelEvent)
 type MouseWheelEvent struct {
@@ -270,6 +341,16 @@ type MouseWheelEvent struct {
 	Direction uint32 // MOUSEWHEEL_NORMAL, MOUSEWHEEL_FLIPPED (>= SDL 2.0.4)
 }
 type cMouseWheelEvent C.SDL_MouseWheelEvent
+
+// GetType returns the event type.
+func (e *MouseWheelEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *MouseWheelEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
 
 // JoyAxisEvent contains joystick axis motion event information.
 // (https://wiki.libsdl.org/SDL_JoyAxisEvent)
@@ -286,6 +367,16 @@ type JoyAxisEvent struct {
 }
 type cJoyAxisEvent C.SDL_JoyAxisEvent
 
+// GetType returns the event type.
+func (e *JoyAxisEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *JoyAxisEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // JoyBallEvent contains joystick trackball motion event information.
 // (https://wiki.libsdl.org/SDL_JoyBallEvent)
 type JoyBallEvent struct {
@@ -301,6 +392,16 @@ type JoyBallEvent struct {
 }
 type cJoyBallEvent C.SDL_JoyBallEvent
 
+// GetType returns the event type.
+func (e *JoyBallEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *JoyBallEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // JoyHatEvent contains joystick hat position change event information.
 // (https://wiki.libsdl.org/SDL_JoyHatEvent)
 type JoyHatEvent struct {
@@ -313,6 +414,16 @@ type JoyHatEvent struct {
 	_         uint8      // padding
 }
 type cJoyHatEvent C.SDL_JoyHatEvent
+
+// GetType returns the event type.
+func (e *JoyHatEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *JoyHatEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
 
 // JoyButtonEvent contains joystick button event information.
 // (https://wiki.libsdl.org/SDL_JoyButtonEvent)
@@ -327,6 +438,16 @@ type JoyButtonEvent struct {
 }
 type cJoyButtonEvent C.SDL_JoyButtonEvent
 
+// GetType returns the event type.
+func (e *JoyButtonEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *JoyButtonEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // JoyDeviceAddedEvent contains joystick device event information.
 // (https://wiki.libsdl.org/SDL_JoyDeviceEvent)
 type JoyDeviceAddedEvent struct {
@@ -335,12 +456,32 @@ type JoyDeviceAddedEvent struct {
 	Which     int    // the joystick device index
 }
 
+// GetType returns the event type.
+func (e *JoyDeviceAddedEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *JoyDeviceAddedEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // JoyDeviceRemovedEvent contains joystick device event information.
 // (https://wiki.libsdl.org/SDL_JoyDeviceEvent)
 type JoyDeviceRemovedEvent struct {
 	Type      uint32     // JOYDEVICEREMOVED
 	Timestamp uint32     // the timestamp of the event
 	Which     JoystickID // the instance id
+}
+
+// GetType returns the event type.
+func (e *JoyDeviceRemovedEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *JoyDeviceRemovedEvent) GetTimestamp() uint32 {
+	return e.Timestamp
 }
 
 // ControllerAxisEvent contains game controller axis motion event information.
@@ -358,6 +499,16 @@ type ControllerAxisEvent struct {
 }
 type cControllerAxisEvent C.SDL_ControllerAxisEvent
 
+// GetType returns the event type.
+func (e *ControllerAxisEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *ControllerAxisEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // ControllerButtonEvent contains game controller button event information.
 // (https://wiki.libsdl.org/SDL_ControllerButtonEvent)
 type ControllerButtonEvent struct {
@@ -371,6 +522,16 @@ type ControllerButtonEvent struct {
 }
 type cControllerButtonEvent C.SDL_ControllerButtonEvent
 
+// GetType returns the event type.
+func (e *ControllerButtonEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *ControllerButtonEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // ControllerDeviceEvent contains controller device event information.
 // (https://wiki.libsdl.org/SDL_ControllerDeviceEvent)
 type ControllerDeviceEvent struct {
@@ -379,6 +540,16 @@ type ControllerDeviceEvent struct {
 	Which     JoystickID // the joystick device index for the CONTROLLERDEVICEADDED event or instance id for the CONTROLLERDEVICEREMOVED or CONTROLLERDEVICEREMAPPED event
 }
 type cControllerDeviceEvent C.SDL_ControllerDeviceEvent
+
+// GetType returns the event type.
+func (e *ControllerDeviceEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *ControllerDeviceEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
 
 // AudioDeviceEvent contains audio device event information.
 // (https://wiki.libsdl.org/SDL_AudioDeviceEvent)
@@ -392,6 +563,16 @@ type AudioDeviceEvent struct {
 	_         uint8  // padding
 }
 type cAudioDeviceEvent C.SDL_AudioDeviceEvent
+
+// GetType returns the event type.
+func (e *AudioDeviceEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *AudioDeviceEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
 
 // TouchFingerEvent contains finger touch event information.
 // (https://wiki.libsdl.org/SDL_TouchFingerEvent)
@@ -408,6 +589,16 @@ type TouchFingerEvent struct {
 }
 type cTouchFingerEvent C.SDL_TouchFingerEvent
 
+// GetType returns the event type.
+func (e *TouchFingerEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *TouchFingerEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // MultiGestureEvent contains multiple finger gesture event information.
 // (https://wiki.libsdl.org/SDL_MultiGestureEvent)
 type MultiGestureEvent struct {
@@ -423,6 +614,16 @@ type MultiGestureEvent struct {
 }
 type cMultiGestureEvent C.SDL_MultiGestureEvent
 
+// GetType returns the event type.
+func (e *MultiGestureEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *MultiGestureEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // DollarGestureEvent contains complex gesture event information.
 // (https://wiki.libsdl.org/SDL_DollarGestureEvent)
 type DollarGestureEvent struct {
@@ -437,6 +638,16 @@ type DollarGestureEvent struct {
 }
 type cDollarGestureEvent C.SDL_DollarGestureEvent
 
+// GetType returns the event type.
+func (e *DollarGestureEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *DollarGestureEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // DropEvent contains an event used to request a file open by the system.
 // (https://wiki.libsdl.org/SDL_DropEvent)
 type DropEvent struct {
@@ -445,6 +656,7 @@ type DropEvent struct {
 	File      string // the file name
 	WindowID  uint32 // the window that was dropped on, if any
 }
+
 type tDropEvent struct {
 	Type      uint32
 	Timestamp uint32
@@ -453,11 +665,31 @@ type tDropEvent struct {
 }
 type cDropEvent C.SDL_DropEvent
 
+// GetType returns the event type.
+func (e *DropEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *DropEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // RenderEvent contains render event information.
 // (https://wiki.libsdl.org/SDL_EventType)
 type RenderEvent struct {
 	Type      uint32 // the event type
 	Timestamp uint32 // timestamp of the event
+}
+
+// GetType returns the event type.
+func (e *RenderEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *RenderEvent) GetTimestamp() uint32 {
+	return e.Timestamp
 }
 
 // QuitEvent contains the "quit requested" event.
@@ -467,10 +699,30 @@ type QuitEvent struct {
 	Timestamp uint32 // timestamp of the event
 }
 
+// GetType returns the event type.
+func (e *QuitEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *QuitEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // OSEvent contains OS specific event information.
 type OSEvent struct {
 	Type      uint32 // the event type
 	Timestamp uint32 // timestamp of the event
+}
+
+// GetType returns the event type.
+func (e *OSEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *OSEvent) GetTimestamp() uint32 {
+	return e.Timestamp
 }
 
 // ClipboardEvent contains clipboard event information.
@@ -478,6 +730,16 @@ type OSEvent struct {
 type ClipboardEvent struct {
 	Type      uint32 // CLIPBOARDUPDATE
 	Timestamp uint32 // timestamp of the event
+}
+
+// GetType returns the event type.
+func (e *ClipboardEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *ClipboardEvent) GetTimestamp() uint32 {
+	return e.Timestamp
 }
 
 // UserEvent contains an application-defined event type.
@@ -492,6 +754,16 @@ type UserEvent struct {
 }
 type cUserEvent C.SDL_UserEvent
 
+// GetType returns the event type.
+func (e *UserEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *UserEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // SysWMEvent contains a video driver dependent system event.
 // (https://wiki.libsdl.org/SDL_SysWMEvent)
 type SysWMEvent struct {
@@ -500,6 +772,16 @@ type SysWMEvent struct {
 	msg       unsafe.Pointer // driver dependent data, defined in SDL_syswm.h
 }
 type cSysWMEvent C.SDL_SysWMEvent
+
+// GetType returns the event type.
+func (e *SysWMEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *SysWMEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
 
 // EventAction is the action to take in PeepEvents() function.
 // (https://wiki.libsdl.org/SDL_PeepEvents)
