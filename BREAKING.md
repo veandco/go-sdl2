@@ -1,6 +1,8 @@
 ## BREAKING CHANGES
 
-### v0.2..master
+### v0.3..master
+
+### v0.2..v0.3
 
 + Renamed `ButtonId` to `ButtonID` in `MessageBoxButtonData` struct
 + Renamed `GL_CreateContext()` to `GLCreateContext()`
