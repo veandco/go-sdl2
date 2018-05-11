@@ -122,7 +122,7 @@ To get the bindings, type:\
 or type this if you use Bash terminal:\
 `go get -v github.com/veandco/go-sdl2/{sdl,img,mix,ttf}`
 
-Due to `go-sdl2` being under active development, a lot of breaking changes are going to happen during v0.x. Therefore if you want to stay with the latest stable version, you should replace `github.com/veandco/go-sdl2` with `gopkg.in/veandco/go-sdl2.v0` so it will refer to the latest stable version e.g. `gopkg.in/veandco/go-sdl2.v0/sdl`.
+Due to `go-sdl2` being under active development, a lot of breaking changes are going to happen during v0.x. With [versioning system](https://github.com/golang/proposal/blob/master/design/24301-versioned-go.md) coming to Go soon, we'll make use of semantic versioning to ensure stability in the future.
 
 
 # Cross-compiling
