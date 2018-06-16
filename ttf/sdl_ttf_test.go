@@ -41,4 +41,13 @@ func TestTTF(t *testing.T) {
 		}
 		defer solid.Free()
 	}
+
+	gm, err := font.GlyphMetrics('A')
+	if err != nil {
+		t.Errorf("Failed to get glyph metrics: %s\n", err)
+	}
+	expectMetrics := GlyphMetrics{0, 22, 0, 23, 22}
+	if *gm != expectMetrics {
+		t.Errorf("GlyphMetrics got %v - want %v", *gm, expectMetrics)
+	}
 }

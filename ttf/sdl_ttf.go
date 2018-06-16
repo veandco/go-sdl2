@@ -290,3 +290,22 @@ func (f *Font) FaceFamilyName() string {
 	fname := C.GoString(_fname)
 	return fname
 }
+
+// GlyphMetrics contains glyph-specific rendering metrics.
+type GlyphMetrics struct {
+	MinX, MaxX int
+	MinY, MaxY int
+	Advance    int
+}
+
+// GlyphMetrics returns the desired glyph metrics of the UNICODE char given in ch from the loaded font.
+// (https://www.libsdl.org/projects/SDL_ttf/docs/SDL_ttf_38.html)
+func (f *Font) GlyphMetrics(ch rune) (*GlyphMetrics, error) {
+	_ch := C.Uint16(ch)
+	var minX, maxX, minY, maxY, adv C.int
+	result := C.TTF_GlyphMetrics(f.f, _ch, &minX, &maxX, &minY, &maxY, &adv)
+	if result == 0 {
+		return &GlyphMetrics{int(minX), int(maxX), int(minY), int(maxY), int(adv)}, nil
+	}
+	return nil, GetError()
+}
