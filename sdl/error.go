@@ -6,10 +6,13 @@ package sdl
 void GoSetError(const char *fmt) {
   SDL_SetError("%s", fmt);
 }
+
 */
 // #include "sdl_wrapper.h"
 import "C"
 import "errors"
+
+var emptyCString *C.char = C.CString("")
 
 // SDL error codes with their corresponding predefined strings.
 const (
@@ -49,7 +52,7 @@ func SetError(err error) {
 		C.GoSetError(C.CString(err.Error()))
 		return
 	}
-	C.GoSetError(nil)
+	C.GoSetError(emptyCString)
 }
 
 // ClearError clears any previous error message.
