@@ -169,6 +169,8 @@ For Android, see https://github.com/gen2brain/go-sdl2-android-example.
 
 There is currently no support for iOS yet.
 
+__Why does my window not immediately render after creation?__
+It appears the rendering subsystem needs some time to be able to present the drawn pixels. This can be workaround by adding delay using `sdl.Delay()` or put the rendering code inside a draw loop.
 
 # License
 Go-SDL2 is BSD 3-clause licensed.
