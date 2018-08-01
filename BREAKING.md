@@ -8,7 +8,7 @@
 + Changed and renamed `RWops.RWseek()` to `RWops.Seek()` (0ee14f91)
 + Changed and renamed `RWops.RWread()` to `RWops.Read()` and `RWops.Read2` (0ee14f91)
 + Changed and renamed `RWops.RWtell()` to `RWops.Tell()` (0ee14f91)
-+ Changed and renamed `RWops.RWwrite()` to `RWops.Write()` and `RWops.Write` (0ee14f91)
++ Changed and renamed `RWops.RWwrite()` to `RWops.Write()` and `RWops.Write2()` (0ee14f91)
 + Changed and renamed `RWops.RWclose()` to `RWops.Close()` (0ee14f91)
 
 ### v0.2..v0.3
