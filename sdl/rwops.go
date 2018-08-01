@@ -91,7 +91,7 @@ func AllocRW() *RWops {
 	return (*RWops)(unsafe.Pointer(C.SDL_AllocRW()))
 }
 
-// FreeRW frees the RWops structure allocated by AllocRW().
+// Free frees the RWops structure allocated by AllocRW().
 // (https://wiki.libsdl.org/SDL_FreeRW)
 func (rwops *RWops) Free() error {
 	if rwops == nil {
