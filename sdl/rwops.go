@@ -28,7 +28,10 @@ static int RWclose(SDL_RWops *ctx)
 }
 */
 import "C"
-import "unsafe"
+import (
+	"reflect"
+	"unsafe"
+)
 
 // RWops types
 const (
@@ -67,11 +70,19 @@ func RWFromFile(file, mode string) *RWops {
 
 // RWFromMem prepares a read-write memory buffer for use with RWops.
 // (https://wiki.libsdl.org/SDL_RWFromMem)
-func RWFromMem(mem unsafe.Pointer, size int) *RWops {
+func RWFromMem(mem []byte) (*RWops, error) {
 	if mem == nil {
-		return nil
+		return nil, ErrInvalidParameters
 	}
-	return (*RWops)(unsafe.Pointer(C.SDL_RWFromMem(mem, C.int(size))))
+
+	header := (*reflect.SliceHeader)(unsafe.Pointer(&mem))
+	_mem := unsafe.Pointer(header.Data)
+
+	rwops := (*RWops)(unsafe.Pointer(C.SDL_RWFromMem(_mem, C.int(len(mem)))))
+	if rwops == nil {
+		return nil, GetError()
+	}
+	return rwops, nil
 }
 
 // AllocRW allocates an empty, unpopulated RWops structure.
@@ -82,61 +93,102 @@ func AllocRW() *RWops {
 
 // FreeRW frees the RWops structure allocated by AllocRW().
 // (https://wiki.libsdl.org/SDL_FreeRW)
-func (rwops *RWops) FreeRW() {
+func (rwops *RWops) Free() error {
 	if rwops == nil {
-		return
+		return ErrInvalidParameters
 	}
+
 	C.SDL_FreeRW(rwops.cptr())
+	return nil
 }
 
-// RWsize returns the size of the data stream in the RWops.
+// Size returns the size of the data stream in the RWops.
 // (https://wiki.libsdl.org/SDL_RWsize)
-func (rwops *RWops) RWsize() int64 {
-	return int64(C.RWsize(rwops.cptr()))
+func (rwops *RWops) Size() (int64, error) {
+	n := int64(C.RWsize(rwops.cptr()))
+	if n < 0 {
+		return n, GetError()
+	}
+	return n, nil
 }
 
-// RWseek seek within the RWops data stream.
+// Seek seeks within the RWops data stream.
 // (https://wiki.libsdl.org/SDL_RWseek)
-func (rwops *RWops) RWseek(offset int64, whence int) int64 {
+func (rwops *RWops) Seek(offset int64, whence int) (int64, error) {
 	if rwops == nil {
-		return -1
+		return -1, ErrInvalidParameters
 	}
-	return int64(C.RWseek(rwops.cptr(), C.Sint64(offset), C.int(whence)))
+
+	ret := int64(C.RWseek(rwops.cptr(), C.Sint64(offset), C.int(whence)))
+	if ret < 0 {
+		return ret, GetError()
+	}
+	return ret, nil
 }
 
-// RWread read from a data source.
+// Read reads from a data source.
 // (https://wiki.libsdl.org/SDL_RWread)
-func (rwops *RWops) RWread(ptr unsafe.Pointer, size, maxnum uint) uint {
-	if rwops == nil {
-		return 0
-	}
-	return uint(C.RWread(rwops.cptr(), ptr, C.size_t(size), C.size_t(maxnum)))
+func (rwops *RWops) Read(buf []byte) (n int, err error) {
+	return rwops.Read2(buf, 1, uint(len(buf)))
 }
 
-// RWtell returns the current read/write offset in the RWops data stream.
+// Read2 reads from a data source (native).
+// (https://wiki.libsdl.org/SDL_RWread)
+func (rwops *RWops) Read2(buf []byte, size, maxnum uint) (n int, err error) {
+	if rwops == nil || buf == nil {
+		return 0, ErrInvalidParameters
+	}
+
+	header := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
+	_data := unsafe.Pointer(header.Data)
+
+	n = int(C.RWread(rwops.cptr(), _data, C.size_t(size), C.size_t(maxnum)))
+	if n == 0 {
+		err = GetError()
+	}
+	return
+}
+
+// Tell returns the current read/write offset in the RWops data stream.
 // (https://wiki.libsdl.org/SDL_RWtell)
-func (rwops *RWops) RWtell() int64 {
+func (rwops *RWops) Tell() (int64, error) {
 	if rwops == nil {
-		return 0
+		return 0, ErrInvalidParameters
 	}
-	return int64(C.RWseek(rwops.cptr(), 0, RW_SEEK_CUR))
+
+	ret := int64(C.RWseek(rwops.cptr(), 0, RW_SEEK_CUR))
+	if ret < 0 {
+		return ret, GetError()
+	}
+	return ret, nil
 }
 
-// RWwrite writes to the RWops data stream.
+// Write writes to the RWops data stream.
 // (https://wiki.libsdl.org/SDL_RWwrite)
-func (rwops *RWops) RWwrite(ptr unsafe.Pointer, size, num uint) uint {
-	if rwops == nil {
-		return 0
-	}
-	if ptr == nil {
-		return 0
-	}
-	return uint(C.RWwrite(rwops.cptr(), ptr, C.size_t(size), C.size_t(size)))
+func (rwops *RWops) Write(buf []byte) (n int, err error) {
+	return rwops.Write2(buf, 1, uint(len(buf)))
 }
 
-// RWclose closes and frees the allocated RWops structure.
+// Write2 writes to the RWops data stream (native).
+// (https://wiki.libsdl.org/SDL_RWwrite)
+func (rwops *RWops) Write2(buf []byte, size, num uint) (n int, err error) {
+	if rwops == nil || buf == nil {
+		return 0, ErrInvalidParameters
+	}
+
+	header := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
+	_data := unsafe.Pointer(header.Data)
+
+	n = int(C.RWwrite(rwops.cptr(), _data, C.size_t(size), C.size_t(num)))
+	if n < int(num) {
+		err = GetError()
+	}
+	return
+}
+
+// Close closes and frees the allocated RWops structure.
 // (https://wiki.libsdl.org/SDL_RWclose)
-func (rwops *RWops) RWclose() error {
+func (rwops *RWops) Close() error {
 	if rwops != nil && C.RWclose(rwops.cptr()) != 0 {
 		return GetError()
 	}
