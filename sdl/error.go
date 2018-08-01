@@ -13,6 +13,7 @@ import "C"
 import "errors"
 
 var emptyCString *C.char = C.CString("")
+var ErrInvalidParameters = errors.New("Invalid Parameters")
 
 // SDL error codes with their corresponding predefined strings.
 const (
