@@ -737,7 +737,7 @@ func SetFontRotation(rotation uint32) {
 	C.gfxPrimitivesSetFontRotation(_rotation)
 }
 
-// CharacterColor draws a character of the currently set font. On first call for a particular character and color combination, the function needs to generate the character surface (slower. Subsequent calls blit a cached surface (fast). Uses alpha blending if A<255 in color.
+// CharacterColor draws a character of the currently set font. On first call for a particular character and color combination, the function needs to generate the character surface (slower). Subsequent calls blit a cached surface (fast). Uses alpha blending if A<255 in color.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#aef5fdeb16c4578d8cd50e106299e993e)
 func CharacterColor(renderer *sdl.Renderer, x, y int32, c byte, color sdl.Color) bool {
 	_x := C.Sint16(x)
