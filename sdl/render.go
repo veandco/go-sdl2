@@ -272,6 +272,17 @@ func (texture *Texture) Update(rect *Rect, pixels []byte, pitch int) error {
 			C.int(pitch))))
 }
 
+// UpdateRGBA updates the given texture rectangle with new uint32 pixel data.
+// (https://wiki.libsdl.org/SDL_UpdateTexture)
+func (texture *Texture) UpdateRGBA(rect *Rect, pixels []uint32, pitch int) error {
+	return errorFromInt(int(
+		C.SDL_UpdateTexture(
+			texture.cptr(),
+			rect.cptr(),
+			unsafe.Pointer(&pixels[0]),
+			C.int(4*pitch)))) // 4 bytes in one uint32
+}
+
 // UpdateYUV updates a rectangle within a planar YV12 or IYUV texture with new pixel data.
 // (https://wiki.libsdl.org/SDL_UpdateYUVTexture)
 func (texture *Texture) UpdateYUV(rect *Rect, yPlane []byte, yPitch int, uPlane []byte, uPitch int, vPlane []byte, vPitch int) error {
