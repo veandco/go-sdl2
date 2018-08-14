@@ -1,7 +1,7 @@
 # Contribution Guide
 
 ## Checklist
-These are loose checklist that contributors can follow.
+These are loose checklist for contributors to follow when submitting patches.
 
 1. Small commits
 
@@ -9,7 +9,7 @@ These are loose checklist that contributors can follow.
 
 2. File and directory-based commit message
 
-   We're starting to use commit messages that looks like this: `sdl: fixed some typos in render.go` or `examples: render_goroutine: fixed a dereferenced nil pointer` where it starts with folder hierarchy. It's not something strictly required but we would prefer it to be followed.
+   We're starting to use commit messages that looks like this: `sdl: fixed some typos in render.go` or `examples/render_goroutine: fixed a dereferenced nil pointer` where it starts with folder hierarchy. It's not something strictly required but we would prefer it to be followed.
 
 3. Compatibility with SDL 2.0.0
 
