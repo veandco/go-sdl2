@@ -8,7 +8,7 @@ Blend Mode
 
 CPU Info
 
-- [ ] SDL_HasNEON()
+- [x] SDL_HasNEON()
 
 Game Controller
 
