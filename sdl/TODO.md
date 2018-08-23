@@ -41,8 +41,8 @@ Joystick
 
 RW Ops
 
-- [ ] SDL_LoadFile()
-- [ ] SDL_LoadFile_RW()
+- [x] SDL_LoadFile()
+- [x] SDL_LoadFile_RW()
 
 Surface
 
