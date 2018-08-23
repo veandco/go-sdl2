@@ -26,6 +26,14 @@ static int RWclose(SDL_RWops *ctx)
 {
 	return ctx->close(ctx);
 }
+
+#if !(SDL_VERSION_ATLEAST(2,0,6))
+#pragma message("SDL_LoadFile_RW is not supported before SDL 2.0.6")
+static void * SDL_LoadFile_RW(SDL_RWops * src, size_t *datasize, int freesrc)
+{
+	return 0;
+}
+#endif
 */
 import "C"
 import (
@@ -256,6 +264,31 @@ func (rwops *RWops) ReadBE64() uint64 {
 		return 0
 	}
 	return uint64(C.SDL_ReadBE64(rwops.cptr()))
+}
+
+// LoadFile_RW loads all the data from an SDL data stream.
+// (https://wiki.libsdl.org/SDL_LoadFile_RW)
+func (src *RWops) LoadFileRW(freesrc bool) (data []byte, size int) {
+	var _size C.size_t
+	var _freesrc C.int = 0
+
+	if freesrc {
+		_freesrc = 1
+	}
+
+	_data := C.SDL_LoadFile_RW(src.cptr(), &_size, _freesrc)
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&data))
+	sliceHeader.Cap = int(_size)
+	sliceHeader.Len = int(_size)
+	sliceHeader.Data = uintptr(_data)
+	size = int(_size)
+	return
+}
+
+// LoadFile loads an entire file
+// (https://wiki.libsdl.org/SDL_LoadFile)
+func LoadFile(file string) (data []byte, size int) {
+	return RWFromFile(file, "rb").LoadFileRW(true)
 }
 
 // WriteU8 writes a byte to the RWops.
