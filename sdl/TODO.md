@@ -46,7 +46,7 @@ RW Ops
 
 Surface
 
-- [ ] SDL_DuplicateSurface()
+- [x] SDL_DuplicateSurface()
 
 Vulkan
 
