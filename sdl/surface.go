@@ -3,6 +3,14 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,6))
+#pragma message("SDL_DuplicateSurface is not supported before SDL 2.0.6")
+static inline SDL_Surface* SDL_DuplicateSurface(SDL_Surface *surface)
+{
+	return NULL;
+}
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,5))
 #pragma message("SDL_CreateRGBSurfaceWithFormat is not supported before SDL 2.0.5")
 static inline SDL_Surface* SDL_CreateRGBSurfaceWithFormat(Uint32 flags, int width, int height, int depth, Uint32 format)
@@ -419,4 +427,16 @@ func (surface *Surface) Pixels() []byte {
 // Data returns the pointer to the actual pixel data of the surface.
 func (surface *Surface) Data() unsafe.Pointer {
 	return surface.pixels
+}
+
+// Duplicate creates a new surface identical to the existing surface
+func (surface *Surface) Duplicate() (newSurface *Surface, err error) {
+	_newSurface := C.SDL_DuplicateSurface(surface.cptr())
+	if _newSurface == nil {
+		err = GetError()
+		return
+	}
+
+	newSurface = (*Surface)(unsafe.Pointer(_newSurface))
+	return
 }
