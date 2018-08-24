@@ -4,7 +4,7 @@
 
 Blend Mode
 
-- [ ] SDL_ComposeCustomBlendMode()
+- [x] SDL_ComposeCustomBlendMode()
 
 CPU Info
 
