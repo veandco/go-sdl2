@@ -10,6 +10,8 @@ package sdl
 #define SDL_HINT_MOUSE_NORMAL_SPEED_SCALE ""
 #define SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE ""
 #define SDL_HINT_TOUCH_MOUSE_EVENTS ""
+#define SDL_HINT_WINDOWS_INTRESOURCE_ICON       ""
+#define SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL ""
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,4))
@@ -102,6 +104,8 @@ const (
 	HINT_MOUSE_NORMAL_SPEED_SCALE                 = C.SDL_HINT_MOUSE_NORMAL_SPEED_SCALE                 // specifies a variable setting the speed scale for mouse motion, in floating point, when the mouse is not in relative mode
 	HINT_MOUSE_RELATIVE_SPEED_SCALE               = C.SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE               // specifies a variable setting the scale for mouse motion, in floating point, when the mouse is in relative mode
 	HINT_TOUCH_MOUSE_EVENTS                       = C.SDL_HINT_TOUCH_MOUSE_EVENTS                       // specifies a variable controlling whether touch events should generate synthetic mouse events
+	HINT_WINDOWS_INTRESOURCE_ICON                 = C.SDL_HINT_WINDOWS_INTRESOURCE_ICON                 // specifies a variable to specify custom icon resource id from RC file on Windows platform
+	HINT_WINDOWS_INTRESOURCE_ICON_SMALL           = C.SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL           // specifies a variable to specify custom icon resource id from RC file on Windows platform
 )
 
 // An enumeration of hint priorities.
