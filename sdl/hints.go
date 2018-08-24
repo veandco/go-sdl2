@@ -97,6 +97,11 @@ const (
 	HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH         = C.SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH         // specifies a variable to control whether mouse and touch events are to be treated together or separately
 	HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION  = C.SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION  // specifies the Android APK expansion main file version
 	HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION = C.SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION // specifies the Android APK expansion patch file version
+	HINT_AUDIO_RESAMPLING_MODE                    = C.SDL_HINT_AUDIO_RESAMPLING_MODE                    // specifies a variable controlling speed/quality tradeoff of audio resampling
+	HINT_RENDER_LOGICAL_SIZE_MODE                 = C.SDL_HINT_RENDER_LOGICAL_SIZE_MODE                 // specifies a variable controlling the scaling policy for SDL_RenderSetLogicalSize
+	HINT_MOUSE_NORMAL_SPEED_SCALE                 = C.SDL_HINT_MOUSE_NORMAL_SPEED_SCALE                 // specifies a variable setting the speed scale for mouse motion, in floating point, when the mouse is not in relative mode
+	HINT_MOUSE_RELATIVE_SPEED_SCALE               = C.SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE               // specifies a variable setting the scale for mouse motion, in floating point, when the mouse is in relative mode
+	HINT_TOUCH_MOUSE_EVENTS                       = C.SDL_HINT_TOUCH_MOUSE_EVENTS                       // specifies a variable controlling whether touch events should generate synthetic mouse events
 )
 
 // An enumeration of hint priorities.
