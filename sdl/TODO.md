@@ -50,12 +50,12 @@ Surface
 
 Vulkan
 
-- [ ] SDL_Vulkan_LoadLibrary()
-- [ ] SDL_Vulkan_GetVkGetInstanceProcAddr()
-- [ ] SDL_Vulkan_GetInstanceExtensions()
-- [ ] SDL_Vulkan_CreateSurface()
-- [ ] SDL_Vulkan_GetDrawableSize()
-- [ ] SDL_Vulkan_UnloadLibrary()
+- [x] SDL_Vulkan_LoadLibrary()
+- [x] SDL_Vulkan_GetVkGetInstanceProcAddr()
+- [x] SDL_Vulkan_GetInstanceExtensions()
+- [x] SDL_Vulkan_CreateSurface()
+- [x] SDL_Vulkan_GetDrawableSize()
+- [x] SDL_Vulkan_UnloadLibrary()
 
 ### Windows
 
