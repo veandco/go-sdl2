@@ -59,7 +59,7 @@ import (
 type VkInstance C.VkInstance
 
 // VkSurface is a Vulkan surface handle.
-type VkSurface *C.VkSurfaceKHR
+type VkSurface C.VkSurfaceKHR
 
 // VulkanLoadLibrary dynamically loads a Vulkan loader library.
 func VulkanLoadLibrary(path string) error {
@@ -105,11 +105,12 @@ func (window *Window) VulkanGetInstanceExtensions() []string {
 }
 
 // VulkanCreateSurface creates a Vulkan rendering surface for a window.
-func (window *Window) VulkanCreateSurface(instance VkInstance, surface VkSurface) error {
-	if C.SDL_Vulkan_CreateSurface(window.cptr(), instance, surface) == 0 {
-		return errors.New("error creating Vulkan window surface")
+func (window *Window) VulkanCreateSurface(instance VkInstance) (VkSurface, error) {
+	var surface VkSurface
+	if C.SDL_Vulkan_CreateSurface(window.cptr(), instance, (*C.VkSurfaceKHR)(unsafe.Pointer(&surface))) == 0 {
+		return surface, errors.New("error creating Vulkan window surface")
 	}
-	return nil
+	return surface, nil
 }
 
 // VulkanGetDrawableSize gets the size of a window's underlying drawable in pixels (for use with setting viewport, scissor & etc).
