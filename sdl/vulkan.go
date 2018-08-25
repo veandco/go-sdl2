@@ -63,11 +63,11 @@ import (
 	"unsafe"
 )
 
-// VkInstance is a Vulkan instance handle.
-type VkInstance C.VkInstance
+// vkInstance is a Vulkan instance handle.
+type vkInstance C.VkInstance
 
-// VkSurface is a Vulkan surface handle.
-type VkSurface C.VkSurfaceKHR
+// vkSurface is a Vulkan surface handle.
+type vkSurface C.VkSurfaceKHR
 
 // VulkanLoadLibrary dynamically loads a Vulkan loader library.
 func VulkanLoadLibrary(path string) error {
@@ -113,9 +113,9 @@ func (window *Window) VulkanGetInstanceExtensions() []string {
 }
 
 // VulkanCreateSurface creates a Vulkan rendering surface for a window.
-func (window *Window) VulkanCreateSurface(instance uintptr) (vkSurface uintptr, err error) {
-	var surface VkSurface
-	if C.SDL_Vulkan_CreateSurface(window.cptr(), *(*VkInstance)(unsafe.Pointer(instance)), (*C.VkSurfaceKHR)(unsafe.Pointer(&surface))) == C.SDL_FALSE {
+func (window *Window) VulkanCreateSurface(instance uintptr) (surface uintptr, err error) {
+	var vulkanSurface vkSurface
+	if C.SDL_Vulkan_CreateSurface(window.cptr(), *(*C.VkInstance)(unsafe.Pointer(instance)), (*C.VkSurfaceKHR)(unsafe.Pointer(&vulkanSurface))) == C.SDL_FALSE {
 		return 0, GetError()
 	}
 	return uintptr(unsafe.Pointer(&surface)), nil
