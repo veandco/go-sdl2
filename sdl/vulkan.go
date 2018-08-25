@@ -3,7 +3,7 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
-#if (SDL_VERSION_ATLEAST(2,0,6)
+#if (SDL_VERSION_ATLEAST(2,0,6))
 #if defined(_WIN32)
 	#include <SDL2/SDL_vulkan.h>
 #else
