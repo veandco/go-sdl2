@@ -55,7 +55,10 @@ import (
 	"unsafe"
 )
 
+// VkInstance is a Vulkan instance handle.
 type VkInstance C.VkInstance
+
+// VkSurface is a Vulkan surface handle.
 type VkSurface *C.VkSurfaceKHR
 
 // VulkanLoadLibrary dynamically loads a Vulkan loader library.
