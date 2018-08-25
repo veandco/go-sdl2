@@ -9,7 +9,7 @@ package sdl
 #else
 	#include <SDL_vulkan.h>
 #endif
-#else
+#else //!SDL_VERSION_ATLEAST(2,0,6)
 
 #define VK_DEFINE_HANDLE(object) typedef struct object##_T* object;
 #if defined(__LP64__) || defined(_WIN64) || defined(__x86_64__) || defined(_M_X64) || defined(__ia64) || defined (_M_IA64) || defined(__aarch64__) || defined(__powerpc64__)
@@ -26,11 +26,14 @@ typedef VkSurfaceKHR SDL_vulkanSurface;
 #pragma message("SDL_Vulkan_LoadLibrary is not supported before SDL 2.0.6")
 static int SDL_Vulkan_LoadLibrary(const char *path)
 {
-	return 0
+	return 0;
 }
 
 #pragma message("SDL_Vulkan_GetVkGetInstanceProcAddr is not supported before SDL 2.0.6")
-static void* SDL_Vulkan_GetVkGetInstanceProcAddr(void) {}
+static void* SDL_Vulkan_GetVkGetInstanceProcAddr(void)
+{
+	return NULL;
+}
 
 #pragma message("SDL_Vulkan_UnloadLibrary is not supported before SDL 2.0.6")
 static void SDLCALL SDL_Vulkan_UnloadLibrary(void) {}
@@ -38,13 +41,13 @@ static void SDLCALL SDL_Vulkan_UnloadLibrary(void) {}
 #pragma message("SDL_Vulkan_GetInstanceExtensions is not supported before SDL 2.0.6")
 static int SDL_Vulkan_GetInstanceExtensions(SDL_Window *window, unsigned int *pCount, const char **pNames)
 {
-	return 0
+	return 0;
 }
 
 #pragma message("SDL_Vulkan_CreateSurface is not supported before SDL 2.0.6")
 static int SDL_Vulkan_CreateSurface(SDL_Window *window, VkInstance instance, VkSurfaceKHR *surface)
 {
-	return 0
+	return 0;
 }
 
 #pragma message("SDL_Vulkan_GetDrawableSize is not supported before SDL 2.0.6")
