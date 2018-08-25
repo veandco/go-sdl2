@@ -36,7 +36,7 @@ static void* SDL_Vulkan_GetVkGetInstanceProcAddr(void)
 }
 
 #pragma message("SDL_Vulkan_UnloadLibrary is not supported before SDL 2.0.6")
-static void SDLCALL SDL_Vulkan_UnloadLibrary(void) {}
+static void SDL_Vulkan_UnloadLibrary(void) {}
 
 #pragma message("SDL_Vulkan_GetInstanceExtensions is not supported before SDL 2.0.6")
 static int SDL_Vulkan_GetInstanceExtensions(SDL_Window *window, unsigned int *pCount, const char **pNames)
@@ -60,7 +60,6 @@ static void SDL_Vulkan_GetDrawableSize(SDL_Window *window, int *w, int *h) {
 */
 import "C"
 import (
-	"errors"
 	"unsafe"
 )
 
@@ -81,7 +80,7 @@ func VulkanLoadLibrary(path string) error {
 		ret = C.SDL_Vulkan_LoadLibrary(cpath)
 	}
 	if int(ret) == -1 {
-		return errors.New("error loading Vulkan library")
+		return GetError()
 	}
 	return nil
 }
@@ -114,17 +113,17 @@ func (window *Window) VulkanGetInstanceExtensions() []string {
 }
 
 // VulkanCreateSurface creates a Vulkan rendering surface for a window.
-func (window *Window) VulkanCreateSurface(instance VkInstance) (VkSurface, error) {
+func (window *Window) VulkanCreateSurface(instance uintptr) (vkSurface uintptr, err error) {
 	var surface VkSurface
-	if C.SDL_Vulkan_CreateSurface(window.cptr(), instance, (*C.VkSurfaceKHR)(unsafe.Pointer(&surface))) == 0 {
-		return surface, errors.New("error creating Vulkan window surface")
+	if C.SDL_Vulkan_CreateSurface(window.cptr(), *(*VkInstance)(unsafe.Pointer(instance)), (*C.VkSurfaceKHR)(unsafe.Pointer(&surface))) == C.SDL_FALSE {
+		return 0, GetError()
 	}
-	return surface, nil
+	return uintptr(unsafe.Pointer(&surface)), nil
 }
 
 // VulkanGetDrawableSize gets the size of a window's underlying drawable in pixels (for use with setting viewport, scissor & etc).
-func (window *Window) VulkanGetDrawableSize() (int, int) {
-	var w, h C.int
-	C.SDL_Vulkan_GetDrawableSize(window.cptr(), &w, &h)
-	return int(w), int(h)
+func (window *Window) VulkanGetDrawableSize() (w, h int32) {
+	var _w, _h C.int
+	C.SDL_Vulkan_GetDrawableSize(window.cptr(), &_w, &_h)
+	return int32(_w), int32(_h)
 }
