@@ -115,7 +115,10 @@ func (window *Window) VulkanGetInstanceExtensions() []string {
 // VulkanCreateSurface creates a Vulkan rendering surface for a window.
 func (window *Window) VulkanCreateSurface(instance uintptr) (surface uintptr, err error) {
 	var vulkanSurface vkSurface
-	if C.SDL_Vulkan_CreateSurface(window.cptr(), *(*C.VkInstance)(unsafe.Pointer(instance)), (*C.VkSurfaceKHR)(unsafe.Pointer(&vulkanSurface))) == C.SDL_FALSE {
+	if C.SDL_Vulkan_CreateSurface(window.cptr(),
+		*(*C.SDL_vulkanInstance)(unsafe.Pointer(instance)),
+		(*C.SDL_vulkanSurface)(unsafe.Pointer(&vulkanSurface))) == C.SDL_FALSE {
+
 		return 0, GetError()
 	}
 	return uintptr(unsafe.Pointer(&surface)), nil
