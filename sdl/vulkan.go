@@ -2,13 +2,14 @@ package sdl
 
 /*
 #include "sdl_wrapper.h"
+
+#if (SDL_VERSION_ATLEAST(2,0,6)
 #if defined(_WIN32)
 	#include <SDL2/SDL_vulkan.h>
 #else
 	#include <SDL_vulkan.h>
 #endif
-
-#if !(SDL_VERSION_ATLEAST(2,0,6))
+#else
 
 #define VK_DEFINE_HANDLE(object) typedef struct object##_T* object;
 VK_DEFINE_HANDLE(VkInstance)
