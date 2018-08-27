@@ -117,10 +117,10 @@ func (window *Window) VulkanCreateSurface(instance interface{}) (surface uintptr
 	if val.Kind() != reflect.Ptr {
 		return 0, errors.New("vulkan: instance is not a VkInstance (expected kind Ptr, got " + val.Kind().String() + ")")
 	}
-	var vulkanSurface C.SDL_vulkanSurface
+	var vulkanSurface C.VkSurfaceKHR
 	if C.SDL_Vulkan_CreateSurface(window.cptr(),
-		(C.SDL_vulkanInstance)(unsafe.Pointer(val.Pointer())),
-		(*C.SDL_vulkanSurface)(unsafe.Pointer(&vulkanSurface))) == C.SDL_FALSE {
+		(C.VkInstance)(unsafe.Pointer(val.Pointer())),
+		(*C.VkSurfaceKHR)(unsafe.Pointer(&vulkanSurface))) == C.SDL_FALSE {
 
 		return 0, GetError()
 	}
