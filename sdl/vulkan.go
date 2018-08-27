@@ -60,14 +60,10 @@ static void SDL_Vulkan_GetDrawableSize(SDL_Window *window, int *w, int *h) {
 */
 import "C"
 import (
+	"errors"
+	"reflect"
 	"unsafe"
 )
-
-// vkInstance is a Vulkan instance handle.
-type vkInstance C.VkInstance
-
-// vkSurface is a Vulkan surface handle.
-type vkSurface C.VkSurfaceKHR
 
 // VulkanLoadLibrary dynamically loads a Vulkan loader library.
 func VulkanLoadLibrary(path string) error {
@@ -86,8 +82,8 @@ func VulkanLoadLibrary(path string) error {
 }
 
 // VulkanGetVkGetInstanceProcAddr gets the address of the vkGetInstanceProcAddr function.
-func VulkanGetVkGetInstanceProcAddr() uintptr {
-	return uintptr(C.SDL_Vulkan_GetVkGetInstanceProcAddr())
+func VulkanGetVkGetInstanceProcAddr() unsafe.Pointer {
+	return C.SDL_Vulkan_GetVkGetInstanceProcAddr()
 }
 
 // VulkanUnloadLibrary unloads the Vulkan loader library previously loaded by VulkanLoadLibrary().
@@ -113,15 +109,22 @@ func (window *Window) VulkanGetInstanceExtensions() []string {
 }
 
 // VulkanCreateSurface creates a Vulkan rendering surface for a window.
-func (window *Window) VulkanCreateSurface(instance uintptr) (surface uintptr, err error) {
-	var vulkanSurface vkSurface
+func (window *Window) VulkanCreateSurface(instance interface{}) (surface uintptr, err error) {
+	if instance == nil {
+		return 0, errors.New("vulkan: instance is nil")
+	}
+	val := reflect.ValueOf(instance)
+	if val.Kind() != reflect.Ptr {
+		return 0, errors.New("vulkan: instance is not a VkInstance (expected kind Ptr, got " + val.Kind().String() + ")")
+	}
+	var vulkanSurface C.SDL_vulkanSurface
 	if C.SDL_Vulkan_CreateSurface(window.cptr(),
-		*(*C.SDL_vulkanInstance)(unsafe.Pointer(instance)),
+		(C.SDL_vulkanInstance)(unsafe.Pointer(val.Pointer())),
 		(*C.SDL_vulkanSurface)(unsafe.Pointer(&vulkanSurface))) == C.SDL_FALSE {
 
 		return 0, GetError()
 	}
-	return uintptr(unsafe.Pointer(&surface)), nil
+	return uintptr(unsafe.Pointer(&vulkanSurface)), nil
 }
 
 // VulkanGetDrawableSize gets the size of a window's underlying drawable in pixels (for use with setting viewport, scissor & etc).
