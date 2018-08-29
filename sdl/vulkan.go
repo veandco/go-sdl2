@@ -36,7 +36,7 @@ static void* SDL_Vulkan_GetVkGetInstanceProcAddr(void)
 }
 
 #pragma message("SDL_Vulkan_UnloadLibrary is not supported before SDL 2.0.6")
-static void SDLCALL SDL_Vulkan_UnloadLibrary(void) {}
+static void SDL_Vulkan_UnloadLibrary(void) {}
 
 #pragma message("SDL_Vulkan_GetInstanceExtensions is not supported before SDL 2.0.6")
 static int SDL_Vulkan_GetInstanceExtensions(SDL_Window *window, unsigned int *pCount, const char **pNames)
@@ -61,14 +61,9 @@ static void SDL_Vulkan_GetDrawableSize(SDL_Window *window, int *w, int *h) {
 import "C"
 import (
 	"errors"
+	"reflect"
 	"unsafe"
 )
-
-// VkInstance is a Vulkan instance handle.
-type VkInstance C.VkInstance
-
-// VkSurface is a Vulkan surface handle.
-type VkSurface C.VkSurfaceKHR
 
 // VulkanLoadLibrary dynamically loads a Vulkan loader library.
 func VulkanLoadLibrary(path string) error {
@@ -81,14 +76,14 @@ func VulkanLoadLibrary(path string) error {
 		ret = C.SDL_Vulkan_LoadLibrary(cpath)
 	}
 	if int(ret) == -1 {
-		return errors.New("error loading Vulkan library")
+		return GetError()
 	}
 	return nil
 }
 
 // VulkanGetVkGetInstanceProcAddr gets the address of the vkGetInstanceProcAddr function.
-func VulkanGetVkGetInstanceProcAddr() uintptr {
-	return uintptr(C.SDL_Vulkan_GetVkGetInstanceProcAddr())
+func VulkanGetVkGetInstanceProcAddr() unsafe.Pointer {
+	return C.SDL_Vulkan_GetVkGetInstanceProcAddr()
 }
 
 // VulkanUnloadLibrary unloads the Vulkan loader library previously loaded by VulkanLoadLibrary().
@@ -114,17 +109,27 @@ func (window *Window) VulkanGetInstanceExtensions() []string {
 }
 
 // VulkanCreateSurface creates a Vulkan rendering surface for a window.
-func (window *Window) VulkanCreateSurface(instance VkInstance) (VkSurface, error) {
-	var surface VkSurface
-	if C.SDL_Vulkan_CreateSurface(window.cptr(), instance, (*C.VkSurfaceKHR)(unsafe.Pointer(&surface))) == 0 {
-		return surface, errors.New("error creating Vulkan window surface")
+func (window *Window) VulkanCreateSurface(instance interface{}) (surface uintptr, err error) {
+	if instance == nil {
+		return 0, errors.New("vulkan: instance is nil")
 	}
-	return surface, nil
+	val := reflect.ValueOf(instance)
+	if val.Kind() != reflect.Ptr {
+		return 0, errors.New("vulkan: instance is not a VkInstance (expected kind Ptr, got " + val.Kind().String() + ")")
+	}
+	var vulkanSurface C.VkSurfaceKHR
+	if C.SDL_Vulkan_CreateSurface(window.cptr(),
+		(C.VkInstance)(unsafe.Pointer(val.Pointer())),
+		(*C.VkSurfaceKHR)(unsafe.Pointer(&vulkanSurface))) == C.SDL_FALSE {
+
+		return 0, GetError()
+	}
+	return uintptr(unsafe.Pointer(&vulkanSurface)), nil
 }
 
 // VulkanGetDrawableSize gets the size of a window's underlying drawable in pixels (for use with setting viewport, scissor & etc).
-func (window *Window) VulkanGetDrawableSize() (int, int) {
-	var w, h C.int
-	C.SDL_Vulkan_GetDrawableSize(window.cptr(), &w, &h)
-	return int(w), int(h)
+func (window *Window) VulkanGetDrawableSize() (w, h int32) {
+	var _w, _h C.int
+	C.SDL_Vulkan_GetDrawableSize(window.cptr(), &_w, &_h)
+	return int32(_w), int32(_h)
 }
