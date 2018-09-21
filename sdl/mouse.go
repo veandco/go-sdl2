@@ -21,6 +21,12 @@ static int SDL_CaptureMouse(SDL_bool enabled)
 
 #pragma message("SDL_MOUSEWHEEL_FLIPPED is not supported before SDL 2.0.4")
 #define SDL_MOUSEWHEEL_FLIPPED (0)
+
+#pragma message("SDL_WarpMouseGlobal is not supported before SDL 2.0.4")
+static int SDL_WarpMouseGlobal(int x, int y)
+{
+	return -1;
+}
 #endif
 */
 import "C"
@@ -206,4 +212,11 @@ func ButtonX1Mask() uint32 {
 // ButtonX2Mask is used as a mask when testing buttons in buttonstate.
 func ButtonX2Mask() uint32 {
 	return Button(BUTTON_X2)
+}
+
+// WarpMouseGlobal moves the mouse to the given position in global screen space.
+// (https://wiki.libsdl.org/SDL_WarpMouseGlobal)
+func WarpMouseGlobal(x, y int32) error {
+	i := int(C.SDL_WarpMouseGlobal(C.int(x), C.int(y)))
+	return errorFromInt(i)
 }
