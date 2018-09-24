@@ -141,6 +141,10 @@ type AudioCVT struct {
 }
 type cAudioCVT C.SDL_AudioCVT
 
+// AudioStream is a new audio conversion interface.
+// (https://wiki.libsdl.org/SDL_AudioStream)
+type AudioStream C.SDL_AudioStream
+
 func (fmt AudioFormat) c() C.SDL_AudioFormat {
 	return C.SDL_AudioFormat(fmt)
 }
@@ -155,6 +159,10 @@ func (as *AudioSpec) cptr() *C.SDL_AudioSpec {
 
 func (cvt *AudioCVT) cptr() *C.SDL_AudioCVT {
 	return (*C.SDL_AudioCVT)(unsafe.Pointer(cvt))
+}
+
+func (stream *AudioStream) cptr() *C.SDL_AudioStream {
+	return (*C.SDL_AudioStream)(unsafe.Pointer(stream))
 }
 
 // BitSize returns audio formats bit size.
@@ -465,4 +473,74 @@ func CloseAudio() {
 // (https://wiki.libsdl.org/SDL_CloseAudioDevice)
 func CloseAudioDevice(dev AudioDeviceID) {
 	C.SDL_CloseAudioDevice(dev.c())
+}
+
+// NewAudioStream creates a new audio stream
+// TODO: (https://wiki.libsdl.org/SDL_NewAudioStream)
+func NewAudioStream(srcFormat AudioFormat, srcChannels uint8, srcRate int, dstFormat AudioFormat, dstChannels uint8, dstRate int) (stream *AudioStream, err error) {
+	_srcFormat := C.SDL_AudioFormat(srcFormat)
+	_srcChannels := C.Uint8(srcChannels)
+	_srcRate := C.int(srcRate)
+	_dstFormat := C.SDL_AudioFormat(dstFormat)
+	_dstChannels := C.Uint8(dstChannels)
+	_dstRate := C.int(dstRate)
+
+	stream = (*AudioStream)(C.SDL_NewAudioStream(_srcFormat, _srcChannels, _srcRate, _dstFormat, _dstChannels, _dstRate))
+	if stream == nil {
+		err = GetError()
+	}
+	return
+}
+
+// Put adds data to be converted/resampled to the stream
+// TODO: (https://wiki.libsdl.org/SDL_AudioStreamPut)
+func (stream *AudioStream) Put(buf []byte) (err error) {
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
+	_buf := unsafe.Pointer(sliceHeader.Data)
+	_len := C.int(len(buf))
+	ret := int(C.SDL_AudioStreamPut(stream.cptr(), _buf, _len))
+	err = errorFromInt(ret)
+	return
+}
+
+// Get gets converted/resampled data from the stream
+// TODO: (https://wiki.libsdl.org/SDL_AudioStreamGet)
+func (stream *AudioStream) Get(buf []byte) (err error) {
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
+	_buf := unsafe.Pointer(sliceHeader.Data)
+	_len := C.int(len(buf))
+	ret := int(C.SDL_AudioStreamGet(stream.cptr(), _buf, _len))
+	err = errorFromInt(ret)
+	return
+}
+
+// Available gets the number of converted/resampled bytes available
+// TODO: (https://wiki.libsdl.org/SDL_AudioStreamAvailable)
+func (stream *AudioStream) Available() (err error) {
+	ret := int(C.SDL_AudioStreamAvailable(stream.cptr()))
+	err = errorFromInt(ret)
+	return
+}
+
+// Flush tells the stream that you're done sending data, and anything being buffered
+// should be converted/resampled and made available immediately.
+// TODO: (https://wiki.libsdl.org/SDL_AudioStreamFlush)
+func (stream *AudioStream) Flush() (err error) {
+	ret := int(C.SDL_AudioStreamFlush(stream.cptr()))
+	err = errorFromInt(ret)
+	return
+}
+
+// Clear clears any pending data in the stream without converting it
+// TODO: (https://wiki.libsdl.org/SDL_AudioStreamClear)
+func (stream *AudioStream) Clear() (err error) {
+	ret := int(C.SDL_AudioStreamFlush(stream.cptr()))
+	err = errorFromInt(ret)
+	return
+}
+
+// Free frees the audio stream
+// TODO: (https://wiki.libsdl.org/SDL_AudoiStreamFree)
+func (stream *AudioStream) Free() {
+	C.SDL_FreeAudioStream(stream.cptr())
 }
