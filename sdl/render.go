@@ -10,6 +10,22 @@ static inline int SDL_UpdateYUVTexture(SDL_Texture* texture, const SDL_Rect* rec
 	return -1;
 }
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,8))
+
+#pragma message("SDL_RenderGetMetalLayer is not supported before SDL 2.0.8")
+static inline void * SDL_RenderGetMetalLayer(SDL_Renderer *renderer)
+{
+	return NULL;
+}
+
+#pragma message("SDL_RenderGetMetalCommandEncoder is not supported before SDL 2.0.8")
+static inline void * SDL_RenderGetMetalCommandEncoder(SDL_Renderer *renderer)
+{
+	return NULL;
+}
+
+#endif
 */
 import "C"
 import (
@@ -641,4 +657,24 @@ func (texture *Texture) GLBind(texw, texh *float32) error {
 func (texture *Texture) GLUnbind() error {
 	return errorFromInt(int(
 		C.SDL_GL_UnbindTexture(texture.cptr())))
+}
+
+// GetMetalLayer gets the CAMetalLayer associated with the given Metal renderer
+// (https://wiki.libsdl.org/SDL_RenderGetMetalLayer)
+func (renderer *Renderer) GetMetalLayer() (layer unsafe.Pointer, err error) {
+	layer = C.SDL_RenderGetMetalLayer(renderer.cptr())
+	if layer == nil {
+		err = GetError()
+	}
+	return
+}
+
+// GetMetalCommandEncoder gets the Metal command encoder for the current frame
+// (https://wiki.libsdl.org/SDL_RenderGetMetalCommandEncoder)
+func (renderer *Renderer) GetMetalCommandEncoder() (encoder unsafe.Pointer, err error) {
+	encoder = C.SDL_RenderGetMetalCommandEncoder(renderer.cptr())
+	if encoder == nil {
+		err = GetError()
+	}
+	return
 }
