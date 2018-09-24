@@ -5,7 +5,7 @@ import (
 )
 
 func TestGetBasePath(t *testing.T) {
-	if !VERSION_ATLEAST(2,0,1) {
+	if !VERSION_ATLEAST(2, 0, 1) {
 		return
 	}
 
