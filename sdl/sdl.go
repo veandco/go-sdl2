@@ -143,11 +143,3 @@ func WasInit(flags uint32) uint32 {
 func GetPlatform() string {
 	return string(C.GoString(C.SDL_GetPlatform()))
 }
-
-// errorFromInt returns GetError() if passed negative value, otherwise it returns nil.
-func errorFromInt(code int) error {
-	if code < 0 {
-		return GetError()
-	}
-	return nil
-}
