@@ -466,10 +466,3 @@ func CloseAudio() {
 func CloseAudioDevice(dev AudioDeviceID) {
 	C.SDL_CloseAudioDevice(dev.c())
 }
-
-/*
-func AudioDeviceConnected(dev AudioDeviceID) int {
-	_dev := (C.SDL_AudioDeviceID) (dev)
-	return int (C.SDL_AudioDeviceConnected(_dev))
-}
-*/
