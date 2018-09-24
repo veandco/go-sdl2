@@ -1,3 +1,28 @@
+## 2.0.7
+
+### General
+
+Audio
+
+- [x] SDL_NewAudioStream
+- [x] SDL_AudioStreamPut
+- [x] SDL_AudioStreamGet
+- [x] SDL_AudioStreamAvailable
+- [x] SDL_AudioStreamFlush
+- [x] SDL_AudioStreamClear
+- [x] SDL_FreeAudioStream
+
+Joystick
+
+- [x] SDL_LockJoysticks()
+- [x] SDL_UnlockJoysticks()
+
+Stdinc
+
+- [ ] SDL_GetMemoryFunctions()
+- [ ] SDL_SetMemoryFunctions()
+- [ ] SDL_GetNumAllocations()
+
 ## 2.0.6
 
 ### General
