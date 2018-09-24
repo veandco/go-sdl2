@@ -32,13 +32,13 @@
 
 Audio
 
-- [x] SDL_NewAudioStream
-- [x] SDL_AudioStreamPut
-- [x] SDL_AudioStreamGet
-- [x] SDL_AudioStreamAvailable
-- [x] SDL_AudioStreamFlush
-- [x] SDL_AudioStreamClear
-- [x] SDL_FreeAudioStream
+- [x] SDL_NewAudioStream()
+- [x] SDL_AudioStreamPut()
+- [x] SDL_AudioStreamGet()
+- [x] SDL_AudioStreamAvailable()
+- [x] SDL_AudioStreamFlush()
+- [x] SDL_AudioStreamClear()
+- [x] SDL_FreeAudioStream()
 
 Joystick
 
