@@ -1,3 +1,31 @@
+## 2.0.8
+
+### Hints
+
+[ ] SDL_HINT_IOS_HIDE_HOME_INDICATOR
+[ ] SDL_HINT_RETURN_KEY_HIDES_IME
+[ ] SDL_HINT_TV_REMOTE_AS_JOYSTICK
+[ ] SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR
+[ ] SDL_HINT_VIDEO_DOUBLE_BUFFER
+
+### Surface
+
+[ ] SDL_SetYUVConversionMode()
+[ ] SDL_GetYUVConversionMode()
+
+### Android
+
+[ ] SDL_IsAndroidTV()
+
+### Mac OS X / iOS / tvOS
+
+[x] SDL_RenderGetMetalLayer()
+[x] SDL_RenderGetMetalCommandEncoder()
+
+### Windows UWP
+
+[ ] SDL_WinRTGetDeviceFamily()
+
 ## 2.0.7
 
 ### General
