@@ -105,6 +105,20 @@ static SDL_bool SDL_JoystickGetAxisInitialState(SDL_Joystick* joystick, int axis
 	return SDL_FALSE;
 }
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,7))
+
+#pragma message("SDL_LockJoysticks is not supported before SDL 2.0.7")
+static void SDL_LockJoysticks()
+{
+}
+
+#pragma message("SDL_UnlockJoysticks is not supported before SDL 2.0.7")
+static void SDL_UnlockJoysticks()
+{
+}
+
+#endif
 */
 import "C"
 import "unsafe"
@@ -259,6 +273,18 @@ func JoystickOpen(index int) *Joystick {
 // (https://wiki.libsdl.org/SDL_JoystickFromInstanceID)
 func JoystickFromInstanceID(joyid JoystickID) *Joystick {
 	return (*Joystick)(C.SDL_JoystickFromInstanceID(joyid.c()))
+}
+
+// LockJoysticks locks joysticks for multi-threaded access to the joystick API
+// TODO: (https://wiki.libsdl.org/SDL_LockJoysticks)
+func LockJoysticks() {
+	C.SDL_LockJoysticks()
+}
+
+// UnlockJoysticks unlocks joysticks for multi-threaded access to the joystick API
+// TODO: (https://wiki.libsdl.org/SDL_UnlockJoysticks)
+func UnlockJoysticks() {
+	C.SDL_UnlockJoysticks()
 }
 
 // Name returns the implementation dependent name of a joystick.
