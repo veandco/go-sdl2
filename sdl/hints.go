@@ -4,6 +4,14 @@ package sdl
 #include "sdl_wrapper.h"
 #include "hints.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,8))
+#define SDL_HINT_IOS_HIDE_HOME_INDICATOR ""
+#define SDL_HINT_RETURN_KEY_HIDES_IME ""
+#define SDL_HINT_TV_REMOTE_AS_JOYSTICK ""
+#define SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR ""
+#define SDL_HINT_VIDEO_DOUBLE_BUFFER ""
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,6))
 #define SDL_HINT_AUDIO_RESAMPLING_MODE ""
 #define SDL_HINT_RENDER_LOGICAL_SIZE_MODE ""
@@ -106,6 +114,11 @@ const (
 	HINT_TOUCH_MOUSE_EVENTS                       = C.SDL_HINT_TOUCH_MOUSE_EVENTS                       // specifies a variable controlling whether touch events should generate synthetic mouse events
 	HINT_WINDOWS_INTRESOURCE_ICON                 = C.SDL_HINT_WINDOWS_INTRESOURCE_ICON                 // specifies a variable to specify custom icon resource id from RC file on Windows platform
 	HINT_WINDOWS_INTRESOURCE_ICON_SMALL           = C.SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL           // specifies a variable to specify custom icon resource id from RC file on Windows platform
+	HINT_IOS_HIDE_HOME_INDICATOR                  = C.SDL_HINT_IOS_HIDE_HOME_INDICATOR                  // specifies a variable controlling whether the home indicator bar on iPhone X should be hidden.
+	HINT_RETURN_KEY_HIDES_IME                     = C.SDL_HINT_RETURN_KEY_HIDES_IME                     // specifies a variable to control whether the return key on the soft keyboard should hide the soft keyboard on Android and iOS.
+	HINT_TV_REMOTE_AS_JOYSTICK                    = C.SDL_HINT_TV_REMOTE_AS_JOYSTICK                    // specifies a variable controlling whether the Android / tvOS remotes  should be listed as joystick devices, instead of sending keyboard events.
+	HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR       = C.SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR       // specifies a variable controlling whether the X11 _NET_WM_BYPASS_COMPOSITOR hint should be used.
+	HINT_VIDEO_DOUBLE_BUFFER                      = C.SDL_HINT_VIDEO_DOUBLE_BUFFER                      // specifies a variable that tells the video driver that we only want a double buffer.
 )
 
 // An enumeration of hint priorities.
