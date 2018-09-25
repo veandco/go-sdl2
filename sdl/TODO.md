@@ -10,12 +10,12 @@
 
 ### Surface
 
-[ ] SDL_SetYUVConversionMode()
-[ ] SDL_GetYUVConversionMode()
+[x] SDL_SetYUVConversionMode()
+[x] SDL_GetYUVConversionMode()
 
 ### Android
 
-[ ] SDL_IsAndroidTV()
+[x] SDL_IsAndroidTV()
 
 ### Mac OS X / iOS / tvOS
 
