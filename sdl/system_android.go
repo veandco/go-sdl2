@@ -2,7 +2,17 @@
 
 package sdl
 
-// #include "sdl_wrapper.h"
+/*
+#include "sdl_wrapper.h"
+
+#if !(SDL_VERSION_ATLEAST(2,0,8))
+#pragma message("SDL_IsAndroidTV is not supported before SDL 2.0.8")
+static int SDL_IsAndroidTV(void)
+{
+	return -1;
+}
+#endif
+*/
 import "C"
 import "unsafe"
 
@@ -41,4 +51,10 @@ func AndroidGetJNIEnv() unsafe.Pointer {
 // (https://wiki.libsdl.org/SDL_AndroidGetActivity)
 func AndroidGetActivity() unsafe.Pointer {
 	return unsafe.Pointer(C.SDL_AndroidGetActivity())
+}
+
+// IsAndroidTV returns true if the application is running on Android TV
+// (https://wiki.libsdl.org/SDL_IsAndroidTV)
+func IsAndroidTV() bool {
+	return C.SDL_IsAndroidTV() >= 0
 }
