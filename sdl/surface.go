@@ -3,6 +3,32 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,8))
+typedef enum {
+	SDL_YUV_CONVERSION_JPEG,
+	SDL_YUV_CONVERSION_BT601,
+	SDL_YUV_CONVERSION_BT709,
+	SDL_YUV_CONVERSION_AUTOMATIC
+} SDL_YUV_CONVERSION_MODE;
+
+#pragma message("SDL_SetYUVConversionMode is not supported before SDL 2.0.8")
+void SDL_SetYUVConversionMode(SDL_YUV_CONVERSION_MODE mode)
+{
+}
+
+#pragma message("SDL_GetYUVConversionMode is not supported before SDL 2.0.8")
+SDL_YUV_CONVERSION_MODE SDL_GetYUVConversionMode(void)
+{
+	return -1;
+}
+
+#pragma message("SDL_GetYUVConversionModeForResolution is not supported before SDL 2.0.8")
+SDL_YUV_CONVERSION_MODE SDL_GetYUVConversionModeForResolution(int width, int height)
+{
+	return -1;
+}
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,6))
 #pragma message("SDL_DuplicateSurface is not supported before SDL 2.0.6")
 static inline SDL_Surface* SDL_DuplicateSurface(SDL_Surface *surface)
@@ -35,6 +61,16 @@ const (
 	PREALLOC  = C.SDL_PREALLOC  // surface uses preallocated memory
 	RLEACCEL  = C.SDL_RLEACCEL  // surface is RLE encoded
 	DONTFREE  = C.SDL_DONTFREE  // surface is referenced internally
+)
+
+type YUV_CONVERSION_MODE C.SDL_YUV_CONVERSION_MODE
+
+// YUV Conversion Modes
+const (
+	YUV_CONVERSION_JPEG      YUV_CONVERSION_MODE = C.SDL_YUV_CONVERSION_JPEG      // Full range JPEG
+	YUV_CONVERSION_BT601                         = C.SDL_YUV_CONVERSION_BT601     // BT.601 (the default)
+	YUV_CONVERSION_BT709                         = C.SDL_YUV_CONVERSION_BT709     // BT.709
+	YUV_CONVERSION_AUTOMATIC                     = C.SDL_YUV_CONVERSION_AUTOMATIC // BT.601 for SD content, BT.709 for HD content
 )
 
 // Surface contains a collection of pixels used in software blitting.
@@ -131,6 +167,27 @@ func CreateRGBSurfaceWithFormatFrom(pixels unsafe.Pointer, width, height, depth,
 		return nil, GetError()
 	}
 	return surface, nil
+}
+
+// SetYUVConversionMode sets the YUV conversion mode
+// TODO: (https://wiki.libsdl.org/SDL_SetYUVConversionMode)
+func SetYUVConversionMode(mode YUV_CONVERSION_MODE) {
+	_mode := C.SDL_YUV_CONVERSION_MODE(mode)
+	C.SDL_SetYUVConversionMode(_mode)
+}
+
+// GetYUVConversionMode gets the YUV conversion mode
+// TODO: (https://wiki.libsdl.org/SDL_GetYUVConversionMode)
+func GetYUVConversionMode() YUV_CONVERSION_MODE {
+	return YUV_CONVERSION_MODE(C.SDL_GetYUVConversionMode())
+}
+
+// GetYUVConversionModeForResolution gets the YUV conversion mode
+// TODO: (https://wiki.libsdl.org/SDL_GetYUVConversionModeForResolution)
+func GetYUVConversionModeForResolution(width, height int) YUV_CONVERSION_MODE {
+	_width := C.int(width)
+	_height := C.int(height)
+	return YUV_CONVERSION_MODE(C.SDL_GetYUVConversionModeForResolution(_width, _height))
 }
 
 // Free frees the RGB surface.
