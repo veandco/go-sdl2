@@ -11,16 +11,15 @@ import (
 // These are the flags which may be passed to SDL_Init().
 // (https://wiki.libsdl.org/SDL_Init)
 const (
-	INIT_TIMER          = 0x00000001 // timer subsystem
-	INIT_AUDIO          = 0x00000010 // audio subsystem
-	INIT_VIDEO          = 0x00000020 // video subsystem; automatically initializes the events subsystem
-	INIT_JOYSTICK       = 0x00000200 // joystick subsystem; automatically initializes the events subsystem
-	INIT_HAPTIC         = 0x00001000 // haptic (force feedback) subsystem
-	INIT_GAMECONTROLLER = 0x00002000 // controller subsystem; automatically initializes the joystick subsystem
-	INIT_EVENTS         = 0x00004000 // events subsystem
-	INIT_NOPARACHUTE    = 0x00100000 // compatibility; this flag is ignored
-
-	INIT_EVERYTHING = INIT_TIMER | INIT_AUDIO | INIT_VIDEO | INIT_EVENTS | INIT_JOYSTICK | INIT_HAPTIC | INIT_GAMECONTROLLER // all of the above subsystems
+	INIT_TIMER          = C.SDL_INIT_TIMER          // timer subsystem
+	INIT_AUDIO          = C.SDL_INIT_AUDIO          // audio subsystem
+	INIT_VIDEO          = C.SDL_INIT_VIDEO          // video subsystem; automatically initializes the events subsystem
+	INIT_JOYSTICK       = C.SDL_INIT_JOYSTICK       // joystick subsystem; automatically initializes the events subsystem
+	INIT_HAPTIC         = C.SDL_INIT_HAPTIC         // haptic (force feedback) subsystem
+	INIT_GAMECONTROLLER = C.SDL_INIT_GAMECONTROLLER // controller subsystem; automatically initializes the joystick subsystem
+	INIT_EVENTS         = C.SDL_INIT_EVENTS         // events subsystem
+	INIT_NOPARACHUTE    = C.SDL_INIT_NOPARACHUTE    // compatibility; this flag is ignored
+	INIT_EVERYTHING     = C.SDL_INIT_EVERYTHING     // all of the above subsystems
 )
 
 const (
