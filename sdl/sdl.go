@@ -1,7 +1,14 @@
 // Package sdl is SDL2 wrapped for Go users. It enables interoperability between Go and the SDL2 library which is written in C. That means the original SDL2 installation is required for this to work. SDL2 is a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D.
 package sdl
 
-//#include "sdl_wrapper.h"
+/*
+#include "sdl_wrapper.h"
+
+#if !(SDL_VERSION_ATLEAST(2,0,9))
+#pragma message("SDL_INIT_SENSOR is not supported before SDL 2.0.9")
+#define SDL_INIT_SENSOR (0x00008000u)
+#endif
+*/
 import "C"
 
 import (
@@ -19,6 +26,7 @@ const (
 	INIT_GAMECONTROLLER = C.SDL_INIT_GAMECONTROLLER // controller subsystem; automatically initializes the joystick subsystem
 	INIT_EVENTS         = C.SDL_INIT_EVENTS         // events subsystem
 	INIT_NOPARACHUTE    = C.SDL_INIT_NOPARACHUTE    // compatibility; this flag is ignored
+	INIT_SENSOR         = C.SDL_INIT_SENSOR         // sensor subsystem
 	INIT_EVERYTHING     = C.SDL_INIT_EVERYTHING     // all of the above subsystems
 )
 
