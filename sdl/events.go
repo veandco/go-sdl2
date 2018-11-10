@@ -44,6 +44,17 @@ typedef struct SDL_AudioDeviceEvent
 #pragma message("SDL_DROPCOMPLETE is not supported before SDL 2.0.5")
 #define SDL_DROPCOMPLETE (0x1003)
 #endif
+
+#if !SDL_VERSION_ATLEAST(2,0,9)
+#define SDL_SENSORUPDATE (0x1200)
+
+typedef struct SDL_SensorEvent {
+    Uint32 type;
+    Uint32 timestamp;
+    Sint32 which;
+    float data[6];
+} SDL_SensorEvent;
+#endif
 */
 import "C"
 import "unsafe"
@@ -130,6 +141,9 @@ const (
 	// Audio hotplug events
 	AUDIODEVICEADDED   = C.SDL_AUDIODEVICEADDED   // a new audio device is available (>= SDL 2.0.4)
 	AUDIODEVICEREMOVED = C.SDL_AUDIODEVICEREMOVED // an audio device has been removed (>= SDL 2.0.4)
+
+	// Sensor events
+	SENSORUPDATE = C.SDL_SENSORUPDATE // a sensor was updated
 
 	// Render events
 	RENDER_TARGETS_RESET = C.SDL_RENDER_TARGETS_RESET // the render targets have been reset and their contents need to be updated (>= SDL 2.0.2)
@@ -675,6 +689,26 @@ func (e *DropEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
+// SensorEvent contains data from sensors such as accelerometer and gyroscope
+// (https://wiki.libsdl.org/SDL_SensorEvent)
+type SensorEvent struct {
+	Type      uint32     // SDL_SENSORUPDATE
+	Timestamp uint32     // In milliseconds, populated using SDL_GetTicks()
+	Which     int32      // The instance ID of the sensor
+	Data      [6]float32 // Up to 6 values from the sensor - additional values can be queried using SDL_SensorGetData()
+}
+type cSensorEvent C.SDL_SensorEvent
+
+// GetType returns the event type.
+func (e *SensorEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *SensorEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
 // RenderEvent contains render event information.
 // (https://wiki.libsdl.org/SDL_EventType)
 type RenderEvent struct {
@@ -924,6 +958,8 @@ func goEvent(cevent *CEvent) Event {
 		event := DropEvent{Type: e.Type, Timestamp: e.Timestamp, File: C.GoString((*C.char)(e.File)), WindowID: e.WindowID}
 		C.SDL_free(e.File)
 		return &event
+	case SENSORUPDATE:
+		return (*SensorEvent)(unsafe.Pointer(cevent))
 	case RENDER_TARGETS_RESET, RENDER_DEVICE_RESET:
 		return (*RenderEvent)(unsafe.Pointer(cevent))
 	case QUIT:
