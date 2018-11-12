@@ -164,7 +164,7 @@ func (rwops *RWops) Tell() (int64, error) {
 		return 0, ErrInvalidParameters
 	}
 
-	ret := int64(C.RWseek(rwops.cptr(), 0, RW_SEEK_CUR))
+	ret := int64(C.RWseek(rwops.cptr(), 0, C.int(RW_SEEK_CUR)))
 	if ret < 0 {
 		return ret, GetError()
 	}
