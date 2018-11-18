@@ -165,7 +165,7 @@ On __Other Operating Systems__, you will need to compile smpeg and SDL_mixer fro
 _Note that there seems to be a problem with SDL_mixer 2.0.2 so you can also try to revert back to 2.0.1 and see if it solves your problem_
 
 __Does go-sdl2 support compiling on mobile platforms like Android and iOS?__
-For Android, see https://github.com/gen2brain/go-sdl2-android-example.
+For Android, see https://github.com/veandco/go-sdl2-examples/tree/master/examples/android.
 
 There is currently no support for iOS yet.
 
