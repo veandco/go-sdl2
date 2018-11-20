@@ -5,7 +5,11 @@ package sdl
 #include "sdl_wrapper.h"
 
 #if !(SDL_VERSION_ATLEAST(2,0,9))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_INIT_SENSOR is not supported before SDL 2.0.9")
+#endif
+
 #define SDL_INIT_SENSOR (0x00008000u)
 #endif
 */

@@ -15,17 +15,29 @@ package sdl
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,3))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SYSWM_WINRT is not supported before SDL 2.0.3")
+#endif
+
 #define SDL_SYSWM_WINRT (0)
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,4))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SYSWM_ANDROID is not supported before SDL 2.0.4")
+#endif
+
 #define SDL_SYSWM_ANDROID (0)
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,5))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SYSWM_VIVANTE is not supported before SDL 2.0.5")
+#endif
+
 #define SDL_SYSWM_VIVANTE (0)
 #endif
 */

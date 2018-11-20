@@ -10,19 +10,35 @@ package sdl
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,4))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_CaptureMouse is not supported before SDL 2.0.4")
+#endif
+
 static int SDL_CaptureMouse(SDL_bool enabled)
 {
 	return -1;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_MOUSEWHEEL_NORMAL is not supported before SDL 2.0.4")
+#endif
+
 #define SDL_MOUSEWHEEL_NORMAL (0)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_MOUSEWHEEL_FLIPPED is not supported before SDL 2.0.4")
+#endif
+
 #define SDL_MOUSEWHEEL_FLIPPED (0)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_WarpMouseGlobal is not supported before SDL 2.0.4")
+#endif
+
 static int SDL_WarpMouseGlobal(int x, int y)
 {
 	return -1;

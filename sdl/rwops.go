@@ -28,7 +28,11 @@ static int RWclose(SDL_RWops *ctx)
 }
 
 #if !(SDL_VERSION_ATLEAST(2,0,6))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_LoadFile_RW is not supported before SDL 2.0.6")
+#endif
+
 static void * SDL_LoadFile_RW(SDL_RWops * src, size_t *datasize, int freesrc)
 {
 	return 0;

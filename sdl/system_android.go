@@ -6,7 +6,11 @@ package sdl
 #include "sdl_wrapper.h"
 
 #if !(SDL_VERSION_ATLEAST(2,0,8))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_IsAndroidTV is not supported before SDL 2.0.8")
+#endif
+
 static int SDL_IsAndroidTV(void)
 {
 	return -1;

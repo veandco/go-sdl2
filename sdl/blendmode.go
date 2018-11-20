@@ -5,10 +5,18 @@ package sdl
 
 #if !(SDL_VERSION_ATLEAST(2,0,6))
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_BLENDMODE_INVALID is not supported before SDL 2.0.6")
+#endif
+
 #define SDL_BLENDMODE_INVALID (0x7FFFFFFF)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_BlendOperation is not supported before SDL 2.0.6")
+#endif
+
 typedef enum
 {
     SDL_BLENDOPERATION_ADD              = 0x1,
@@ -18,7 +26,11 @@ typedef enum
     SDL_BLENDOPERATION_MAXIMUM          = 0x5
 } SDL_BlendOperation;
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_BlendFactor is not supported before SDL 2.0.6")
+#endif
+
 typedef enum
 {
     SDL_BLENDFACTOR_ZERO                = 0x1,
@@ -34,7 +46,11 @@ typedef enum
 
 } SDL_BlendFactor;
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_ComposeCustomBlendMode is not supported before SDL 2.0.6")
+#endif
+
 SDL_BlendMode SDLCALL SDL_ComposeCustomBlendMode(SDL_BlendFactor srcColorFactor, SDL_BlendFactor dstColorFactor, SDL_BlendOperation colorOperation, SDL_BlendFactor srcAlphaFactor, SDL_BlendFactor dstAlphaFactor, SDL_BlendOperation alphaOperation)
 {
 	return SDL_BLENDMODE_NONE;

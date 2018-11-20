@@ -4,7 +4,11 @@ package sdl
 #include "sdl_wrapper.h"
 
 #if !(SDL_VERSION_ATLEAST(2,0,1))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_UpdateYUVTexture is not supported before SDL 2.0.1")
+#endif
+
 static inline int SDL_UpdateYUVTexture(SDL_Texture* texture, const SDL_Rect* rect, const Uint8* Yplane, int Ypitch, const Uint8* Uplane, int Upitch, const Uint8* Vplane, int Vpitch)
 {
 	return -1;
@@ -13,13 +17,21 @@ static inline int SDL_UpdateYUVTexture(SDL_Texture* texture, const SDL_Rect* rec
 
 #if !(SDL_VERSION_ATLEAST(2,0,8))
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_RenderGetMetalLayer is not supported before SDL 2.0.8")
+#endif
+
 static inline void * SDL_RenderGetMetalLayer(SDL_Renderer *renderer)
 {
 	return NULL;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_RenderGetMetalCommandEncoder is not supported before SDL 2.0.8")
+#endif
+
 static inline void * SDL_RenderGetMetalCommandEncoder(SDL_Renderer *renderer)
 {
 	return NULL;

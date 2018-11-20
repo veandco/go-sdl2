@@ -4,7 +4,11 @@ package sdl
 #include "sdl_wrapper.h"
 
 #if !(SDL_VERSION_ATLEAST(2,0,4))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickPowerLevel is not supported before SDL 2.0.4")
+#endif
+
 typedef enum
 {
     SDL_JOYSTICK_POWER_UNKNOWN = -1,
@@ -16,13 +20,21 @@ typedef enum
     SDL_JOYSTICK_POWER_MAX
 } SDL_JoystickPowerLevel;
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickCurrentPowerLevel is not supported before SDL 2.0.4")
+#endif
+
 static SDL_JoystickPowerLevel SDL_JoystickCurrentPowerLevel(SDL_Joystick* joystick)
 {
 	return SDL_JOYSTICK_POWER_UNKNOWN;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickFromInstanceID is not supported before SDL 2.0.4")
+#endif
+
 static SDL_Joystick* SDL_JoystickFromInstanceID(SDL_JoystickID joyid)
 {
 	return NULL;
@@ -30,7 +42,11 @@ static SDL_Joystick* SDL_JoystickFromInstanceID(SDL_JoystickID joyid)
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,6))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickType is not supported before SDL 2.0.6")
+#endif
+
 typedef enum
 {
 	SDL_JOYSTICK_TYPE_UNKNOWN,
@@ -45,61 +61,101 @@ typedef enum
 	SDL_JOYSTICK_TYPE_THROTTLE
 } SDL_JoystickType;
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickGetDeviceVendor is not supported before SDL 2.0.6")
+#endif
+
 static Uint16 SDL_JoystickGetDeviceVendor(int device_index)
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickGetDeviceProduct is not supported before SDL 2.0.6")
+#endif
+
 static Uint16 SDL_JoystickGetDeviceProduct(int device_index)
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickGetDeviceProductVersion is not supported before SDL 2.0.6")
+#endif
+
 static Uint16 SDL_JoystickGetDeviceProductVersion(int device_index)
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickGetDeviceType is not supported before SDL 2.0.6")
+#endif
+
 static SDL_JoystickType SDL_JoystickGetDeviceType(int device_index)
 {
 	return SDL_JOYSTICK_TYPE_UNKNOWN;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickGetDeviceInstanceID is not supported before SDL 2.0.6")
+#endif
+
 static SDL_JoystickID SDL_JoystickGetDeviceInstanceID(int device_index)
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickGetVendor is not supported before SDL 2.0.6")
+#endif
+
 static Uint16 SDL_JoystickGetVendor(SDL_Joystick* joystick)
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickGetProduct is not supported before SDL 2.0.6")
+#endif
+
 static Uint16 SDL_JoystickGetProduct(SDL_Joystick* joystick)
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickGetProductVersion is not supported before SDL 2.0.6")
+#endif
+
 static Uint16 SDL_JoystickGetProductVersion(SDL_Joystick* joystick)
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickGetType is not supported before SDL 2.0.6")
+#endif
+
 static SDL_JoystickType SDL_JoystickGetType(SDL_Joystick* joystick)
 {
 	return SDL_JOYSTICK_TYPE_UNKNOWN;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickGetAxisInitialState is not supported before SDL 2.0.6")
+#endif
+
 static SDL_bool SDL_JoystickGetAxisInitialState(SDL_Joystick* joystick, int axis, Sint16* state)
 {
 	return SDL_FALSE;
@@ -108,12 +164,20 @@ static SDL_bool SDL_JoystickGetAxisInitialState(SDL_Joystick* joystick, int axis
 
 #if !(SDL_VERSION_ATLEAST(2,0,7))
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_LockJoysticks is not supported before SDL 2.0.7")
+#endif
+
 static void SDL_LockJoysticks()
 {
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_UnlockJoysticks is not supported before SDL 2.0.7")
+#endif
+
 static void SDL_UnlockJoysticks()
 {
 }

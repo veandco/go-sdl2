@@ -17,84 +17,140 @@ typedef enum
     SDL_SENSOR_GYRO
 } SDL_SensorType;
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_NumSensors is not supported before SDL 2.0.9")
+#endif
+
 static inline int SDL_NumSensors()
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SensorGetDeviceName is not supported before SDL 2.0.9")
+#endif
+
 static const char * SDL_SensorGetDeviceName(int device_index)
 {
 	return NULL;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SensorGetDeviceType is not supported before SDL 2.0.9")
+#endif
+
 static SDL_SensorType SDL_SensorGetDeviceType(int device_index)
 {
 	return SDL_SENSOR_INVALID;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SensorGetDeviceNonPortableType is not supported before SDL 2.0.9")
+#endif
+
 static int SDL_SensorGetDeviceNonPortableType(int device_index)
 {
 	return -1;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SensorGetDeviceInstanceID is not supported before SDL 2.0.9")
+#endif
+
 static SDL_SensorID SDL_SensorGetDeviceInstanceID(int device_index)
 {
 	return -1;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SensorOpen is not supported before SDL 2.0.9")
+#endif
+
 static SDL_Sensor * SDL_SensorOpen(int device_index)
 {
 	return NULL;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SensorFromInstanceID is not supported before SDL 2.0.9")
+#endif
+
 static SDL_Sensor * SDL_SensorFromInstanceID(SDL_SensorID instance_id)
 {
 	return NULL;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SensorGetName is not supported before SDL 2.0.9")
+#endif
+
 static const char * SDL_SensorGetName(SDL_Sensor *sensor)
 {
 	return NULL;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SensorGetType is not supported before SDL 2.0.9")
+#endif
+
 static SDL_SensorType SDL_SensorGetType(SDL_Sensor *sensor)
 {
 	return SDL_SENSOR_INVALID;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SensorGetNonPortableType is not supported before SDL 2.0.9")
+#endif
+
 static int SDL_SensorGetNonPortableType(SDL_Sensor *sensor)
 {
 	return -1;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SensorGetInstanceID is not supported before SDL 2.0.9")
+#endif
+
 static SDL_SensorID SDL_SensorGetInstanceID(SDL_Sensor *sensor)
 {
 	return -1;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SensorGetData is not supported before SDL 2.0.9")
+#endif
+
 static int SDL_SensorGetData(SDL_Sensor *sensor, float *data, int num_values)
 {
 	return -1;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SensorClose is not supported before SDL 2.0.9")
+#endif
+
 static void SDL_SensorClose(SDL_Sensor *sensor)
 {
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SensorUpdate is not supported before SDL 2.0.9")
+#endif
+
 static void SDL_SensorUpdate()
 {
 }

@@ -16,21 +16,41 @@ static void SDL_GL_GetDrawableSize(SDL_Window *window, int *w, int *h)
 	*h = 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_WINDOW_ALLOW_HIGHDPI is not supported before SDL 2.0.1")
+#endif
+
 #define SDL_WINDOW_ALLOW_HIGHDPI (0)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GL_FRAMEBUFFER_SRGB_CAPABLE is not supported before SDL 2.0.1")
+#endif
+
 #define SDL_GL_FRAMEBUFFER_SRGB_CAPABLE (0)
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,4))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_WINDOW_MOUSE_CAPTURE is not supported before SDL 2.0.4")
+#endif
+
 #define SDL_WINDOW_MOUSE_CAPTURE (0)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GL_CONTEXT_RELEASE_BEHAVIOR is not supported before SDL 2.0.4")
+#endif
+
 #define SDL_GL_CONTEXT_RELEASE_BEHAVIOR (0)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GetDisplayDPI is not supported before SDL 2.0.4")
+#endif
+
 static int SDL_GetDisplayDPI(int displayIndex, float* ddpi, float* hdpi, float* vdpi)
 {
 	return -1;
@@ -39,59 +59,115 @@ static int SDL_GetDisplayDPI(int displayIndex, float* ddpi, float* hdpi, float* 
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,5))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SetWindowResizable is not supported before SDL 2.0.5")
+#endif
+
 static void SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable)
 {
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SetWindowOpacity is not supported before SDL 2.0.5")
+#endif
+
 static int SDL_SetWindowOpacity(SDL_Window *window, float opacity)
 {
 	return -1;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GetWindowOpacity is not supported before SDL 2.0.5")
+#endif
+
 static int SDL_GetWindowOpacity(SDL_Window *window, float *opacity)
 {
 	return -1;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GetDisplayUsableBounds is not supported before SDL 2.0.5")
+#endif
+
 static int SDL_GetDisplayUsableBounds(int displayIndex, SDL_Rect* rect)
 {
 	return -1;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_WINDOW_ALWAYS_ON_TOP is not supported before SDL 2.0.5")
+#endif
+
 #define SDL_WINDOW_ALWAYS_ON_TOP (0)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_WINDOW_SKIP_TASKBAR is not supported before SDL 2.0.5")
+#endif
+
 #define SDL_WINDOW_SKIP_TASKBAR (0)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_WINDOW_UTILITY is not supported before SDL 2.0.5")
+#endif
+
 #define SDL_WINDOW_UTILITY (0)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_WINDOW_TOOLTIP is not supported before SDL 2.0.5")
+#endif
+
 #define SDL_WINDOW_TOOLTIP (0)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_WINDOW_POPUP_MENU is not supported before SDL 2.0.5")
+#endif
+
 #define SDL_WINDOW_POPUP_MENU (0)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_WINDOWEVENT_TAKE_FOCUS is not supported before SDL 2.0.5")
+#endif
+
 #define SDL_WINDOWEVENT_TAKE_FOCUS (0)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_WINDOWEVENT_HIT_TEST is not supported before SDL 2.0.5")
+#endif
+
 #define SDL_WINDOWEVENT_HIT_TEST (0)
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,6))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_WINDOW_VULKAN is not supported before SDL 2.0.6")
+#endif
+
 #define SDL_WINDOW_VULKAN (0)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GL_CONTEXT_RESET_NOTIFICATION is not supported before SDL 2.0.6")
+#endif
+
 #define SDL_GL_CONTEXT_RESET_NOTIFICATION (0)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GL_CONTEXT_NO_ERROR is not supported before SDL 2.0.6")
+#endif
+
 #define SDL_GL_CONTEXT_NO_ERROR (0)
 #endif
 */

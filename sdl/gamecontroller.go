@@ -4,7 +4,11 @@ package sdl
 #include "sdl_wrapper.h"
 
 #if !(SDL_VERSION_ATLEAST(2,0,4))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GameControllerFromInstanceID is not supported before SDL 2.0.4")
+#endif
+
 static SDL_GameController* SDL_GameControllerFromInstanceID(SDL_JoystickID joyid)
 {
 	return NULL;
@@ -12,31 +16,51 @@ static SDL_GameController* SDL_GameControllerFromInstanceID(SDL_JoystickID joyid
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,6))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GameControllerGetVendor is not supported before SDL 2.0.6")
+#endif
+
 static Uint16 SDL_GameControllerGetVendor(SDL_GameController* gamecontroller)
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GameControllerGetProduct is not supported before SDL 2.0.6")
+#endif
+
 static Uint16 SDL_GameControllerGetProduct(SDL_GameController* gamecontroller)
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GameControllerGetProductVersion is not supported before SDL 2.0.6")
+#endif
+
 static Uint16 SDL_GameControllerGetProductVersion(SDL_GameController* gamecontroller)
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GameControllerNumMappings is not supported before SDL 2.0.6")
+#endif
+
 static int SDL_GameControllerNumMappings(void)
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GameControllerMappingForIndex is not supported before SDL 2.0.6")
+#endif
+
 static char* SDL_GameControllerMappingForIndex(int mapping_index)
 {
 	return NULL;

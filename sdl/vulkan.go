@@ -23,34 +23,58 @@ VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkSurfaceKHR)
 typedef VkInstance SDL_vulkanInstance;
 typedef VkSurfaceKHR SDL_vulkanSurface;
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_Vulkan_LoadLibrary is not supported before SDL 2.0.6")
+#endif
+
 static int SDL_Vulkan_LoadLibrary(const char *path)
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_Vulkan_GetVkGetInstanceProcAddr is not supported before SDL 2.0.6")
+#endif
+
 static void* SDL_Vulkan_GetVkGetInstanceProcAddr(void)
 {
 	return NULL;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_Vulkan_UnloadLibrary is not supported before SDL 2.0.6")
+#endif
+
 static void SDL_Vulkan_UnloadLibrary(void) {}
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_Vulkan_GetInstanceExtensions is not supported before SDL 2.0.6")
+#endif
+
 static int SDL_Vulkan_GetInstanceExtensions(SDL_Window *window, unsigned int *pCount, const char **pNames)
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_Vulkan_CreateSurface is not supported before SDL 2.0.6")
+#endif
+
 static int SDL_Vulkan_CreateSurface(SDL_Window *window, VkInstance instance, VkSurfaceKHR *surface)
 {
 	return 0;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_Vulkan_GetDrawableSize is not supported before SDL 2.0.6")
+#endif
+
 static void SDL_Vulkan_GetDrawableSize(SDL_Window *window, int *w, int *h) {
 	*w = 0;
 	*h = 0;

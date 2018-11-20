@@ -4,7 +4,11 @@ package sdl
 #include "sdl_wrapper.h"
 
 #if !(SDL_VERSION_ATLEAST(2,0,1))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GetSystemRAM is not supported before SDL 2.0.1")
+#endif
+
 static inline int SDL_GetSystemRAM()
 {
 	return -1;
@@ -12,7 +16,11 @@ static inline int SDL_GetSystemRAM()
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,2))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_HasAVX is not supported before SDL 2.0.2")
+#endif
+
 static inline SDL_bool SDL_HasAVX()
 {
 	return SDL_FALSE;
@@ -20,7 +28,11 @@ static inline SDL_bool SDL_HasAVX()
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,4))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_HasAVX2 is not supported before SDL 2.0.4")
+#endif
+
 static inline SDL_bool SDL_HasAVX2()
 {
 	return SDL_FALSE;
@@ -28,7 +40,11 @@ static inline SDL_bool SDL_HasAVX2()
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,6))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_HasNEON is not supported before SDL 2.0.4")
+#endif
+
 static inline SDL_bool SDL_HasNEON()
 {
 	return SDL_FALSE;

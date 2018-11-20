@@ -9,19 +9,39 @@ package sdl
 #endif
 
 #if !SDL_VERSION_ATLEAST(2,0,4)
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_KEYMAPCHANGED is not supported before SDL 2.0.4")
+#endif
+
 #define SDL_KEYMAPCHANGED (0x304)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_AUDIODEVICEADDED is not supported before SDL 2.0.4")
+#endif
+
 #define SDL_AUDIODEVICEADDED (0x1100)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_AUDIODEVICEREMOVED is not supported before SDL 2.0.4")
+#endif
+
 #define SDL_AUDIODEVICEREMOVED (0x1101)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_RENDER_DEVICE_RESET is not supported before SDL 2.0.4")
+#endif
+
 #define SDL_RENDER_DEVICE_RESET (0x2001)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_AudioDeviceEvent is not supported before SDL 2.0.4")
+#endif
+
 typedef struct SDL_AudioDeviceEvent
 {
     Uint32 type;
@@ -35,13 +55,25 @@ typedef struct SDL_AudioDeviceEvent
 #endif
 
 #if !SDL_VERSION_ATLEAST(2,0,5)
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_DROPTEXT is not supported before SDL 2.0.5")
+#endif
+
 #define SDL_DROPTEXT (0x1001)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_DROPBEGIN is not supported before SDL 2.0.5")
+#endif
+
 #define SDL_DROPBEGIN (0x1002)
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_DROPCOMPLETE is not supported before SDL 2.0.5")
+#endif
+
 #define SDL_DROPCOMPLETE (0x1003)
 #endif
 

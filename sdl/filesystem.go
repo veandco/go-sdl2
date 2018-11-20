@@ -4,13 +4,21 @@ package sdl
 #include "sdl_wrapper.h"
 
 #if !(SDL_VERSION_ATLEAST(2,0,1))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GetBasePath is not supported before SDL 2.0.1")
+#endif
+
 static inline char* SDL_GetBasePath()
 {
 	return NULL;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GetPrefPath is not supported before SDL 2.0.1")
+#endif
+
 static inline char* SDL_GetPrefPath(const char *org, const char *app)
 {
 	return NULL;

@@ -11,18 +11,30 @@ typedef enum {
 	SDL_YUV_CONVERSION_AUTOMATIC
 } SDL_YUV_CONVERSION_MODE;
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_SetYUVConversionMode is not supported before SDL 2.0.8")
+#endif
+
 void SDL_SetYUVConversionMode(SDL_YUV_CONVERSION_MODE mode)
 {
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GetYUVConversionMode is not supported before SDL 2.0.8")
+#endif
+
 SDL_YUV_CONVERSION_MODE SDL_GetYUVConversionMode(void)
 {
 	return -1;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_GetYUVConversionModeForResolution is not supported before SDL 2.0.8")
+#endif
+
 SDL_YUV_CONVERSION_MODE SDL_GetYUVConversionModeForResolution(int width, int height)
 {
 	return -1;
@@ -30,7 +42,11 @@ SDL_YUV_CONVERSION_MODE SDL_GetYUVConversionModeForResolution(int width, int hei
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,6))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_DuplicateSurface is not supported before SDL 2.0.6")
+#endif
+
 static inline SDL_Surface* SDL_DuplicateSurface(SDL_Surface *surface)
 {
 	return NULL;
@@ -38,13 +54,21 @@ static inline SDL_Surface* SDL_DuplicateSurface(SDL_Surface *surface)
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,5))
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_CreateRGBSurfaceWithFormat is not supported before SDL 2.0.5")
+#endif
+
 static inline SDL_Surface* SDL_CreateRGBSurfaceWithFormat(Uint32 flags, int width, int height, int depth, Uint32 format)
 {
 	return NULL;
 }
 
+
+#if defined(WARN_OUTDATED)
 #pragma message("SDL_CreateRGBSurfaceWithFormatFrom is not supported before SDL 2.0.5")
+#endif
+
 static inline SDL_Surface* SDL_CreateRGBSurfaceWithFormatFrom(void* pixels, int width, int height, int depth, int pitch, Uint32 format)
 {
 	return NULL;
