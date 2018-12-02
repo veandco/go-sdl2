@@ -3,6 +3,7 @@ package sdl
 // #include "sdl_wrapper.h"
 import "C"
 import "unsafe"
+import "image/color"
 
 // PixelFormat contains pixel format information.
 // (https://wiki.libsdl.org/SDL_PixelFormat)
@@ -39,14 +40,9 @@ type Palette struct {
 }
 type cPalette C.SDL_Palette
 
-// Color represents a color.
+// Color represents a color. This implements image/color.Color interface.
 // (https://wiki.libsdl.org/SDL_Color)
-type Color struct {
-	R uint8 // the red component in the range 0-255
-	G uint8 // the green component in the range 0-255
-	B uint8 // the blue component in the range 0-255
-	A uint8 // the alpha component in the range 0-255
-}
+type Color color.RGBA
 
 // Uint32 return uint32 representation of RGBA color.
 func (c Color) Uint32() uint32 {
@@ -56,25 +52,6 @@ func (c Color) Uint32() uint32 {
 	v |= uint32(c.G) << 8
 	v |= uint32(c.B)
 	return v
-}
-
-// RGBA returns the alpha-premultiplied red, green, blue and alpha values
-// for the color. Each value ranges within [0, 0xffff], but is represented
-// by a uint32 so that multiplying by a blend factor up to 0xffff will not
-// overflow.
-//
-// An alpha-premultiplied color component c has been scaled by alpha (a),
-// so has valid values 0 <= c <= a.
-func (c Color) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R)
-	r |= r << 8
-	g = uint32(c.G)
-	g |= g << 8
-	b = uint32(c.B)
-	b |= b << 8
-	a = uint32(c.A)
-	a |= a << 8
-	return
 }
 
 // Pixel types.
