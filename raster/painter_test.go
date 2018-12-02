@@ -44,5 +44,4 @@ func TestImagePainter(t *testing.T) {
 	if err := f.Close(); err != nil {
 		t.Error(err)
 	}
-	t.Error("Done")
 }

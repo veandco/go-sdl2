@@ -46,7 +46,7 @@ func (p *ImagePainter) Paint(ss []raster.Span, done bool) {
 			// Get destination pixel color in RGBA64
 			sr, sg, sb, sa := p.Image.At(x, y).RGBA() // 16 bit values
 			// Compute destination color in RGBA64
-			var a uint32 = (mask - (da * ma / m))
+			var a uint32 = (m - (da * ma / m))
 			rr := uint16((dr*ma + sr*a) / m)
 			gg := uint16((dg*ma + sg*a) / m)
 			bb := uint16((db*ma + sb*a) / m)
