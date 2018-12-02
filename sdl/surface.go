@@ -78,6 +78,8 @@ static inline SDL_Surface* SDL_CreateRGBSurfaceWithFormatFrom(void* pixels, int 
 import "C"
 import "unsafe"
 import "reflect"
+import "image"
+import "image/color"
 
 // Surface flags (internal use)
 const (
@@ -520,4 +522,67 @@ func (surface *Surface) Duplicate() (newSurface *Surface, err error) {
 
 	newSurface = (*Surface)(unsafe.Pointer(_newSurface))
 	return
+}
+
+func (s *Surface) ColorModel() color.Model {
+	switch s.Format.Format {
+	case PIXELFORMAT_ARGB8888, PIXELFORMAT_ABGR8888:
+		return color.RGBAModel
+	case PIXELFORMAT_RGB888:
+		return color.RGBAModel
+	default:
+		panic("Not implemented yet")
+	}
+}
+
+func (s *Surface) Bounds() image.Rectangle {
+	return image.Rect(0, 0, int(s.W), int(s.H))
+}
+
+func (s *Surface) At(x, y int) color.Color {
+	pix := s.Pixels()
+	i := int32(y)*s.Pitch + int32(x)*int32(s.Format.BytesPerPixel)
+	switch s.Format.Format {
+	/*
+		case PIXELFORMAT_ARGB8888:
+			return color.RGBA{pix[i+3], pix[i], pix[i+1], pix[i+2]}
+		case PIXELFORMAT_ABGR8888:
+			return color.RGBA{pix[i], pix[i+3], pix[i+2], pix[i+1]}
+	*/
+	case PIXELFORMAT_RGB888:
+		return color.RGBA{pix[i], pix[i+1], pix[i+2], 0xff}
+	default:
+		panic("Not implemented yet")
+	}
+}
+
+func (s *Surface) Set(x, y int, c color.Color) {
+	pix := s.Pixels()
+	i := int32(y)*s.Pitch + int32(x)*int32(s.Format.BytesPerPixel)
+	switch s.Format.Format {
+	case PIXELFORMAT_ARGB8888:
+		col := s.ColorModel().Convert(c).(color.RGBA)
+		pix[i+0] = col.R
+		pix[i+1] = col.G
+		pix[i+2] = col.B
+		pix[i+3] = col.A
+	case PIXELFORMAT_ABGR8888:
+		col := s.ColorModel().Convert(c).(color.RGBA)
+		pix[i+3] = col.R
+		pix[i+2] = col.G
+		pix[i+1] = col.B
+		pix[i+0] = col.A
+	case PIXELFORMAT_RGB24, PIXELFORMAT_RGB888:
+		col := s.ColorModel().Convert(c).(color.RGBA)
+		pix[i+0] = col.B
+		pix[i+1] = col.G
+		pix[i+2] = col.R
+	case PIXELFORMAT_BGR24, PIXELFORMAT_BGR888:
+		col := s.ColorModel().Convert(c).(color.RGBA)
+		pix[i+2] = col.R
+		pix[i+1] = col.G
+		pix[i+0] = col.B
+	default:
+		panic("Unknown pixel format!")
+	}
 }
