@@ -12,6 +12,7 @@ import (
 )
 
 func TestImagePainter(t *testing.T) {
+	// Spans to render
 	ss := []raster.Span{
 		raster.Span{0, 4, 6, 0xffff},
 		raster.Span{1, 3, 7, 0xf0f0},
@@ -21,18 +22,11 @@ func TestImagePainter(t *testing.T) {
 	}
 
 	img := image.NewRGBA(image.Rect(0, 0, 10, 10))
-	/*
-		for i := 0; i < 10; i++ {
-			for j := 0; j < 10; j++ {
-				img.SetRGBA(i, j, color.RGBA{0x00, 0x00, 0x00, 0xff})
-			}
-		}
-	*/
 	pt := NewImagePainter(img)
 	pt.SetColor(color.RGBA{0xff, 0x00, 0x00, 0xff})
 	pt.Paint(ss, false)
+
 	// Write to PNG
-	print("CREATING")
 	f, err := os.Create("output.png")
 	if err != nil {
 		t.Error(err)
