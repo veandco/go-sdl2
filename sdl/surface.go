@@ -524,6 +524,7 @@ func (surface *Surface) Duplicate() (newSurface *Surface, err error) {
 	return
 }
 
+// Return the color model used by this Surface.
 func (s *Surface) ColorModel() color.Model {
 	switch s.Format.Format {
 	case PIXELFORMAT_ARGB8888, PIXELFORMAT_ABGR8888:
@@ -535,10 +536,13 @@ func (s *Surface) ColorModel() color.Model {
 	}
 }
 
+// Return the bounds of this surface. Currently, it always starts at (0,0), but
+// this is not guaranteed in the future so don't rely on it.
 func (s *Surface) Bounds() image.Rectangle {
 	return image.Rect(0, 0, int(s.W), int(s.H))
 }
 
+// Return the pixel color at (x, y)
 func (s *Surface) At(x, y int) color.Color {
 	pix := s.Pixels()
 	i := int32(y)*s.Pitch + int32(x)*int32(s.Format.BytesPerPixel)
@@ -556,6 +560,9 @@ func (s *Surface) At(x, y int) color.Color {
 	}
 }
 
+// Set the color of the pixel at (x, y) using this surface's color model to
+// convert c to the appropriate color. This method is required for the
+// draw.Image interface. The surface may require locking before calling Set.
 func (s *Surface) Set(x, y int, c color.Color) {
 	pix := s.Pixels()
 	i := int32(y)*s.Pitch + int32(x)*int32(s.Format.BytesPerPixel)
