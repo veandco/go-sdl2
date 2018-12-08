@@ -46,7 +46,7 @@ func (p *ImagePainter) Paint(ss []raster.Span, done bool) {
 			// Get destination pixel color in RGBA64
 			sr, sg, sb, sa := p.Image.At(x, y).RGBA() // 16 bit values
 			// Compute destination color in RGBA64
-			var a uint32 = (m - (da * ma / m))
+			var a = (m - (da * ma / m))
 			rr := uint16((dr*ma + sr*a) / m)
 			gg := uint16((dg*ma + sg*a) / m)
 			bb := uint16((db*ma + sb*a) / m)
@@ -57,12 +57,12 @@ func (p *ImagePainter) Paint(ss []raster.Span, done bool) {
 	}
 }
 
-// Set the color to use when rasterizing
+// SetColor set the color to use when rasterizing
 func (p *ImagePainter) SetColor(c color.Color) {
 	p.c = c
 }
 
-// Builds a Painter for a specific Image
+// NewImagePainter builds a Painter for a generic Image
 func NewImagePainter(m draw.Image) *ImagePainter {
 	return &ImagePainter{Image: m}
 }
