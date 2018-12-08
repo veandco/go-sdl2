@@ -18,7 +18,7 @@ type ImagePainter struct {
 	c     color.Color
 }
 
-// Paints a batch of Spans using the current ImagePainter image and color.
+// Paint a batch of Spans using the current ImagePainter image and color.
 // Image's Color model will be used to convert the color.
 func (p *ImagePainter) Paint(ss []raster.Span, done bool) {
 	// Convert color to RGBA
