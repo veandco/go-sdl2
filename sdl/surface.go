@@ -524,9 +524,9 @@ func (surface *Surface) Duplicate() (newSurface *Surface, err error) {
 	return
 }
 
-// Return the color model used by this Surface.
-func (s *Surface) ColorModel() color.Model {
-	switch s.Format.Format {
+// ColorModel returns the color model used by this Surface.
+func (surface *Surface) ColorModel() color.Model {
+	switch surface.Format.Format {
 	case PIXELFORMAT_ARGB8888, PIXELFORMAT_ABGR8888:
 		return color.RGBAModel
 	case PIXELFORMAT_RGB888:
@@ -536,17 +536,17 @@ func (s *Surface) ColorModel() color.Model {
 	}
 }
 
-// Return the bounds of this surface. Currently, it always starts at (0,0), but
-// this is not guaranteed in the future so don't rely on it.
-func (s *Surface) Bounds() image.Rectangle {
-	return image.Rect(0, 0, int(s.W), int(s.H))
+// Bounds return the bounds of this surface. Currently, it always starts at
+// (0,0), but this is not guaranteed in the future so don't rely on it.
+func (surface *Surface) Bounds() image.Rectangle {
+	return image.Rect(0, 0, int(surface.W), int(surface.H))
 }
 
-// Return the pixel color at (x, y)
-func (s *Surface) At(x, y int) color.Color {
-	pix := s.Pixels()
-	i := int32(y)*s.Pitch + int32(x)*int32(s.Format.BytesPerPixel)
-	switch s.Format.Format {
+// At returns the pixel color at (x, y)
+func (surface *Surface) At(x, y int) color.Color {
+	pix := surface.Pixels()
+	i := int32(y)*surface.Pitch + int32(x)*int32(surface.Format.BytesPerPixel)
+	switch surface.Format.Format {
 	/*
 		case PIXELFORMAT_ARGB8888:
 			return color.RGBA{pix[i+3], pix[i], pix[i+1], pix[i+2]}
@@ -563,29 +563,29 @@ func (s *Surface) At(x, y int) color.Color {
 // Set the color of the pixel at (x, y) using this surface's color model to
 // convert c to the appropriate color. This method is required for the
 // draw.Image interface. The surface may require locking before calling Set.
-func (s *Surface) Set(x, y int, c color.Color) {
-	pix := s.Pixels()
-	i := int32(y)*s.Pitch + int32(x)*int32(s.Format.BytesPerPixel)
-	switch s.Format.Format {
+func (surface *Surface) Set(x, y int, c color.Color) {
+	pix := surface.Pixels()
+	i := int32(y)*surface.Pitch + int32(x)*int32(surface.Format.BytesPerPixel)
+	switch surface.Format.Format {
 	case PIXELFORMAT_ARGB8888:
-		col := s.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(color.RGBA)
 		pix[i+0] = col.R
 		pix[i+1] = col.G
 		pix[i+2] = col.B
 		pix[i+3] = col.A
 	case PIXELFORMAT_ABGR8888:
-		col := s.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(color.RGBA)
 		pix[i+3] = col.R
 		pix[i+2] = col.G
 		pix[i+1] = col.B
 		pix[i+0] = col.A
 	case PIXELFORMAT_RGB24, PIXELFORMAT_RGB888:
-		col := s.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(color.RGBA)
 		pix[i+0] = col.B
 		pix[i+1] = col.G
 		pix[i+2] = col.R
 	case PIXELFORMAT_BGR24, PIXELFORMAT_BGR888:
-		col := s.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(color.RGBA)
 		pix[i+2] = col.R
 		pix[i+1] = col.G
 		pix[i+0] = col.B
