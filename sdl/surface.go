@@ -78,6 +78,8 @@ static inline SDL_Surface* SDL_CreateRGBSurfaceWithFormatFrom(void* pixels, int 
 import "C"
 import "unsafe"
 import "reflect"
+import "image"
+import "image/color"
 
 // Surface flags (internal use)
 const (
@@ -520,4 +522,74 @@ func (surface *Surface) Duplicate() (newSurface *Surface, err error) {
 
 	newSurface = (*Surface)(unsafe.Pointer(_newSurface))
 	return
+}
+
+// ColorModel returns the color model used by this Surface.
+func (surface *Surface) ColorModel() color.Model {
+	switch surface.Format.Format {
+	case PIXELFORMAT_ARGB8888, PIXELFORMAT_ABGR8888:
+		return color.RGBAModel
+	case PIXELFORMAT_RGB888:
+		return color.RGBAModel
+	default:
+		panic("Not implemented yet")
+	}
+}
+
+// Bounds return the bounds of this surface. Currently, it always starts at
+// (0,0), but this is not guaranteed in the future so don't rely on it.
+func (surface *Surface) Bounds() image.Rectangle {
+	return image.Rect(0, 0, int(surface.W), int(surface.H))
+}
+
+// At returns the pixel color at (x, y)
+func (surface *Surface) At(x, y int) color.Color {
+	pix := surface.Pixels()
+	i := int32(y)*surface.Pitch + int32(x)*int32(surface.Format.BytesPerPixel)
+	switch surface.Format.Format {
+	/*
+		case PIXELFORMAT_ARGB8888:
+			return color.RGBA{pix[i+3], pix[i], pix[i+1], pix[i+2]}
+		case PIXELFORMAT_ABGR8888:
+			return color.RGBA{pix[i], pix[i+3], pix[i+2], pix[i+1]}
+	*/
+	case PIXELFORMAT_RGB888:
+		return color.RGBA{pix[i], pix[i+1], pix[i+2], 0xff}
+	default:
+		panic("Not implemented yet")
+	}
+}
+
+// Set the color of the pixel at (x, y) using this surface's color model to
+// convert c to the appropriate color. This method is required for the
+// draw.Image interface. The surface may require locking before calling Set.
+func (surface *Surface) Set(x, y int, c color.Color) {
+	pix := surface.Pixels()
+	i := int32(y)*surface.Pitch + int32(x)*int32(surface.Format.BytesPerPixel)
+	switch surface.Format.Format {
+	case PIXELFORMAT_ARGB8888:
+		col := surface.ColorModel().Convert(c).(color.RGBA)
+		pix[i+0] = col.R
+		pix[i+1] = col.G
+		pix[i+2] = col.B
+		pix[i+3] = col.A
+	case PIXELFORMAT_ABGR8888:
+		col := surface.ColorModel().Convert(c).(color.RGBA)
+		pix[i+3] = col.R
+		pix[i+2] = col.G
+		pix[i+1] = col.B
+		pix[i+0] = col.A
+	case PIXELFORMAT_RGB24, PIXELFORMAT_RGB888:
+		col := surface.ColorModel().Convert(c).(color.RGBA)
+		pix[i+0] = col.B
+		pix[i+1] = col.G
+		pix[i+2] = col.R
+	case PIXELFORMAT_BGR24, PIXELFORMAT_BGR888:
+		col := surface.ColorModel().Convert(c).(color.RGBA)
+		pix[i+2] = col.R
+		pix[i+1] = col.G
+		pix[i+0] = col.B
+	default:
+		panic("Unknown pixel format!")
+	}
 }
