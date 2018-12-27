@@ -1,4 +1,4 @@
-# SDL2 binding for Go [![Build Status](https://travis-ci.org/veandco/go-sdl2.svg?branch=master)](https://travis-ci.org/veandco/go-sdl2) [![Go Report Card](https://goreportcard.com/badge/github.com/veandco/go-sdl2)](https://goreportcard.com/report/github.com/veandco/go-sdl2) [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
+# SDL2 binding for Go [![Build Status](https://travis-ci.org/kjx98/go-sdl2.svg?branch=master)](https://travis-ci.org/kjx98/go-sdl2) [![Go Report Card](https://goreportcard.com/badge/github.com/veandco/go-sdl2)](https://goreportcard.com/report/github.com/veandco/go-sdl2) [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 `go-sdl2` is SDL2 wrapped for Go users. It enables interoperability between Go and the SDL2 library which is written in C. That means the original SDL2 installation is required for this to work.
 
 
@@ -13,7 +13,7 @@
 
 
 # Documentation
-* [GoDoc documentation for go-sdl2](https://godoc.org/github.com/veandco/go-sdl2)
+* [GoDoc documentation for go-sdl2](https://godoc.org/github.com/kjx98/go-sdl2)
 * [Original SDL2 wiki](https://wiki.libsdl.org)
 
 
