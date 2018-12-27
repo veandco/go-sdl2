@@ -1,17 +1,21 @@
+dist: xenial
 language: go
 
 go:
-  - 1.2
+  - 1.9
+
+branches:
+  only:
+  - master
+#  - sdlOnly
+
+before_install:
+  - sudo apt-get update -q
+  - sudo apt-get install libsdl2-dev
 
 install:
-  - mkdir sdl2install
-  - wget https://www.libsdl.org/release/SDL2-2.0.0.tar.gz
-  - tar xf SDL2-2.0.0.tar.gz
-  - cd SDL2-2.0.0
-  - ./configure
-  - make
-  - sudo make install
+  - go get github.com/kjx98/golib/to
 
 script:
-  - cd ../sdl
+  - cd sdl
   - go build
