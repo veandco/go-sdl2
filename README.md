@@ -21,7 +21,7 @@
 ```go
 package main
 
-import "github.com/veandco/go-sdl2/sdl"
+import "github.com/kjx98/go-sdl2/sdl"
 
 func main() {
 	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
@@ -65,10 +65,10 @@ For more complete examples, see https://github.com/veandco/go-sdl2-examples. You
 
 # Requirements
 * [SDL2](http://libsdl.org/download-2.0.php)
-* [SDL2_image (optional)](http://www.libsdl.org/projects/SDL_image/)
-* [SDL2_mixer (optional)](http://www.libsdl.org/projects/SDL_mixer/)
-* [SDL2_ttf (optional)](http://www.libsdl.org/projects/SDL_ttf/)
-* [SDL2_gfx (optional)](http://www.ferzkopp.net/wordpress/2016/01/02/sdl_gfx-sdl2_gfx/)
+* [SDL2_image (optional, stripped)](http://www.libsdl.org/projects/SDL_image/)
+* [SDL2_mixer (optional, stripped)](http://www.libsdl.org/projects/SDL_mixer/)
+* [SDL2_ttf (optional, stripped)](http://www.libsdl.org/projects/SDL_ttf/)
+* [SDL2_gfx (optional, stripped)](http://www.ferzkopp.net/wordpress/2016/01/02/sdl_gfx-sdl2_gfx/)
 
 Below is some commands that can be used to install the required packages in
 some Linux distributions. Some older versions of the distributions such as
@@ -76,19 +76,19 @@ Ubuntu 13.10 may also be used but it may miss an optional package such as
 _libsdl2-ttf-dev_ on Ubuntu 13.10's case which is available in Ubuntu 14.04.
 
 On __Ubuntu 14.04 and above__, type:\
-`apt install libsdl2{,-image,-mixer,-ttf,-gfx}-dev`
+`apt install libsdl2-dev`
 
 On __Fedora 25 and above__, type:\
-`yum install SDL2{,_image,_mixer,_ttf,_gfx}-devel`
+`yum install SDL2-devel`
 
 On __Arch Linux__, type:\
-`pacman -S sdl2{,_image,_mixer,_ttf,_gfx}`
+`pacman -S sdl2`
 
 On __Gentoo__, type:\
-`emerge -av libsdl2 sdl2-{image,mixer,ttf,gfx}`
+`emerge -av libsdl2`
 
 On __macOS__, install SDL2 via [Homebrew](http://brew.sh) like so:\
-`brew install sdl2{,_image,_mixer,_ttf,_gfx} pkg-config`
+`brew install sdl2 pkg-config`
 
 On __Windows__,
 1. Install mingw-w64 from [Mingw-builds](http://mingw-w64.org/doku.php/download/mingw-builds)
@@ -104,23 +104,17 @@ On __Windows__,
 3. Setup Path environment variable
     * Put your mingw-w64 binaries location into your system Path environment variable. e.g. `C:\Program Files\mingw-w64\x86_64-6.3.0-win32-seh-rt_v5-rev1\mingw64\bin` and `C:\Program Files\mingw-w64\x86_64-6.3.0-win32-seh-rt_v5-rev1\mingw64\x86_64-w64-mingw32\bin`
 4. Open up a terminal such as `Git Bash` and run `go get -v github.com/veandco/go-sdl2/sdl`.
-5. (Optional) You can repeat __Step 2__ for [SDL_image](https://www.libsdl.org/projects/SDL_image), [SDL_mixer](https://www.libsdl.org/projects/SDL_mixer), [SDL_ttf](https://www.libsdl.org/projects/SDL_ttf)
-    * NOTE: pre-build the libraries for faster compilation by running `go install github.com/veandco/go-sdl2/{sdl,img,mix,ttf}`
 
 * Or you can install SDL2 via [Msys2](https://msys2.github.io) like so:
-`pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-SDL2{,_image,_mixer,_ttf,_gfx}`
+`pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-SDL2`
 
 
 # Installation
 To get the bindings, type:\
-`go get -v github.com/veandco/go-sdl2/sdl`\
-`go get -v github.com/veandco/go-sdl2/img`\
-`go get -v github.com/veandco/go-sdl2/mix`\
-`go get -v github.com/veandco/go-sdl2/ttf`\
-`go get -v github.com/veandco/go-sdl2/gfx`
+`go get -v github.com/veandco/go-sdl2/sdl`
 
 or type this if you use Bash terminal:\
-`go get -v github.com/veandco/go-sdl2/{sdl,img,mix,ttf}`
+`go get -v github.com/veandco/go-sdl2/sdl`
 
 Due to `go-sdl2` being under active development, a lot of breaking changes are going to happen during v0.x. With [versioning system](https://github.com/golang/proposal/blob/master/design/24301-versioned-go.md) coming to Go soon, we'll make use of semantic versioning to ensure stability in the future.
 
