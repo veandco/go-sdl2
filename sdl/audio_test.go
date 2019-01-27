@@ -2,9 +2,7 @@ package sdl
 
 import (
 	"bytes"
-	"reflect"
 	"testing"
-	"unsafe"
 )
 
 var squareWave = []byte("RIFF,\x00\x00\x00WAVEfmt \x10\x00\x00\x00\x01\x00" +
@@ -68,8 +66,7 @@ func TestAudioInitQuit(t *testing.T) {
 
 func TestLoadWAVRW(t *testing.T) {
 	// load WAV from *RWOps pointing to WAV data
-	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&squareWave))
-	src := RWFromMem(unsafe.Pointer(sliceHeader.Data), len(squareWave))
+	src, _ := RWFromMem(squareWave)
 	buf, spec := LoadWAVRW(src, false)
 
 	// test returned []byte
