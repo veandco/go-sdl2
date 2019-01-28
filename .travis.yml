@@ -4,15 +4,20 @@ go:
   - 1.2
   - tip
 
+addons:
+  apt:
+    packages:
+      - xvfb
+
+before_install:
+  - sudo apt-get update -q
+  - sudo apt-get install libegl1-mesa-dev mesa-common-dev libsdl2-dev
+
 install:
-  - mkdir sdl2install
-  - wget https://www.libsdl.org/release/SDL2-2.0.0.tar.gz
-  - tar xf SDL2-2.0.0.tar.gz
-  - cd SDL2-2.0.0
-  - ./configure
-  - make
-  - sudo make install
+  - export DISPLAY=':99.0'
+  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
 script:
-  - cd ../sdl
+  - go test ./...
+  - cd sdl
   - go build
