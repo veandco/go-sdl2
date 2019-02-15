@@ -618,7 +618,7 @@ func (stream *AudioStream) Flush() (err error) {
 // Clear clears any pending data in the stream without converting it
 // TODO: (https://wiki.libsdl.org/SDL_AudioStreamClear)
 func (stream *AudioStream) Clear() (err error) {
-	ret := int(C.SDL_AudioStreamFlush(stream.cptr()))
+	ret := int(C.SDL_AudioStreamClear(stream.cptr()))
 	err = errorFromInt(ret)
 	return
 }
