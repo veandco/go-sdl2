@@ -303,8 +303,8 @@ func (sensor *Sensor) GetData(data []float32) (err error) {
 
 // Close closes a sensor previously opened with SensorOpen()
 // (https://wiki.libsdl.org/SDL_SensorClose)
-func (sensor *Sensor) Close() (typ int) {
-	typ = int(C.SDL_SensorGetNonPortableType((*C.SDL_Sensor)(sensor)))
+func (sensor *Sensor) Close() {
+	C.SDL_SensorClose((*C.SDL_Sensor)(sensor))
 	return
 }
 
