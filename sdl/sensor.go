@@ -305,7 +305,6 @@ func (sensor *Sensor) GetData(data []float32) (err error) {
 // (https://wiki.libsdl.org/SDL_SensorClose)
 func (sensor *Sensor) Close() {
 	C.SDL_SensorClose((*C.SDL_Sensor)(sensor))
-	return
 }
 
 // SensorUpdate updates the current state of the open sensors.
