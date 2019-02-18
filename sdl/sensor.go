@@ -295,6 +295,9 @@ func (sensor *Sensor) GetInstanceID() (id SensorID) {
 // The number of values and interpretation of the data is sensor dependent.
 // (https://wiki.libsdl.org/SDL_SensorGetData)
 func (sensor *Sensor) GetData(data []float32) (err error) {
+	if data == nil {
+		return nil
+	}
 	_data := (*C.float)(unsafe.Pointer(&data[0]))
 	_numValues := C.int(len(data))
 	err = errorFromInt(int(C.SDL_SensorGetData((*C.SDL_Sensor)(sensor), _data, _numValues)))

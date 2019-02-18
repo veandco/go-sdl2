@@ -292,6 +292,9 @@ func (texture *Texture) GetBlendMode() (bm BlendMode, err error) {
 // Update updates the given texture rectangle with new pixel data.
 // (https://wiki.libsdl.org/SDL_UpdateTexture)
 func (texture *Texture) Update(rect *Rect, pixels []byte, pitch int) error {
+	if pixels == nil {
+		return nil
+	}
 	return errorFromInt(int(
 		C.SDL_UpdateTexture(
 			texture.cptr(),
@@ -303,6 +306,9 @@ func (texture *Texture) Update(rect *Rect, pixels []byte, pitch int) error {
 // UpdateRGBA updates the given texture rectangle with new uint32 pixel data.
 // (https://wiki.libsdl.org/SDL_UpdateTexture)
 func (texture *Texture) UpdateRGBA(rect *Rect, pixels []uint32, pitch int) error {
+	if pixels == nil {
+		return nil
+	}
 	return errorFromInt(int(
 		C.SDL_UpdateTexture(
 			texture.cptr(),
@@ -314,15 +320,25 @@ func (texture *Texture) UpdateRGBA(rect *Rect, pixels []uint32, pitch int) error
 // UpdateYUV updates a rectangle within a planar YV12 or IYUV texture with new pixel data.
 // (https://wiki.libsdl.org/SDL_UpdateYUVTexture)
 func (texture *Texture) UpdateYUV(rect *Rect, yPlane []byte, yPitch int, uPlane []byte, uPitch int, vPlane []byte, vPitch int) error {
+	var yPlanePtr, uPlanePtr, vPlanePtr *byte
+	if yPlane != nil {
+		yPlanePtr = &yPlane[0]
+	}
+	if uPlane != nil {
+		uPlanePtr = &uPlane[0]
+	}
+	if vPlane != nil {
+		vPlanePtr = &vPlane[0]
+	}
 	return errorFromInt(int(
 		C.SDL_UpdateYUVTexture(
 			texture.cptr(),
 			rect.cptr(),
-			(*C.Uint8)(unsafe.Pointer(&yPlane[0])),
+			(*C.Uint8)(unsafe.Pointer(yPlanePtr)),
 			C.int(yPitch),
-			(*C.Uint8)(unsafe.Pointer(&uPlane[0])),
+			(*C.Uint8)(unsafe.Pointer(uPlanePtr)),
 			C.int(uPitch),
-			(*C.Uint8)(unsafe.Pointer(&vPlane[0])),
+			(*C.Uint8)(unsafe.Pointer(vPlanePtr)),
 			C.int(vPitch))))
 }
 
