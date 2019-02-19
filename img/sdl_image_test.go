@@ -187,7 +187,7 @@ func TestIsFormat(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		rwops,_ := sdl.RWFromMem(test.data)
+		rwops, _ := sdl.RWFromMem(test.data)
 		for fname, function := range functions {
 			got, want := function(rwops), fname == test.name
 			if got != want {
@@ -208,7 +208,7 @@ func TestLoad_RW(t *testing.T) {
 	defer Quit()
 
 	// test expected success
-	rwops,_ := sdl.RWFromMem(testPNG)
+	rwops, _ := sdl.RWFromMem(testPNG)
 	surf, err := LoadRW(rwops, false)
 	if surf != nil {
 		defer surf.Free()
@@ -218,7 +218,7 @@ func TestLoad_RW(t *testing.T) {
 	}
 
 	// test expected failure
-	rwops,_ = sdl.RWFromMem(testBadData)
+	rwops, _ = sdl.RWFromMem(testBadData)
 	surf, err = LoadRW(rwops, false)
 	if surf != nil {
 		defer surf.Free()
@@ -243,7 +243,7 @@ func TestLoadFormat(t *testing.T) {
 
 	for _, test := range tests {
 		// test expected success
-		rwops,_ := sdl.RWFromMem(test.data)
+		rwops, _ := sdl.RWFromMem(test.data)
 		surf, err := test.function(rwops)
 		if surf != nil {
 			defer surf.Free()
@@ -259,7 +259,7 @@ func TestLoadFormat(t *testing.T) {
 			continue
 		}
 
-		rwops,_ = sdl.RWFromMem(testBadData)
+		rwops, _ = sdl.RWFromMem(testBadData)
 		surf, err = test.function(rwops)
 		if surf != nil {
 			defer surf.Free()
@@ -275,7 +275,7 @@ func TestLoadTyped_RW(t *testing.T) {
 	defer Quit()
 
 	// test expected success
-	rwops,_ := sdl.RWFromMem(testPNG)
+	rwops, _ := sdl.RWFromMem(testPNG)
 	surf, err := LoadTypedRW(rwops, false, "PNG")
 	if surf != nil {
 		defer surf.Free()
@@ -286,7 +286,7 @@ func TestLoadTyped_RW(t *testing.T) {
 	}
 
 	// test expected failure
-	rwops,_ = sdl.RWFromMem(testBadData)
+	rwops, _ = sdl.RWFromMem(testBadData)
 	surf, err = LoadTypedRW(rwops, false, "PNG")
 	if surf != nil {
 		defer surf.Free()

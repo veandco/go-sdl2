@@ -915,6 +915,10 @@ func PumpEvents() {
 // PeepEvents checks the event queue for messages and optionally return them.
 // (https://wiki.libsdl.org/SDL_PeepEvents)
 func PeepEvents(events []Event, action EventAction, minType, maxType uint32) (storedEvents int, err error) {
+	if events == nil {
+		return 0, nil
+	}
+
 	var _events []CEvent = make([]CEvent, len(events))
 
 	if action == ADDEVENT { // the contents of _events matter if they are to be added
