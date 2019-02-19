@@ -299,6 +299,22 @@ func (e *TextEditingEvent) GetType() uint32 {
 	return e.Type
 }
 
+// GetText returns the text as string
+func (e *TextEditingEvent) GetText() string {
+	length := func(buf []byte) int {
+		for i := range buf {
+			if buf[i] == 0 {
+				return i
+			}
+		}
+
+		return 0
+	}(e.Text[:])
+
+	text := e.Text[:length]
+	return string(text)
+}
+
 // GetTimestamp returns the timestamp of the event.
 func (e *TextEditingEvent) GetTimestamp() uint32 {
 	return e.Timestamp
@@ -322,6 +338,22 @@ func (e *TextInputEvent) GetType() uint32 {
 // GetTimestamp returns the timestamp of the event.
 func (e *TextInputEvent) GetTimestamp() uint32 {
 	return e.Timestamp
+}
+
+// GetText returns the text as string
+func (e *TextInputEvent) GetText() string {
+	length := func(buf []byte) int {
+		for i := range buf {
+			if buf[i] == 0 {
+				return i
+			}
+		}
+
+		return 0
+	}(e.Text[:])
+
+	text := e.Text[:length]
+	return string(text)
 }
 
 // MouseMotionEvent contains mouse motion event information.
