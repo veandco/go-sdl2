@@ -617,7 +617,7 @@ func FilledTrigonRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int32, r, g
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a2d692dc25f3b579b386dff8dcd9cbc00)
 func PolygonColor(renderer *sdl.Renderer, vx, vy []int16, color sdl.Color) bool {
 	_len := C.int(min(len(vx), len(vy)))
-	if len == 0 {
+	if _len == 0 {
 		return true
 	}
 	_vx := (*C.Sint16)(unsafe.Pointer(&vx[0]))
