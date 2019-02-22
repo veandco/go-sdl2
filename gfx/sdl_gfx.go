@@ -616,9 +616,12 @@ func FilledTrigonRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int32, r, g
 // PolygonColor draws polygon with alpha blending.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a2d692dc25f3b579b386dff8dcd9cbc00)
 func PolygonColor(renderer *sdl.Renderer, vx, vy []int16, color sdl.Color) bool {
+	_len := C.int(min(len(vx), len(vy)))
+	if _len == 0 {
+		return true
+	}
 	_vx := (*C.Sint16)(unsafe.Pointer(&vx[0]))
 	_vy := (*C.Sint16)(unsafe.Pointer(&vy[0]))
-	_len := C.int(min(len(vx), len(vy)))
 	_color := C.Uint32(gfxColor(color))
 	return C.polygonColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _vx, _vy, _len, _color) == 0
 }
@@ -626,9 +629,12 @@ func PolygonColor(renderer *sdl.Renderer, vx, vy []int16, color sdl.Color) bool 
 // PolygonRGBA draws polygon with alpha blending.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#ae55541ec58990420dc6dc6b9d61f33d6)
 func PolygonRGBA(renderer *sdl.Renderer, vx, vy []int16, r, g, b, a uint8) bool {
+	_len := C.int(min(len(vx), len(vy)))
+	if _len == 0 {
+		return true
+	}
 	_vx := (*C.Sint16)(unsafe.Pointer(&vx[0]))
 	_vy := (*C.Sint16)(unsafe.Pointer(&vy[0]))
-	_len := C.int(min(len(vx), len(vy)))
 	_r := C.Uint8(r)
 	_g := C.Uint8(g)
 	_b := C.Uint8(b)
@@ -639,9 +645,12 @@ func PolygonRGBA(renderer *sdl.Renderer, vx, vy []int16, r, g, b, a uint8) bool 
 // AAPolygonColor draws anti-aliased polygon with alpha blending.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a09950a50e8806e88bb20c543c58cc6a8)
 func AAPolygonColor(renderer *sdl.Renderer, vx, vy []int16, color sdl.Color) bool {
+	_len := C.int(min(len(vx), len(vy)))
+	if _len == 0 {
+		return true
+	}
 	_vx := (*C.Sint16)(unsafe.Pointer(&vx[0]))
 	_vy := (*C.Sint16)(unsafe.Pointer(&vy[0]))
-	_len := C.int(min(len(vx), len(vy)))
 	_color := C.Uint32(gfxColor(color))
 	return C.aapolygonColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _vx, _vy, _len, _color) == 0
 }
@@ -649,9 +658,12 @@ func AAPolygonColor(renderer *sdl.Renderer, vx, vy []int16, color sdl.Color) boo
 // AAPolygonRGBA draws anti-aliased polygon with alpha blending.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a7d08522e52d8290c5c498ce435fa51f0)
 func AAPolygonRGBA(renderer *sdl.Renderer, vx, vy []int16, r, g, b, a uint8) bool {
+	_len := C.int(min(len(vx), len(vy)))
+	if _len == 0 {
+		return true
+	}
 	_vx := (*C.Sint16)(unsafe.Pointer(&vx[0]))
 	_vy := (*C.Sint16)(unsafe.Pointer(&vy[0]))
-	_len := C.int(min(len(vx), len(vy)))
 	_r := C.Uint8(r)
 	_g := C.Uint8(g)
 	_b := C.Uint8(b)
@@ -662,9 +674,12 @@ func AAPolygonRGBA(renderer *sdl.Renderer, vx, vy []int16, r, g, b, a uint8) boo
 // FilledPolygonColor draws filled polygon with alpha blending.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#af22692175cb73329410cbcc7d7491c4d)
 func FilledPolygonColor(renderer *sdl.Renderer, vx, vy []int16, color sdl.Color) bool {
+	_len := C.int(min(len(vx), len(vy)))
+	if _len == 0 {
+		return true
+	}
 	_vx := (*C.Sint16)(unsafe.Pointer(&vx[0]))
 	_vy := (*C.Sint16)(unsafe.Pointer(&vy[0]))
-	_len := C.int(min(len(vx), len(vy)))
 	_color := C.Uint32(gfxColor(color))
 	return C.filledPolygonColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _vx, _vy, _len, _color) == 0
 }
@@ -672,9 +687,12 @@ func FilledPolygonColor(renderer *sdl.Renderer, vx, vy []int16, color sdl.Color)
 // FilledPolygonRGBA draws filled polygon with alpha blending.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a40ef0b898905c190c193f0f55deb5a6c)
 func FilledPolygonRGBA(renderer *sdl.Renderer, vx, vy []int16, r, g, b, a uint8) bool {
+	_len := C.int(min(len(vx), len(vy)))
+	if _len == 0 {
+		return true
+	}
 	_vx := (*C.Sint16)(unsafe.Pointer(&vx[0]))
 	_vy := (*C.Sint16)(unsafe.Pointer(&vy[0]))
-	_len := C.int(min(len(vx), len(vy)))
 	_r := C.Uint8(r)
 	_g := C.Uint8(g)
 	_b := C.Uint8(b)
@@ -685,10 +703,13 @@ func FilledPolygonRGBA(renderer *sdl.Renderer, vx, vy []int16, r, g, b, a uint8)
 // TexturedPolygon draws a polygon filled with the given texture.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a65137af308ea878f28abc95419e8aef5)
 func TexturedPolygon(renderer *sdl.Renderer, vx, vy []int16, surface *sdl.Surface, textureDX, textureDY int) bool {
+	_len := C.int(min(len(vx), len(vy)))
+	if _len == 0 {
+		return true
+	}
 	_vx := (*C.Sint16)(unsafe.Pointer(&vx[0]))
 	_vy := (*C.Sint16)(unsafe.Pointer(&vy[0]))
 	_surface := (*C.SDL_Surface)(unsafe.Pointer(surface))
-	_len := C.int(min(len(vx), len(vy)))
 	_textureDX := C.int(textureDX)
 	_textureDY := C.int(textureDY)
 	return C.texturedPolygon((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _vx, _vy, _len, _surface, _textureDX, _textureDY) == 0
@@ -697,9 +718,12 @@ func TexturedPolygon(renderer *sdl.Renderer, vx, vy []int16, surface *sdl.Surfac
 // BezierColor draws a bezier curve with alpha blending.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#adfe8f9c42d29a090aae15eeb19b80d51)
 func BezierColor(renderer *sdl.Renderer, vx, vy []int16, s int, color sdl.Color) bool {
+	_len := C.int(min(len(vx), len(vy)))
+	if _len == 0 {
+		return true
+	}
 	_vx := (*C.Sint16)(unsafe.Pointer(&vx[0]))
 	_vy := (*C.Sint16)(unsafe.Pointer(&vy[0]))
-	_len := C.int(min(len(vx), len(vy)))
 	_s := C.int(s)
 	_color := C.Uint32(gfxColor(color))
 	return C.bezierColor((*C.SDL_Renderer)(unsafe.Pointer(renderer)), _vx, _vy, _len, _s, _color) == 0
@@ -708,9 +732,12 @@ func BezierColor(renderer *sdl.Renderer, vx, vy []int16, s int, color sdl.Color)
 // BezierRGBA draws a bezier curve with alpha blending.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a4b7fbf6cc366abdf345a25308d53e125)
 func BezierRGBA(renderer *sdl.Renderer, vx, vy []int16, s int, r, g, b, a uint8) bool {
+	_len := C.int(min(len(vx), len(vy)))
+	if _len == 0 {
+		return true
+	}
 	_vx := (*C.Sint16)(unsafe.Pointer(&vx[0]))
 	_vy := (*C.Sint16)(unsafe.Pointer(&vy[0]))
-	_len := C.int(min(len(vx), len(vy)))
 	_s := C.int(s)
 	_r := C.Uint8(r)
 	_g := C.Uint8(g)
@@ -804,128 +831,167 @@ func ImageFilterMMXon() {
 // ImageFilterAdd filters using Add: D = saturation255(S1 + S2).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a9f06507eb0b63198dbd67495d61c9b20)
 func ImageFilterAdd(src1, src2, dest []byte) bool {
+	_len := C.uint(min(len(src1), len(src2), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_src2 := (*C.uchar)(unsafe.Pointer(&src2[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	return C.SDL_imageFilterAdd(_src1, _src2, _dest, _len) == 0
 }
 
 // ImageFilterMean filters using Mean: D = S1/2 + S2/2.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#ace072118fef77973210eb04fb4bfc779)
 func ImageFilterMean(src1, src2, dest []byte) bool {
+	_len := C.uint(min(len(src1), len(src2), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_src2 := (*C.uchar)(unsafe.Pointer(&src2[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	return C.SDL_imageFilterMean(_src1, _src2, _dest, _len) == 0
 }
 
 // ImageFilterSub filters using Sub: D = saturation0(S1 - S2).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a3c01cf8576ea7a0dfc09dbaa953c9287)
 func ImageFilterSub(src1, src2, dest []byte) bool {
+	_len := C.uint(min(len(src1), len(src2), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_src2 := (*C.uchar)(unsafe.Pointer(&src2[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	return C.SDL_imageFilterSub(_src1, _src2, _dest, _len) == 0
 }
 
 // ImageFilterAbsDiff filters using AbsDiff: D = | S1 - S2 |.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a472909f904274255cd6793c520172e48)
 func ImageFilterAbsDiff(src1, src2, dest []byte) bool {
+	_len := C.uint(min(len(src1), len(src2), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_src2 := (*C.uchar)(unsafe.Pointer(&src2[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	return C.SDL_imageFilterAbsDiff(_src1, _src2, _dest, _len) == 0
 }
 
 // ImageFilterMult filters using Mult: D = saturation255(S1 * S2).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#af4633031d40a9ea0956a2f3c6c87a384)
 func ImageFilterMult(src1, src2, dest []byte) bool {
+	_len := C.uint(min(len(src1), len(src2), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_src2 := (*C.uchar)(unsafe.Pointer(&src2[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	return C.SDL_imageFilterMult(_src1, _src2, _dest, _len) == 0
 }
 
 // ImageFilterMultNor filters using MultNor: D = S1 * S2.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a5f3c9fd40426bb46eba5ac167505dcc5)
 func ImageFilterMultNor(src1, src2, dest []byte) bool {
+	_len := C.uint(min(len(src1), len(src2), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_src2 := (*C.uchar)(unsafe.Pointer(&src2[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	return C.SDL_imageFilterMultNor(_src1, _src2, _dest, _len) == 0
 }
 
 // ImageFilterMultDivby2 filter using MultDivby2: D = saturation255(S1/2 * S2)
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a80737f6427c7bdb30d39a92f6524fc14)
 func ImageFilterMultDivby2(src1, src2, dest []byte) bool {
+	_len := C.uint(min(len(src1), len(src2), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_src2 := (*C.uchar)(unsafe.Pointer(&src2[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	return C.SDL_imageFilterMultDivby2(_src1, _src2, _dest, _len) == 0
 }
 
 // ImageFilterMultDivby4 filters using MultDivby4: D = saturation255(S1/2 * S2/2).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a30e685653eb1050c7d48feaeb8f801a1)
 func ImageFilterMultDivby4(src1, src2, dest []byte) bool {
+	_len := C.uint(min(len(src1), len(src2), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_src2 := (*C.uchar)(unsafe.Pointer(&src2[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	return C.SDL_imageFilterMultDivby4(_src1, _src2, _dest, _len) == 0
 }
 
 // ImageFilterBitAnd filters using BitAnd: D = S1 & S2.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a85837ce1b5de1f907b6b9053922b5cbc)
 func ImageFilterBitAnd(src1, src2, dest []byte) bool {
+	_len := C.uint(min(len(src1), len(src2), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_src2 := (*C.uchar)(unsafe.Pointer(&src2[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	return C.SDL_imageFilterBitAnd(_src1, _src2, _dest, _len) == 0
 }
 
 // ImageFilterBitOr filters using BitOr: D = S1 | S2.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a5cf1c477f4e32d02f74ee95d9f7b0021)
 func ImageFilterBitOr(src1, src2, dest []byte) bool {
+	_len := C.uint(min(len(src1), len(src2), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_src2 := (*C.uchar)(unsafe.Pointer(&src2[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	return C.SDL_imageFilterBitOr(_src1, _src2, _dest, _len) == 0
 }
 
 // ImageFilterDiv filters using Div: D = S1 / S2.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a0ea22f01c6a4724bac307da3e5355f58)
 func ImageFilterDiv(src1, src2, dest []byte) bool {
+	_len := C.uint(min(len(src1), len(src2), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_src2 := (*C.uchar)(unsafe.Pointer(&src2[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	return C.SDL_imageFilterDiv(_src1, _src2, _dest, _len) == 0
 }
 
 // ImageFilterBitNegation filters using BitNegation: D = !S.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#ac3abfaa8ec2e88c3c4893588c5555856)
 func ImageFilterBitNegation(src1, dest []byte) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	return C.SDL_imageFilterBitNegation(_src1, _dest, _len) == 0
 }
 
 // ImageFilterAddByte filters using AddByte: D = saturation255(S + C).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a812cb307cb60ef31f1ffe81a9eee6bb1)
 func ImageFilterAddByte(src1, dest []byte, c byte) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	_c := C.uchar(c)
 	return C.SDL_imageFilterAddByte(_src1, _dest, _len, _c) == 0
 }
@@ -933,9 +999,12 @@ func ImageFilterAddByte(src1, dest []byte, c byte) bool {
 // ImageFilterAddUint filters using AddUint: D = saturation255((S[i] + Cs[i % 4]), Cs=Swap32((uint)C).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a660543426c47dfec39a349eb3b8f905b)
 func ImageFilterAddUint(src1, dest []byte, c uint) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	_c := C.uint(c)
 	return C.SDL_imageFilterAddUint(_src1, _dest, _len, _c) == 0
 }
@@ -943,9 +1012,12 @@ func ImageFilterAddUint(src1, dest []byte, c uint) bool {
 // ImageFilterSubByte filters using SubByte: D = saturation0(S - C).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a387fb6f0d48cc5d08f37f7f9b92d14b2)
 func ImageFilterSubByte(src1, dest []byte, c byte) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	_c := C.uchar(c)
 	return C.SDL_imageFilterSubByte(_src1, _dest, _len, _c) == 0
 }
@@ -953,9 +1025,12 @@ func ImageFilterSubByte(src1, dest []byte, c byte) bool {
 // ImageFilterSubUint filters using SubUint: D = saturation0(S[i] - Cs[i % 4]), Cs=Swap32((uint)C).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#abb343ef95e22945e1d4d648b2e176e64)
 func ImageFilterSubUint(src1, dest []byte, c uint) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	_c := C.uint(c)
 	return C.SDL_imageFilterSubUint(_src1, _dest, _len, _c) == 0
 }
@@ -963,9 +1038,12 @@ func ImageFilterSubUint(src1, dest []byte, c uint) bool {
 // ImageFilterShiftRight filters using ShiftRight: D = saturation0(S >> N).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a68851aed2dcc5dfd2f3b258236f3b88c)
 func ImageFilterShiftRight(src1, dest []byte, n byte) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	_n := C.uchar(n)
 	return C.SDL_imageFilterShiftRight(_src1, _dest, _len, _n) == 0
 }
@@ -973,9 +1051,12 @@ func ImageFilterShiftRight(src1, dest []byte, n byte) bool {
 // ImageFilterShiftRightUint filters using ShiftRightUint: D = saturation0((uint)S[i] >> N).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a540d4625d76bcd03318c2a59ce650fdb)
 func ImageFilterShiftRightUint(src1, dest []byte, n byte) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	_n := C.uchar(n)
 	return C.SDL_imageFilterShiftRightUint(_src1, _dest, _len, _n) == 0
 }
@@ -983,9 +1064,12 @@ func ImageFilterShiftRightUint(src1, dest []byte, n byte) bool {
 // ImageFilterMultByByte filters using MultByByte: D = saturation255(S * C).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a06f7a19d6e2fc89d7b48cc45d715806d)
 func ImageFilterMultByByte(src1, dest []byte, c byte) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	_c := C.uchar(c)
 	return C.SDL_imageFilterMultByByte(_src1, _dest, _len, _c) == 0
 }
@@ -993,9 +1077,12 @@ func ImageFilterMultByByte(src1, dest []byte, c byte) bool {
 // ImageFilterShiftRightAndMultByByte filters using ShiftRightAndMultByByte: D = saturation255((S >> N) * C).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a0713d6c267fba9756d6beae81e89f9e4)
 func ImageFilterShiftRightAndMultByByte(src1, dest []byte, n, c byte) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	_n := C.uchar(n)
 	_c := C.uchar(c)
 	return C.SDL_imageFilterShiftRightAndMultByByte(_src1, _dest, _len, _n, _c) == 0
@@ -1004,9 +1091,12 @@ func ImageFilterShiftRightAndMultByByte(src1, dest []byte, n, c byte) bool {
 // ImageFilterShiftLeftByte filters using ShiftLeftByte: D = (S << N).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a4561a73b249a26babc4c469ffbdae604)
 func ImageFilterShiftLeftByte(src1, dest []byte, n byte) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	_n := C.uchar(n)
 	return C.SDL_imageFilterShiftLeftByte(_src1, _dest, _len, _n) == 0
 }
@@ -1014,9 +1104,12 @@ func ImageFilterShiftLeftByte(src1, dest []byte, n byte) bool {
 // ImageFilterShiftLeftUint filters using ShiftLeftUint: D = ((uint)S << N).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a250e796fb2db470da0a78b74b78114e8)
 func ImageFilterShiftLeftUint(src1, dest []byte, n byte) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	_n := C.uchar(n)
 	return C.SDL_imageFilterShiftLeftUint(_src1, _dest, _len, _n) == 0
 }
@@ -1024,9 +1117,12 @@ func ImageFilterShiftLeftUint(src1, dest []byte, n byte) bool {
 // ImageFilterShiftLeft filters ShiftLeft: D = saturation255(S << N).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a98372fea76310903abef7808db10d226)
 func ImageFilterShiftLeft(src1, dest []byte, n byte) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	_n := C.uchar(n)
 	return C.SDL_imageFilterShiftLeft(_src1, _dest, _len, _n) == 0
 }
@@ -1034,9 +1130,12 @@ func ImageFilterShiftLeft(src1, dest []byte, n byte) bool {
 // ImageFilterBinarizeUsingThreshold filters using BinarizeUsingThreshold: D = (S >= T) ? 255:0.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a951a062e15df290a137428e1e0f4d5ce)
 func ImageFilterBinarizeUsingThreshold(src1, dest []byte, t byte) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	_t := C.uchar(t)
 	return C.SDL_imageFilterBinarizeUsingThreshold(_src1, _dest, _len, _t) == 0
 }
@@ -1044,9 +1143,12 @@ func ImageFilterBinarizeUsingThreshold(src1, dest []byte, t byte) bool {
 // ImageFilterClipToRange filters using ClipToRange: D = (S >= Tmin) & (S <= Tmax) S:Tmin | Tmax.
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#ab7224abc4ecc1b8a6f4441ef8379515f)
 func ImageFilterClipToRange(src1, dest []byte, tmin, tmax byte) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	_tmin := C.uchar(tmin)
 	_tmax := C.uchar(tmax)
 	return C.SDL_imageFilterClipToRange(_src1, _dest, _len, _tmin, _tmax) == 0
@@ -1055,9 +1157,12 @@ func ImageFilterClipToRange(src1, dest []byte, tmin, tmax byte) bool {
 // ImageFilterNormalizeLinear filters using NormalizeLinear: D = saturation255((Nmax - Nmin)/(Cmax - Cmin)*(S - Cmin) + Nmin).
 // (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#ab018ace4db884cac953b06b09c00828b)
 func ImageFilterNormalizeLinear(src1, dest []byte, cmin, cmax, nmin, nmax int) bool {
+	_len := C.uint(min(len(src1), len(dest)))
+	if _len == 0 {
+		return true
+	}
 	_src1 := (*C.uchar)(unsafe.Pointer(&src1[0]))
 	_dest := (*C.uchar)(unsafe.Pointer(&dest[0]))
-	_len := C.uint(min(len(src1), len(dest)))
 	_cmin := C.int(cmin)
 	_cmax := C.int(cmax)
 	_nmin := C.int(nmin)

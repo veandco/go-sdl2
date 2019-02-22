@@ -259,6 +259,9 @@ func (format *PixelFormat) SetPalette(palette *Palette) error {
 // SetColors sets a range of colors in the palette.
 // (https://wiki.libsdl.org/SDL_SetPaletteColors)
 func (palette *Palette) SetColors(colors []Color) error {
+	if colors == nil {
+		return nil
+	}
 	var ptr *C.SDL_Color
 	if len(colors) > 0 {
 		ptr = (*C.SDL_Color)(unsafe.Pointer(&colors[0]))

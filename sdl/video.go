@@ -854,13 +854,17 @@ func ShowMessageBox(data *MessageBoxData) (buttonid int32, err error) {
 		cbtntexts = append(cbtntexts, ctext)
 	}
 
+	var buttonPtr *C.SDL_MessageBoxButtonData
+	if len(cbuttons) > 0 {
+		buttonPtr = &cbuttons[0]
+	}
 	cdata := C.SDL_MessageBoxData{
 		flags:       C.Uint32(data.Flags),
 		window:      data.Window.cptr(),
 		title:       _title,
 		message:     _message,
 		numbuttons:  C.int(data.NumButtons),
-		buttons:     &cbuttons[0],
+		buttons:     buttonPtr,
 		colorScheme: data.ColorScheme.cptr(),
 	}
 

@@ -12,7 +12,34 @@ install:
   - ./configure
   - make
   - sudo make install
+  - cd ..
+  - wget https://excellmedia.dl.sourceforge.net/project/sdl2gfx/SDL2_gfx-1.0.0.tar.gz
+  - tar xf SDL2_gfx-1.0.0.tar.gz
+  - cd SDL2_gfx-1.0.0
+  - ./configure
+  - make
+  - sudo make install
+  - cd ..
+  - wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.0.tar.gz
+  - tar xf SDL2_image-2.0.0.tar.gz
+  - cd SDL2_image-2.0.0
+  - ./configure
+  - make
+  - sudo make install
+  - cd ..
+  - wget https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.0.tar.gz
+  - tar xf SDL2_mixer-2.0.0.tar.gz
+  - cd SDL2_mixer-2.0.0
+  - ./configure
+  - make
+  - sudo make install
+  - cd ..
+  - wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.12.tar.gz
+  - tar xf SDL2_ttf-2.0.12.tar.gz
+  - cd SDL2_ttf-2.0.12
+  - ./configure
+  - make
+  - sudo make install
 
 script:
-  - cd ../sdl
-  - go build
+  - go build ../{sdl,gfx,img,mix,ttf}

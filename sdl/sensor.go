@@ -295,6 +295,9 @@ func (sensor *Sensor) GetInstanceID() (id SensorID) {
 // The number of values and interpretation of the data is sensor dependent.
 // (https://wiki.libsdl.org/SDL_SensorGetData)
 func (sensor *Sensor) GetData(data []float32) (err error) {
+	if data == nil {
+		return nil
+	}
 	_data := (*C.float)(unsafe.Pointer(&data[0]))
 	_numValues := C.int(len(data))
 	err = errorFromInt(int(C.SDL_SensorGetData((*C.SDL_Sensor)(sensor), _data, _numValues)))
@@ -303,9 +306,8 @@ func (sensor *Sensor) GetData(data []float32) (err error) {
 
 // Close closes a sensor previously opened with SensorOpen()
 // (https://wiki.libsdl.org/SDL_SensorClose)
-func (sensor *Sensor) Close() (typ int) {
-	typ = int(C.SDL_SensorGetNonPortableType((*C.SDL_Sensor)(sensor)))
-	return
+func (sensor *Sensor) Close() {
+	C.SDL_SensorClose((*C.SDL_Sensor)(sensor))
 }
 
 // SensorUpdate updates the current state of the open sensors.
