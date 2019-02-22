@@ -66,10 +66,7 @@ func TestAudioInitQuit(t *testing.T) {
 
 func TestLoadWAVRW(t *testing.T) {
 	// load WAV from *RWOps pointing to WAV data
-	src, err := RWFromMem(squareWave)
-	if err != nil {
-		t.Errorf("LoadWAVRW() returned error %v", err)
-	}
+	src, _ := RWFromMem(squareWave)
 	buf, spec := LoadWAVRW(src, false)
 
 	// test returned []byte
