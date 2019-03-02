@@ -1,6 +1,0 @@
-[submodule ".go-sdl2-examples"]
-	path = .go-sdl2-examples
-	url = https://github.com/veandco/go-sdl2-examples
-[submodule ".go-sdl2-libs"]
-	path = .go-sdl2-libs
-	url = https://github.com/veandco/go-sdl2-libs
