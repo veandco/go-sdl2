@@ -124,6 +124,23 @@ or type this if you use Bash terminal:\
 
 Due to `go-sdl2` being under active development, a lot of breaking changes are going to happen during v0.x. With [versioning system](https://github.com/golang/proposal/blob/master/design/24301-versioned-go.md) coming to Go soon, we'll make use of semantic versioning to ensure stability in the future.
 
+# Static compilation
+
+Since v0.3.0, it is possible to build statically against included libraries in `.go-sdl2-libs`. To build statically, run:
+
+`CGO_ENABLED=1 CC=gcc GOOS=linux GOARCH=amd64 go build -tags static -ldflags "-s -w"`
+
+You can also cross-compile to another OS. For example, to Windows:
+
+`CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc GOOS=windows GOARCH=amd64 go build -tags static -ldflags "-s -w"`
+
+For the list of OS and architecture, you can see inside the [.go-sdl2-libs](https://github.com/veandco/go-sdl2/tree/master/.go-sdl2-libs) directory.
+
+NOTE: If you're using the new Go Module system, you will need to refer to the master branch for now by running:
+
+`go get -v github.com/veandco/go-sdl2/sdl@master`
+
+Before building the program.
 
 # Cross-compiling
 ### Linux to Windows
