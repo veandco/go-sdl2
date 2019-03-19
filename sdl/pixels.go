@@ -47,10 +47,10 @@ type Color color.RGBA
 // Uint32 return uint32 representation of RGBA color.
 func (c Color) Uint32() uint32 {
 	var v uint32
-	v |= uint32(c.A) << 24
-	v |= uint32(c.R) << 16
-	v |= uint32(c.G) << 8
-	v |= uint32(c.B)
+	v |= uint32(c.R) << 24
+	v |= uint32(c.G) << 16
+	v |= uint32(c.B) << 8
+	v |= uint32(c.A)
 	return v
 }
 
