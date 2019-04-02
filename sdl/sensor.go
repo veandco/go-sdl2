@@ -2,7 +2,6 @@ package sdl
 
 /*
 #include "sdl_wrapper.h"
-#include "sensor.h"
 
 #if !(SDL_VERSION_ATLEAST(2,0,9))
 typedef struct _SDL_Sensor SDL_Sensor;
@@ -159,8 +158,8 @@ static void SDL_SensorUpdate()
 import "C"
 import "unsafe"
 
-var (
-	STANDARD_GRAVITY = C.SDL_STANDARD_GRAVITY
+const (
+	STANDARD_GRAVITY = 9.80665
 )
 
 // The different sensors defined by SDL
