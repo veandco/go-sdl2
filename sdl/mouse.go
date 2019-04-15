@@ -43,6 +43,16 @@ static int SDL_WarpMouseGlobal(int x, int y)
 {
 	return -1;
 }
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GetGlobalMouseState is not supported before SDL 2.0.4")
+#endif
+
+static Uint32 SDL_GetGlobalMouseState(int *x, int *y)
+{
+	return 0;
+}
+
 #endif
 */
 import "C"
@@ -98,6 +108,14 @@ func (c SystemCursor) c() C.SDL_SystemCursor {
 // (https://wiki.libsdl.org/SDL_GetMouseFocus)
 func GetMouseFocus() *Window {
 	return (*Window)(unsafe.Pointer(C.SDL_GetMouseFocus()))
+}
+
+// GetGlobalMouseState returns the current state of the mouse.
+// (https://wiki.libsdl.org/SDL_GetGlobalMouseState)
+func GetGlobalMouseState() (x, y int32, state uint32) {
+	var _x, _y C.int
+	_state := uint32(C.SDL_GetGlobalMouseState(&_x, &_y))
+	return int32(_x), int32(_y), _state
 }
 
 // GetMouseState returns the current state of the mouse.
