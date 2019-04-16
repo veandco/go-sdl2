@@ -61,5 +61,6 @@ Here's the list of contributors with their respective Github URLs.
 * [Anton Malashin](https://github.com/malashin)
 * [John Perkins](https://github.com/mpath)
 * [jclc](https://github.com/jclc)
+* [flga](https://github.com/flga)
 
 _if anyone is missing, let me know!.. or you can add yourself in :)_
