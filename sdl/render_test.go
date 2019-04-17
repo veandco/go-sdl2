@@ -1,11 +1,33 @@
 package sdl
 
-import "testing"
+import (
+	"errors"
+	"testing"
+)
 
 func TestRenderIntegerScale(t *testing.T) {
 	_, r, err := CreateWindowAndRenderer(50, 50, 0)
 	if err != nil {
 		t.Fatalf("unable to create renderer: %s", err)
+		return
+	}
+
+	errUnsupported := errors.New("That operation is not supported")
+
+	if !VERSION_ATLEAST(2, 0, 5) {
+		t.Run("GetIntegerScale on versions < 2.0.5 should return unsupported", func(t *testing.T) {
+			_, got := r.GetIntegerScale()
+			if got.Error() != errUnsupported.Error() {
+				t.Fatalf("expected call to GetIntegerScale to fail with %s, got %s", errUnsupported, got)
+			}
+		})
+		t.Run("SetIntegerScale on versions < 2.0.5 should return unsupported", func(t *testing.T) {
+			got := r.SetIntegerScale(false)
+			if got.Error() != errUnsupported.Error() {
+				t.Fatalf("expected call to SetIntegerScale to fail with %s, got %s", errUnsupported, got)
+			}
+		})
+
 		return
 	}
 

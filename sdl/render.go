@@ -23,6 +23,7 @@ static inline int SDL_UpdateYUVTexture(SDL_Texture* texture, const SDL_Rect* rec
 
 static inline int SDL_RenderSetIntegerScale(SDL_Renderer* renderer, SDL_bool enable)
 {
+	SDL_Unsupported();
 	return -1;
 }
 
@@ -32,6 +33,7 @@ static inline int SDL_RenderSetIntegerScale(SDL_Renderer* renderer, SDL_bool ena
 
 static inline SDL_bool SDL_RenderGetIntegerScale(SDL_Renderer* renderer)
 {
+	SDL_Unsupported();
 	return -1;
 }
 #endif
@@ -509,11 +511,10 @@ func (renderer *Renderer) SetIntegerScale(v bool) error {
 //
 // (https://wiki.libsdl.org/SDL_RenderGetIntegerScale)
 func (renderer *Renderer) GetIntegerScale() (bool, error) {
-	var val C.SDL_bool = C.SDL_RenderGetIntegerScale(renderer.cptr())
-	if val == C.SDL_TRUE {
+	if C.SDL_RenderGetIntegerScale(renderer.cptr()) == C.SDL_TRUE {
 		return true, nil
 	}
-	return false, errorFromInt(int(val))
+	return false, GetError()
 }
 
 // SetDrawColor sets the color used for drawing operations (Rect, Line and Clear).
