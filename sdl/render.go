@@ -511,6 +511,7 @@ func (renderer *Renderer) SetIntegerScale(v bool) error {
 //
 // (https://wiki.libsdl.org/SDL_RenderGetIntegerScale)
 func (renderer *Renderer) GetIntegerScale() (bool, error) {
+	ClearError()
 	if C.SDL_RenderGetIntegerScale(renderer.cptr()) == C.SDL_TRUE {
 		return true, nil
 	}

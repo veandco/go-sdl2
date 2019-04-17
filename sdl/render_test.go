@@ -63,4 +63,27 @@ func TestRenderIntegerScale(t *testing.T) {
 		set(false, t)
 		check(false, t)
 	})
+
+	t.Run("should handle SDL_FALSE return on GetIntegerScale", func(t *testing.T) {
+		_, dummy, err := CreateWindowAndRenderer(50, 50, 0)
+		if err != nil {
+			t.Fatalf("unable to create renderer: %s", err)
+			return
+		}
+
+		if err := dummy.SetIntegerScale(true); err != nil {
+			t.Fatalf("expected call to SetIntegerScale to succeed, got %s", err)
+		}
+		if err := dummy.Destroy(); err != nil {
+			t.Fatalf("expected call to Destroy to succeed, got %s", err)
+		}
+
+		v, err := dummy.GetIntegerScale()
+		if err == nil {
+			t.Fatalf("expected call to GetIntegerScale on ivalid renderer to fail")
+		}
+		if v != false {
+			t.Fatalf("wanted renderer scale to be %v", false)
+		}
+	})
 }
