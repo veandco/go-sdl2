@@ -15,6 +15,29 @@ static inline int SDL_UpdateYUVTexture(SDL_Texture* texture, const SDL_Rect* rec
 }
 #endif
 
+#if !(SDL_VERSION_ATLEAST(2,0,5))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderSetIntegerScale is not supported before SDL 2.0.5")
+#endif
+
+static inline int SDL_RenderSetIntegerScale(SDL_Renderer* renderer, SDL_bool enable)
+{
+	SDL_Unsupported();
+	return -1;
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderGetIntegerScale is not supported before SDL 2.0.5")
+#endif
+
+static inline SDL_bool SDL_RenderGetIntegerScale(SDL_Renderer* renderer)
+{
+	SDL_Unsupported();
+	return -1;
+}
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,8))
 
 
@@ -464,6 +487,35 @@ func (renderer *Renderer) GetScale() (scaleX, scaleY float32) {
 		(*C.float)(unsafe.Pointer(&scaleX)),
 		(*C.float)(unsafe.Pointer(&scaleY)))
 	return
+}
+
+// SetIntegerScale sets whether to force integer scales for
+// resolution-independent rendering.
+//
+// This function restricts the logical viewport to integer values - that is,
+// when a resolution is between two multiples of a logical size, the viewport
+// size is rounded down to the lower multiple.
+//
+// (https://wiki.libsdl.org/SDL_RenderSetIntegerScale)
+func (renderer *Renderer) SetIntegerScale(v bool) error {
+	var cv C.SDL_bool = C.SDL_FALSE
+	if v {
+		cv = C.SDL_TRUE
+	}
+
+	return errorFromInt(int(C.SDL_RenderSetIntegerScale(renderer.cptr(), cv)))
+}
+
+// GetIntegerScale reports whether integer scales are forced for
+// resolution-independent rendering.
+//
+// (https://wiki.libsdl.org/SDL_RenderGetIntegerScale)
+func (renderer *Renderer) GetIntegerScale() (bool, error) {
+	ClearError()
+	if C.SDL_RenderGetIntegerScale(renderer.cptr()) == C.SDL_TRUE {
+		return true, nil
+	}
+	return false, GetError()
 }
 
 // SetDrawColor sets the color used for drawing operations (Rect, Line and Clear).
