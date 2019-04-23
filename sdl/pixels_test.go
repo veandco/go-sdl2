@@ -1,0 +1,57 @@
+package sdl
+
+import "testing"
+
+func TestBytesAndBitsPerPixel(t *testing.T) {
+	tests := []struct {
+		name      string
+		format    uint32
+		wantBytes int
+		wantBits  int
+	}{
+		{"UNKNOWN", PIXELFORMAT_UNKNOWN, 0, 0},
+		{"INDEX1LSB", PIXELFORMAT_INDEX1LSB, 0, 1},
+		{"INDEX1MSB", PIXELFORMAT_INDEX1MSB, 0, 1},
+		{"INDEX4LSB", PIXELFORMAT_INDEX4LSB, 0, 4},
+		{"INDEX4MSB", PIXELFORMAT_INDEX4MSB, 0, 4},
+		{"INDEX8", PIXELFORMAT_INDEX8, 1, 8},
+		{"RGB332", PIXELFORMAT_RGB332, 1, 8},
+		{"RGB444", PIXELFORMAT_RGB444, 2, 12},
+		{"RGB555", PIXELFORMAT_RGB555, 2, 15},
+		{"BGR555", PIXELFORMAT_BGR555, 2, 15},
+		{"ARGB4444", PIXELFORMAT_ARGB4444, 2, 16},
+		{"RGBA4444", PIXELFORMAT_RGBA4444, 2, 16},
+		{"ABGR4444", PIXELFORMAT_ABGR4444, 2, 16},
+		{"BGRA4444", PIXELFORMAT_BGRA4444, 2, 16},
+		{"ARGB1555", PIXELFORMAT_ARGB1555, 2, 16},
+		{"RGBA5551", PIXELFORMAT_RGBA5551, 2, 16},
+		{"ABGR1555", PIXELFORMAT_ABGR1555, 2, 16},
+		{"BGRA5551", PIXELFORMAT_BGRA5551, 2, 16},
+		{"RGB565", PIXELFORMAT_RGB565, 2, 16},
+		{"BGR565", PIXELFORMAT_BGR565, 2, 16},
+		{"RGB24", PIXELFORMAT_RGB24, 3, 24},
+		{"BGR24", PIXELFORMAT_BGR24, 3, 24},
+		{"RGB888", PIXELFORMAT_RGB888, 4, 24},
+		{"RGBX8888", PIXELFORMAT_RGBX8888, 4, 24},
+		{"BGR888", PIXELFORMAT_BGR888, 4, 24},
+		{"BGRX8888", PIXELFORMAT_BGRX8888, 4, 24},
+		{"ARGB8888", PIXELFORMAT_ARGB8888, 4, 32},
+		{"RGBA8888", PIXELFORMAT_RGBA8888, 4, 32},
+		{"ABGR8888", PIXELFORMAT_ABGR8888, 4, 32},
+		{"BGRA8888", PIXELFORMAT_BGRA8888, 4, 32},
+		{"ARGB2101010", PIXELFORMAT_ARGB2101010, 4, 32},
+		{"YV12", PIXELFORMAT_YV12, 1, 86},
+		{"IYUV", PIXELFORMAT_IYUV, 1, 89},
+		{"YUY2", PIXELFORMAT_YUY2, 2, 85},
+		{"UYVY", PIXELFORMAT_UYVY, 2, 89},
+		{"YVYU", PIXELFORMAT_YVYU, 2, 86},
+	}
+	for _, tt := range tests {
+		if got := BytesPerPixel(tt.format); got != tt.wantBytes {
+			t.Errorf("BytesPerPixel(%s) want %d, got %d", tt.name, tt.wantBytes, got)
+		}
+		if got := BitsPerPixel(tt.format); got != tt.wantBits {
+			t.Errorf("BitsPerPixel(%s) want %d, got %d", tt.name, tt.wantBits, got)
+		}
+	}
+}

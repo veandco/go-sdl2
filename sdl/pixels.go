@@ -1,6 +1,12 @@
 package sdl
 
 // #include "sdl_wrapper.h"
+// int bytesPerPixel(Uint32 format) {
+//   return SDL_BYTESPERPIXEL(format);
+// }
+// int bitsPerPixel(Uint32 format) {
+//   return SDL_BITSPERPIXEL(format);
+// }
 import "C"
 import "unsafe"
 import "image/color"
@@ -315,4 +321,14 @@ func GetRGBA(pixel uint32, format *PixelFormat) (r, g, b, a uint8) {
 // (https://wiki.libsdl.org/SDL_CalculateGammaRamp)
 func CalculateGammaRamp(gamma float32, ramp *[256]uint16) {
 	C.SDL_CalculateGammaRamp(C.float(gamma), (*C.Uint16)(unsafe.Pointer(&ramp[0])))
+}
+
+// BytesPerPixel returns the number of bytes per pixel for the given format
+func BytesPerPixel(format uint32) int {
+	return int(C.bytesPerPixel(C.Uint32(format)))
+}
+
+// BitsPerPixel returns the number of bits per pixel for the given format
+func BitsPerPixel(format uint32) int {
+	return int(C.bitsPerPixel(C.Uint32(format)))
 }
