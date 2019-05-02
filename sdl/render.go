@@ -261,16 +261,21 @@ func (renderer *Renderer) CreateTextureFromSurface(surface *Surface) (*Texture, 
 
 // Query returns the attributes of a texture.
 // (https://wiki.libsdl.org/SDL_QueryTexture)
-func (texture *Texture) Query() (uint32, int, int32, int32, error) {
-	var format C.Uint32
-	var access C.int
-	var width C.int
-	var height C.int
-	ret := C.SDL_QueryTexture(texture.cptr(), &format, &access, &width, &height)
-	if ret < 0 {
-		return 0, 0, 0, 0, GetError()
-	}
-	return uint32(format), int(access), int32(width), int32(height), nil
+func (texture *Texture) Query() (format uint32, access int, width int32, height int32, err error) {
+	var _format C.Uint32
+	var _access C.int
+	var _width C.int
+	var _height C.int
+
+	ret := int(C.SDL_QueryTexture(texture.cptr(), &_format, &_access, &_width, &_height))
+
+	format = uint32(_format)
+	access = int(_access)
+	width = int32(_width)
+	height = int32(_height)
+	err = errorFromInt(ret)
+
+	return
 }
 
 // SetColorMod sets an additional color value multiplied into render copy operations.
