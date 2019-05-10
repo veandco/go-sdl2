@@ -390,7 +390,7 @@ type MouseButtonEvent struct {
 	Which     uint32 // the mouse instance id, or TOUCH_MOUSEID
 	Button    uint8  // BUTTON_LEFT, BUTTON_MIDDLE, BUTTON_RIGHT, BUTTON_X1, BUTTON_X2
 	State     uint8  // PRESSED, RELEASED
-	_         uint8  // padding
+	Clicks    uint8  // 1 for single-click, 2 for double-click, etc. (>= SDL 2.0.2)
 	_         uint8  // padding
 	X         int32  // X coordinate, relative to window
 	Y         int32  // Y coordinate, relative to window
