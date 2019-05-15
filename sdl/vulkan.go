@@ -138,22 +138,22 @@ func (window *Window) VulkanGetInstanceExtensions() []string {
 
 // VulkanCreateSurface creates a Vulkan rendering surface for a window.
 // (https://wiki.libsdl.org/SDL_Vulkan_CreateSurface)
-func (window *Window) VulkanCreateSurface(instance interface{}) (surface uintptr, err error) {
+func (window *Window) VulkanCreateSurface(instance interface{}) (surface unsafe.Pointer, err error) {
 	if instance == nil {
-		return 0, errors.New("vulkan: instance is nil")
+		return nil, errors.New("vulkan: instance is nil")
 	}
 	val := reflect.ValueOf(instance)
 	if val.Kind() != reflect.Ptr {
-		return 0, errors.New("vulkan: instance is not a VkInstance (expected kind Ptr, got " + val.Kind().String() + ")")
+		return nil, errors.New("vulkan: instance is not a VkInstance (expected kind Ptr, got " + val.Kind().String() + ")")
 	}
 	var vulkanSurface C.VkSurfaceKHR
 	if C.SDL_Vulkan_CreateSurface(window.cptr(),
 		(C.VkInstance)(unsafe.Pointer(val.Pointer())),
 		(*C.VkSurfaceKHR)(unsafe.Pointer(&vulkanSurface))) == C.SDL_FALSE {
 
-		return 0, GetError()
+		return nil, GetError()
 	}
-	return uintptr(unsafe.Pointer(&vulkanSurface)), nil
+	return unsafe.Pointer(&vulkanSurface), nil
 }
 
 // VulkanGetDrawableSize gets the size of a window's underlying drawable in pixels (for use with setting viewport, scissor & etc).
