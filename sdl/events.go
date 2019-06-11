@@ -867,7 +867,7 @@ func (e *UserEvent) GetTimestamp() uint32 {
 type SysWMEvent struct {
 	Type      uint32         // SYSWMEVENT
 	Timestamp uint32         // timestamp of the event
-	msg       unsafe.Pointer // driver dependent data, defined in SDL_syswm.h
+	Msg       *SysWMmsg // driver dependent data, defined in SDL_syswm.h
 }
 type cSysWMEvent C.SDL_SysWMEvent
 

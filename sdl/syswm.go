@@ -95,6 +95,14 @@ type UIKitInfo struct {
 	Window unsafe.Pointer // the UIKit window
 }
 
+// SysWMmsg contains system-dependent window manager messages.
+// (https://wiki.libsdl.org/SDL_SysWMmsg)
+type SysWMmsg struct {
+	Version   Version  // a Version structure that contains the current SDL version
+	Subsystem uint32   // the windowing system type
+	data      [24]byte // internal data
+}
+
 func (info *SysWMInfo) cptr() *C.SDL_SysWMinfo {
 	return (*C.SDL_SysWMinfo)(unsafe.Pointer(info))
 }
