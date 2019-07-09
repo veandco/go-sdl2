@@ -128,8 +128,8 @@ const (
 // Audio format values.
 // (https://wiki.libsdl.org/SDL_AudioFormat)
 const (
-	AUDIO_S8 = C.AUDIO_S8 // unsigned 8-bit samples
-	AUDIO_U8 = C.AUDIO_U8 // signed 8-bit samples
+	AUDIO_S8 = C.AUDIO_S8 // signed 8-bit samples
+	AUDIO_U8 = C.AUDIO_U8 // unsigned 8-bit samples
 
 	AUDIO_S16LSB = C.AUDIO_S16LSB // signed 16-bit samples in little-endian byte order
 	AUDIO_S16MSB = C.AUDIO_S16MSB // signed 16-bit samples in big-endian byte order
