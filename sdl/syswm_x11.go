@@ -1,4 +1,4 @@
-// +build x11 OR linux
+// +build x11
 
 package sdl
 
