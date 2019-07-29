@@ -58,6 +58,19 @@ package sdl
 #define SDL_HINT_RENDER_DIRECT3D_THREADSAFE ""
 #define SDL_HINT_VIDEO_HIGHDPI_DISABLED ""
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,10))
+#define SDL_HINT_MOUSE_TOUCH_EVENTS ""
+#endif
+
+#if SDL_VERSION_ATLEAST(2,0,10)
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH has been removed in SDL 2.0.10")
+#endif
+#define SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH "" // For compatibility
+
+#endif
 */
 import "C"
 import "unsafe"
@@ -111,6 +124,7 @@ const (
 	HINT_RENDER_LOGICAL_SIZE_MODE                 = C.SDL_HINT_RENDER_LOGICAL_SIZE_MODE                 // specifies a variable controlling the scaling policy for SDL_RenderSetLogicalSize
 	HINT_MOUSE_NORMAL_SPEED_SCALE                 = C.SDL_HINT_MOUSE_NORMAL_SPEED_SCALE                 // specifies a variable setting the speed scale for mouse motion, in floating point, when the mouse is not in relative mode
 	HINT_MOUSE_RELATIVE_SPEED_SCALE               = C.SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE               // specifies a variable setting the scale for mouse motion, in floating point, when the mouse is in relative mode
+	HINT_MOUSE_TOUCH_EVENTS                       = C.SDL_HINT_MOUSE_TOUCH_EVENTS                       // specifies a variable to control whether mouse events should generate synthetic touch events
 	HINT_TOUCH_MOUSE_EVENTS                       = C.SDL_HINT_TOUCH_MOUSE_EVENTS                       // specifies a variable controlling whether touch events should generate synthetic mouse events
 	HINT_WINDOWS_INTRESOURCE_ICON                 = C.SDL_HINT_WINDOWS_INTRESOURCE_ICON                 // specifies a variable to specify custom icon resource id from RC file on Windows platform
 	HINT_WINDOWS_INTRESOURCE_ICON_SMALL           = C.SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL           // specifies a variable to specify custom icon resource id from RC file on Windows platform
