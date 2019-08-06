@@ -1038,9 +1038,8 @@ func goEvent(cevent *CEvent) Event {
 		if cevent.Type >= USEREVENT {
 			// all events beyond USEREVENT are UserEvents to be registered with RegisterEvents
 			return (*UserEvent)(unsafe.Pointer(cevent))
-		} else {
-			return (*CommonEvent)(unsafe.Pointer(cevent))
 		}
+		return (*CommonEvent)(unsafe.Pointer(cevent))
 	}
 }
 
