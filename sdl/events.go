@@ -928,11 +928,13 @@ func goEvent(cevent *CEvent) Event {
 		return (*RenderEvent)(unsafe.Pointer(cevent))
 	case QUIT:
 		return (*QuitEvent)(unsafe.Pointer(cevent))
-	case USEREVENT:
-		return (*UserEvent)(unsafe.Pointer(cevent))
 	case CLIPBOARDUPDATE:
 		return (*ClipboardEvent)(unsafe.Pointer(cevent))
 	default:
+		if cevent.Type >= USEREVENT {
+			// all events beyond USEREVENT are UserEvents to be registered with RegisterEvents
+			return (*UserEvent)(unsafe.Pointer(cevent))
+		}
 		return (*CommonEvent)(unsafe.Pointer(cevent))
 	}
 }
