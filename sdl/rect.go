@@ -20,12 +20,36 @@ type Rect struct {
 	H int32 // the height of the rectangle
 }
 
+// FPoint defines a two dimensional point.
+// TODO: (https://wiki.libsdl.org/SDL_FPoint)
+type FPoint struct {
+	X float32 // the x coordinate of the point
+	Y float32 // the y coordinate of the point
+}
+
+// FRect contains the definition of a rectangle, with the origin at the upper left.
+// TODO: (https://wiki.libsdl.org/SDL_FRect)
+type FRect struct {
+	X float32 // the x location of the rectangle's upper left corner
+	Y float32 // the y location of the rectangle's upper left corner
+	W float32 // the width of the rectangle
+	H float32 // the height of the rectangle
+}
+
 func (p *Point) cptr() *C.SDL_Point {
 	return (*C.SDL_Point)(unsafe.Pointer(p))
 }
 
 func (a *Rect) cptr() *C.SDL_Rect {
 	return (*C.SDL_Rect)(unsafe.Pointer(a))
+}
+
+func (p *FPoint) cptr() *C.SDL_FPoint {
+	return (*C.SDL_FPoint)(unsafe.Pointer(p))
+}
+
+func (a *FRect) cptr() *C.SDL_FRect {
+	return (*C.SDL_FRect)(unsafe.Pointer(a))
 }
 
 // InRect reports whether the point resides inside a rectangle.

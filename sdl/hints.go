@@ -60,6 +60,10 @@ package sdl
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,10))
+#define SDL_HINT_RENDER_BATCHING ""
+#define SDL_HINT_EVENT_LOGGING ""
+#define SDL_HINT_GAMECONTROLLERCONFIG_FILE ""
+#define SDL_HINT_ANDROID_BLOCK_ON_PAUSE ""
 #define SDL_HINT_MOUSE_TOUCH_EVENTS ""
 #endif
 
@@ -68,6 +72,7 @@ package sdl
 #if defined(WARN_OUTDATED)
 #pragma message("SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH has been removed in SDL 2.0.10")
 #endif
+
 #define SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH "" // For compatibility
 
 #endif
@@ -133,6 +138,10 @@ const (
 	HINT_TV_REMOTE_AS_JOYSTICK                    = C.SDL_HINT_TV_REMOTE_AS_JOYSTICK                    // specifies a variable controlling whether the Android / tvOS remotes  should be listed as joystick devices, instead of sending keyboard events.
 	HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR       = C.SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR       // specifies a variable controlling whether the X11 _NET_WM_BYPASS_COMPOSITOR hint should be used.
 	HINT_VIDEO_DOUBLE_BUFFER                      = C.SDL_HINT_VIDEO_DOUBLE_BUFFER                      // specifies a variable that tells the video driver that we only want a double buffer.
+	HINT_RENDER_BATCHING                          = C.SDL_HINT_RENDER_BATCHING                          // specifies a variable controlling whether the 2D render API is compatible or efficient.
+	HINT_EVENT_LOGGING                            = C.SDL_HINT_EVENT_LOGGING                            // specifies a variable controlling whether SDL logs all events pushed onto its internal queue.
+	HINT_GAMECONTROLLERCONFIG_FILE                = C.SDL_HINT_GAMECONTROLLERCONFIG_FILE                // specifies a variable that lets you provide a file with extra gamecontroller db entries.
+	HINT_ANDROID_BLOCK_ON_PAUSE                   = C.SDL_HINT_ANDROID_BLOCK_ON_PAUSE                   // specifies a variable to control whether the event loop will block itself when the app is paused.
 )
 
 // An enumeration of hint priorities.

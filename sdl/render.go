@@ -61,6 +61,109 @@ static inline void * SDL_RenderGetMetalCommandEncoder(SDL_Renderer *renderer)
 }
 
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,10))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderDrawPointF is not supported before SDL 2.0.10")
+#endif
+
+static inline int SDL_RenderDrawPointF(SDL_Renderer * renderer, float x, float y)
+{
+	return SDL_RenderDrawPoint(renderer, (int) x, (int) y);
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderDrawPointsF is not supported before SDL 2.0.10")
+#endif
+
+static inline int SDL_RenderDrawPointsF(SDL_Renderer * renderer, const SDL_FPoint * points, int count)
+{
+	return SDL_RenderDrawPoints(renderer, (const SDL_Point *) points, count);
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderDrawLineF is not supported before SDL 2.0.10")
+#endif
+
+static inline int SDL_RenderDrawLineF(SDL_Renderer * renderer, float x1, float y1, float x2, float y2)
+{
+	return SDL_RenderDrawLine(renderer, (int) x1, (int) y1, (int) x2, (int) y2);
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderDrawLinesF is not supported before SDL 2.0.10")
+#endif
+
+static inline int SDL_RenderDrawLinesF(SDL_Renderer * renderer, const SDL_FPoint * points, int count)
+{
+	return SDL_RenderDrawLines(renderer, (const SDL_Point *) points, count);
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderDrawRectF is not supported before SDL 2.0.10")
+#endif
+
+static inline int SDL_RenderDrawRectF(SDL_Renderer * renderer, const SDL_FRect * rect)
+{
+	return SDL_RenderDrawRect(renderer, (const SDL_Rect *) rect);
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderDrawRectsF is not supported before SDL 2.0.10")
+#endif
+
+static inline int SDL_RenderDrawRectsF(SDL_Renderer * renderer, const SDL_FRect *rects, int count)
+{
+	return SDL_RenderDrawRects(renderer, (const SDL_Rect *) rects, count);
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderFillRectF is not supported before SDL 2.0.10")
+#endif
+
+static inline int SDL_RenderFillRectF(SDL_Renderer * renderer, const SDL_FRect * rect)
+{
+	return SDL_RenderFillRect(renderer, (const SDL_Rect *) rect);
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderFillRectsF is not supported before SDL 2.0.10")
+#endif
+
+static inline int SDL_RenderFillRectsF(SDL_Renderer * renderer, const SDL_FRect * rects, int count)
+{
+	return SDL_RenderFillRects(renderer, (const SDL_Rect *) rects, count);
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderCopyF is not supported before SDL 2.0.10")
+#endif
+
+static inline int SDL_RenderCopyF(SDL_Renderer * renderer, SDL_Texture * texture, const SDL_Rect * srcrect, const SDL_FRect * dstrect)
+{
+	return SDL_RenderCopy(renderer, texture, srcrect, (const SDL_Rect *) dstrect);
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderCopyExF is not supported before SDL 2.0.10")
+#endif
+
+static inline int SDL_RenderCopyExF(SDL_Renderer * renderer, SDL_Texture * texture, const SDL_Rect * srcrect, const SDL_FRect * dstrect, const double angle, const SDL_FPoint * center, const SDL_RendererFlip flip)
+{
+	return SDL_RenderCopyEx(renderer, texture, srcrect, (const SDL_Rect *) dstrect, angle, (const SDL_Point *) center, flip);
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderFlush is not supported before SDL 2.0.10")
+#endif
+
+static inline int SDL_RenderFlush(SDL_Renderer * renderer)
+{
+	return 0;
+}
+
+#endif
 */
 import "C"
 import (
@@ -681,6 +784,104 @@ func (renderer *Renderer) CopyEx(texture *Texture, src, dst *Rect, angle float64
 			flip.c())))
 }
 
+// DrawPointF draws a point on the current rendering target.
+// TODO: (https://wiki.libsdl.org/SDL_RenderDrawPointF)
+func (renderer *Renderer) DrawPointF(x, y float32) error {
+	return errorFromInt(int(
+		C.SDL_RenderDrawPointF(renderer.cptr(), C.float(x), C.float(y))))
+}
+
+// DrawPointsF draws multiple points on the current rendering target.
+// TODO: (https://wiki.libsdl.org/SDL_RenderDrawPointsF)
+func (renderer *Renderer) DrawPointsF(points []FPoint) error {
+	return errorFromInt(int(
+		C.SDL_RenderDrawPointsF(
+			renderer.cptr(),
+			points[0].cptr(),
+			C.int(len(points)))))
+}
+
+// DrawLineF draws a line on the current rendering target.
+// TODO: (https://wiki.libsdl.org/SDL_RenderDrawLineF)
+func (renderer *Renderer) DrawLineF(x1, y1, x2, y2 float32) error {
+	return errorFromInt(int(
+		C.SDL_RenderDrawLineF(
+			renderer.cptr(),
+			C.float(x1),
+			C.float(y1),
+			C.float(x2),
+			C.float(y2))))
+}
+
+// DrawLinesF draws a series of connected lines on the current rendering target.
+// TODO: (https://wiki.libsdl.org/SDL_RenderDrawLinesF)
+func (renderer *Renderer) DrawLinesF(points []FPoint) error {
+	return errorFromInt(int(
+		C.SDL_RenderDrawLinesF(
+			renderer.cptr(),
+			points[0].cptr(),
+			C.int(len(points)))))
+}
+
+// DrawRectF draws a rectangle on the current rendering target.
+// TODO: (https://wiki.libsdl.org/SDL_RenderDrawRectF)
+func (renderer *Renderer) DrawRectF(rect *FRect) error {
+	return errorFromInt(int(
+		C.SDL_RenderDrawRectF(renderer.cptr(), rect.cptr())))
+}
+
+// DrawRectsF draws some number of rectangles on the current rendering target.
+// TODO: (https://wiki.libsdl.org/SDL_RenderDrawRectsF)
+func (renderer *Renderer) DrawRectsF(rects []FRect) error {
+	return errorFromInt(int(
+		C.SDL_RenderDrawRectsF(
+			renderer.cptr(),
+			rects[0].cptr(),
+			C.int(len(rects)))))
+}
+
+// FillRectF fills a rectangle on the current rendering target with the drawing color.
+// TODO: (https://wiki.libsdl.org/SDL_RenderFillRectF)
+func (renderer *Renderer) FillRectF(rect *FRect) error {
+	return errorFromInt(int(
+		C.SDL_RenderFillRectF(renderer.cptr(), rect.cptr())))
+}
+
+// FillRectsF fills some number of rectangles on the current rendering target with the drawing color.
+// TODO: (https://wiki.libsdl.org/SDL_RenderFillRectsF)
+func (renderer *Renderer) FillRectsF(rects []FRect) error {
+	return errorFromInt(int(
+		C.SDL_RenderFillRectsF(
+			renderer.cptr(),
+			rects[0].cptr(),
+			C.int(len(rects)))))
+}
+
+// CopyF copies a portion of the texture to the current rendering target.
+// TODO: (https://wiki.libsdl.org/SDL_RenderCopyF)
+func (renderer *Renderer) CopyF(texture *Texture, src, dst *FRect) error {
+	return errorFromInt(int(
+		C.SDL_RenderCopyF(
+			renderer.cptr(),
+			texture.cptr(),
+			(*C.SDL_Rect)(unsafe.Pointer(src)),
+			dst.cptr())))
+}
+
+// CopyExF copies a portion of the texture to the current rendering target, optionally rotating it by angle around the given center and also flipping it top-bottom and/or left-right.
+// TODO: (https://wiki.libsdl.org/SDL_RenderCopyExF)
+func (renderer *Renderer) CopyExF(texture *Texture, src, dst *FRect, angle float64, center *FPoint, flip RendererFlip) error {
+	return errorFromInt(int(
+		C.SDL_RenderCopyExF(
+			renderer.cptr(),
+			texture.cptr(),
+			(*C.SDL_Rect)(unsafe.Pointer(src)),
+			dst.cptr(),
+			C.double(angle),
+			center.cptr(),
+			flip.c())))
+}
+
 // ReadPixels reads pixels from the current rendering target.
 // (https://wiki.libsdl.org/SDL_RenderReadPixels)
 func (renderer *Renderer) ReadPixels(rect *Rect, format uint32, pixels unsafe.Pointer, pitch int) error {
@@ -725,6 +926,12 @@ func (renderer *Renderer) Destroy() error {
 	}
 	SetError(lastErr)
 	return nil
+}
+
+// Flush forces the rendering context to flush any pending commands to the underlying rendering API.
+// TODO: (https://wiki.libsdl.org/SDL_RenderFlush)
+func (renderer *Renderer) Flush() error {
+	return errorFromInt(int(C.SDL_RenderFlush(renderer.cptr())))
 }
 
 // GLBind binds an OpenGL/ES/ES2 texture to the current context for use with OpenGL instructions when rendering OpenGL primitives directly.

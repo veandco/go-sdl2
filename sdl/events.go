@@ -865,8 +865,8 @@ func (e *UserEvent) GetTimestamp() uint32 {
 // SysWMEvent contains a video driver dependent system event.
 // (https://wiki.libsdl.org/SDL_SysWMEvent)
 type SysWMEvent struct {
-	Type      uint32         // SYSWMEVENT
-	Timestamp uint32         // timestamp of the event
+	Type      uint32    // SYSWMEVENT
+	Timestamp uint32    // timestamp of the event
 	Msg       *SysWMmsg // driver dependent data, defined in SDL_syswm.h
 }
 type cSysWMEvent C.SDL_SysWMEvent

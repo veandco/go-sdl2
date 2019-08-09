@@ -51,8 +51,39 @@ static inline SDL_bool SDL_HasNEON()
 }
 #endif
 
+#if !(SDL_VERSION_ATLEAST(2,0,10))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_SIMDGetAlignment is not supported before SDL 2.0.10")
+#endif
+
+static inline size_t SDL_SIMDGetAlignment(void)
+{
+	return 0;
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_SIMDAlloc is not supported before SDL 2.0.10")
+#endif
+
+static inline void * SDL_SIMDAlloc(const size_t len)
+{
+	return NULL;
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_SIMDFree is not supported before SDL 2.0.10")
+#endif
+
+static inline void SDL_SIMDFree(void *ptr)
+{
+}
+
+#endif
+
 */
 import "C"
+import "unsafe"
 
 // CACHELINE_SIZE is a cacheline size used for padding.
 const CACHELINE_SIZE = C.SDL_CACHELINE_SIZE
@@ -145,4 +176,22 @@ func HasAVX2() bool {
 // (https://wiki.libsdl.org/SDL_HasNEON)
 func HasNEON() bool {
 	return C.SDL_HasNEON() > 0
+}
+
+// SIMDGetAlignment reports the alignment this system needs for SIMD allocations.
+// TODO: (https://wiki.libsdl.org/SDL_SIMDGetAlignment)
+func SIMDGetAlignment() int {
+	return int(C.SDL_SIMDGetAlignment())
+}
+
+// SIMDAlloc allocates memory in a SIMD-friendly way.
+// TODO: (https://wiki.libsdl.org/SDL_SIMDAlloc)
+func SIMDAlloc(_len int) unsafe.Pointer {
+	return C.SDL_SIMDAlloc(C.size_t(_len))
+}
+
+// SIMDFree deallocates memory obtained from SDL_SIMDAlloc.
+// TODO: (https://wiki.libsdl.org/SDL_SIMDFree)
+func SIMDFree(p unsafe.Pointer) {
+	C.SDL_SIMDFree(p)
 }

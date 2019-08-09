@@ -10,8 +10,8 @@ import "unsafe"
 
 // WindowsMsg contains Microsoft Windows window information.
 type WindowsMsg struct {
-	Hwnd C.HWND
-	Msg C.UINT
+	Hwnd   C.HWND
+	Msg    C.UINT
 	WParam C.WPARAM
 	LParam C.LPARAM
 }
