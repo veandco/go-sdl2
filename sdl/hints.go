@@ -37,6 +37,19 @@ package sdl
 #define SDL_HINT_RENDER_DIRECT3D_THREADSAFE ""
 #define SDL_HINT_VIDEO_HIGHDPI_DISABLED ""
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,10))
+#define SDL_HINT_MOUSE_TOUCH_EVENTS ""
+#endif
+
+#if SDL_VERSION_ATLEAST(2,0,10)
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH has been removed in SDL 2.0.10")
+#endif
+#define SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH "" // For compatibility
+
+#endif
 */
 import "C"
 import "unsafe"
@@ -86,6 +99,7 @@ const (
 	HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH         = C.SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH         // specifies a variable to control whether mouse and touch events are to be treated together or separately
 	HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION  = C.SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION  // specifies the Android APK expansion main file version
 	HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION = C.SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION // specifies the Android APK expansion patch file version
+	HINT_MOUSE_TOUCH_EVENTS                       = C.SDL_HINT_MOUSE_TOUCH_EVENTS                       // specifies a variable to control whether mouse events should generate synthetic touch events
 )
 
 // An enumeration of hint priorities.
