@@ -164,6 +164,14 @@ static inline int SDL_RenderFlush(SDL_Renderer * renderer)
 }
 
 #endif
+
+// WORKAROUND: This prevents audio from seemingly going corrupt when drawing outside the screen bounding box?
+// It does that by allocating SDL_Rect in the C context instead of Go context.
+static inline int RenderCopy(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect *src, int dst_x, int dst_y, int dst_w, int dst_h)
+{
+	SDL_Rect dst = {dst_x, dst_y, dst_w, dst_h};
+	return SDL_RenderCopy(renderer, texture, src, &dst);
+}
 */
 import "C"
 import (
@@ -763,11 +771,11 @@ func (renderer *Renderer) FillRects(rects []Rect) error {
 // (https://wiki.libsdl.org/SDL_RenderCopy)
 func (renderer *Renderer) Copy(texture *Texture, src, dst *Rect) error {
 	return errorFromInt(int(
-		C.SDL_RenderCopy(
+		C.RenderCopy(
 			renderer.cptr(),
 			texture.cptr(),
 			src.cptr(),
-			dst.cptr())))
+			C.int(dst.X), C.int(dst.Y), C.int(dst.W), C.int(dst.H))))
 }
 
 // CopyEx copies a portion of the texture to the current rendering target, optionally rotating it by angle around the given center and also flipping it top-bottom and/or left-right.
