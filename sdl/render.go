@@ -555,6 +555,14 @@ func (renderer *Renderer) FillRects(rects []Rect) error {
 // Copy copies a portion of the texture to the current rendering target.
 // (https://wiki.libsdl.org/SDL_RenderCopy)
 func (renderer *Renderer) Copy(texture *Texture, src, dst *Rect) error {
+	if dst == nil {
+		return errorFromInt(int(
+			C.SDL_RenderCopy(
+				renderer.cptr(),
+				texture.cptr(),
+				src.cptr(),
+				dst.cptr())))
+	}
 	return errorFromInt(int(
 		C.RenderCopy(
 			renderer.cptr(),
