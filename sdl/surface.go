@@ -569,9 +569,9 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 	switch surface.Format.Format {
 	case PIXELFORMAT_ARGB8888:
 		col := surface.ColorModel().Convert(c).(color.RGBA)
-		pix[i+0] = col.R
+		pix[i+0] = col.B
 		pix[i+1] = col.G
-		pix[i+2] = col.B
+		pix[i+2] = col.R
 		pix[i+3] = col.A
 	case PIXELFORMAT_ABGR8888:
 		col := surface.ColorModel().Convert(c).(color.RGBA)
