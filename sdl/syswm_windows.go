@@ -3,7 +3,7 @@
 package sdl
 
 /*
-#include <WinDef.h>
+#include <windef.h>
 */
 import "C"
 import "unsafe"
