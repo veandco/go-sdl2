@@ -1,6 +1,8 @@
 #include "_cgo_export.h"
 #include "events.h"
 
+SDL_Event event;
+
 void setEventFilter()
 {
 	SDL_SetEventFilter((SDL_EventFilter)goSetEventFilterCallback, NULL);
@@ -24,4 +26,9 @@ void addEventWatch(void *userdata)
 void delEventWatch(void *userdata)
 {
 	SDL_DelEventWatch((SDL_EventFilter)goEventFilterCallback, userdata);
+}
+
+int PollEvent()
+{
+	return SDL_PollEvent(&event);
 }

@@ -970,11 +970,11 @@ func FlushEvents(minType, maxType uint32) {
 // PollEvent polls for currently pending events.
 // (https://wiki.libsdl.org/SDL_PollEvent)
 func PollEvent() Event {
-	ret := C.SDL_PollEvent(&cevent)
+	ret := C.PollEvent()
 	if ret == 0 {
 		return nil
 	}
-	return goEvent((*CEvent)(unsafe.Pointer(&cevent)))
+	return goEvent((*CEvent)(unsafe.Pointer(&C.event)))
 }
 
 func goEvent(cevent *CEvent) Event {
