@@ -1,4 +1,5 @@
-# SDL2 binding for Go [![Build Status](https://travis-ci.org/veandco/go-sdl2.svg?branch=master)](https://travis-ci.org/veandco/go-sdl2) [![Go Report Card](https://goreportcard.com/badge/github.com/veandco/go-sdl2)](https://goreportcard.com/report/github.com/veandco/go-sdl2) [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
+# SDL2 binding for Go  [![Build Status](https://travis-ci.org/veandco/go-sdl2.svg?branch=master)](https://travis-ci.org/veandco/go-sdl2) [![Go Report Card](https://goreportcard.com/badge/github.com/veandco/go-sdl2)](https://goreportcard.com/report/github.com/veandco/go-sdl2) [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com) [![Financial Contributors on Open Collective](https://opencollective.com/veandco/all/badge.svg?label=financial+contributors)](https://opencollective.com/veandco) 
+
 `go-sdl2` is SDL2 wrapped for Go users. It enables interoperability between Go and the SDL2 library which is written in C. That means the original SDL2 installation is required for this to work.
 
 
@@ -188,6 +189,36 @@ There is currently no support for iOS yet.
 
 __Why does my window not immediately render after creation?__
 It appears the rendering subsystem needs some time to be able to present the drawn pixels. This can be workaround by adding delay using `sdl.Delay()` or put the rendering code inside a draw loop.
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/veandco/go-sdl2/graphs/contributors"><img src="https://opencollective.com/veandco/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/veandco/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/veandco"><img src="https://opencollective.com/veandco/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/veandco/contribute)]
+
+<a href="https://opencollective.com/veandco/organization/0/website"><img src="https://opencollective.com/veandco/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/veandco/organization/1/website"><img src="https://opencollective.com/veandco/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/veandco/organization/2/website"><img src="https://opencollective.com/veandco/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/veandco/organization/3/website"><img src="https://opencollective.com/veandco/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/veandco/organization/4/website"><img src="https://opencollective.com/veandco/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/veandco/organization/5/website"><img src="https://opencollective.com/veandco/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/veandco/organization/6/website"><img src="https://opencollective.com/veandco/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/veandco/organization/7/website"><img src="https://opencollective.com/veandco/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/veandco/organization/8/website"><img src="https://opencollective.com/veandco/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/veandco/organization/9/website"><img src="https://opencollective.com/veandco/organization/9/avatar.svg"></a>
 
 # License
 Go-SDL2 is BSD 3-clause licensed.
