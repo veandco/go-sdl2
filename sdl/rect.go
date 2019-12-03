@@ -190,6 +190,134 @@ func (a *Rect) Union(b *Rect) Rect {
 	return result
 }
 
+// Empty reports whether a rectangle has no area.
+// (https://wiki.libsdl.org/SDL_RectEmpty)
+func (a *FRect) Empty() bool {
+	return a == nil || a.W <= 0 || a.H <= 0
+}
+
+// Equals reports whether two rectangles are equal.
+// (https://wiki.libsdl.org/SDL_RectEquals)
+func (a *FRect) Equals(b *FRect) bool {
+	if (a != nil) && (b != nil) &&
+		(a.X == b.X) && (a.Y == b.Y) &&
+		(a.W == b.W) && (a.H == b.H) {
+		return true
+	}
+	return false
+}
+
+// HasIntersection reports whether two rectangles intersect.
+// (https://wiki.libsdl.org/SDL_HasIntersection)
+func (a *FRect) HasIntersection(b *FRect) bool {
+	if a == nil || b == nil {
+		return false
+	}
+
+	// Special case for empty rects
+	if a.Empty() || b.Empty() {
+		return false
+	}
+
+	if a.X >= b.X+b.W || a.X+a.W <= b.X || a.Y >= b.Y+b.H || a.Y+a.H <= b.Y {
+		return false
+	}
+
+	return true
+}
+
+// Intersect calculates the intersection of two rectangles.
+// (https://wiki.libsdl.org/SDL_IntersectRect)
+func (a *FRect) Intersect(b *FRect) (FRect, bool) {
+	var result FRect
+
+	if a == nil || b == nil {
+		return result, false
+	}
+
+	// Special case for empty rects
+	if a.Empty() || b.Empty() {
+		result.W = 0
+		result.H = 0
+		return result, false
+	}
+
+	aMin := a.X
+	aMax := aMin + a.W
+	bMin := b.X
+	bMax := bMin + b.W
+	if bMin > aMin {
+		aMin = bMin
+	}
+	result.X = aMin
+	if bMax < aMax {
+		aMax = bMax
+	}
+	result.W = aMax - aMin
+
+	aMin = a.Y
+	aMax = aMin + a.H
+	bMin = b.Y
+	bMax = bMin + b.H
+	if bMin > aMin {
+		aMin = bMin
+	}
+	result.Y = aMin
+	if bMax < aMax {
+		aMax = bMax
+	}
+	result.H = aMax - aMin
+
+	return result, !result.Empty()
+}
+
+// Union calculates the union of two rectangles.
+// (https://wiki.libsdl.org/SDL_UnionRect)
+func (a *FRect) Union(b *FRect) FRect {
+	var result FRect
+
+	if a == nil || b == nil {
+		return result
+	}
+
+	// Special case for empty rects
+	if a.Empty() {
+		return *b
+	} else if b.Empty() {
+		return *a
+	} else if a.Empty() && b.Empty() {
+		return result
+	}
+
+	aMin := a.X
+	aMax := aMin + a.W
+	bMin := b.X
+	bMax := bMin + b.W
+	if bMin < aMin {
+		aMin = bMin
+	}
+	result.X = aMin
+	if bMax > aMax {
+		aMax = bMax
+	}
+	result.W = aMax - aMin
+
+	aMin = a.Y
+	aMax = aMin + a.H
+	bMin = b.Y
+	bMax = bMin + b.H
+	if bMin < aMin {
+		aMin = bMin
+	}
+	result.Y = aMin
+	if bMax > aMax {
+		aMax = bMax
+	}
+	result.H = aMax - aMin
+
+	return result
+}
+
 // EnclosePoints calculates a minimal rectangle that encloses a set of points.
 // (https://wiki.libsdl.org/SDL_EnclosePoints)
 func EnclosePoints(points []Point, clip *Rect) (Rect, bool) {
