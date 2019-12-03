@@ -62,6 +62,16 @@ func (p *Point) InRect(r *Rect) bool {
 	return false
 }
 
+// InRect reports whether the point resides inside a rectangle.
+// (https://wiki.libsdl.org/SDL_PointInRect)
+func (p *FPoint) InRect(r *FRect) bool {
+	if (p.X >= r.X) && (p.X < (r.X + r.W)) &&
+		(p.Y >= r.Y) && (p.Y < (r.Y + r.H)) {
+		return true
+	}
+	return false
+}
+
 // Empty reports whether a rectangle has no area.
 // (https://wiki.libsdl.org/SDL_RectEmpty)
 func (a *Rect) Empty() bool {
