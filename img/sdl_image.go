@@ -24,9 +24,13 @@ func LinkedVersion() *sdl.Version {
 
 // Init loads dynamic libraries and prepares them for use. Flags should be one or more flags from IMG_InitFlags OR'd together. It returns the flags successfully initialized, or 0 on failure.
 // (http://www.libsdl.org/projects/SDL_image/docs/SDL_image_8.html)
-func Init(flags int) int {
+func Init(flags int) error {
 	_flags := (C.int)(flags)
-	return int(C.IMG_Init(_flags))
+	ret := int(C.IMG_Init(_flags))
+	if ret == 0 {
+		return GetError()
+	}
+	return nil
 }
 
 // Quit unloads libraries loaded with img.Init().
