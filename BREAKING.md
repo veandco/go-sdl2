@@ -2,6 +2,8 @@
 
 ### v0.3..master
 
+#### sdl
+
 + Changed `RWFromMem()` (0ee14f91)
 + Changed and renamed `RWops.FreeRW()` to `RWops.Free()` (0ee14f91)
 + Changed and renamed `RWops.RWsize()` to `RWops.Size()` (0ee14f91)
@@ -12,6 +14,10 @@
 + Changed and renamed `RWops.RWclose()` to `RWops.Close()` (0ee14f91)
 + Changed and renamed `RWops.RWclose()` to `RWops.Close()` (0ee14f91)
 + Changed `Window.VulkanCreateSurface` to return `unsafe.Pointer` instead of `uintptr`
+
+#### img
+
++ Changed `Init()` to return `error` instead of `int`
 
 ### v0.2..v0.3
 
