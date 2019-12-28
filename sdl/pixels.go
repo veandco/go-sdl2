@@ -356,6 +356,8 @@ var (
 	RGB332Model color.Model = color.ModelFunc(rgb332Model)
 	RGB565Model color.Model = color.ModelFunc(rgb565Model)
 	RGB555Model color.Model = color.ModelFunc(rgb555Model)
+	BGR565Model color.Model = color.ModelFunc(bgr565Model)
+	BGR555Model color.Model = color.ModelFunc(bgr555Model)
 )
 
 func rgb444Model(c color.Color) color.Color {
@@ -421,4 +423,42 @@ func rgb555Model(c color.Color) color.Color {
 	}
 	r, g, b, _ := c.RGBA()
 	return RGB555{uint8(r >> 11), uint8(g >> 11), uint8(b >> 11)}
+}
+
+type BGR565 struct {
+	B, G, R byte
+}
+
+func (c BGR565) RGBA() (r, g, b, a uint32) {
+	r = uint32(c.R) << 11
+	g = uint32(c.G) << 10
+	b = uint32(c.B) << 11
+	return
+}
+
+func bgr565Model(c color.Color) color.Color {
+	if _, ok := c.(color.RGBA); ok {
+		return c
+	}
+	r, g, b, _ := c.RGBA()
+	return BGR565{uint8(b >> 11), uint8(g >> 10), uint8(r >> 11)}
+}
+
+type BGR555 struct {
+	B, G, R byte
+}
+
+func (c BGR555) RGBA() (r, g, b, a uint32) {
+	r = uint32(c.R) << 11
+	g = uint32(c.G) << 11
+	b = uint32(c.B) << 11
+	return
+}
+
+func bgr555Model(c color.Color) color.Color {
+	if _, ok := c.(color.RGBA); ok {
+		return c
+	}
+	r, g, b, _ := c.RGBA()
+	return BGR555{uint8(b >> 11), uint8(g >> 11), uint8(r >> 11)}
 }
