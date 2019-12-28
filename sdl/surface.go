@@ -531,6 +531,8 @@ func (surface *Surface) ColorModel() color.Model {
 		return color.RGBAModel
 	case PIXELFORMAT_RGB888:
 		return color.RGBAModel
+	case PIXELFORMAT_RGB444:
+		return RGB444Model
 	default:
 		panic("Not implemented yet")
 	}
@@ -589,6 +591,13 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 		pix[i+2] = col.R
 		pix[i+1] = col.G
 		pix[i+0] = col.B
+	case PIXELFORMAT_RGB444:
+		col := surface.ColorModel().Convert(c).(color.RGBA)
+		buf := (*uint32)(unsafe.Pointer(&pix[i]))
+		r := uint32(col.R) >> 4 & 0x0F
+		g := uint32(col.G) >> 4 & 0x0F
+		b := uint32(col.B) >> 4 & 0x0F
+		*buf = r << 8 | g << 4 | b
 	default:
 		panic("Unknown pixel format!")
 	}
