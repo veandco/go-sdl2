@@ -539,6 +539,10 @@ func (surface *Surface) ColorModel() color.Model {
 		return RGB555Model
 	case PIXELFORMAT_RGB565:
 		return RGB565Model
+	case PIXELFORMAT_BGR555:
+		return BGR555Model
+	case PIXELFORMAT_BGR565:
+		return BGR565Model
 	default:
 		panic("Not implemented yet")
 	}
@@ -625,6 +629,20 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 		g := uint32(col.G) >> 3 & 0xFF
 		b := uint32(col.B) >> 3 & 0xFF
 		*buf = r << 10 | g << 5 | b
+	case PIXELFORMAT_BGR565:
+		col := surface.ColorModel().Convert(c).(color.RGBA)
+		buf := (*uint32)(unsafe.Pointer(&pix[i]))
+		r := uint32(col.R) >> 3 & 0xFF
+		g := uint32(col.G) >> 2 & 0xFF
+		b := uint32(col.B) >> 3 & 0xFF
+		*buf = b << 11 | g << 5 | r
+	case PIXELFORMAT_BGR555:
+		col := surface.ColorModel().Convert(c).(color.RGBA)
+		buf := (*uint32)(unsafe.Pointer(&pix[i]))
+		r := uint32(col.R) >> 3 & 0xFF
+		g := uint32(col.G) >> 3 & 0xFF
+		b := uint32(col.B) >> 3 & 0xFF
+		*buf = b << 10 | g << 5 | r
 	default:
 		panic("Unknown pixel format!")
 	}
