@@ -29,8 +29,10 @@ package sdl
 //   return SDL_BITSPERPIXEL(format);
 // }
 import "C"
-import "unsafe"
-import "image/color"
+import (
+	"image/color"
+	"unsafe"
+)
 
 // PixelFormat contains pixel format information.
 // (https://wiki.libsdl.org/SDL_PixelFormat)
@@ -352,12 +354,13 @@ func (c RGB444) RGBA() (r, g, b, a uint32) {
 }
 
 var (
-	RGB444Model color.Model = color.ModelFunc(rgb444Model)
-	RGB332Model color.Model = color.ModelFunc(rgb332Model)
-	RGB565Model color.Model = color.ModelFunc(rgb565Model)
-	RGB555Model color.Model = color.ModelFunc(rgb555Model)
-	BGR565Model color.Model = color.ModelFunc(bgr565Model)
-	BGR555Model color.Model = color.ModelFunc(bgr555Model)
+	RGB444Model   color.Model = color.ModelFunc(rgb444Model)
+	RGB332Model   color.Model = color.ModelFunc(rgb332Model)
+	RGB565Model   color.Model = color.ModelFunc(rgb565Model)
+	RGB555Model   color.Model = color.ModelFunc(rgb555Model)
+	BGR565Model   color.Model = color.ModelFunc(bgr565Model)
+	BGR555Model   color.Model = color.ModelFunc(bgr555Model)
+	ARGB4444Model color.Model = color.ModelFunc(argb4444Model)
 )
 
 func rgb444Model(c color.Color) color.Color {
@@ -461,4 +464,24 @@ func bgr555Model(c color.Color) color.Color {
 	}
 	r, g, b, _ := c.RGBA()
 	return BGR555{uint8(b >> 11), uint8(g >> 11), uint8(r >> 11)}
+}
+
+type ARGB4444 struct {
+	A, R, G, B byte
+}
+
+func (c ARGB4444) RGBA() (r, g, b, a uint32) {
+	a = uint32(c.A) << 4
+	r = uint32(c.R) << 4
+	g = uint32(c.G) << 4
+	b = uint32(c.B) << 4
+	return
+}
+
+func argb4444Model(c color.Color) color.Color {
+	if _, ok := c.(color.RGBA); ok {
+		return c
+	}
+	r, g, b, a := c.RGBA()
+	return ARGB4444{uint8(a >> 4), uint8(r >> 4), uint8(g >> 4), uint8(b >> 4)}
 }
