@@ -362,6 +362,9 @@ var (
 	BGR555Model   color.Model = color.ModelFunc(bgr555Model)
 	ARGB4444Model color.Model = color.ModelFunc(argb4444Model)
 	ABGR4444Model color.Model = color.ModelFunc(abgr4444Model)
+	RGBA4444Model color.Model = color.ModelFunc(rgba4444Model)
+	BGRA4444Model color.Model = color.ModelFunc(bgra4444Model)
+	ARGB1555Model color.Model = color.ModelFunc(argb1555Model)
 )
 
 func rgb444Model(c color.Color) color.Color {
@@ -505,4 +508,72 @@ func abgr4444Model(c color.Color) color.Color {
 	}
 	r, g, b, a := c.RGBA()
 	return ABGR4444{uint8(a >> 4), uint8(b >> 4), uint8(g >> 4), uint8(r >> 4)}
+}
+
+type RGBA4444 struct {
+	R, G, B, A byte
+}
+
+func (c RGBA4444) RGBA() (r, g, b, a uint32) {
+	r = uint32(c.R) << 4
+	g = uint32(c.G) << 4
+	b = uint32(c.B) << 4
+	a = uint32(c.A) << 4
+	return
+}
+
+func rgba4444Model(c color.Color) color.Color {
+	if _, ok := c.(color.RGBA); ok {
+		return c
+	}
+	r, g, b, a := c.RGBA()
+	return RGBA4444{uint8(r >> 4), uint8(g >> 4), uint8(b >> 4), uint8(a >> 4)}
+}
+
+type BGRA4444 struct {
+	B, G, R, A byte
+}
+
+func (c BGRA4444) RGBA() (r, g, b, a uint32) {
+	r = uint32(c.R) << 4
+	g = uint32(c.G) << 4
+	b = uint32(c.B) << 4
+	a = uint32(c.A) << 4
+	return
+}
+
+func bgra4444Model(c color.Color) color.Color {
+	if _, ok := c.(color.RGBA); ok {
+		return c
+	}
+	r, g, b, a := c.RGBA()
+	return BGRA4444{uint8(b >> 4), uint8(g >> 4), uint8(r >> 4), uint8(a >> 4)}
+}
+
+type ARGB1555 struct {
+	A, R, G, B byte
+}
+
+func (c ARGB1555) RGBA() (r, g, b, a uint32) {
+	r = uint32(c.R) << 3
+	g = uint32(c.G) << 3
+	b = uint32(c.B) << 3
+	if c.A > 0 {
+		tmp := int32(-1)
+		a = uint32(tmp)
+	}
+	return
+}
+
+func argb1555Model(c color.Color) color.Color {
+	if _, ok := c.(color.RGBA); ok {
+		return c
+	}
+	r, g, b, a := c.RGBA()
+	if a > 0 {
+		a = 1
+	} else {
+		a = 0
+	}
+	return ARGB1555{uint8(a), uint8(r >> 3), uint8(g >> 3), uint8(b >> 3)}
 }
