@@ -3,6 +3,19 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,9))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_HasAVX512F is not supported before SDL 2.0.9")
+#endif
+
+static inline SDL_bool SDL_HasAVX512F()
+{
+	return SDL_FALSE;
+}
+
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,1))
 
 #if defined(WARN_OUTDATED)
@@ -164,6 +177,12 @@ func GetSystemRAM() int {
 // (https://wiki.libsdl.org/SDL_HasAVX)
 func HasAVX() bool {
 	return C.SDL_HasAVX() > 0
+}
+
+// HasAVX512F reports whether the CPU has AVX-512F (foundation) features.
+// TODO: (https://wiki.libsdl.org/SDL_HasAVX512F)
+func HasAVX512F() bool {
+	return C.SDL_HasAVX512F() > 0
 }
 
 // HasAVX2 reports whether the CPU has AVX2 features.
