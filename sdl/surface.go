@@ -3,6 +3,19 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,9))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_HasColorKey is not supported before SDL 2.0.9")
+#endif
+
+static SDL_bool SDL_HasColorKey(SDL_Surface * surface)
+{
+	return SDL_FALSE;
+}
+
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,8))
 typedef enum {
 	SDL_YUV_CONVERSION_JPEG,
@@ -295,6 +308,12 @@ func (surface *Surface) SetColorKey(flag bool, key uint32) error {
 		return GetError()
 	}
 	return nil
+}
+
+// HasColorKey returns the color key (transparent pixel) for the surface.
+// TODO: (https://wiki.libsdl.org/SDL_HasColorKey)
+func (surface *Surface) HasColorKey() bool {
+	return C.SDL_HasColorKey(surface.cptr()) == C.SDL_TRUE
 }
 
 // GetColorKey retruns the color key (transparent pixel) for the surface.
