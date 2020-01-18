@@ -316,7 +316,7 @@ func (surface *Surface) HasColorKey() bool {
 	return C.SDL_HasColorKey(surface.cptr()) == C.SDL_TRUE
 }
 
-// GetColorKey retruns the color key (transparent pixel) for the surface.
+// GetColorKey returns the color key (transparent pixel) for the surface.
 // (https://wiki.libsdl.org/SDL_GetColorKey)
 func (surface *Surface) GetColorKey() (key uint32, err error) {
 	_key := (*C.Uint32)(unsafe.Pointer(&key))
