@@ -1,3 +1,42 @@
+## 2.0.10
+
+[x] SDL_SIMDGetAlignment
+[x] SDL_SIMDAlloc
+[x] SDL_SIMDFree
+[x] SDL_RenderDrawPointF
+[x] SDL_RenderDrawPointsF
+[x] SDL_RenderDrawLineF
+[x] SDL_RenderDrawLinesF
+[x] SDL_RenderDrawRectF
+[x] SDL_RenderDrawRectsF
+[x] SDL_RenderFillRectF
+[x] SDL_RenderFillRectsF
+[x] SDL_RenderCopyF
+[x] SDL_RenderCopyExF
+[x] SDL_GetTouchDeviceType
+[x] SDL_RenderFlush
+[x] SDL_HINT_RENDER_BATCHING
+[x] SDL_HINT_EVENT_LOGGING
+[x] SDL_HINT_GAMECONTROLLERCONFIG_FILE
+[x] SDL_HINT_MOUSE_TOUCH_EVENTS
+
+## 2.0.9
+
+[x] SDL_SENSORUPDATE
+[x] SDL_DISPLAYEVENT
+[x] SDL_JoystickGetDevicePlayerIndex
+[x] SDL_JoystickGetPlayerIndex
+[x] SDL_GameControllerGetPlayerIndex
+[x] SDL_GameControllerRumble
+[x] SDL_JoystickRumble
+[x] SDL_GameControllerMappingForDeviceIndex
+[x] SDL_HINT_MOUSE_DOUBLE_CLICK_TIME
+[x] SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS
+[x] SDL_HasColorKey
+[x] SDL_HasAVX512F
+[x] SDL_IsTablet
+[?] SDL_THREAD_PRIORITY_TIME_CRITICAL
+
 ## 2.0.8
 
 ### Hints
