@@ -4,6 +4,10 @@ package sdl
 #include "sdl_wrapper.h"
 #include "events.h"
 
+#if !SDL_VERSION_ATLEAST(2,0,9)
+#define SDL_DISPLAYEVENT (0x150)
+#endif
+
 #if !SDL_VERSION_ATLEAST(2,0,2)
 #define SDL_RENDER_TARGETS_RESET (0x2000)
 #endif
@@ -116,6 +120,9 @@ const (
 	APP_DIDENTERBACKGROUND  = C.SDL_APP_DIDENTERBACKGROUND  //application entered background
 	APP_WILLENTERFOREGROUND = C.SDL_APP_WILLENTERFOREGROUND // application is entering foreground
 	APP_DIDENTERFOREGROUND  = C.SDL_APP_DIDENTERFOREGROUND  // application entered foreground
+
+	// Display events
+	DISPLAYEVENT = C.SDL_DISPLAYEVENT // Display state change
 
 	// Window events
 	WINDOWEVENT = C.SDL_WINDOWEVENT // window state change
@@ -230,6 +237,29 @@ func (e *CommonEvent) GetType() uint32 {
 
 // GetTimestamp returns the timestamp of the event.
 func (e *CommonEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
+// DisplayEvent contains common event data.
+// (https://wiki.libsdl.org/SDL_Event)
+type DisplayEvent struct {
+	Type      uint32 // the event type
+	Timestamp uint32 // timestamp of the event
+	Display   uint32 // the associated display index
+	Event     uint8  // TODO: (https://wiki.libsdl.org/SDL_DisplayEventID)
+	_         uint8  // padding
+	_         uint8  // padding
+	_         uint8  // padding
+	Data1     int32  // event dependent data
+}
+
+// GetType returns the event type.
+func (e *DisplayEvent) GetType() uint32 {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e *DisplayEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -979,6 +1009,8 @@ func PollEvent() Event {
 
 func goEvent(cevent *CEvent) Event {
 	switch cevent.Type {
+	case DISPLAYEVENT:
+		return (*DisplayEvent)(unsafe.Pointer(cevent))
 	case WINDOWEVENT:
 		return (*WindowEvent)(unsafe.Pointer(cevent))
 	case SYSWMEVENT:
