@@ -454,7 +454,7 @@ func GetDisplayUsableBounds(displayIndex int) (rect Rect, err error) {
 	return
 }
 
-// GetDisplayMode retruns information about a specific display mode.
+// GetDisplayMode returns information about a specific display mode.
 // (https://wiki.libsdl.org/SDL_GetDisplayMode)
 func GetDisplayMode(displayIndex int, modeIndex int) (mode DisplayMode, err error) {
 	err = errorFromInt(int(
