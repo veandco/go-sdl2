@@ -66,6 +66,37 @@ static char* SDL_GameControllerMappingForIndex(int mapping_index)
 	return NULL;
 }
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,9))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GameControllerGetPlayerIndex is not supported before SDL 2.0.9")
+#endif
+
+static int SDL_GameControllerGetPlayerIndex(SDL_GameController *gamecontroller)
+{
+	return -1;
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GameControllerRumble is not supported before SDL 2.0.9")
+#endif
+
+static int SDL_GameControllerRumble(SDL_GameController *gamecontroller, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble, Uint32 duration_ms)
+{
+	return -1;
+}
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GameControllerMappingForDeviceIndex is not supported before SDL 2.0.9")
+#endif
+
+static char *SDL_GameControllerMappingForDeviceIndex(int joystick_index)
+{
+	return NULL;
+}
+
+#endif
 */
 import "C"
 import "unsafe"
@@ -183,6 +214,13 @@ func GameControllerNameForIndex(index int) string {
 	return C.GoString(C.SDL_GameControllerNameForIndex(C.int(index)))
 }
 
+// GameControllerMappingForDeviceIndex returns the game controller mapping string at a particular index.
+func GameControllerMappingForDeviceIndex(index int) string {
+	mappingString := C.SDL_GameControllerMappingForDeviceIndex(C.int(index))
+	defer C.free(unsafe.Pointer(mappingString))
+	return C.GoString(mappingString)
+}
+
 // GameControllerOpen opens a gamecontroller for use.
 // (https://wiki.libsdl.org/SDL_GameControllerOpen)
 func GameControllerOpen(index int) *GameController {
@@ -199,6 +237,12 @@ func GameControllerFromInstanceID(joyid JoystickID) *GameController {
 // (https://wiki.libsdl.org/SDL_GameControllerName)
 func (ctrl *GameController) Name() string {
 	return C.GoString(C.SDL_GameControllerName(ctrl.cptr()))
+}
+
+// PlayerIndex the player index of an opened game controller, or -1 if it's not available.
+// TODO: (https://wiki.libsdl.org/SDL_GameControllerGetPlayerIndex)
+func (ctrl *GameController) PlayerIndex() int {
+	return int(C.SDL_GameControllerGetPlayerIndex(ctrl.cptr()))
 }
 
 // Vendor returns the USB vendor ID of an opened controller, if available, 0 otherwise.
@@ -292,6 +336,20 @@ func GameControllerGetStringForButton(btn GameControllerButton) string {
 // (https://wiki.libsdl.org/SDL_GameControllerGetBindForButton)
 func (ctrl *GameController) BindForButton(btn GameControllerButton) GameControllerButtonBind {
 	return GameControllerButtonBind(C.SDL_GameControllerGetBindForButton(ctrl.cptr(), btn.c()))
+}
+
+// Rumble triggers a rumble effect
+// Each call to this function cancels any previous rumble effect, and calling it with 0 intensity stops any rumbling.
+//
+// lowFrequencyRumble - The intensity of the low frequency (left) rumble motor, from 0 to 0xFFFF
+// highFrequencyRumble - The intensity of the high frequency (right) rumble motor, from 0 to 0xFFFF
+// durationMS - The duration of the rumble effect, in milliseconds
+//
+// Returns error if rumble isn't supported on this joystick.
+//
+// TODO: (https://wiki.libsdl.org/SDL_GameControllerRumble)
+func (ctrl *GameController) Rumble(lowFrequencyRumble, highFrequencyRumble uint16, durationMS uint32) error {
+	return errorFromInt(int(C.SDL_GameControllerRumble(ctrl.cptr(), C.Uint16(lowFrequencyRumble), C.Uint16(highFrequencyRumble), C.Uint32(durationMS))))
 }
 
 // Button returns the current state of a button on a game controller.
