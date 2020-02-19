@@ -561,7 +561,7 @@ func (e *JoyButtonEvent) GetTimestamp() uint32 {
 type JoyDeviceAddedEvent struct {
 	Type      uint32 // JOYDEVICEADDED
 	Timestamp uint32 // the timestamp of the event
-	Which     int    // the joystick device index
+	Which     JoystickID  // the joystick device index
 }
 
 // GetType returns the event type.
