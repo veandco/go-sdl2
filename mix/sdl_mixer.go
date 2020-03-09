@@ -85,6 +85,14 @@ const (
 // DEFAULT_CHUNKSIZE is the default size of a chunk.
 const DEFAULT_CHUNKSIZE = 1024
 
+// Flags used in OpenAudioDevice.
+const (
+	OPEN_ALLOW_FREQUENCY_CHANGE = C.SDL_AUDIO_ALLOW_FREQUENCY_CHANGE
+	OPEN_ALLOW_FORMAT_CHANGE    = C.SDL_AUDIO_ALLOW_FORMAT_CHANGE
+	OPEN_ALLOW_CHANNELS_CHANGE  = C.SDL_AUDIO_ALLOW_CHANNELS_CHANGE
+	OPEN_ALLOW_ANY_CHANGE       = C.SDL_AUDIO_ALLOW_ANY_CHANGE
+)
+
 // Music is a data type used for Music data.
 // (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_86.html)
 type Music C.Mix_Music
@@ -128,6 +136,28 @@ func OpenAudio(frequency int, format uint16, channels, chunksize int) error {
 	_channels := (C.int)(channels)
 	_chunksize := (C.int)(chunksize)
 	if C.Mix_OpenAudio(_frequency, _format, _channels, _chunksize) < 0 {
+		return sdl.GetError()
+	}
+	return nil
+}
+
+// OpenAudioDevice opens the mixer with a certain audio format and a device.
+// (http://hg.libsdl.org/SDL_mixer/rev/fb0562cc1559)
+// (https://wiki.libsdl.org/SDL_OpenAudioDevice)
+func OpenAudioDevice(frequency int, format uint16, channels, chunksize int, device string, allowedChanges int) error {
+	_frequency := (C.int)(frequency)
+	_format := (C.Uint16)(format)
+	_channels := (C.int)(channels)
+	_chunksize := (C.int)(chunksize)
+	_allowedChanges := (C.int)(allowedChanges)
+	_device := C.CString(device)
+	defer C.free(unsafe.Pointer(_device))
+	if device == "" {
+		// Passing in a device name of NULL requests the most reasonable default
+		// (and is equivalent to what SDL_OpenAudio() does to choose a device)
+		_device = nil
+	}
+	if C.Mix_OpenAudioDevice(_frequency, _format, _channels, _chunksize, _device, _allowedChanges) < 0 {
 		return sdl.GetError()
 	}
 	return nil
