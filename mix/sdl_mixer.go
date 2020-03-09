@@ -24,6 +24,18 @@ package mix
 //	frames = (points / chans);
 //	return (frames * 1000) / freq;
 //}
+//
+//#if !(SDL_VERSION_ATLEAST(2,0,9))
+//
+//#if defined(WARN_OUTDATED)
+//#pragma message("Mix_OpenAudioDevice is not supported before SDL 2.0.9")
+//#endif
+//
+//static inline int Mix_OpenAudioDevice(int frequency, Uint16 format, int channels, int chunksize, const char* device, int allowed_changes)
+//{
+//	return -1;
+//}
+//#endif
 import "C"
 import "unsafe"
 import "reflect"
