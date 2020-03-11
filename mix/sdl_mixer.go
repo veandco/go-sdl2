@@ -24,6 +24,18 @@ package mix
 //	frames = (points / chans);
 //	return (frames * 1000) / freq;
 //}
+//
+//#if !(SDL_VERSION_ATLEAST(2,0,9))
+//
+//#if defined(WARN_OUTDATED)
+//#pragma message("Mix_OpenAudioDevice is not supported before SDL 2.0.9")
+//#endif
+//
+//static inline int Mix_OpenAudioDevice(int frequency, Uint16 format, int channels, int chunksize, const char* device, int allowed_changes)
+//{
+//	return -1;
+//}
+//#endif
 import "C"
 import "unsafe"
 import "reflect"
@@ -128,6 +140,28 @@ func OpenAudio(frequency int, format uint16, channels, chunksize int) error {
 	_channels := (C.int)(channels)
 	_chunksize := (C.int)(chunksize)
 	if C.Mix_OpenAudio(_frequency, _format, _channels, _chunksize) < 0 {
+		return sdl.GetError()
+	}
+	return nil
+}
+
+// OpenAudioDevice opens the mixer with a certain audio format and a device.
+// (http://hg.libsdl.org/SDL_mixer/rev/fb0562cc1559)
+// (https://wiki.libsdl.org/SDL_OpenAudioDevice)
+func OpenAudioDevice(frequency int, format uint16, channels, chunksize int, device string, allowedChanges int) error {
+	_frequency := (C.int)(frequency)
+	_format := (C.Uint16)(format)
+	_channels := (C.int)(channels)
+	_chunksize := (C.int)(chunksize)
+	_allowedChanges := (C.int)(allowedChanges)
+	_device := C.CString(device)
+	defer C.free(unsafe.Pointer(_device))
+	if device == "" {
+		// Passing in a device name of NULL requests the most reasonable default
+		// (and is equivalent to what SDL_OpenAudio() does to choose a device)
+		_device = nil
+	}
+	if C.Mix_OpenAudioDevice(_frequency, _format, _channels, _chunksize, _device, _allowedChanges) < 0 {
 		return sdl.GetError()
 	}
 	return nil
