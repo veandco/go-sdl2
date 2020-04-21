@@ -25,7 +25,7 @@ package mix
 //	return (frames * 1000) / freq;
 //}
 //
-//#if !(SDL_VERSION_ATLEAST(2,0,9))
+//#if !(SDL_MIXER_VERSION_ATLEAST(2,0,2))
 //
 //#if defined(WARN_OUTDATED)
 //#pragma message("Mix_OpenAudioDevice is not supported before SDL 2.0.9")
