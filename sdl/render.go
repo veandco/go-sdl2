@@ -886,7 +886,7 @@ func (renderer *Renderer) CopyF(texture *Texture, src, dst *FRect) error {
 
 // CopyExF copies a portion of the texture to the current rendering target, optionally rotating it by angle around the given center and also flipping it top-bottom and/or left-right.
 // TODO: (https://wiki.libsdl.org/SDL_RenderCopyExF)
-func (renderer *Renderer) CopyExF(texture *Texture, src, dst *FRect, angle float64, center *FPoint, flip RendererFlip) error {
+func (renderer *Renderer) CopyExF(texture *Texture, src *Rect, dst *FRect, angle float64, center *FPoint, flip RendererFlip) error {
 	return errorFromInt(int(
 		C.SDL_RenderCopyExF(
 			renderer.cptr(),
