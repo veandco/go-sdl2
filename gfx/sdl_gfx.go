@@ -4,8 +4,11 @@ package gfx
 //#include <stdlib.h>
 //#include "sdl_gfx_wrapper.h"
 import "C"
-import "github.com/veandco/go-sdl2/sdl"
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/veandco/go-sdl2/sdl"
+)
 
 // FPS definitions.
 const (
@@ -50,40 +53,40 @@ func (manager *FPSmanager) cptr() *C.FPSmanager {
 }
 
 // InitFramerate initializes the framerate manager.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__framerate_8c.html#a444ebaaaa6b1ceeafa921562bdab1a44)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__framerate_8h.html#a843f0672446aff01ef03bbcd977fbedf)
 func InitFramerate(manager *FPSmanager) {
 	C.SDL_initFramerate(manager.cptr())
 }
 
 // SetFramerate sets the framerate in Hz.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__framerate_8c.html#afad4b503cf9719daced45fa4d9653d72)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__framerate_8h.html#aa2f7f11e60d81489392707faf07c5ac5)
 func SetFramerate(manager *FPSmanager, rate uint32) bool {
 	_rate := C.Uint32(rate)
 	return C.SDL_setFramerate(manager.cptr(), _rate) == 0
 }
 
 // GetFramerate returns the current target framerate in Hz.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__framerate_8c.html#a575bb511d6f817ad846a788cbd08ae91)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__framerate_8h.html#aebe43457dbb9fbfec6de18e7adf49e21)
 func GetFramerate(manager *FPSmanager) (int, bool) {
 	fps := int(C.SDL_getFramerate(manager.cptr()))
 	return fps, fps >= 0
 }
 
 // GetFramecount returns the current framecount.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__framerate_8c.html#a96b13e26f8436222e866904a592a6eec)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__framerate_8h.html#a41de3f516b9633f102d7ba2e85d2bb98)
 func GetFramecount(manager *FPSmanager) (int, bool) {
 	count := int(C.SDL_getFramecount(manager.cptr()))
 	return count, count >= 0
 }
 
 // FramerateDelay delays execution to maintain a constant framerate and calculate fps.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__framerate_8c.html#afce13fa3dd37130deb4975d8b230c3ba)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__framerate_8h.html#afc3b999d59d913771cd2588299096274)
 func FramerateDelay(manager *FPSmanager) uint32 {
 	return uint32(C.SDL_framerateDelay(manager.cptr()))
 }
 
 // PixelColor pixel draws with blending enabled if a<255.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#ae6f8690e5c5a85d3263c8e16727b34ef)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a2bdb83ac58c2e091ef26f720bdeb66bd)
 func PixelColor(renderer *sdl.Renderer, x, y int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -92,7 +95,7 @@ func PixelColor(renderer *sdl.Renderer, x, y int32, color sdl.Color) bool {
 }
 
 // PixelRGBA pixel draws with blending enabled if a<255.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a7b6f83bdef72f6b356664a93841381c0)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a6f4a05ba92bf39420280ee8ccf961e77)
 func PixelRGBA(renderer *sdl.Renderer, x, y int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -104,7 +107,7 @@ func PixelRGBA(renderer *sdl.Renderer, x, y int32, r, g, b, a uint8) bool {
 }
 
 // HlineColor draws horizontal line with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#ac211a904dce45093315e15b10c80d8ac)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a0d1977c09c0bcfe77b4e1a792ce1e79a)
 func HlineColor(renderer *sdl.Renderer, x1, x2, y int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_x2 := C.Sint16(x2)
@@ -114,7 +117,7 @@ func HlineColor(renderer *sdl.Renderer, x1, x2, y int32, color sdl.Color) bool {
 }
 
 // HlineRGBA draws horizontal line with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a6608a0d1d4c7e16fa1afcbd3eb5c3850)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#ace5a96b77edbccba3170852b093503aa)
 func HlineRGBA(renderer *sdl.Renderer, x1, x2, y int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_x2 := C.Sint16(x2)
@@ -127,7 +130,7 @@ func HlineRGBA(renderer *sdl.Renderer, x1, x2, y int32, r, g, b, a uint8) bool {
 }
 
 // VlineColor draws vertical line with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a9b45060155a19fee24f998d7790f1d67)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#af8cf6591ddc81242369e50cb3e159dfe)
 func VlineColor(renderer *sdl.Renderer, x, y1, y2 int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y1 := C.Sint16(y1)
@@ -137,7 +140,7 @@ func VlineColor(renderer *sdl.Renderer, x, y1, y2 int32, color sdl.Color) bool {
 }
 
 // VlineRGBA draws vertical line with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a8b79ac1e779755aee92b04f3a6cfc5d7)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a60d71d2bc6e450d8063256ebc37f21f5)
 func VlineRGBA(renderer *sdl.Renderer, x, y1, y2 int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y1 := C.Sint16(y1)
@@ -150,7 +153,7 @@ func VlineRGBA(renderer *sdl.Renderer, x, y1, y2 int32, r, g, b, a uint8) bool {
 }
 
 // RectangleColor draws rectangle with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a6ab25c393f6e5f8d68ea3365f6ea98d2)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a53b996645c0acdf5cb74c969503e791e)
 func RectangleColor(renderer *sdl.Renderer, x1, y1, x2, y2 int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -161,7 +164,7 @@ func RectangleColor(renderer *sdl.Renderer, x1, y1, x2, y2 int32, color sdl.Colo
 }
 
 // RectangleRGBA draws rectangle with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a40991c6eeb936d35d0a8e8aa95268f72)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#aa926924c3650d10d6a20cd7e4036a9a4)
 func RectangleRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -175,7 +178,7 @@ func RectangleRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int32, r, g, b, a uint
 }
 
 // RoundedRectangleColor draws rounded-corner rectangle with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a830dd9dcfa39f4718aa2c269060326d0)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a314698defb7da3f3415ddc5468315d83)
 func RoundedRectangleColor(renderer *sdl.Renderer, x1, y1, x2, y2, rad int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -187,7 +190,7 @@ func RoundedRectangleColor(renderer *sdl.Renderer, x1, y1, x2, y2, rad int32, co
 }
 
 // RoundedRectangleRGBA draws rounded-corner rectangle with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a300272b3b799f09ca6cd5c541b19f07a)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a2b54ba16d7e7243fb1921a286156cad9)
 func RoundedRectangleRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, rad int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -202,7 +205,7 @@ func RoundedRectangleRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, rad int32, r, 
 }
 
 // BoxColor draws box (filled rectangle) with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a6bb30dfc32d0aee20271a0356a2e2fd0)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a5799b0d1e99252b19d9acc77e7a94541)
 func BoxColor(renderer *sdl.Renderer, x1, y1, x2, y2 int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -213,7 +216,7 @@ func BoxColor(renderer *sdl.Renderer, x1, y1, x2, y2 int32, color sdl.Color) boo
 }
 
 // BoxRGBA draws box (filled rectangle) with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a1864b3062793a7f7dd81aaf8c8abd6b0)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a903bb79c5a03077047ff8820df263bd8)
 func BoxRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -227,7 +230,7 @@ func BoxRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int32, r, g, b, a uint8) boo
 }
 
 // RoundedBoxColor draws rounded-corner box (filled rectangle) with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a718c4f31d1e145106959c2a77d5fee9d)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a13ffcecd9c186d2522ae1e66bdedf8d7)
 func RoundedBoxColor(renderer *sdl.Renderer, x1, y1, x2, y2, rad int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -239,7 +242,7 @@ func RoundedBoxColor(renderer *sdl.Renderer, x1, y1, x2, y2, rad int32, color sd
 }
 
 // RoundedBoxRGBA draws rounded-corner box (filled rectangle) with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#aad706348fec18631d7bc48a2d91f5b4d)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a3db064ca0f03a2c46852661494ff7a65)
 func RoundedBoxRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, rad int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -254,7 +257,7 @@ func RoundedBoxRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, rad int32, r, g, b, 
 }
 
 // LineColor draws line with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#ad44c550fab3cb736eb049713ede94052)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a84f917eb19ea41b586f1afa9eb4b552c)
 func LineColor(renderer *sdl.Renderer, x1, y1, x2, y2 int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -265,7 +268,7 @@ func LineColor(renderer *sdl.Renderer, x1, y1, x2, y2 int32, color sdl.Color) bo
 }
 
 // LineRGBA draws line with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a760139e11a9ae5defeb755ca0c794f5f)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#ab56ec3fb82b59f2ab1d1877b6adb3b82)
 func LineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -279,7 +282,7 @@ func LineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int32, r, g, b, a uint8) bo
 }
 
 // AALineColor draws anti-aliased line with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a25c56f2def855db01dcf7ff7f7356182)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a86ab777f53655a509a3ac3c008941920)
 func AALineColor(renderer *sdl.Renderer, x1, y1, x2, y2 int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -290,7 +293,7 @@ func AALineColor(renderer *sdl.Renderer, x1, y1, x2, y2 int32, color sdl.Color) 
 }
 
 // AALineRGBA draws anti-aliased line with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a25c56f2def855db01dcf7ff7f7356182)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#ad7074bc1af414cea003712621b1c7d86)
 func AALineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -304,7 +307,7 @@ func AALineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2 int32, r, g, b, a uint8) 
 }
 
 // ThickLineColor draws a thick line with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a1494109358b4e4b7ec300d83e3f90300)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a613c16293c3571b695cc0c60358bb862)
 func ThickLineColor(renderer *sdl.Renderer, x1, y1, x2, y2, width int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -316,7 +319,7 @@ func ThickLineColor(renderer *sdl.Renderer, x1, y1, x2, y2, width int32, color s
 }
 
 // ThickLineRGBA draws a thick line with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a8b24d64b51e23592c93abc2aa50c818e)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a247136a562abec2649718d38f5819b44)
 func ThickLineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, width int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -331,7 +334,7 @@ func ThickLineRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, width int32, r, g, b,
 }
 
 // CircleColor draws circle with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#aa99bd361cc947b448142720f2ca3320e)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#af68b52c59d2a7a6b7cc817158941ac54)
 func CircleColor(renderer *sdl.Renderer, x, y, rad int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -341,7 +344,7 @@ func CircleColor(renderer *sdl.Renderer, x, y, rad int32, color sdl.Color) bool 
 }
 
 // CircleRGBA draws circle with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a7fe51d4c9426c8795e58c7ddd313b0a4)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a1daab46976bf585477be1cfcef2fe1ad)
 func CircleRGBA(renderer *sdl.Renderer, x, y, rad int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -354,7 +357,7 @@ func CircleRGBA(renderer *sdl.Renderer, x, y, rad int32, r, g, b, a uint8) bool 
 }
 
 // ArcColor draws arc with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a461b8ac31e00306aee5f8a4c242671d2)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a493fe37b39da582668431ab7e1e3dbf0)
 func ArcColor(renderer *sdl.Renderer, x, y, rad, start, end int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -366,7 +369,7 @@ func ArcColor(renderer *sdl.Renderer, x, y, rad, start, end int32, color sdl.Col
 }
 
 // ArcRGBA draws arc with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a2aff993d0d8d64564e16145f401d3cf1)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#acf0091a17501f375f2b55032134b3017)
 func ArcRGBA(renderer *sdl.Renderer, x, y, rad, start, end int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -381,7 +384,7 @@ func ArcRGBA(renderer *sdl.Renderer, x, y, rad, start, end int32, r, g, b, a uin
 }
 
 // AACircleColor draws anti-aliased circle with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#aad64361b01181e6aff940add96d23c61)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a46b037505b91133ae3bd18556092a632)
 func AACircleColor(renderer *sdl.Renderer, x, y, rad int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -391,7 +394,7 @@ func AACircleColor(renderer *sdl.Renderer, x, y, rad int32, color sdl.Color) boo
 }
 
 // AACircleRGBA draws anti-aliased circle with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a332780885aa2cfdc2de34dcff8d67e8b)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#aa0b0f764826715353e9ca0fe937d0f0f)
 func AACircleRGBA(renderer *sdl.Renderer, x, y, rad int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -404,7 +407,7 @@ func AACircleRGBA(renderer *sdl.Renderer, x, y, rad int32, r, g, b, a uint8) boo
 }
 
 // FilledCircleColor draws filled circle with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a39147d1282ec814a1b9e31243aad0359)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#ab973fd9868527fb13078c356d4a9c6f7)
 func FilledCircleColor(renderer *sdl.Renderer, x, y, rad int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -414,7 +417,7 @@ func FilledCircleColor(renderer *sdl.Renderer, x, y, rad int32, color sdl.Color)
 }
 
 // FilledCircleRGBA draws filled circle with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a562ba6b18fb70547cd50cb3bb0f70272)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a666bd764e2fe962656e5829d0aad5ba6)
 func FilledCircleRGBA(renderer *sdl.Renderer, x, y, rad int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -427,7 +430,7 @@ func FilledCircleRGBA(renderer *sdl.Renderer, x, y, rad int32, r, g, b, a uint8)
 }
 
 // EllipseColor draws ellipse with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a476cff7702f4be9090871e35859782f0)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a9ac841634751689ddb1c26babe10f3f6)
 func EllipseColor(renderer *sdl.Renderer, x, y, rx, ry int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -438,7 +441,7 @@ func EllipseColor(renderer *sdl.Renderer, x, y, rx, ry int32, color sdl.Color) b
 }
 
 // EllipseRGBA draws ellipse with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a18c8a26c9009482eec40f9f4a6945fd1)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a3ed26f8b2a25cb94a6412aa772f533aa)
 func EllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -452,7 +455,7 @@ func EllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int32, r, g, b, a uint8) b
 }
 
 // AAEllipseColor draws anti-aliased ellipse with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a1c7d20dcba8e0d7ce483f4c854c438be)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#af676a520e9ea0deabe711da842bc1e55)
 func AAEllipseColor(renderer *sdl.Renderer, x, y, rx, ry int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -463,7 +466,7 @@ func AAEllipseColor(renderer *sdl.Renderer, x, y, rx, ry int32, color sdl.Color)
 }
 
 // AAEllipseRGBA draws anti-aliased ellipse with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#ab9f0f00d7fb2f04aa9ba1630e31a27bf)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a12e9ff795a5b9996f07f5b0bc4f60f81)
 func AAEllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -477,7 +480,7 @@ func AAEllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int32, r, g, b, a uint8)
 }
 
 // FilledEllipseColor draws filled ellipse with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a8fed50800f2f1bdfaa048698f5052f25)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#aa3119e2dd056874c0ca92ded41fea43c)
 func FilledEllipseColor(renderer *sdl.Renderer, x, y, rx, ry int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -488,7 +491,7 @@ func FilledEllipseColor(renderer *sdl.Renderer, x, y, rx, ry int32, color sdl.Co
 }
 
 // FilledEllipseRGBA draws filled ellipse with blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a33595ad996dd0dcccde3abbcef540eec)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a5240918c243c3e60dd8ae1cef50dd529)
 func FilledEllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -502,7 +505,7 @@ func FilledEllipseRGBA(renderer *sdl.Renderer, x, y, rx, ry int32, r, g, b, a ui
 }
 
 // PieColor draws pie (outline) with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a3c2bc64deabda74933f31daba6bed7be)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a9f9070739e72ea242fd48239a4ff48e4)
 func PieColor(renderer *sdl.Renderer, x, y, rad, start, end int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -514,7 +517,7 @@ func PieColor(renderer *sdl.Renderer, x, y, rad, start, end int32, color sdl.Col
 }
 
 // PieRGBA draws pie (outline) with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a8442f2c2bedbe27c96d8d44319981992)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a3b8baf3eecea4738ac2a1c28af4bfb41)
 func PieRGBA(renderer *sdl.Renderer, x, y, rad, start, end int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -529,7 +532,7 @@ func PieRGBA(renderer *sdl.Renderer, x, y, rad, start, end int32, r, g, b, a uin
 }
 
 // FilledPieColor draws filled pie with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a2c30ee985b2513dc58d9b19d4e71562b)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a86f189dabaa2a26115ecb819ad7da8e5)
 func FilledPieColor(renderer *sdl.Renderer, x, y, rad, start, end int32, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -541,7 +544,7 @@ func FilledPieColor(renderer *sdl.Renderer, x, y, rad, start, end int32, color s
 }
 
 // FilledPieRGBA draws filled pie with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a4ffdfd2834f3ef0fd0ee622b5f1d16b8)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#adad0f423ae093b5c3cad51a438954a50)
 func FilledPieRGBA(renderer *sdl.Renderer, x, y, rad, start, end int32, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -556,7 +559,7 @@ func FilledPieRGBA(renderer *sdl.Renderer, x, y, rad, start, end int32, r, g, b,
 }
 
 // TrigonColor draws trigon (triangle outline) with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a7465d08ef930ebb5442c7dd246fed4b5)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#af4fc0fdb33e57047d9347d3fe7b1bdbd)
 func TrigonColor(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -569,7 +572,7 @@ func TrigonColor(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int32, color sdl
 }
 
 // TrigonRGBA draws trigon (triangle outline) with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a45d6a7edcd8b25e1a60e39b7f60bda3f)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a152662f6985587d137837086aaa95311)
 func TrigonRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -585,7 +588,7 @@ func TrigonRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int32, r, g, b, a
 }
 
 // FilledTrigonColor draws filled trigon (triangle) with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a78d4ed2372527f3b78f5893928b0f519)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a57fd7355780a114b9d72b1e9591f955d)
 func FilledTrigonColor(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int32, color sdl.Color) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -598,7 +601,7 @@ func FilledTrigonColor(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int32, col
 }
 
 // FilledTrigonRGBA draws filled trigon (triangle) with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a8f318d776ff1e3c6790405e0e59e5356)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a273cf4a88abf6c6a5e019b2c58ee2423)
 func FilledTrigonRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int32, r, g, b, a uint8) bool {
 	_x1 := C.Sint16(x1)
 	_y1 := C.Sint16(y1)
@@ -614,7 +617,7 @@ func FilledTrigonRGBA(renderer *sdl.Renderer, x1, y1, x2, y2, x3, y3 int32, r, g
 }
 
 // PolygonColor draws polygon with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a2d692dc25f3b579b386dff8dcd9cbc00)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a3577e5aee374d5176a3587343e11c4aa)
 func PolygonColor(renderer *sdl.Renderer, vx, vy []int16, color sdl.Color) bool {
 	_len := C.int(min(len(vx), len(vy)))
 	if _len == 0 {
@@ -627,7 +630,7 @@ func PolygonColor(renderer *sdl.Renderer, vx, vy []int16, color sdl.Color) bool 
 }
 
 // PolygonRGBA draws polygon with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#ae55541ec58990420dc6dc6b9d61f33d6)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a69baa68215840bb54ddd0281e6ad63a0)
 func PolygonRGBA(renderer *sdl.Renderer, vx, vy []int16, r, g, b, a uint8) bool {
 	_len := C.int(min(len(vx), len(vy)))
 	if _len == 0 {
@@ -643,7 +646,7 @@ func PolygonRGBA(renderer *sdl.Renderer, vx, vy []int16, r, g, b, a uint8) bool 
 }
 
 // AAPolygonColor draws anti-aliased polygon with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a09950a50e8806e88bb20c543c58cc6a8)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a54c28d1e469b52483e952258c2f6f69b)
 func AAPolygonColor(renderer *sdl.Renderer, vx, vy []int16, color sdl.Color) bool {
 	_len := C.int(min(len(vx), len(vy)))
 	if _len == 0 {
@@ -656,7 +659,7 @@ func AAPolygonColor(renderer *sdl.Renderer, vx, vy []int16, color sdl.Color) boo
 }
 
 // AAPolygonRGBA draws anti-aliased polygon with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a7d08522e52d8290c5c498ce435fa51f0)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a6a18d7838305c636b8462e0ba587d859)
 func AAPolygonRGBA(renderer *sdl.Renderer, vx, vy []int16, r, g, b, a uint8) bool {
 	_len := C.int(min(len(vx), len(vy)))
 	if _len == 0 {
@@ -672,7 +675,7 @@ func AAPolygonRGBA(renderer *sdl.Renderer, vx, vy []int16, r, g, b, a uint8) boo
 }
 
 // FilledPolygonColor draws filled polygon with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#af22692175cb73329410cbcc7d7491c4d)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a97308e4f19363baee0e5bdecee3265f1)
 func FilledPolygonColor(renderer *sdl.Renderer, vx, vy []int16, color sdl.Color) bool {
 	_len := C.int(min(len(vx), len(vy)))
 	if _len == 0 {
@@ -685,7 +688,7 @@ func FilledPolygonColor(renderer *sdl.Renderer, vx, vy []int16, color sdl.Color)
 }
 
 // FilledPolygonRGBA draws filled polygon with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a40ef0b898905c190c193f0f55deb5a6c)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#ab80fe08abcf78a6ce8f037f3fdc15625)
 func FilledPolygonRGBA(renderer *sdl.Renderer, vx, vy []int16, r, g, b, a uint8) bool {
 	_len := C.int(min(len(vx), len(vy)))
 	if _len == 0 {
@@ -701,7 +704,7 @@ func FilledPolygonRGBA(renderer *sdl.Renderer, vx, vy []int16, r, g, b, a uint8)
 }
 
 // TexturedPolygon draws a polygon filled with the given texture.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a65137af308ea878f28abc95419e8aef5)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a3b4c81592098da506f534d4a81b266f2)
 func TexturedPolygon(renderer *sdl.Renderer, vx, vy []int16, surface *sdl.Surface, textureDX, textureDY int) bool {
 	_len := C.int(min(len(vx), len(vy)))
 	if _len == 0 {
@@ -716,7 +719,7 @@ func TexturedPolygon(renderer *sdl.Renderer, vx, vy []int16, surface *sdl.Surfac
 }
 
 // BezierColor draws a bezier curve with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#adfe8f9c42d29a090aae15eeb19b80d51)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a74d59d17ba21ce5d8c84697989456bfb)
 func BezierColor(renderer *sdl.Renderer, vx, vy []int16, s int, color sdl.Color) bool {
 	_len := C.int(min(len(vx), len(vy)))
 	if _len == 0 {
@@ -730,7 +733,7 @@ func BezierColor(renderer *sdl.Renderer, vx, vy []int16, s int, color sdl.Color)
 }
 
 // BezierRGBA draws a bezier curve with alpha blending.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a4b7fbf6cc366abdf345a25308d53e125)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a6cb082e6eb4253d591927c6bf7eba06f)
 func BezierRGBA(renderer *sdl.Renderer, vx, vy []int16, s int, r, g, b, a uint8) bool {
 	_len := C.int(min(len(vx), len(vy)))
 	if _len == 0 {
@@ -747,7 +750,7 @@ func BezierRGBA(renderer *sdl.Renderer, vx, vy []int16, s int, r, g, b, a uint8)
 }
 
 // SetFont sets or resets the current global font data. The font data array is organized in follows: [fontdata] = [character 0][character 1]...[character 255] where [character n] = [byte 1 row 1][byte 2 row 1]...[byte {pitch} row 1][byte 1 row 2] ...[byte {pitch} row height] where [byte n] = [bit 0]...[bit 7] where [bit n] = [0 for transparent pixel|1 for colored pixel].
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#afacd57651ec0e0ccab60753636862cd0)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#adcbe6b74a9e0fef4165bc7bdb73294ec)
 func SetFont(fontdata []byte, cw, ch uint32) {
 	_fontdata := unsafe.Pointer(nil)
 	if fontdata != nil {
@@ -758,14 +761,15 @@ func SetFont(fontdata []byte, cw, ch uint32) {
 	C.gfxPrimitivesSetFont(_fontdata, _cw, _ch)
 }
 
-// SetFontRotation sets current global font character rotation steps. Default is 0 (no rotation). 1 = 90deg clockwise. 2 = 180deg clockwise. 3 = 270deg clockwise. Changing the rotation, will reset the character cache.(http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#aef6796a883f07d31bbf7c7df6d1153d2)
+// SetFontRotation sets current global font character rotation steps. Default is 0 (no rotation). 1 = 90deg clockwise. 2 = 180deg clockwise. 3 = 270deg clockwise. Changing the rotation, will reset the character cache.
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a2349bb02995a364f6b1069c46a09b7ba)
 func SetFontRotation(rotation uint32) {
 	_rotation := C.Uint32(rotation)
 	C.gfxPrimitivesSetFontRotation(_rotation)
 }
 
 // CharacterColor draws a character of the currently set font. On first call for a particular character and color combination, the function needs to generate the character surface (slower). Subsequent calls blit a cached surface (fast). Uses alpha blending if A<255 in color.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#aef5fdeb16c4578d8cd50e106299e993e)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#aaeed3ccb288e032856cff488bdba381d)
 func CharacterColor(renderer *sdl.Renderer, x, y int32, c byte, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -775,7 +779,7 @@ func CharacterColor(renderer *sdl.Renderer, x, y int32, c byte, color sdl.Color)
 }
 
 // CharacterRGBA draws a character of the currently set font.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a96379d2ce808aa642afb57bced0c670e)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#abff6cc81b9a35e9380e0b02da905714f)
 func CharacterRGBA(renderer *sdl.Renderer, x, y int32, c, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -788,7 +792,7 @@ func CharacterRGBA(renderer *sdl.Renderer, x, y int32, c, r, g, b, a uint8) bool
 }
 
 // StringColor draws a string in the currently set font. The spacing between consequtive characters in the string is the fixed number of pixels of the character width of the current global font.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a62d2ba55abc7673f2dfa29e6bbffefdf)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a329e9c81b07e5af08d73e3b3d6078bf0)
 func StringColor(renderer *sdl.Renderer, x, y int32, s string, color sdl.Color) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -798,7 +802,7 @@ func StringColor(renderer *sdl.Renderer, x, y int32, s string, color sdl.Color) 
 }
 
 // StringRGBA draws a string in the currently set font.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__gfx_primitives_8c.html#a6ca71826e311bdd9acf13b009256aa1c)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__gfx_primitives_8h.html#a744afe14139c1c553204a47cc284e478)
 func StringRGBA(renderer *sdl.Renderer, x, y int32, s string, r, g, b, a uint8) bool {
 	_x := C.Sint16(x)
 	_y := C.Sint16(y)
@@ -811,25 +815,25 @@ func StringRGBA(renderer *sdl.Renderer, x, y int32, s string, r, g, b, a uint8) 
 }
 
 // ImageFilterMMXdetect reports whether MMX check for filter functions is enabled.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a798ce71024ee1a1d1b174fd60fe79917)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#ae3f67cbe712f604b16b6de3f4bfbf31c)
 func ImageFilterMMXdetect() bool {
 	return C.SDL_imageFilterMMXdetect() > 0
 }
 
 // ImageFilterMMXoff disables MMX check for filter functions and force to use non-MMX C based code.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a5dff661660755161bb4aaf6199cd1384)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#afc46d09d46b1302becfc170214dee0c0)
 func ImageFilterMMXoff() {
 	C.SDL_imageFilterMMXoff()
 }
 
 // ImageFilterMMXon enables MMX check for filter functions and use MMX code if available.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a353ee234c3b51b33c4c5c4b30db5832d)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a0b1d8468dc6e6304b62276acbb7336f6)
 func ImageFilterMMXon() {
 	C.SDL_imageFilterMMXon()
 }
 
 // ImageFilterAdd filters using Add: D = saturation255(S1 + S2).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a9f06507eb0b63198dbd67495d61c9b20)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a1e4de9be8feb43595719fd0494601952)
 func ImageFilterAdd(src1, src2, dest []byte) bool {
 	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	if _len == 0 {
@@ -842,7 +846,7 @@ func ImageFilterAdd(src1, src2, dest []byte) bool {
 }
 
 // ImageFilterMean filters using Mean: D = S1/2 + S2/2.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#ace072118fef77973210eb04fb4bfc779)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a6012332e1b5c33fad53d71c7848db823)
 func ImageFilterMean(src1, src2, dest []byte) bool {
 	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	if _len == 0 {
@@ -855,7 +859,7 @@ func ImageFilterMean(src1, src2, dest []byte) bool {
 }
 
 // ImageFilterSub filters using Sub: D = saturation0(S1 - S2).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a3c01cf8576ea7a0dfc09dbaa953c9287)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a720893e0f6512aee4dd3875b9c9607b5)
 func ImageFilterSub(src1, src2, dest []byte) bool {
 	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	if _len == 0 {
@@ -868,7 +872,7 @@ func ImageFilterSub(src1, src2, dest []byte) bool {
 }
 
 // ImageFilterAbsDiff filters using AbsDiff: D = | S1 - S2 |.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a472909f904274255cd6793c520172e48)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#aaa9e8718bcba856ddee135385ebdec26)
 func ImageFilterAbsDiff(src1, src2, dest []byte) bool {
 	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	if _len == 0 {
@@ -881,7 +885,7 @@ func ImageFilterAbsDiff(src1, src2, dest []byte) bool {
 }
 
 // ImageFilterMult filters using Mult: D = saturation255(S1 * S2).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#af4633031d40a9ea0956a2f3c6c87a384)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a1966f22bee81045917e776fd64821051)
 func ImageFilterMult(src1, src2, dest []byte) bool {
 	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	if _len == 0 {
@@ -894,7 +898,7 @@ func ImageFilterMult(src1, src2, dest []byte) bool {
 }
 
 // ImageFilterMultNor filters using MultNor: D = S1 * S2.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a5f3c9fd40426bb46eba5ac167505dcc5)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#aff3256626208bfc490268cf07e8a29af)
 func ImageFilterMultNor(src1, src2, dest []byte) bool {
 	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	if _len == 0 {
@@ -907,7 +911,7 @@ func ImageFilterMultNor(src1, src2, dest []byte) bool {
 }
 
 // ImageFilterMultDivby2 filter using MultDivby2: D = saturation255(S1/2 * S2)
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a80737f6427c7bdb30d39a92f6524fc14)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a462b662e34e0ea7f1da83fb493f9d9f5)
 func ImageFilterMultDivby2(src1, src2, dest []byte) bool {
 	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	if _len == 0 {
@@ -920,7 +924,7 @@ func ImageFilterMultDivby2(src1, src2, dest []byte) bool {
 }
 
 // ImageFilterMultDivby4 filters using MultDivby4: D = saturation255(S1/2 * S2/2).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a30e685653eb1050c7d48feaeb8f801a1)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a52e4de0e4818b4256c189f35e68e1242)
 func ImageFilterMultDivby4(src1, src2, dest []byte) bool {
 	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	if _len == 0 {
@@ -933,7 +937,7 @@ func ImageFilterMultDivby4(src1, src2, dest []byte) bool {
 }
 
 // ImageFilterBitAnd filters using BitAnd: D = S1 & S2.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a85837ce1b5de1f907b6b9053922b5cbc)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a47a7564f857e42dcc2e3b5f8cd2943a9)
 func ImageFilterBitAnd(src1, src2, dest []byte) bool {
 	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	if _len == 0 {
@@ -946,7 +950,7 @@ func ImageFilterBitAnd(src1, src2, dest []byte) bool {
 }
 
 // ImageFilterBitOr filters using BitOr: D = S1 | S2.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a5cf1c477f4e32d02f74ee95d9f7b0021)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a7c6288c51dcf074b4ba8f1bf0c349f02)
 func ImageFilterBitOr(src1, src2, dest []byte) bool {
 	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	if _len == 0 {
@@ -959,7 +963,7 @@ func ImageFilterBitOr(src1, src2, dest []byte) bool {
 }
 
 // ImageFilterDiv filters using Div: D = S1 / S2.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a0ea22f01c6a4724bac307da3e5355f58)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a2944f525acc587ca8d701fbdf1a49c36)
 func ImageFilterDiv(src1, src2, dest []byte) bool {
 	_len := C.uint(min(len(src1), len(src2), len(dest)))
 	if _len == 0 {
@@ -972,7 +976,7 @@ func ImageFilterDiv(src1, src2, dest []byte) bool {
 }
 
 // ImageFilterBitNegation filters using BitNegation: D = !S.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#ac3abfaa8ec2e88c3c4893588c5555856)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#ac11af558f478ec72eb2b61e8bdf43225)
 func ImageFilterBitNegation(src1, dest []byte) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -984,7 +988,7 @@ func ImageFilterBitNegation(src1, dest []byte) bool {
 }
 
 // ImageFilterAddByte filters using AddByte: D = saturation255(S + C).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a812cb307cb60ef31f1ffe81a9eee6bb1)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#ad00178c9482a9959023a6bec03c8dba5)
 func ImageFilterAddByte(src1, dest []byte, c byte) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -997,7 +1001,7 @@ func ImageFilterAddByte(src1, dest []byte, c byte) bool {
 }
 
 // ImageFilterAddUint filters using AddUint: D = saturation255((S[i] + Cs[i % 4]), Cs=Swap32((uint)C).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a660543426c47dfec39a349eb3b8f905b)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#ab7d7f266f047a63755a2341cdfe018e9)
 func ImageFilterAddUint(src1, dest []byte, c uint) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -1010,7 +1014,7 @@ func ImageFilterAddUint(src1, dest []byte, c uint) bool {
 }
 
 // ImageFilterSubByte filters using SubByte: D = saturation0(S - C).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a387fb6f0d48cc5d08f37f7f9b92d14b2)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a5899423c538fa35660ded0f5945c014f)
 func ImageFilterSubByte(src1, dest []byte, c byte) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -1023,7 +1027,7 @@ func ImageFilterSubByte(src1, dest []byte, c byte) bool {
 }
 
 // ImageFilterSubUint filters using SubUint: D = saturation0(S[i] - Cs[i % 4]), Cs=Swap32((uint)C).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#abb343ef95e22945e1d4d648b2e176e64)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a8532da4511ef9657c8688f66e6309118)
 func ImageFilterSubUint(src1, dest []byte, c uint) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -1036,7 +1040,7 @@ func ImageFilterSubUint(src1, dest []byte, c uint) bool {
 }
 
 // ImageFilterShiftRight filters using ShiftRight: D = saturation0(S >> N).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a68851aed2dcc5dfd2f3b258236f3b88c)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a1ed688eb128d71af36386e9853d001a9)
 func ImageFilterShiftRight(src1, dest []byte, n byte) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -1049,7 +1053,7 @@ func ImageFilterShiftRight(src1, dest []byte, n byte) bool {
 }
 
 // ImageFilterShiftRightUint filters using ShiftRightUint: D = saturation0((uint)S[i] >> N).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a540d4625d76bcd03318c2a59ce650fdb)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a2e5ec075145b34c5ea797ffa70891e53)
 func ImageFilterShiftRightUint(src1, dest []byte, n byte) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -1062,7 +1066,7 @@ func ImageFilterShiftRightUint(src1, dest []byte, n byte) bool {
 }
 
 // ImageFilterMultByByte filters using MultByByte: D = saturation255(S * C).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a06f7a19d6e2fc89d7b48cc45d715806d)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#aef668f157cc152554872ccac491ee2f7)
 func ImageFilterMultByByte(src1, dest []byte, c byte) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -1075,7 +1079,7 @@ func ImageFilterMultByByte(src1, dest []byte, c byte) bool {
 }
 
 // ImageFilterShiftRightAndMultByByte filters using ShiftRightAndMultByByte: D = saturation255((S >> N) * C).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a0713d6c267fba9756d6beae81e89f9e4)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#ad8d11768b921ba823d412166903340b8)
 func ImageFilterShiftRightAndMultByByte(src1, dest []byte, n, c byte) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -1089,7 +1093,7 @@ func ImageFilterShiftRightAndMultByByte(src1, dest []byte, n, c byte) bool {
 }
 
 // ImageFilterShiftLeftByte filters using ShiftLeftByte: D = (S << N).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a4561a73b249a26babc4c469ffbdae604)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a656657c3f31effa01163532fd96b3011)
 func ImageFilterShiftLeftByte(src1, dest []byte, n byte) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -1102,7 +1106,7 @@ func ImageFilterShiftLeftByte(src1, dest []byte, n byte) bool {
 }
 
 // ImageFilterShiftLeftUint filters using ShiftLeftUint: D = ((uint)S << N).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a250e796fb2db470da0a78b74b78114e8)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a3ea712cad49735ca672e1d2da1e68516)
 func ImageFilterShiftLeftUint(src1, dest []byte, n byte) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -1115,7 +1119,7 @@ func ImageFilterShiftLeftUint(src1, dest []byte, n byte) bool {
 }
 
 // ImageFilterShiftLeft filters ShiftLeft: D = saturation255(S << N).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a98372fea76310903abef7808db10d226)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a29891456dee25b30c8da8f767d7545c5)
 func ImageFilterShiftLeft(src1, dest []byte, n byte) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -1128,7 +1132,7 @@ func ImageFilterShiftLeft(src1, dest []byte, n byte) bool {
 }
 
 // ImageFilterBinarizeUsingThreshold filters using BinarizeUsingThreshold: D = (S >= T) ? 255:0.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#a951a062e15df290a137428e1e0f4d5ce)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a02d89f9fa47f1f5c2d969a9d86acb041)
 func ImageFilterBinarizeUsingThreshold(src1, dest []byte, t byte) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -1141,7 +1145,7 @@ func ImageFilterBinarizeUsingThreshold(src1, dest []byte, t byte) bool {
 }
 
 // ImageFilterClipToRange filters using ClipToRange: D = (S >= Tmin) & (S <= Tmax) S:Tmin | Tmax.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#ab7224abc4ecc1b8a6f4441ef8379515f)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#a46a5728f8857b0a06694828375527451)
 func ImageFilterClipToRange(src1, dest []byte, tmin, tmax byte) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -1155,7 +1159,7 @@ func ImageFilterClipToRange(src1, dest []byte, tmin, tmax byte) bool {
 }
 
 // ImageFilterNormalizeLinear filters using NormalizeLinear: D = saturation255((Nmax - Nmin)/(Cmax - Cmin)*(S - Cmin) + Nmin).
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__image_filter_8c.html#ab018ace4db884cac953b06b09c00828b)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__image_filter_8h.html#ade0729be518dec0b26ec164ff4e63476)
 func ImageFilterNormalizeLinear(src1, dest []byte, cmin, cmax, nmin, nmax int) bool {
 	_len := C.uint(min(len(src1), len(dest)))
 	if _len == 0 {
@@ -1171,7 +1175,7 @@ func ImageFilterNormalizeLinear(src1, dest []byte, cmin, cmax, nmin, nmax int) b
 }
 
 // RotoZoomSurface rotates and zooms a surface and optional anti-aliasing. Rotates and zoomes a 32bit or 8bit 'src' surface to newly created 'dst' surface. 'angle' is the rotation in degrees and 'zoom' a scaling factor. If 'smooth' is set then the destination 32bit surface is anti-aliased. If the surface is not 8bit or 32bit RGBA/ABGR it will be converted into a 32bit RGBA format on the fly.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__rotozoom_8c.html#a5f64ed53eeee5f2667971c857698d1e5)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__rotozoom_8h.html#a6f5f31a362f63370dc60049df14d6856)
 func RotoZoomSurface(src *sdl.Surface, angle, zoom float64, smooth int) *sdl.Surface {
 	_angle := C.double(angle)
 	_zoom := C.double(zoom)
@@ -1180,7 +1184,7 @@ func RotoZoomSurface(src *sdl.Surface, angle, zoom float64, smooth int) *sdl.Sur
 }
 
 // RotoZoomSurfaceXY rotates and zooms a surface with different horizontal and vertival scaling factors and optional anti-aliasing. Rotates and zooms a 32bit or 8bit 'src' surface to newly created 'dst' surface. 'angle' is the rotation in degrees, 'zoomx and 'zoomy' scaling factors. If 'smooth' is set then the destination 32bit surface is anti-aliased. If the surface is not 8bit or 32bit RGBA/ABGR it will be converted into a 32bit RGBA format on the fly.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__rotozoom_8c.html#aab98b5b0da4ea468bacf47f7b85f0ee2)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__rotozoom_8h.html#a592d84489ce544c050a9f3fe0e04f3f6)
 func RotoZoomSurfaceXY(src *sdl.Surface, angle, zoomx, zoomy float64, smooth int) *sdl.Surface {
 	_angle := C.double(angle)
 	_zoomx := C.double(zoomx)
@@ -1190,7 +1194,7 @@ func RotoZoomSurfaceXY(src *sdl.Surface, angle, zoomx, zoomy float64, smooth int
 }
 
 // ZoomSurface zoom a surface by independent horizontal and vertical factors with optional smoothing. Zooms a 32bit or 8bit 'src' surface to newly created 'dst' surface. 'zoomx' and 'zoomy' are scaling factors for width and height. If 'smooth' is on then the destination 32bit surface is anti-aliased. If the surface is not 8bit or 32bit RGBA/ABGR it will be converted into a 32bit RGBA format on the fly. If zoom factors are negative, the image is flipped on the axes.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__rotozoom_8c.html#abdd772b2f6b1f26134e4e90cda657a21)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__rotozoom_8h.html#a0867857132421429994198cabacb0528)
 func ZoomSurface(src *sdl.Surface, zoomx, zoomy float64, smooth int) *sdl.Surface {
 	_zoomx := C.double(zoomx)
 	_zoomy := C.double(zoomy)
@@ -1199,7 +1203,7 @@ func ZoomSurface(src *sdl.Surface, zoomx, zoomy float64, smooth int) *sdl.Surfac
 }
 
 // ZoomSurfaceSize calculates the size of the target surface for a gfx.ZoomSurface() call. The minimum size of the target surface is 1. The input factors can be positive or negative.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__rotozoom_8c.html#a8ba40859c1a977dae87488dd8be1bf9a)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__rotozoom_8h.html#a87a121da75a099fd980295c759a7005d)
 func ZoomSurfaceSize(width, height int32, zoomx, zoomy float64) (dstwidth, dstheight int) {
 	_width := C.int(width)
 	_height := C.int(height)
@@ -1212,7 +1216,7 @@ func ZoomSurfaceSize(width, height int32, zoomx, zoomy float64) (dstwidth, dsthe
 }
 
 // ShrinkSurface shrink a surface by an integer ratio using averaging. Shrinks a 32bit or 8bit 'src' surface to a newly created 'dst' surface. 'factorx' and 'factory' are the shrinking ratios (i.e. 2=1/2 the size, 3=1/3 the size, etc.) The destination surface is antialiased by averaging the source box RGBA or Y information. If the surface is not 8bit or 32bit RGBA/ABGR it will be converted into a 32bit RGBA format on the fly. The input surface is not modified. The output surface is newly allocated.
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__rotozoom_8c.html#aad3bf0cd89cc39ff874ffa778fa1495d)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__rotozoom_8h.html#a9adfe732cbca348e3287096e7c67e72d)
 func ShrinkSurface(src *sdl.Surface, factorx, factory int) *sdl.Surface {
 	_factorx := C.int(factorx)
 	_factory := C.int(factory)
@@ -1220,7 +1224,7 @@ func ShrinkSurface(src *sdl.Surface, factorx, factory int) *sdl.Surface {
 }
 
 // RotateSurface90Degrees rotates a 32 bit surface in increments of 90 degrees. Specialized 90 degree rotator which rotates a 'src' surface in 90 degree increments clockwise returning a new surface. Faster than rotozoomer since not scanning or interpolation takes place. Input surface must be 32 bit. (code contributed by J. Schiller, improved by C. Allport and A. Schiffler)
-// (http://www.ferzkopp.net/Software/SDL_gfx-2.0/Docs/html/_s_d_l__rotozoom_8c.html#a77563d68634cb2624d4f2f0bcdc19e73)
+// (https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/_s_d_l2__rotozoom_8h.html#ac2858dec47549c8f82360568b5a29363)
 func RotateSurface90Degrees(src *sdl.Surface, numClockwiseTurns int) *sdl.Surface {
 	_numClockwiseTurns := C.int(numClockwiseTurns)
 	return (*sdl.Surface)(unsafe.Pointer(C.rotateSurface90Degrees((*C.SDL_Surface)(unsafe.Pointer(src)), _numClockwiseTurns)))
