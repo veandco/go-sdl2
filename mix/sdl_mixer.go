@@ -28,7 +28,7 @@ package mix
 //#if !(SDL_MIXER_VERSION_ATLEAST(2,0,2))
 //
 //#if defined(WARN_OUTDATED)
-//#pragma message("Mix_OpenAudioDevice is not supported before SDL 2.0.9")
+//#pragma message("Mix_OpenAudioDevice is not supported before SDL_mixer 2.0.2")
 //#endif
 //
 //static inline int Mix_OpenAudioDevice(int frequency, Uint16 format, int channels, int chunksize, const char* device, int allowed_changes)
