@@ -3,6 +3,32 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,14))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_SIMDRealloc is not supported before SDL 2.0.14")
+#endif
+
+static void * SDLCALL SDL_SIMDRealloc(void *mem, const size_t len)
+{
+	return NULL;
+}
+
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,12))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_HasARMSIMD is not supported before SDL 2.0.12")
+#endif
+
+static SDL_bool SDL_HasARMSIMD(void)
+{
+	return SDL_FALSE;
+}
+
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,9))
 
 #if defined(WARN_OUTDATED)
@@ -191,6 +217,12 @@ func HasAVX2() bool {
 	return C.SDL_HasAVX2() > 0
 }
 
+// HasARMSIMD reports whether the CPU has ARM SIMD (ARMv6) features.
+// TODO: (https://wiki.libsdl.org/SDL_HasARMSIMD)
+func HasARMSIMD() bool {
+	return C.SDL_HasARMSIMD() > 0
+}
+
 // HasNEON reports whether the CPU has NEON features.
 // (https://wiki.libsdl.org/SDL_HasNEON)
 func HasNEON() bool {
@@ -207,6 +239,12 @@ func SIMDGetAlignment() int {
 // TODO: (https://wiki.libsdl.org/SDL_SIMDAlloc)
 func SIMDAlloc(_len int) unsafe.Pointer {
 	return C.SDL_SIMDAlloc(C.size_t(_len))
+}
+
+// SIMDRealloc reallocates memory obtained from SDL_SIMDAlloc.
+// TODO: (https://wiki.libsdl.org/SDL_SIMDRealloc)
+func SIMDRealloc(mem unsafe.Pointer, _len int) unsafe.Pointer {
+	return C.SDL_SIMDRealloc(mem, C.size_t(_len))
 }
 
 // SIMDFree deallocates memory obtained from SDL_SIMDAlloc.

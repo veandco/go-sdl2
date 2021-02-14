@@ -5,6 +5,32 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,14))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_AndroidRequestPermission is not supported before SDL 2.0.14")
+#endif
+
+static SDL_bool SDL_AndroidRequestPermission(const char *permission)
+{
+	return SDL_FALSE;
+}
+
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,12))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GetAndroidSDKVersion is not supported before SDL 2.0.12")
+#endif
+
+static int SDL_GetAndroidSDKVersion(void)
+{
+	return -1;
+}
+
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,8))
 
 #if defined(WARN_OUTDATED)
@@ -39,6 +65,12 @@ func AndroidGetExternalStoragePath() string {
 	return C.GoString(C.SDL_AndroidGetExternalStoragePath())
 }
 
+// AndroidRequestPermission requests permissions at runtime.
+// (https://wiki.libsdl.org/SDL_AndroidRequestPermission)
+func AndroidRequestPermission(permission string) bool {
+	return bool(C.SDL_AndroidRequestPermission(C.CString(permission)))
+}
+
 // AndroidGetExternalStorageState returns the current state of external storage.
 // (https://wiki.libsdl.org/SDL_AndroidGetExternalStorageState)
 func AndroidGetExternalStorageState() int {
@@ -55,6 +87,12 @@ func AndroidGetJNIEnv() unsafe.Pointer {
 // (https://wiki.libsdl.org/SDL_AndroidGetActivity)
 func AndroidGetActivity() unsafe.Pointer {
 	return unsafe.Pointer(C.SDL_AndroidGetActivity())
+}
+
+// GetAndroidSDKVersion returns API level of the current device.
+// (https://wiki.libsdl.org/SDL_GetAndroidSDKVersion)
+func GetAndroidSDKVersion() int {
+	return int(C.SDL_GetAndroidSDKVersion())
 }
 
 // IsAndroidTV returns true if the application is running on Android TV

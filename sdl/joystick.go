@@ -61,7 +61,6 @@ typedef enum
 	SDL_JOYSTICK_TYPE_THROTTLE
 } SDL_JoystickType;
 
-
 #if defined(WARN_OUTDATED)
 #pragma message("SDL_JoystickGetDeviceVendor is not supported before SDL 2.0.6")
 #endif
@@ -212,6 +211,92 @@ static int SDL_JoystickGetPlayerIndex(SDL_Joystick *joystick)
 static int SDL_JoystickRumble(SDL_Joystick *joystick, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble, Uint32 duration_ms)
 {
 	return -1;
+}
+
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,14))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_JoystickGetSerial is not supported before SDL 2.0.14")
+#pragma message("SDL_JoystickRumbleTriggers is not supported before SDL 2.0.14")
+#pragma message("SDL_JoystickHasLED is not supported before SDL 2.0.14")
+#pragma message("SDL_JoystickSetLED is not supported before SDL 2.0.14")
+#pragma message("SDL_JoystickAttachVirtual is not supported before SDL 2.0.14")
+#pragma message("SDL_JoystickDetachVirtual is not supported before SDL 2.0.14")
+#pragma message("SDL_JoystickIsVirtual is not supported before SDL 2.0.14")
+#pragma message("SDL_JoystickSetVirtualAxis is not supported before SDL 2.0.14")
+#pragma message("SDL_JoystickSetVirtualButton is not supported before SDL 2.0.14")
+#pragma message("SDL_JoystickSetVirtualHat is not supported before SDL 2.0.14")
+#endif
+
+static const char * SDLCALL SDL_JoystickGetSerial(SDL_Joystick *joystick)
+{
+	return NULL;
+}
+
+static int SDL_JoystickRumbleTriggers(SDL_Joystick *joystick, Uint16 left_rumble, Uint16 right_rumble, Uint32 duration_ms)
+{
+	return -1;
+}
+
+static SDL_bool SDL_JoystickHasLED(SDL_Joystick *joystick)
+{
+	return SDL_FALSE;
+}
+
+static int SDL_JoystickSetLED(SDL_Joystick *joystick, Uint8 red, Uint8 green, Uint8 blue)
+{
+	return -1;
+}
+
+static int SDL_JoystickAttachVirtual(SDL_JoystickType type, int naxes, int nbuttons, int nhats)
+{
+	return -1;
+}
+
+static int SDL_JoystickDetachVirtual(int device_index)
+{
+	return -1;
+}
+
+static SDL_bool SDL_JoystickIsVirtual(int device_index)
+{
+	return SDL_FALSE;
+}
+
+static int SDL_JoystickSetVirtualAxis(SDL_Joystick *joystick, int axis, Sint16 value)
+{
+	return -1;
+}
+
+static int SDL_JoystickSetVirtualButton(SDL_Joystick *joystick, int button, Uint8 value)
+{
+	return -1;
+}
+
+static int SDL_JoystickSetVirtualHat(SDL_Joystick *joystick, int hat, Uint8 value)
+{
+	return -1;
+}
+
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,12))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_JoystickFromPlayerIndex is not supported before SDL 2.0.12")
+#pragma message("SDL_JoystickSetPlayerIndex is not supported before SDL 2.0.12")
+#endif
+
+static SDL_Joystick *SDL_JoystickFromPlayerIndex(int player_index)
+{
+	return NULL;
+}
+
+static void SDLCALL SDL_JoystickSetPlayerIndex(SDL_Joystick *joystick, int player_index)
+{
+	// do nothing
 }
 
 #endif
@@ -377,6 +462,65 @@ func JoystickFromInstanceID(joyid JoystickID) *Joystick {
 	return (*Joystick)(C.SDL_JoystickFromInstanceID(joyid.c()))
 }
 
+// JoystickFromPlayerIndex returns the Joystick associated with a player index.
+// TODO: (https://wiki.libsdl.org/SDL_JoystickFromPlayerIndex)
+func JoystickFromPlayerIndex(playerIndex int) *Joystick {
+	return (*Joystick)(C.SDL_JoystickFromPlayerIndex(C.int(playerIndex)))
+}
+
+// JoystickAttachVirtual attaches a new virtual joystick.
+// TODO: (https://wiki.libsdl.org/SDL_JoystickAttachVirtual)
+func JoystickAttachVirtual(typ JoystickType, naxes, nbuttons, nhats int) (deviceIndex int, err error) {
+	deviceIndex = int(C.SDL_JoystickAttachVirtual(C.SDL_JoystickType(typ), C.int(naxes), C.int(nbuttons), C.int(nhats)))
+	err = errorFromInt(deviceIndex)
+	return
+}
+
+// JoystickDetachVirtual detaches a virtual joystick.
+// TODO: (https://wiki.libsdl.org/SDL_JoystickDetachVirtual)
+func JoystickDetachVirtual(deviceIndex int) error {
+	return errorFromInt(int(C.SDL_JoystickDetachVirtual(C.int(deviceIndex))))
+}
+
+// JoystickIsVirtual indicates whether or not a virtual-joystick is at a given device index.
+// TODO: (https://wiki.libsdl.org/SDL_JoystickIsVirtual)
+func JoystickIsVirtual(deviceIndex int) bool {
+	return C.SDL_JoystickIsVirtual(C.int(deviceIndex)) == C.SDL_TRUE
+}
+
+// SetVirtualAxis sets axis value on an opened, virtual-joystick's controls.
+// Please note that values set here will not be applied until the next
+// call to SDL_JoystickUpdate, which can either be called directly,
+// or can be called indirectly through various other SDL APIS,
+// including, but not limited to the following: SDL_PollEvent,
+// SDL_PumpEvents, SDL_WaitEventTimeout, SDL_WaitEvent..
+// TODO: (https://wiki.libsdl.org/SDL_JoystickSetVirtualAxis)
+func (joy *Joystick) SetVirtualAxis(axis int, value int16) error {
+	return errorFromInt(int(C.SDL_JoystickSetVirtualAxis(joy.cptr(), C.int(axis), C.Sint16(value))))
+}
+
+// SetVirtualButton sets button value on an opened, virtual-joystick's controls.
+// Please note that values set here will not be applied until the next
+// call to SDL_JoystickUpdate, which can either be called directly,
+// or can be called indirectly through various other SDL APIS,
+// including, but not limited to the following: SDL_PollEvent,
+// SDL_PumpEvents, SDL_WaitEventTimeout, SDL_WaitEvent..
+// TODO: (https://wiki.libsdl.org/SDL_JoystickSetVirtualButton)
+func (joy *Joystick) SetVirtualButton(button int, value uint8) error {
+	return errorFromInt(int(C.SDL_JoystickSetVirtualButton(joy.cptr(), C.int(button), C.Uint8(value))))
+}
+
+// SetVirtualHat sets hat value on an opened, virtual-joystick's controls.
+// Please note that values set here will not be applied until the next
+// call to SDL_JoystickUpdate, which can either be called directly,
+// or can be called indirectly through various other SDL APIS,
+// including, but not limited to the following: SDL_PollEvent,
+// SDL_PumpEvents, SDL_WaitEventTimeout, SDL_WaitEvent..
+// TODO: (https://wiki.libsdl.org/SDL_JoystickSetVirtualHat)
+func (joy *Joystick) SetVirtualHat(hat int, value uint8) error {
+	return errorFromInt(int(C.SDL_JoystickSetVirtualHat(joy.cptr(), C.int(hat), C.Uint8(value))))
+}
+
 // LockJoysticks locks joysticks for multi-threaded access to the joystick API
 // TODO: (https://wiki.libsdl.org/SDL_LockJoysticks)
 func LockJoysticks() {
@@ -401,6 +545,12 @@ func (joy *Joystick) PlayerIndex() int {
 	return int(C.SDL_JoystickGetPlayerIndex(joy.cptr()))
 }
 
+// SetPlayerIndex returns set the player index of an opened joystick.
+// (https://wiki.libsdl.org/SDL_JoystickSetPlayerIndex)
+func (joy *Joystick) SetPlayerIndex(playerIndex int) {
+	C.SDL_JoystickSetPlayerIndex(joy.cptr(), C.int(playerIndex))
+}
+
 // GUID returns the implementation-dependent GUID for the joystick.
 // (https://wiki.libsdl.org/SDL_JoystickGetGUID)
 func (joy *Joystick) GUID() JoystickGUID {
@@ -420,6 +570,12 @@ func (joy *Joystick) Product() int {
 // ProductVersion returns the product version of an opened joystick, if available, 0 otherwise.
 func (joy *Joystick) ProductVersion() int {
 	return int(C.SDL_JoystickGetProductVersion(joy.cptr()))
+}
+
+// Serial returns the serial number of an opened joystick, if available.
+// (https://wiki.libsdl.org/SDL_JoystickGetSerial)
+func (joy *Joystick) Serial() string {
+	return C.GoString(C.SDL_JoystickGetSerial(joy.cptr()))
 }
 
 // Type returns the the type of an opened joystick.
@@ -507,6 +663,24 @@ func (joy *Joystick) Button(button int) byte {
 // TODO: (https://wiki.libsdl.org/SDL_JoystickRumble)
 func (joy *Joystick) Rumble(lowFrequencyRumble, highFrequencyRumble uint16, durationMS uint32) error {
 	return errorFromInt(int(C.SDL_JoystickRumble(joy.cptr(), C.Uint16(lowFrequencyRumble), C.Uint16(highFrequencyRumble), C.Uint32(durationMS))))
+}
+
+// RumbleTriggers starts a rumble effect in the joystick's triggers.
+// (https://wiki.libsdl.org/SDL_JoystickRumbleTriggers)
+func (joy *Joystick) RumbleTriggers(leftRumble, rightRumble uint16, durationMS uint32) error {
+	return errorFromInt(int(C.SDL_JoystickRumbleTriggers(joy.cptr(), C.Uint16(leftRumble), C.Uint16(rightRumble), C.Uint32(durationMS))))
+}
+
+// HasLED returns whether a joystick has an LED.
+// (https://wiki.libsdl.org/SDL_JoystickHasLED)
+func (joy *Joystick) HasLED() bool {
+	return C.SDL_JoystickHasLED(joy.cptr()) == C.SDL_TRUE
+}
+
+// SetLED updates a joystick's LED color.
+// (https://wiki.libsdl.org/SDL_JoystickSetLED)
+func (joy *Joystick) SetLED(red, green, blue uint8) error {
+	return errorFromInt(int(C.SDL_JoystickSetLED(joy.cptr(), C.Uint8(red), C.Uint8(green), C.Uint8(blue))))
 }
 
 // Close closes a joystick previously opened with JoystickOpen().

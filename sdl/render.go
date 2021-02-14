@@ -165,6 +165,38 @@ static inline int SDL_RenderFlush(SDL_Renderer * renderer)
 
 #endif
 
+#if !(SDL_VERSION_ATLEAST(2,0,12))
+
+typedef enum
+{
+    SDL_ScaleModeNearest,
+    SDL_ScaleModeLinear,
+    SDL_ScaleModeBest
+} SDL_ScaleMode;
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_SetTextureScaleMode is not supported before SDL 2.0.12")
+#pragma message("SDL_GetTextureScaleMode is not supported before SDL 2.0.12")
+#pragma message("SDL_LockTextureToSurface is not supported before SDL 2.0.12")
+#endif
+
+static int SDL_SetTextureScaleMode(SDL_Texture * texture, SDL_ScaleMode scaleMode)
+{
+	return -1;
+}
+
+static int SDLCALL SDL_GetTextureScaleMode(SDL_Texture * texture, SDL_ScaleMode *scaleMode)
+{
+	return -1;
+}
+
+static int SDL_LockTextureToSurface(SDL_Texture *texture, const SDL_Rect *rect, SDL_Surface **surface)
+{
+	return -1;
+}
+
+#endif
+
 // WORKAROUND: This prevents audio from seemingly going corrupt when drawing outside the screen bounding box?
 // It does that by allocating SDL_Rect in the C context instead of Go context.
 static inline int RenderCopy(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect *src, int dst_x, int dst_y, int dst_w, int dst_h)
@@ -187,6 +219,23 @@ const (
 	RENDERER_PRESENTVSYNC  = C.SDL_RENDERER_PRESENTVSYNC  // present is synchronized with the refresh rate
 	RENDERER_TARGETTEXTURE = C.SDL_RENDERER_TARGETTEXTURE // the renderer supports rendering to texture
 )
+
+type ScaleMode uint32
+
+// The scaling mode for a texture.
+const (
+	ScaleModeNearest ScaleMode = C.SDL_ScaleModeNearest
+	ScaleModeLinear            = C.SDL_ScaleModeLinear
+	ScaleModeBest              = C.SDL_ScaleModeBest
+)
+
+func (sm ScaleMode) c() C.SDL_ScaleMode {
+	return C.SDL_ScaleMode(C.Uint32(sm))
+}
+
+func (sm *ScaleMode) cptr() *C.SDL_ScaleMode {
+	return (*C.SDL_ScaleMode)(unsafe.Pointer(sm))
+}
 
 // An enumeration of texture access patterns..
 // (https://wiki.libsdl.org/SDL_TextureAccess)
@@ -428,6 +477,20 @@ func (texture *Texture) GetBlendMode() (bm BlendMode, err error) {
 	return bm, errorFromInt(int(ret))
 }
 
+// SetScaleMode Set the scale mode used for texture scale operations.
+// TODO: (https://wiki.libsdl.org/SDL_SetTextureScaleMode)
+func (texture *Texture) SetScaleMode(sm ScaleMode) error {
+	return errorFromInt(int(
+		C.SDL_SetTextureScaleMode(texture.cptr(), sm.c())))
+}
+
+// GetScaleMode returns the scale mode used for texture scale operations.
+// TODO: (https://wiki.libsdl.org/SDL_GetTextureScaleMode)
+func (texture *Texture) GetScaleMode() (sm ScaleMode, err error) {
+	ret := C.SDL_GetTextureScaleMode(texture.cptr(), sm.cptr())
+	return sm, errorFromInt(int(ret))
+}
+
 // Update updates the given texture rectangle with new pixel data.
 // (https://wiki.libsdl.org/SDL_UpdateTexture)
 func (texture *Texture) Update(rect *Rect, pixels []byte, pitch int) error {
@@ -512,6 +575,16 @@ func (texture *Texture) Lock(rect *Rect) ([]byte, int, error) {
 	sliceHeader.Data = uintptr(_pixels)
 
 	return b, int(pitch), nil
+}
+
+// LockToSurface locks a portion of the texture for write-only pixel access.
+// Expose it as a SDL surface.
+// (https://wiki.libsdl.org/SDL_LockTextureToSurface)
+func (texture *Texture) LockToSurface(rect *Rect) (surface *Surface, err error) {
+	_surface := surface.cptr()
+	ret := C.SDL_LockTextureToSurface(texture.cptr(), rect.cptr(), (**C.SDL_Surface)(&_surface))
+	err = errorFromInt(int(ret))
+	return
 }
 
 // Unlock unlocks a texture, uploading the changes to video memory, if needed.

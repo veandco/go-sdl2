@@ -93,9 +93,11 @@ typedef struct SDL_SensorEvent {
 #endif
 */
 import "C"
-import "unsafe"
-import "reflect"
-import "sync"
+import (
+	"reflect"
+	"sync"
+	"unsafe"
+)
 
 var (
 	eventFilterCache          EventFilter
@@ -559,9 +561,9 @@ func (e *JoyButtonEvent) GetTimestamp() uint32 {
 // JoyDeviceAddedEvent contains joystick device event information.
 // (https://wiki.libsdl.org/SDL_JoyDeviceEvent)
 type JoyDeviceAddedEvent struct {
-	Type      uint32 // JOYDEVICEADDED
-	Timestamp uint32 // the timestamp of the event
-	Which     JoystickID  // the joystick device index
+	Type      uint32     // JOYDEVICEADDED
+	Timestamp uint32     // the timestamp of the event
+	Which     JoystickID // the joystick device index
 }
 
 // GetType returns the event type.
@@ -694,6 +696,7 @@ type TouchFingerEvent struct {
 	DX        float32  // the distance moved in the x-axis, normalized (-1...1)
 	DY        float32  // the distance moved in the y-axis, normalized (-1...1)
 	Pressure  float32  // the quantity of pressure applied, normalized (0...1)
+	WindowID  uint32   // the window underneath the finger, if any
 }
 type cTouchFingerEvent C.SDL_TouchFingerEvent
 

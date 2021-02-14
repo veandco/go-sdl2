@@ -9,6 +9,16 @@ static inline Sint32 ShowMessageBox(SDL_MessageBoxData data)
 	return buttonid;
 }
 
+#if !(SDL_VERSION_ATLEAST(2,0,14))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_WINDOW_METAL is not supported before SDL 2.0.14")
+#endif
+
+#define SDL_WINDOW_METAL (0x20000000)
+
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,1))
 static void SDL_GL_GetDrawableSize(SDL_Window *window, int *w, int *h)
 {
@@ -198,6 +208,7 @@ const (
 	WINDOW_TOOLTIP            = C.SDL_WINDOW_TOOLTIP            // window should be treated as a tooltip (X11 only, >= SDL 2.0.5)
 	WINDOW_POPUP_MENU         = C.SDL_WINDOW_POPUP_MENU         // window should be treated as a popup menu (X11 only, >= SDL 2.0.5)
 	WINDOW_VULKAN             = C.SDL_WINDOW_VULKAN             // window usable for Vulkan surface (>= SDL 2.0.6)
+	WINDOW_METAL              = C.SDL_WINDOW_METAL              // window usable for Metal view (>= SDL 2.0.14)
 )
 
 // An enumeration of window events.

@@ -3,8 +3,14 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
-#if !(SDL_VERSION_ATLEAST(2,0,6))
+#if !(SDL_VERSION_ATLEAST(2,0,12))
 
+#define SDL_BLENDMODE_MUL (0x00000008)
+
+#endif
+
+
+#if !(SDL_VERSION_ATLEAST(2,0,6))
 
 #if defined(WARN_OUTDATED)
 #pragma message("SDL_BLENDMODE_INVALID is not supported before SDL 2.0.6")
@@ -69,6 +75,7 @@ const (
 	BLENDMODE_BLEND   = C.SDL_BLENDMODE_BLEND // alpha blending
 	BLENDMODE_ADD     = C.SDL_BLENDMODE_ADD   // additive blending
 	BLENDMODE_MOD     = C.SDL_BLENDMODE_MOD   // color modulate
+	BLENDMODE_MUL     = C.SDL_BLENDMODE_MUL   // color multiply
 	BLENDMODE_INVALID = C.SDL_BLENDMODE_INVALID
 )
 

@@ -3,12 +3,24 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,14))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GetErrorMsg is not supported before SDL 2.0.14")
+#endif
+
+static char * SDL_GetErrorMsg(char *errstr, int maxlen)
+{
+	return errstr;
+}
+
+#endif
+
 void GoSetError(const char *fmt) {
   SDL_SetError("%s", fmt);
 }
 
 */
-// #include "sdl_wrapper.h"
 import "C"
 import "errors"
 
@@ -39,6 +51,20 @@ func GetError() error {
 	if err := C.SDL_GetError(); err != nil {
 		gostr := C.GoString(err)
 		// SDL_GetError returns "an empty string if there hasn't been an error message"
+		if len(gostr) > 0 {
+			return errors.New(gostr)
+		}
+	}
+	return nil
+}
+
+// GetErrorMsg returns the last error message that was set for the current thread.
+// (https://wiki.libsdl.org/SDL_GetErrorMsg)
+func GetErrorMsg(maxlen int) error {
+	_buf := C.SDL_malloc(C.size_t(maxlen))
+	if err := C.SDL_GetErrorMsg((*C.char)(_buf), C.int(maxlen)); err != nil {
+		gostr := C.GoString(err)
+		// SDL_GetErrorMsg returns "an empty string if there hasn't been an error message"
 		if len(gostr) > 0 {
 			return errors.New(gostr)
 		}

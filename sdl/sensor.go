@@ -3,6 +3,25 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,14))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_LockSensors is not supported before SDL 2.0.14")
+#pragma message("SDL_UnlockSensors is not supported before SDL 2.0.14")
+#endif
+
+static void SDL_LockSensors(void)
+{
+	// do nothing
+}
+
+static void SDL_UnlockSensors(void)
+{
+	// do nothing
+}
+
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,9))
 typedef struct _SDL_Sensor SDL_Sensor;
 
@@ -15,7 +34,6 @@ typedef enum
     SDL_SENSOR_ACCEL,
     SDL_SENSOR_GYRO
 } SDL_SensorType;
-
 
 #if defined(WARN_OUTDATED)
 #pragma message("SDL_NumSensors is not supported before SDL 2.0.9")
@@ -178,6 +196,18 @@ const (
 type Sensor C.SDL_Sensor
 type SensorID int32
 type SensorType int
+
+// LockSensors locks sensors for multi-threaded access to the sensor API
+// (https://wiki.libsdl.org/SDL_LockSensors)
+func LockSensors() {
+	C.SDL_LockSensors()
+}
+
+// UnlockSensors unlocks sensors for multi-threaded access to the sensor API
+// (https://wiki.libsdl.org/SDL_UnlockSensors)
+func UnlockSensors() {
+	C.SDL_UnlockSensors()
+}
 
 // NumSensors counts the number of sensors attached to the system right now
 // (https://wiki.libsdl.org/SDL_NumSensors)

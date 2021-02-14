@@ -3,6 +3,19 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,14))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_HasSurfaceRLE is not supported before SDL 2.0.14")
+#endif
+
+static SDL_bool SDL_HasSurfaceRLE(SDL_Surface * surface)
+{
+	return SDL_FALSE;
+}
+
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,9))
 
 #if defined(WARN_OUTDATED)
@@ -299,6 +312,12 @@ func (surface *Surface) SetRLE(flag bool) error {
 		return GetError()
 	}
 	return nil
+}
+
+// HasRLE returns whether the surface is RLE enabled.
+// (https://wiki.libsdl.org/SDL_HasSurfaceRLE)
+func (surface *Surface) HasRLE() bool {
+	return C.SDL_HasSurfaceRLE(surface.cptr()) == C.SDL_TRUE
 }
 
 // SetColorKey sets the color key (transparent pixel) in the surface.

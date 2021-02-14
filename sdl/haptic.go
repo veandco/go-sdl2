@@ -1,6 +1,14 @@
 package sdl
 
-// #include "sdl_wrapper.h"
+/*
+#include "sdl_wrapper.h"
+
+#if !(SDL_VERSION_ATLEAST(2,0,14))
+
+#define SDL_HAPTIC_STEERING_AXIS (3)
+
+#endif
+*/
 import "C"
 import "unsafe"
 
@@ -29,10 +37,11 @@ const (
 // Direction encodings.
 // (https://wiki.libsdl.org/SDL_HapticDirection)
 const (
-	HAPTIC_POLAR     = C.SDL_HAPTIC_POLAR     // uses polar coordinates for the direction
-	HAPTIC_CARTESIAN = C.SDL_HAPTIC_CARTESIAN // uses cartesian coordinates for the direction
-	HAPTIC_SPHERICAL = C.SDL_HAPTIC_SPHERICAL // uses spherical coordinates for the direction
-	HAPTIC_INFINITY  = C.SDL_HAPTIC_INFINITY  // used to play a device an infinite number of times
+	HAPTIC_POLAR         = C.SDL_HAPTIC_POLAR         // uses polar coordinates for the direction
+	HAPTIC_CARTESIAN     = C.SDL_HAPTIC_CARTESIAN     // uses cartesian coordinates for the direction
+	HAPTIC_SPHERICAL     = C.SDL_HAPTIC_SPHERICAL     // uses spherical coordinates for the direction
+	HAPTIC_INFINITY      = C.SDL_HAPTIC_INFINITY      // used to play a device an infinite number of times
+	HAPTIC_STEERING_AXIS = C.SDL_HAPTIC_STEERING_AXIS // Use this value to play an effect on the steering wheel axis. This provides better compatibility across platforms and devices as SDL will guess.
 )
 
 // Haptic identifies an SDL haptic.
