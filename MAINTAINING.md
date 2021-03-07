@@ -91,6 +91,12 @@ curl -O http://www.ferzkopp.net/Software/SDL2_gfx/SDL2_gfx-1.0.4.tar.gz
 curl -O https://www.mpg123.de/download/mpg123-1.26.4.tar.bz2 # MP3 support
 ```
 
+3. Set up `LDFLAGS` and `C_INCLUDE_PATH` in `$HOME/.zshrc` so `configure` can find libraries and header files.
+```
+export LDFLAGS="-L$HOME/.local/lib $LDFLAGS"
+export C_INCLUDE_PATH="$HOME/.local/include:$C_INCLUDE_PATH"
+```
+
 4. Extract and build each package by following the template below. Please build the dependencies such as `mpg123` first!
 ```
 tar xf [PACKAGE].[EXTENSION]
