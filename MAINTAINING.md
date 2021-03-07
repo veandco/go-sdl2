@@ -89,6 +89,9 @@ curl -O http://www.ferzkopp.net/Software/SDL2_gfx/SDL2_gfx-1.0.4.tar.gz
 
 # for SDL2_mixer
 curl -O https://www.mpg123.de/download/mpg123-1.26.4.tar.bz2 # MP3 support
+
+# for SDL2_ttf
+curl -O -L https://download.savannah.gnu.org/releases/freetype/freetype-2.10.4.tar.gz
 ```
 
 3. Set up `LDFLAGS` and `C_INCLUDE_PATH` in `$HOME/.zshrc` so `configure` can find libraries and header files.
