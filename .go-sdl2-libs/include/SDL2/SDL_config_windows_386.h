@@ -56,7 +56,7 @@
 /* #undef HAVE_ALLOCA_H */
 #define HAVE_CTYPE_H 1
 /* #undef HAVE_FLOAT_H */
-#define HAVE_ICONV_H 1
+/* #undef HAVE_ICONV_H */
 #define HAVE_INTTYPES_H 1
 #define HAVE_LIMITS_H 1
 #define HAVE_MALLOC_H 1
@@ -79,7 +79,7 @@
 #define HAVE_CALLOC 1
 #define HAVE_REALLOC 1
 #define HAVE_FREE 1
-/* #undef HAVE_ALLOCA */
+#define HAVE_ALLOCA 1
 #ifndef __WIN32__ /* Don't use C runtime versions of these on Windows */
 #define HAVE_GETENV 1
 /* #undef HAVE_SETENV */
@@ -100,6 +100,10 @@
 #define HAVE_WCSSTR 1
 #define HAVE_WCSCMP 1
 #define HAVE_WCSNCMP 1
+/* #undef HAVE_WCSCASECMP */
+#define HAVE__WCSICMP 1
+/* #undef HAVE_WCSNCASECMP */
+#define HAVE__WCSNICMP 1
 #define HAVE_STRLEN 1
 /* #undef HAVE_STRLCPY */
 /* #undef HAVE_STRLCAT */
@@ -172,13 +176,15 @@
 #define HAVE_SQRTF 1
 #define HAVE_TAN 1
 #define HAVE_TANF 1
+#define HAVE_TRUNC 1
+#define HAVE_TRUNCF 1
 #define HAVE_FOPEN64 1
 #define HAVE_FSEEKO 1
 #define HAVE_FSEEKO64 1
 /* #undef HAVE_SIGACTION */
 /* #undef HAVE_SA_SIGACTION */
-/* #undef HAVE_SETJMP */
-/* #undef HAVE_NANOSLEEP */
+#define HAVE_SETJMP 1
+#define HAVE_NANOSLEEP 1
 /* #undef HAVE_SYSCONF */
 /* #undef HAVE_SYSCTLBYNAME */
 /* #undef HAVE_CLOCK_GETTIME */
@@ -189,6 +195,7 @@
 /* #undef HAVE_PTHREAD_SET_NAME_NP */
 /* #undef HAVE_SEM_TIMEDWAIT */
 /* #undef HAVE_GETAUXVAL */
+/* #undef HAVE_ELF_AUX_INFO */
 /* #undef HAVE_POLL */
 #define HAVE__EXIT 1
 
@@ -203,11 +210,15 @@
 
 /* #undef HAVE_ALTIVEC_H */
 /* #undef HAVE_DBUS_DBUS_H */
-/* #undef HAVE_FCITX_FRONTEND_H */
+/* #undef HAVE_FCITX */
 /* #undef HAVE_IBUS_IBUS_H */
+/* #undef HAVE_SYS_INOTIFY_H */
+/* #undef HAVE_INOTIFY_INIT */
+/* #undef HAVE_INOTIFY_INIT1 */
+/* #undef HAVE_INOTIFY */
 #define HAVE_IMMINTRIN_H 1
-/* #undef HAVE_LIBSAMPLERATE_H */
 /* #undef HAVE_LIBUDEV_H */
+/* #undef HAVE_LIBSAMPLERATE_H */
 
 #define HAVE_D3D_H 1
 #define HAVE_D3D11_H 1
@@ -219,6 +230,7 @@
 
 #define HAVE_MMDEVICEAPI_H 1
 #define HAVE_AUDIOCLIENT_H 1
+#define HAVE_SENSORSAPI_H 1
 
 /* #undef HAVE_XINPUT_GAMEPAD_EX */
 /* #undef HAVE_XINPUT_STATE_EX */
@@ -279,7 +291,6 @@
 /* Enable various input drivers */
 /* #undef SDL_INPUT_LINUXEV */
 /* #undef SDL_INPUT_LINUXKD */
-/* #undef SDL_INPUT_TSLIB */
 /* #undef SDL_JOYSTICK_ANDROID */
 /* #undef SDL_JOYSTICK_HAIKU */
 #define SDL_JOYSTICK_DINPUT 1
@@ -293,6 +304,7 @@
 /* #undef SDL_JOYSTICK_USBHID_MACHINE_JOYSTICK_H */
 #define SDL_JOYSTICK_HIDAPI 1
 /* #undef SDL_JOYSTICK_EMSCRIPTEN */
+#define SDL_JOYSTICK_VIRTUAL 1
 /* #undef SDL_HAPTIC_DUMMY */
 /* #undef SDL_HAPTIC_LINUX */
 /* #undef SDL_HAPTIC_IOKIT */
@@ -304,7 +316,8 @@
 /* Enable various sensor drivers */
 /* #undef SDL_SENSOR_ANDROID */
 /* #undef SDL_SENSOR_COREMOTION */
-#define SDL_SENSOR_DUMMY 1
+#define SDL_SENSOR_WINDOWS 1
+/* #undef SDL_SENSOR_DUMMY */
 
 /* Enable various shared object loading systems */
 /* #undef SDL_LOADSO_DLOPEN */
@@ -335,6 +348,7 @@
 #define SDL_VIDEO_DRIVER_DUMMY 1
 /* #undef SDL_VIDEO_DRIVER_OFFSCREEN */
 #define SDL_VIDEO_DRIVER_WINDOWS 1
+/* #undef SDL_VIDEO_DRIVER_WINRT */
 /* #undef SDL_VIDEO_DRIVER_WAYLAND */
 /* #undef SDL_VIDEO_DRIVER_RPI */
 /* #undef SDL_VIDEO_DRIVER_VIVANTE */
@@ -403,6 +417,7 @@
 /* #undef SDL_POWER_ANDROID */
 /* #undef SDL_POWER_LINUX */
 #define SDL_POWER_WINDOWS 1
+/* #undef SDL_POWER_WINRT */
 /* #undef SDL_POWER_MACOSX */
 /* #undef SDL_POWER_UIKIT */
 /* #undef SDL_POWER_HAIKU */
@@ -431,7 +446,7 @@
 /* #undef SDL_IPHONE_KEYBOARD */
 /* #undef SDL_IPHONE_LAUNCHSCREEN */
 
-#if !defined(__WIN32__)
+#if !defined(__WIN32__) && !defined(__WINRT__)
 #  if !defined(_STDINT_H_) && !defined(_STDINT_H) && !defined(HAVE_STDINT_H) && !defined(_HAVE_STDINT_H)
 typedef unsigned int size_t;
 typedef signed char int8_t;

@@ -100,6 +100,10 @@
 #define HAVE_WCSSTR 1
 #define HAVE_WCSCMP 1
 #define HAVE_WCSNCMP 1
+#define HAVE_WCSCASECMP 1
+/* #undef HAVE__WCSICMP */
+#define HAVE_WCSNCASECMP 1
+/* #undef HAVE__WCSNICMP */
 #define HAVE_STRLEN 1
 #define HAVE_STRLCPY 1
 #define HAVE_STRLCAT 1
@@ -172,6 +176,8 @@
 #define HAVE_SQRTF 1
 #define HAVE_TAN 1
 #define HAVE_TANF 1
+#define HAVE_TRUNC 1
+#define HAVE_TRUNCF 1
 /* #undef HAVE_FOPEN64 */
 #define HAVE_FSEEKO 1
 /* #undef HAVE_FSEEKO64 */
@@ -189,6 +195,7 @@
 /* #undef HAVE_PTHREAD_SET_NAME_NP */
 /* #undef HAVE_SEM_TIMEDWAIT */
 /* #undef HAVE_GETAUXVAL */
+/* #undef HAVE_ELF_AUX_INFO */
 #define HAVE_POLL 1
 #define HAVE__EXIT 1
 
@@ -203,11 +210,15 @@
 
 /* #undef HAVE_ALTIVEC_H */
 /* #undef HAVE_DBUS_DBUS_H */
-/* #undef HAVE_FCITX_FRONTEND_H */
+/* #undef HAVE_FCITX */
 /* #undef HAVE_IBUS_IBUS_H */
+/* #undef HAVE_SYS_INOTIFY_H */
+/* #undef HAVE_INOTIFY_INIT */
+/* #undef HAVE_INOTIFY_INIT1 */
+/* #undef HAVE_INOTIFY */
 #define HAVE_IMMINTRIN_H 1
-/* #undef HAVE_LIBSAMPLERATE_H */
 /* #undef HAVE_LIBUDEV_H */
+/* #undef HAVE_LIBSAMPLERATE_H */
 
 /* #undef HAVE_D3D_H */
 /* #undef HAVE_D3D11_H */
@@ -219,6 +230,7 @@
 
 /* #undef HAVE_MMDEVICEAPI_H */
 /* #undef HAVE_AUDIOCLIENT_H */
+/* #undef HAVE_SENSORSAPI_H */
 
 /* #undef HAVE_XINPUT_GAMEPAD_EX */
 /* #undef HAVE_XINPUT_STATE_EX */
@@ -279,7 +291,6 @@
 /* Enable various input drivers */
 /* #undef SDL_INPUT_LINUXEV */
 /* #undef SDL_INPUT_LINUXKD */
-/* #undef SDL_INPUT_TSLIB */
 /* #undef SDL_JOYSTICK_ANDROID */
 /* #undef SDL_JOYSTICK_HAIKU */
 /* #undef SDL_JOYSTICK_DINPUT */
@@ -293,6 +304,7 @@
 /* #undef SDL_JOYSTICK_USBHID_MACHINE_JOYSTICK_H */
 /* #undef SDL_JOYSTICK_HIDAPI */
 /* #undef SDL_JOYSTICK_EMSCRIPTEN */
+#define SDL_JOYSTICK_VIRTUAL 1
 /* #undef SDL_HAPTIC_DUMMY */
 /* #undef SDL_HAPTIC_LINUX */
 #define SDL_HAPTIC_IOKIT 1
@@ -304,6 +316,7 @@
 /* Enable various sensor drivers */
 /* #undef SDL_SENSOR_ANDROID */
 /* #undef SDL_SENSOR_COREMOTION */
+/* #undef SDL_SENSOR_WINDOWS */
 #define SDL_SENSOR_DUMMY 1
 
 /* Enable various shared object loading systems */
@@ -335,6 +348,7 @@
 #define SDL_VIDEO_DRIVER_DUMMY 1
 /* #undef SDL_VIDEO_DRIVER_OFFSCREEN */
 /* #undef SDL_VIDEO_DRIVER_WINDOWS */
+/* #undef SDL_VIDEO_DRIVER_WINRT */
 /* #undef SDL_VIDEO_DRIVER_WAYLAND */
 /* #undef SDL_VIDEO_DRIVER_RPI */
 /* #undef SDL_VIDEO_DRIVER_VIVANTE */
@@ -379,7 +393,7 @@
 /* #undef SDL_VIDEO_RENDER_OGL_ES */
 #define SDL_VIDEO_RENDER_OGL_ES2 1
 /* #undef SDL_VIDEO_RENDER_DIRECTFB */
-/* #undef SDL_VIDEO_RENDER_METAL */
+#define SDL_VIDEO_RENDER_METAL 1
 
 /* Enable OpenGL support */
 #define SDL_VIDEO_OPENGL 1
@@ -394,15 +408,16 @@
 /* #undef SDL_VIDEO_OPENGL_OSMESA_DYNAMIC */
 
 /* Enable Vulkan support */
-/* #undef SDL_VIDEO_VULKAN */
+#define SDL_VIDEO_VULKAN 1
 
 /* Enable Metal support */
-/* #undef SDL_VIDEO_METAL */
+#define SDL_VIDEO_METAL 1
 
 /* Enable system power support */
 /* #undef SDL_POWER_ANDROID */
 /* #undef SDL_POWER_LINUX */
 /* #undef SDL_POWER_WINDOWS */
+/* #undef SDL_POWER_WINRT */
 #define SDL_POWER_MACOSX 1
 /* #undef SDL_POWER_UIKIT */
 /* #undef SDL_POWER_HAIKU */
@@ -431,7 +446,7 @@
 /* #undef SDL_IPHONE_KEYBOARD */
 /* #undef SDL_IPHONE_LAUNCHSCREEN */
 
-#if !defined(__WIN32__)
+#if !defined(__WIN32__) && !defined(__WINRT__)
 #  if !defined(_STDINT_H_) && !defined(_STDINT_H) && !defined(HAVE_STDINT_H) && !defined(_HAVE_STDINT_H)
 typedef unsigned int size_t;
 typedef signed char int8_t;
