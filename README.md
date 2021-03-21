@@ -163,6 +163,12 @@ Before building the program.
 6. Before running the program, you need to put `SDL2.dll` from the [SDL2 runtime package](http://libsdl.org/download-2.0.php) (For others like *SDL_image*, *SDL_mixer*, etc.., look for them [here](https://www.libsdl.org/projects/)) for Windows in the same folder as your executable.
 7. Now you should be able to run the program using Wine or Windows!
 
+### Linux to macOS
+1. Install macOS toolchain via [osxcross](https://github.com/tpoechtrager/osxcross)
+2. Run the following build command (replace the values in parentheses):
+```
+CGO_ENABLED=1 CC=[path-to-osxcross]/target/bin/[arch]-apple-darwin[version]-clang GOOS=darwin GOARCH=[arch] go build -tags static -ldflags "-s -w" -a
+```
 
 # FAQ
 __Why does the program not run on Windows?__
