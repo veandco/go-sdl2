@@ -520,7 +520,7 @@ func (surface *Surface) BytesPerPixel() int {
 // Pixels returns the actual pixel data of the surface.
 func (surface *Surface) Pixels() []byte {
 	var b []byte
-	length := int(surface.W*surface.H) * int(surface.Format.BytesPerPixel)
+	length := int(surface.H) * int(surface.Pitch)
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
 	sliceHeader.Cap = int(length)
 	sliceHeader.Len = int(length)
