@@ -7,9 +7,12 @@ package ttf
 //    TTF_SetError("%s", str);
 //}
 import "C"
-import "github.com/veandco/go-sdl2/sdl"
-import "unsafe"
-import "errors"
+import (
+	"errors"
+	"unsafe"
+
+	"github.com/veandco/go-sdl2/sdl"
+)
 
 // Hinting settings.
 const (
@@ -196,6 +199,43 @@ func (f *Font) SizeUTF8(text string) (int, int, error) {
 		return int(w), int(h), nil
 	}
 	return int(w), int(h), GetError()
+}
+
+// RenderGlyphSolid renders the glyph for the UNICODE ch using font with fg color onto a new surface, using the Solid mode. The caller is responsible for freeing any returned surface.
+// (https://www.libsdl.org/projects/SDL_ttf/docs/SDL_ttf.html#SEC46)
+func (f *Font) RenderGlyphSolid(ch rune, fg sdl.Color) (*sdl.Surface, error) {
+	_ch := C.Uint16(ch)
+	_fg := C.SDL_Color{C.Uint8(fg.R), C.Uint8(fg.G), C.Uint8(fg.B), C.Uint8(fg.A)}
+	surface := (*sdl.Surface)(unsafe.Pointer(C.TTF_RenderGlyph_Solid(f.f, _ch, _fg)))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
+}
+
+// RenderGlyphShaded renders the glyph for the UNICODE ch using font with fg color onto a new surface filled with the bg color, using the Shaded mode. The caller is responsible for freeing any returned surface.
+// (https://www.libsdl.org/projects/SDL_ttf/docs/SDL_ttf.html#SEC50)
+func (f *Font) RenderGlyphShaded(ch rune, fg, bg sdl.Color) (*sdl.Surface, error) {
+	_ch := C.Uint16(ch)
+	_fg := C.SDL_Color{C.Uint8(fg.R), C.Uint8(fg.G), C.Uint8(fg.B), C.Uint8(fg.A)}
+	_bg := C.SDL_Color{C.Uint8(bg.R), C.Uint8(bg.G), C.Uint8(bg.B), C.Uint8(bg.A)}
+	surface := (*sdl.Surface)(unsafe.Pointer(C.TTF_RenderGlyph_Shaded(f.f, _ch, _fg, _bg)))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
+}
+
+// RenderGlyphBlended renders the glyph for the UNICODE ch using font with fg color onto a new surface, using the Blended mode. The caller is responsible for freeing any returned surface.
+// (https://www.libsdl.org/projects/SDL_ttf/docs/SDL_ttf.html#SEC54)
+func (f *Font) RenderGlyphBlended(ch rune, fg sdl.Color) (*sdl.Surface, error) {
+	_ch := C.Uint16(ch)
+	_fg := C.SDL_Color{C.Uint8(fg.R), C.Uint8(fg.G), C.Uint8(fg.B), C.Uint8(fg.A)}
+	surface := (*sdl.Surface)(unsafe.Pointer(C.TTF_RenderGlyph_Blended(f.f, _ch, _fg)))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
 }
 
 // Close frees the memory used by font, and frees font itself as well. Do not use font after this without loading a new font to it.
