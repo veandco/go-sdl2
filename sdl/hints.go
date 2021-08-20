@@ -4,6 +4,10 @@ package sdl
 #include "sdl_wrapper.h"
 #include "hints.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,16))
+#define SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT ""
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,14))
 #define SDL_HINT_JOYSTICK_HIDAPI_PS5 ""
 #define SDL_HINT_MOUSE_RELATIVE_SCALING ""
@@ -96,6 +100,16 @@ package sdl
 #define SDL_HINT_MOUSE_TOUCH_EVENTS ""
 #endif
 
+#if SDL_VERSION_ATLEAST(2,0,16)
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT has been replaced by SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT in SDL 2.0.16")
+#endif
+
+#define SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT (SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT)
+
+#endif
+
 #if SDL_VERSION_ATLEAST(2,0,10)
 
 #if defined(WARN_OUTDATED)
@@ -183,6 +197,7 @@ const (
 	HINT_MOUSE_RELATIVE_SCALING                   = C.SDL_HINT_MOUSE_RELATIVE_SCALING                   // A variable controlling whether relative mouse motion is affected by renderer scaling.
 	HINT_PREFERRED_LOCALES                        = C.SDL_HINT_PREFERRED_LOCALES                        // Override for SDL_GetPreferredLocales().
 	HINT_JOYSTICK_RAWINPUT                        = C.SDL_HINT_JOYSTICK_RAWINPUT                        // A variable controlling whether the RAWINPUT joystick drivers should be used for better handling XInput-capable devices.
+	HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT       = C.SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT       // A variable controlling whether the HIDAPI driver for XBox controllers on Windows should pull correlated data from XInput.
 	HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT         = C.SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT         // A variable controlling whether the HIDAPI driver for XBox controllers on Windows should pull correlated data from XInput.
 	HINT_AUDIO_DEVICE_APP_NAME                    = C.SDL_HINT_AUDIO_DEVICE_APP_NAME                    // Specify an application name for an audio device.
 	HINT_AUDIO_DEVICE_STREAM_NAME                 = C.SDL_HINT_AUDIO_DEVICE_STREAM_NAME                 // Specify an application name for an audio device.
