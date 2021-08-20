@@ -4,6 +4,34 @@ package sdl
 #include "sdl_wrapper.h"
 #include "hints.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,16))
+#define SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT ""
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,14))
+#define SDL_HINT_JOYSTICK_HIDAPI_PS5 ""
+#define SDL_HINT_MOUSE_RELATIVE_SCALING ""
+#define SDL_HINT_PREFERRED_LOCALES ""
+#define SDL_HINT_JOYSTICK_RAWINPUT ""
+#define SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT ""
+#define SDL_HINT_AUDIO_DEVICE_APP_NAME ""
+#define SDL_HINT_AUDIO_DEVICE_STREAM_NAME ""
+#define SDL_HINT_LINUX_JOYSTICK_DEADZONES ""
+#define SDL_HINT_THREAD_PRIORITY_POLICY ""
+#define SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL ""
+#define SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO ""
+#define SDL_HINT_EMSCRIPTEN_ASYNCIFY ""
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,12))
+#define SDL_HINT_DISPLAY_USABLE_BOUNDS ""
+#define SDL_HINT_GAMECONTROLLERTYPE ""
+#define SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS ""
+#define SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE ""
+#define SDL_HINT_VIDEO_X11_WINDOW_VISUALID ""
+#define SDL_HINT_VIDEO_X11_FORCE_EGL ""
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,9))
 #define SDL_HINT_MOUSE_DOUBLE_CLICK_TIME ""
 #define SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS ""
@@ -70,6 +98,16 @@ package sdl
 #define SDL_HINT_GAMECONTROLLERCONFIG_FILE ""
 #define SDL_HINT_ANDROID_BLOCK_ON_PAUSE ""
 #define SDL_HINT_MOUSE_TOUCH_EVENTS ""
+#endif
+
+#if SDL_VERSION_ATLEAST(2,0,16)
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT has been replaced by SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT in SDL 2.0.16")
+#endif
+
+#define SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT (SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT)
+
 #endif
 
 #if SDL_VERSION_ATLEAST(2,0,10)
@@ -149,6 +187,25 @@ const (
 	HINT_EVENT_LOGGING                            = C.SDL_HINT_EVENT_LOGGING                            // specifies a variable controlling whether SDL logs all events pushed onto its internal queue.
 	HINT_GAMECONTROLLERCONFIG_FILE                = C.SDL_HINT_GAMECONTROLLERCONFIG_FILE                // specifies a variable that lets you provide a file with extra gamecontroller db entries.
 	HINT_ANDROID_BLOCK_ON_PAUSE                   = C.SDL_HINT_ANDROID_BLOCK_ON_PAUSE                   // specifies a variable to control whether the event loop will block itself when the app is paused.
+	HINT_DISPLAY_USABLE_BOUNDS                    = C.SDL_HINT_DISPLAY_USABLE_BOUNDS                    // Override for SDL_GetDisplayUsableBounds().
+	HINT_GAMECONTROLLERTYPE                       = C.SDL_HINT_GAMECONTROLLERTYPE                       // Overrides the automatic controller type detection.
+	HINT_GAMECONTROLLER_USE_BUTTON_LABELS         = C.SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS         // If set, game controller face buttons report their values according to their labels instead of their positional layout.
+	HINT_JOYSTICK_HIDAPI_GAMECUBE                 = C.SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE                 // A variable controlling whether the HIDAPI driver for Nintendo GameCube controllers should be used.
+	HINT_VIDEO_X11_WINDOW_VISUALID                = C.SDL_HINT_VIDEO_X11_WINDOW_VISUALID                // A variable forcing the visual ID chosen for new X11 windows.
+	HINT_VIDEO_X11_FORCE_EGL                      = C.SDL_HINT_VIDEO_X11_FORCE_EGL                      // A variable controlling whether X11 should use GLX or EGL by default.
+	HINT_JOYSTICK_HIDAPI_PS5                      = C.SDL_HINT_JOYSTICK_HIDAPI_PS5                      // A variable controlling whether the HIDAPI driver for PS5 controllers should be used.
+	HINT_MOUSE_RELATIVE_SCALING                   = C.SDL_HINT_MOUSE_RELATIVE_SCALING                   // A variable controlling whether relative mouse motion is affected by renderer scaling.
+	HINT_PREFERRED_LOCALES                        = C.SDL_HINT_PREFERRED_LOCALES                        // Override for SDL_GetPreferredLocales().
+	HINT_JOYSTICK_RAWINPUT                        = C.SDL_HINT_JOYSTICK_RAWINPUT                        // A variable controlling whether the RAWINPUT joystick drivers should be used for better handling XInput-capable devices.
+	HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT       = C.SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT       // A variable controlling whether the HIDAPI driver for XBox controllers on Windows should pull correlated data from XInput.
+	HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT         = C.SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT         // A variable controlling whether the HIDAPI driver for XBox controllers on Windows should pull correlated data from XInput.
+	HINT_AUDIO_DEVICE_APP_NAME                    = C.SDL_HINT_AUDIO_DEVICE_APP_NAME                    // Specify an application name for an audio device.
+	HINT_AUDIO_DEVICE_STREAM_NAME                 = C.SDL_HINT_AUDIO_DEVICE_STREAM_NAME                 // Specify an application name for an audio device.
+	HINT_LINUX_JOYSTICK_DEADZONES                 = C.SDL_HINT_LINUX_JOYSTICK_DEADZONES                 // A variable controlling whether joysticks on Linux adhere to their HID-defined deadzones or return unfiltered values.
+	HINT_THREAD_PRIORITY_POLICY                   = C.SDL_HINT_THREAD_PRIORITY_POLICY                   // A string specifying additional information to use with SDL_SetThreadPriority.
+	HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL      = C.SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL      // Specifies whether SDL_THREAD_PRIORITY_TIME_CRITICAL should be treated as realtime.
+	HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO        = C.SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO        // A variable to control whether SDL will pause audio in background (Requires SDL_ANDROID_BLOCK_ON_PAUSE as "Non blocking").
+	HINT_EMSCRIPTEN_ASYNCIFY                      = C.SDL_HINT_EMSCRIPTEN_ASYNCIFY                      // Disable giving back control to the browser automatically when running with asyncify.
 )
 
 // An enumeration of hint priorities.
