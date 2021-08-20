@@ -1,6 +1,24 @@
 package sdl
 
-// #include "sdl_wrapper.h"
+/*
+#include "sdl_wrapper.h"
+
+#if SDL_VERSION_ATLEAST(2,0,16)
+
+static inline int GetRevisionNumber(void)
+{
+	return 0;
+}
+
+#else
+
+static inline int GetRevisionNumber(void)
+{
+	return SDL_GetRevisionNumber();
+}
+
+#endif
+*/
 import "C"
 import "unsafe"
 
@@ -62,8 +80,7 @@ func GetRevision() string {
 	return (string)(C.GoString(C.SDL_GetRevision()))
 }
 
-// GetRevisionNumber returns the revision number of SDL that is linked against your program.
-// (https://wiki.libsdl.org/SDL_GetRevisionNumber)
+// Deprecated: GetRevisionNumber is deprecated in SDL2 2.0.16 and will return 0. Users should use GetRevision instead.
 func GetRevisionNumber() int {
-	return (int)(C.SDL_GetRevisionNumber())
+	return (int)(C.GetRevisionNumber())
 }
