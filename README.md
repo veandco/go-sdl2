@@ -135,6 +135,8 @@ You can also cross-compile to another OS. For example, to Windows:
 
 `CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc GOOS=windows GOARCH=amd64 go build -tags static -ldflags "-s -w"`
 
+On Windows, if you would like to hide the Command Prompt window when running the statically-compiled program, you could append `-h WINDOWSGUI` to the `-ldflags` value.
+
 For the list of OS and architecture, you can see inside the [.go-sdl2-libs](https://github.com/veandco/go-sdl2/tree/master/.go-sdl2-libs) directory.
 
 NOTE: If you're using the new Go Module system, you will need to refer to the master branch for now by running:
