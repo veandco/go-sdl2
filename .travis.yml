@@ -1,4 +1,5 @@
 language: go
+dist: focal
 
 go:
   - 1.2.2
