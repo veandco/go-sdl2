@@ -2,42 +2,42 @@ language: go
 dist: focal
 
 go:
-  - 1.2.2
+  - 1.13.15
   - tip
 
 install:
   - mkdir sdl2install
-  - wget https://www.libsdl.org/release/SDL2-2.0.0.tar.gz
-  - tar xf SDL2-2.0.0.tar.gz
-  - cd SDL2-2.0.0
+  - wget https://www.libsdl.org/release/SDL2-2.0.16.tar.gz
+  - tar xf SDL2-2.0.16.tar.gz
+  - cd SDL2-2.0.16
   - ./configure
   - make
   - sudo make install
   - cd ..
-  - wget https://excellmedia.dl.sourceforge.net/project/sdl2gfx/SDL2_gfx-1.0.0.tar.gz
-  - tar xf SDL2_gfx-1.0.0.tar.gz
-  - cd SDL2_gfx-1.0.0
+  - wget https://excellmedia.dl.sourceforge.net/project/sdl2gfx/SDL2_gfx-1.0.4.tar.gz
+  - tar xf SDL2_gfx-1.0.4.tar.gz
+  - cd SDL2_gfx-1.0.4
   - ./configure
   - make
   - sudo make install
   - cd ..
-  - wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.0.tar.gz
-  - tar xf SDL2_image-2.0.0.tar.gz
-  - cd SDL2_image-2.0.0
+  - wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5.tar.gz
+  - tar xf SDL2_image-2.0.5.tar.gz
+  - cd SDL2_image-2.0.5
   - ./configure
   - make
   - sudo make install
   - cd ..
-  - wget https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.0.tar.gz
-  - tar xf SDL2_mixer-2.0.0.tar.gz
-  - cd SDL2_mixer-2.0.0
+  - wget https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.4.tar.gz
+  - tar xf SDL2_mixer-2.0.4.tar.gz
+  - cd SDL2_mixer-2.0.4
   - ./configure
   - make
   - sudo make install
   - cd ..
-  - wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.12.tar.gz
-  - tar xf SDL2_ttf-2.0.12.tar.gz
-  - cd SDL2_ttf-2.0.12
+  - wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.15.tar.gz
+  - tar xf SDL2_ttf-2.0.15.tar.gz
+  - cd SDL2_ttf-2.0.15
   - ./configure
   - make
   - sudo make install
