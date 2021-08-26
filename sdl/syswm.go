@@ -70,6 +70,8 @@ type SysWMInfo struct {
 // WindowsInfo contains Microsoft Windows window information.
 type WindowsInfo struct {
 	Window unsafe.Pointer // the window handle
+	DeviceContext unsafe.Pointer // the device context handle
+	Instance unsafe.Pointer // the instance handle
 }
 
 // X11Info contains X Window System window information.
