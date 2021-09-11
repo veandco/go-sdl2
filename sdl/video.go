@@ -180,6 +180,32 @@ static int SDL_GetDisplayUsableBounds(int displayIndex, SDL_Rect* rect)
 
 #define SDL_GL_CONTEXT_NO_ERROR (0)
 #endif
+
+
+#if !(SDL_VERSION_ATLEAST(2,0,16))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_FlashWindow is not supported before SDL 2.0.16")
+#pragma message("SDL_SetWindowAlwaysOnTop is not supported before SDL 2.0.16")
+#pragma message("SDL_SetWindowKeyboardGrab is not supported before SDL 2.0.16")
+#endif
+
+static int SDL_FlashWindow(SDL_Window * window, SDL_FlashOperation operation)
+{
+	return -1;
+}
+
+static void SDL_SetWindowAlwaysOnTop(SDL_Window * window, SDL_bool on_top)
+{
+	return;
+}
+
+static void SDL_SetWindowKeyboardGrab(SDL_Window * window, SDL_bool grabbed)
+{
+	return;
+}
+
+#endif
 */
 import "C"
 import "unsafe"
@@ -304,6 +330,17 @@ const (
 	GL_CONTEXT_ROBUST_ACCESS_FLAG      = C.SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG      // intended to require a GL context that supports the GL_ARB_robustness extension--a mode that offers a few APIs that are safer than the usual defaults (think snprintf() vs sprintf())
 	GL_CONTEXT_RESET_ISOLATION_FLAG    = C.SDL_GL_CONTEXT_RESET_ISOLATION_FLAG    // intended to require the GL to make promises about what to do in the face of driver or hardware failure
 )
+
+//
+// Window flash operation
+//
+const (
+    FLASH_CANCEL FlashOperation = C.SDL_FLASH_CANCEL        // Cancel any window flash state
+    FLASH_BRIEFLY               = C.SDL_FLASH_BRIEFLY       // Flash the window briefly to get attention
+    FLASH_UNTIL_FOCUSED         = C.SDL_FLASH_UNTIL_FOCUSED // Flash the window until it gets focus
+)
+
+type FlashOperation C.SDL_FlashOperation
 
 // DisplayMode contains the description of a display mode.
 // (https://wiki.libsdl.org/SDL_DisplayMode)
@@ -991,4 +1028,22 @@ func (window *Window) GLSwap() {
 // (https://wiki.libsdl.org/SDL_GL_DeleteContext)
 func GLDeleteContext(context GLContext) {
 	C.SDL_GL_DeleteContext(C.SDL_GLContext(context))
+}
+
+// Flash requests the window to demand attention from the user.
+// (https://wiki.libsdl.org/SDL_FlashWindow)
+func (window *Window) Flash(operation FlashOperation) (err error) {
+	return errorFromInt(int(C.SDL_FlashWindow(window.cptr(), C.SDL_FlashOperation(operation))))
+}
+
+// SetAlwaysOnTop sets the window to always be above the others.
+// (https://wiki.libsdl.org/SDL_SetWindowAlwaysOnTop)
+func (window *Window) SetAlwaysOnTop(onTop bool) {
+	C.SDL_SetWindowAlwaysOnTop(window.cptr(), C.SDL_bool(Btoi(onTop)))
+}
+
+// SetKeyboardGrab sets a window's keyboard grab mode.
+// (https://wiki.libsdl.org/SDL_GetWindowKeyboardGrab)
+func (window *Window) SetKeyboardGrab(grabbed bool) {
+	C.SDL_SetWindowKeyboardGrab(window.cptr(), C.SDL_bool(Btoi(grabbed)))
 }

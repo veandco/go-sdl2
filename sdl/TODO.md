@@ -1,3 +1,28 @@
+## 2.0.16
+
+[x] SDL_FlashWindow() to get a user’s attention
+[x] SDL_GetAudioDeviceSpec() to get the preferred audio format of a device
+[x] SDL_SetWindowAlwaysOnTop() to dynamically change the SDL_WINDOW_ALWAYS_ON_TOP flag for a window
+[x] SDL_SetWindowKeyboardGrab() to support grabbing the keyboard independently of the mouse
+[x] SDL_SoftStretchLinear() to do bilinear scaling between 32-bit software surfaces
+[x] SDL_UpdateNVTexture() to update streaming NV12/21 textures
+[x] SDL_GameControllerSendEffect() and SDL_JoystickSendEffect() to allow sending custom trigger effects to the DualSense controller
+[x] SDL_GameControllerGetSensorDataRate() to get the sensor data rate for PlayStation and Nintendo Switch controllers
+
+### Windows
+
+[?] SDL_SetWindowsMessageHook() to set a function that is called for all Windows messages
+[?] SDL_RenderGetD3D11Device() to get the D3D11 device used by the SDL renderer
+
+### Linux
+
+[x] SDL_HINT_AUDIO_INCLUDE_MONITORS to control whether PulseAudio recording should include monitor devices
+[x] SDL_HINT_AUDIO_DEVICE_STREAM_ROLE to describe the role of your application for audio control panels
+
+### Android:
+
+[?] SDL_AndroidShowToast() to show a lightweight notification
+
 ## 2.0.14
 
 [x] SDL_GameControllerGetSerial()

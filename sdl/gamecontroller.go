@@ -13,12 +13,18 @@ static SDL_GameController* SDL_GameControllerFromInstanceID(SDL_JoystickID joyid
 {
 	return NULL;
 }
+
 #endif
+
 
 #if !(SDL_VERSION_ATLEAST(2,0,6))
 
 #if defined(WARN_OUTDATED)
 #pragma message("SDL_GameControllerGetVendor is not supported before SDL 2.0.6")
+#pragma message("SDL_GameControllerGetProduct is not supported before SDL 2.0.6")
+#pragma message("SDL_GameControllerGetProductVersion is not supported before SDL 2.0.6")
+#pragma message("SDL_GameControllerNumMappings is not supported before SDL 2.0.6")
+#pragma message("SDL_GameControllerMappingForIndex is not supported before SDL 2.0.6")
 #endif
 
 static Uint16 SDL_GameControllerGetVendor(SDL_GameController* gamecontroller)
@@ -27,45 +33,27 @@ static Uint16 SDL_GameControllerGetVendor(SDL_GameController* gamecontroller)
 }
 
 
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_GameControllerGetProduct is not supported before SDL 2.0.6")
-#endif
-
 static Uint16 SDL_GameControllerGetProduct(SDL_GameController* gamecontroller)
 {
 	return 0;
 }
-
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_GameControllerGetProductVersion is not supported before SDL 2.0.6")
-#endif
 
 static Uint16 SDL_GameControllerGetProductVersion(SDL_GameController* gamecontroller)
 {
 	return 0;
 }
 
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_GameControllerNumMappings is not supported before SDL 2.0.6")
-#endif
-
 static int SDL_GameControllerNumMappings(void)
 {
 	return 0;
 }
-
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_GameControllerMappingForIndex is not supported before SDL 2.0.6")
-#endif
 
 static char* SDL_GameControllerMappingForIndex(int mapping_index)
 {
 	return NULL;
 }
 #endif
+
 
 #if !(SDL_VERSION_ATLEAST(2,0,9))
 
@@ -79,6 +67,8 @@ typedef enum
 
 #if defined(WARN_OUTDATED)
 #pragma message("SDL_GameControllerGetPlayerIndex is not supported before SDL 2.0.9")
+#pragma message("SDL_GameControllerRumble is not supported before SDL 2.0.9")
+#pragma message("SDL_GameControllerMappingForDeviceIndex is not supported before SDL 2.0.9")
 #endif
 
 static int SDL_GameControllerGetPlayerIndex(SDL_GameController *gamecontroller)
@@ -86,18 +76,10 @@ static int SDL_GameControllerGetPlayerIndex(SDL_GameController *gamecontroller)
 	return -1;
 }
 
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_GameControllerRumble is not supported before SDL 2.0.9")
-#endif
-
 static int SDL_GameControllerRumble(SDL_GameController *gamecontroller, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble, Uint32 duration_ms)
 {
 	return -1;
 }
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_GameControllerMappingForDeviceIndex is not supported before SDL 2.0.9")
-#endif
 
 static char *SDL_GameControllerMappingForDeviceIndex(int joystick_index)
 {
@@ -105,6 +87,7 @@ static char *SDL_GameControllerMappingForDeviceIndex(int joystick_index)
 }
 
 #endif
+
 
 #if !(SDL_VERSION_ATLEAST(2,0,12))
 
@@ -146,6 +129,7 @@ static void SDL_GameControllerSetPlayerIndex(SDL_GameController *gamecontroller,
 }
 
 #endif
+
 
 #if !(SDL_VERSION_ATLEAST(2,0,14))
 
@@ -213,7 +197,7 @@ static SDL_bool SDL_GameControllerIsSensorEnabled(SDL_GameController *gamecontro
 	return SDL_FALSE;
 }
 
-int SDL_GameControllerGetSensorData(SDL_GameController *gamecontroller, SDL_SensorType type, float *data, int num_values)
+static int SDL_GameControllerGetSensorData(SDL_GameController *gamecontroller, SDL_SensorType type, float *data, int num_values)
 {
 	return -1;
 }
@@ -231,6 +215,26 @@ static SDL_bool SDL_GameControllerHasLED(SDL_GameController *gamecontroller)
 static int SDL_GameControllerSetLED(SDL_GameController *gamecontroller, Uint8 red, Uint8 green, Uint8 blue)
 {
 	return -1;
+}
+
+#endif
+
+
+#if !(SDL_VERSION_ATLEAST(2,0,16))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GameControllerSendEffect is not supported before SDL 2.0.16")
+#pragma message("SDL_GameControllerGetSensorDataRate is not supported before SDL 2.0.16")
+#endif
+
+static int SDL_GameControllerSendEffect(SDL_GameController *gamecontroller, const void *data, int size)
+{
+	return -1;
+}
+
+static float SDL_GameControllerGetSensorDataRate(SDL_GameController *gamecontroller, SDL_SensorType type)
+{
+	return 0.0f;
 }
 
 #endif
@@ -648,4 +652,17 @@ func (bind *GameControllerButtonBind) Hat() int {
 func (bind *GameControllerButtonBind) HatMask() int {
 	val, _ := binary.Varint(bind.value[4:8])
 	return int(val)
+}
+
+// SendEffect sends a controller specific effect packet.
+// (https://wiki.libsdl.org/SDL_GameControllerSendEffect)
+func (ctrl *GameController) SendEffect(data []byte) (err error) {
+	_size := C.int(len(data))
+	return errorFromInt(int(C.SDL_GameControllerSendEffect(ctrl.cptr(), unsafe.Pointer(&data[0]), _size)))
+}
+
+// GetSensorDataRate gets the data rate (number of events per second) of a game controller sensor.
+// (https://wiki.libsdl.org/SDL_GameControllerGetSensorDataRate)
+func (ctrl *GameController) SensorDataRate(typ SensorType) (rate float32) {
+	return float32(C.SDL_GameControllerGetSensorDataRate(ctrl.cptr(), C.SDL_SensorType(typ)))
 }

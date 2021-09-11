@@ -191,6 +191,16 @@ static int SDLCALL SDL_GetTextureScaleMode(SDL_Texture * texture, SDL_ScaleMode 
 }
 
 static int SDL_LockTextureToSurface(SDL_Texture *texture, const SDL_Rect *rect, SDL_Surface **surface)
+#endif
+
+
+#if !(SDL_VERSION_ATLEAST(2,0,16))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_UpdateNVTexture is not supported before SDL 2.0.16")
+#endif
+
+static int SDL_UpdateNVTexture(SDL_Texture * texture, const SDL_Rect * rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch)
 {
 	return -1;
 }
@@ -1058,4 +1068,24 @@ func (renderer *Renderer) GetMetalCommandEncoder() (encoder unsafe.Pointer, err 
 		err = GetError()
 	}
 	return
+}
+
+// UpdateNV updates a rectangle within a planar NV12 or NV21 texture with new pixels.
+// (https://wiki.libsdl.org/SDL_UpdateNVTexture)
+func (texture *Texture) UpdateNV(rect *Rect, yPlane []byte, yPitch int, uvPlane []byte, uvPitch int) error {
+	var yPlanePtr, uvPlanePtr *byte
+	if yPlane != nil {
+		yPlanePtr = &yPlane[0]
+	}
+	if uvPlane != nil {
+		uvPlanePtr = &uvPlane[0]
+	}
+	return errorFromInt(int(
+		C.SDL_UpdateNVTexture(
+			texture.cptr(),
+			rect.cptr(),
+			(*C.Uint8)(unsafe.Pointer(yPlanePtr)),
+			C.int(yPitch),
+			(*C.Uint8)(unsafe.Pointer(uvPlanePtr)),
+			C.int(uvPitch))))
 }
