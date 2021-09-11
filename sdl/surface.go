@@ -87,6 +87,20 @@ static inline SDL_Surface* SDL_CreateRGBSurfaceWithFormatFrom(void* pixels, int 
 	return NULL;
 }
 #endif
+
+
+#if !(SDL_VERSION_ATLEAST(2,0,16))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_SoftStretchLinear is not supported before SDL 2.0.16")
+#endif
+
+static int SDL_SoftStretchLinear(SDL_Surface * src, const SDL_Rect * srcrect, SDL_Surface * dst, const SDL_Rect * dstrect)
+{
+	return -1;
+}
+
+#endif
 */
 import "C"
 import (
@@ -775,4 +789,10 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 	default:
 		panic("Unknown pixel format!")
 	}
+}
+
+// SoftStretchLinear performs bilinear scaling between two surfaces of the same format, 32BPP.
+// (https://wiki.libsdl.org/SDL_SoftStretchLinear)
+func (surface *Surface) SoftStretchLinear(srcRect *Rect, dst *Surface, dstRect *Rect) (err error) {
+	return errorFromInt(int(C.SDL_SoftStretchLinear(surface.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr())))
 }

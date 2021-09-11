@@ -6,6 +6,8 @@ package sdl
 
 #if !(SDL_VERSION_ATLEAST(2,0,16))
 #define SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT ""
+#define SDL_HINT_AUDIO_INCLUDE_MONITORS ""
+#define SDL_HINT_AUDIO_DEVICE_STREAM_ROLE ""
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,14))
@@ -206,6 +208,8 @@ const (
 	HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL      = C.SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL      // Specifies whether SDL_THREAD_PRIORITY_TIME_CRITICAL should be treated as realtime.
 	HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO        = C.SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO        // A variable to control whether SDL will pause audio in background (Requires SDL_ANDROID_BLOCK_ON_PAUSE as "Non blocking").
 	HINT_EMSCRIPTEN_ASYNCIFY                      = C.SDL_HINT_EMSCRIPTEN_ASYNCIFY                      // Disable giving back control to the browser automatically when running with asyncify.
+	HINT_AUDIO_INCLUDE_MONITORS                   = C.SDL_HINT_AUDIO_INCLUDE_MONITORS                   // Control whether PulseAudio recording should include monitor devices
+	HINT_AUDIO_DEVICE_STREAM_ROLE                 = C.SDL_HINT_AUDIO_DEVICE_STREAM_ROLE                 // Describe the role of your application for audio control panels
 )
 
 // An enumeration of hint priorities.

@@ -15,7 +15,20 @@ static int SDL_IsAndroidTV(void)
 {
 	return -1;
 }
+
 #endif
+
+
+#if !(SDL_VERSION_ATLEAST(2,0,16))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_AndroidShowToast is not supported before SDL 2.0.16")
+#endif
+
+static int SDL_AndroidShowToast(const char* message, int duration, int gravity, int xoffset, int yoffset)
+{
+	return -1;
+}
 */
 import "C"
 import "unsafe"
@@ -61,4 +74,12 @@ func AndroidGetActivity() unsafe.Pointer {
 // (https://wiki.libsdl.org/SDL_IsAndroidTV)
 func IsAndroidTV() bool {
 	return C.SDL_IsAndroidTV() >= 0
+}
+
+// AndroidShowToast shows an Android toast notification.
+// (https://wiki.libsdl.org/SDL_AndroidShowToast)
+func AndroidShowToast(message string, duration, gravity, xoffset, yoffset int) (err error) {
+	_message := C.CString(message)
+	defer C.free(unsafe.Pointer(_message))
+	return errorFromInt(int(C.SDL_AndroidShowToast(_message, C.int(duration), C.int(gravity), C.int(xoffset), C.int(yoffset))))
 }

@@ -109,6 +109,20 @@ static void SDL_FreeAudioStream(SDL_AudioStream *stream)
 }
 
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,16))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GetAudioDeviceSpec is not supported before SDL 2.0.16")
+#endif
+
+static int SDL_GetAudioDeviceSpec(int index, int iscapture, SDL_AudioSpec *spec)
+{
+	return -1;
+}
+
+
+#endif
 */
 import "C"
 import (
@@ -625,4 +639,12 @@ func (stream *AudioStream) Clear() {
 // TODO: (https://wiki.libsdl.org/SDL_AudoiStreamFree)
 func (stream *AudioStream) Free() {
 	C.SDL_FreeAudioStream(stream.cptr())
+}
+
+// GetAudioDeviceSpec returns the preferred audio format of a specific audio device.
+// (https://wiki.libsdl.org/SDL_GetAudioDeviceSpec)
+func GetAudioDeviceSpec(index int, isCapture bool) (spec *AudioSpec, err error) {
+	spec = &AudioSpec{}
+	err = errorFromInt(int(C.SDL_GetAudioDeviceSpec(C.int(index), C.int(Btoi(isCapture)), spec.cptr())))
+	return
 }

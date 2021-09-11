@@ -15,7 +15,6 @@ static inline SDL_bool SDL_IsTablet()
 }
 
 #endif
-
 */
 import "C"
 
