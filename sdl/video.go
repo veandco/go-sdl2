@@ -180,6 +180,13 @@ static int SDL_GetDisplayUsableBounds(int displayIndex, SDL_Rect* rect)
 #pragma message("SDL_SetWindowKeyboardGrab is not supported before SDL 2.0.16")
 #endif
 
+typedef enum
+{
+    SDL_FLASH_CANCEL,                   // Cancel any window flash state
+    SDL_FLASH_BRIEFLY,                  // Flash the window briefly to get attention
+    SDL_FLASH_UNTIL_FOCUSED,            // Flash the window until it gets focus
+} SDL_FlashOperation;
+
 static int SDL_FlashWindow(SDL_Window * window, SDL_FlashOperation operation)
 {
 	return -1;
