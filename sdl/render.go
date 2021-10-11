@@ -191,6 +191,9 @@ static int SDLCALL SDL_GetTextureScaleMode(SDL_Texture * texture, SDL_ScaleMode 
 }
 
 static int SDL_LockTextureToSurface(SDL_Texture *texture, const SDL_Rect *rect, SDL_Surface **surface)
+{
+	return -1;
+}
 #endif
 
 
