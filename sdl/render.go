@@ -233,6 +233,15 @@ const (
 	RENDERER_TARGETTEXTURE = C.SDL_RENDERER_TARGETTEXTURE // the renderer supports rendering to texture
 )
 
+type ScaleMode C.SDL_ScaleMode
+
+// The scaling mode for a texture.
+const (
+    ScaleModeNearest ScaleMode = C.SDL_ScaleModeNearest // nearest pixel sampling
+    ScaleModeLinear            = C.SDL_ScaleModeLinear  // linear filtering
+    ScaleModeBest              = C.SDL_ScaleModeBest    // anisotropic filtering
+ )
+
 // An enumeration of texture access patterns..
 // (https://wiki.libsdl.org/SDL_TextureAccess)
 const (
