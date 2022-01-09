@@ -210,6 +210,62 @@ static int SDL_UpdateNVTexture(SDL_Texture * texture, const SDL_Rect * rect, con
 
 #endif
 
+
+#if !(SDL_VERSION_ATLEAST(2,0,18))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderGeometry is not supported before SDL 2.0.18")
+#pragma message("SDL_RenderGeometryRaw is not supported before SDL 2.0.18")
+#pragma message("SDL_SetTextureUserData is not supported before SDL 2.0.18")
+#pragma message("SDL_GetTextureUserData is not supported before SDL 2.0.18")
+#pragma message("SDL_RenderWindowToLogical is not supported before SDL 2.0.18")
+#pragma message("SDL_RenderLogicalToWindow is not supported before SDL 2.0.18")
+#pragma message("SDL_RenderSetVSync is not supported before SDL 2.0.18")
+#endif
+
+// Vertex structure
+typedef struct SDL_Vertex
+{
+    SDL_FPoint position;  // Vertex position, in SDL_Renderer coordinates
+    SDL_Color  color;     // Vertex color
+    SDL_FPoint tex_coord; // Normalized texture coordinates, if needed
+} SDL_Vertex;
+
+static int SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices)
+{
+	return -1;
+}
+
+static int SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const int *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices)
+{
+	return -1;
+}
+
+static int SDL_SetTextureUserData(SDL_Texture * texture, void *userdata)
+{
+	return -1;
+}
+
+static void * SDLCALL SDL_GetTextureUserData(SDL_Texture * texture)
+{
+	return NULL;
+}
+
+static void SDL_RenderWindowToLogical(SDL_Renderer * renderer, int windowX, int windowY, float *logicalX, float *logicalY)
+{
+}
+
+static void SDL_RenderLogicalToWindow(SDL_Renderer * renderer, float logicalX, float logicalY, int *windowX, int *windowY)
+{
+}
+
+static int SDL_RenderSetVSync(SDL_Renderer* renderer, int vsync)
+{
+	return -1;
+}
+
+#endif
+
 // WORKAROUND: This prevents audio from seemingly going corrupt when drawing outside the screen bounding box?
 // It does that by allocating SDL_Rect in the C context instead of Go context.
 static inline int RenderCopy(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect *src, int dst_x, int dst_y, int dst_w, int dst_h)
@@ -237,10 +293,10 @@ type ScaleMode C.SDL_ScaleMode
 
 // The scaling mode for a texture.
 const (
-    ScaleModeNearest ScaleMode = C.SDL_ScaleModeNearest // nearest pixel sampling
-    ScaleModeLinear            = C.SDL_ScaleModeLinear  // linear filtering
-    ScaleModeBest              = C.SDL_ScaleModeBest    // anisotropic filtering
- )
+	ScaleModeNearest ScaleMode = C.SDL_ScaleModeNearest // nearest pixel sampling
+	ScaleModeLinear            = C.SDL_ScaleModeLinear  // linear filtering
+	ScaleModeBest              = C.SDL_ScaleModeBest    // anisotropic filtering
+)
 
 // An enumeration of texture access patterns..
 // (https://wiki.libsdl.org/SDL_TextureAccess)
@@ -300,6 +356,13 @@ func (info *cRendererInfo) cptr() *C.SDL_RendererInfo {
 // (https://wiki.libsdl.org/SDL_RendererFlip)
 type RendererFlip uint32
 type cRendererFlip C.SDL_RendererFlip
+
+// Vertex structure
+type Vertex struct {
+	Position FPoint // Vertex position, in SDL_Renderer coordinates
+	Color    Color  // Vertex color
+	TexCoord FPoint // Normalized texture coordinates, if needed
+}
 
 func (flip RendererFlip) c() C.SDL_RendererFlip {
 	return C.SDL_RendererFlip(flip)
@@ -1059,4 +1122,126 @@ func (texture *Texture) UpdateNV(rect *Rect, yPlane []byte, yPitch int, uvPlane 
 			C.int(yPitch),
 			(*C.Uint8)(unsafe.Pointer(uvPlanePtr)),
 			C.int(uvPitch))))
+}
+
+// RenderGeometry renders a list of triangles, optionally using a texture and
+// indices into the vertex array Color and alpha modulation is done per vertex
+// (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).
+// (https://wiki.libsdl.org/SDL_RenderGeometry)
+func (renderer *Renderer) RenderGeometry(texture *Texture, vertices []Vertex, indices []int32) (err error) {
+	_texture := texture.cptr()
+	_vertices := (*C.SDL_Vertex)(unsafe.Pointer(&vertices[0]))
+	_num_vertices := C.int(len(vertices))
+	_indices := (*C.int)(unsafe.Pointer(&indices[0]))
+	_num_indices := C.int(0)
+	if indices != nil {
+		_num_indices = C.int(len(indices))
+	}
+	err = errorFromInt(int(C.SDL_RenderGeometry(renderer.cptr(), _texture, _vertices, _num_vertices, _indices, _num_indices)))
+	return
+}
+
+// RenderGeomtryRaw renders a list of triangles, optionally using a texture and
+// indices into the vertex arrays Color and alpha modulation is done per vertex
+// (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).
+// (https://wiki.libsdl.org/SDL_RenderGeometryRaw)
+func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy []float32, xy_stride int, color []int32, color_stride int, uv []float32, uv_stride int, num_vertices int, indices interface{}) (err error) {
+	size_indices := 0
+	_indices := unsafe.Pointer(nil)
+	num_indices := 0
+
+	switch t := indices.(type) {
+	case []byte:
+		_indices = unsafe.Pointer(&t[0])
+		size_indices = 1
+		num_indices = len(t)
+	case []int8:
+		_indices = unsafe.Pointer(&t[0])
+		size_indices = 1
+		num_indices = len(t)
+	case []int16:
+		_indices = unsafe.Pointer(&t[0])
+		size_indices = 2
+		num_indices = len(t)
+	case []uint16:
+		_indices = unsafe.Pointer(&t[0])
+		size_indices = 2
+		num_indices = len(t)
+	case []int32:
+		_indices = unsafe.Pointer(&t[0])
+		size_indices = 4
+		num_indices = len(t)
+	case []uint32:
+		_indices = unsafe.Pointer(&t[0])
+		size_indices = 4
+		num_indices = len(t)
+	}
+
+	_texture := texture.cptr()
+	_xy := (*C.float)(&xy[0])
+	_xy_stride := C.int(xy_stride)
+	_color := (*C.int)(&color[0])
+	_color_stride := C.int(color_stride)
+	_uv := (*C.float)(&uv[0])
+	_uv_stride := C.int(uv_stride)
+	_num_vertices := C.int(len(xy))
+	_num_indices := C.int(num_indices)
+	_size_indices := C.int(size_indices)
+
+	err = errorFromInt(int(C.SDL_RenderGeometryRaw(renderer.cptr(), _texture, _xy, _xy_stride, _color, _color_stride, _uv, _uv_stride, _num_vertices, _indices, _num_indices, _size_indices)))
+	return
+}
+
+// SetTextureUserData associates a user-specified pointer with a texture.
+// (https://wiki.libsdl.org/SDL_SetTextureUserData)
+func (texture *Texture) SetTextureUserData(userdata unsafe.Pointer) (err error) {
+	err = errorFromInt(int(C.SDL_SetTextureUserData(texture.cptr(), userdata)))
+	return
+}
+
+// GetTextureUserData gets the user-specified pointer associated with a texture.
+// (https://wiki.libsdl.org/SDL_GetTextureUserData)
+func (texture *Texture) GetTextureUserData() (userdata unsafe.Pointer) {
+	userdata = C.SDL_GetTextureUserData(texture.cptr())
+	return
+}
+
+// RenderWindowToLogical gets logical coordinates of point in renderer when given real coordinates of
+// point in window.
+//
+// Logical coordinates will differ from real coordinates when render is scaled
+// and logical renderer size set
+//
+// (https://wiki.libsdl.org/SDL_RenderWindowToLogical)
+func (renderer *Renderer) RenderWindowToLogical(windowX, windowY int) (logicalX, logicalY float32) {
+	_windowX := C.int(windowX)
+	_windowY := C.int(windowY)
+	_logicalX := C.float(0)
+	_logicalY := C.float(0)
+	C.SDL_RenderWindowToLogical(renderer.cptr(), _windowX, _windowY, &_logicalX, &_logicalY)
+	logicalX = float32(logicalX)
+	logicalY = float32(logicalY)
+	return
+}
+
+// RenderLogicalToWindow gets real coordinates of point in window when given logical coordinates of point in renderer.
+// Logical coordinates will differ from real coordinates when render is scaled and logical renderer size set.
+// (https://wiki.libsdl.org/SDL_RenderLogicalToWindow)
+func (renderer *Renderer) RenderLogicalToWindow(logicalX, logicalY float32) (windowX, windowY int) {
+	_logicalX := C.float(logicalX)
+	_logicalY := C.float(logicalY)
+	_windowX := C.int(0)
+	_windowY := C.int(0)
+	C.SDL_RenderLogicalToWindow(renderer.cptr(), _logicalX, _logicalY, &_windowX, &_windowY)
+	windowX = int(windowX)
+	windowY = int(windowY)
+	return
+}
+
+// RenderSetVSync toggles VSync of the given renderer.
+// (https://wiki.libsdl.org/SDL_RenderSetVSync)
+func (renderer *Renderer) RenderSetVSync(vsync bool) (err error) {
+	_vsync := C.int(Btoi(vsync))
+	err = errorFromInt(int(C.SDL_RenderSetVSync(renderer.cptr(), _vsync)))
+	return
 }

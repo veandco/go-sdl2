@@ -93,9 +93,11 @@ typedef struct SDL_SensorEvent {
 #endif
 */
 import "C"
-import "unsafe"
-import "reflect"
-import "sync"
+import (
+	"reflect"
+	"sync"
+	"unsafe"
+)
 
 var (
 	eventFilterCache          EventFilter
@@ -440,13 +442,15 @@ func (e *MouseButtonEvent) GetTimestamp() uint32 {
 // MouseWheelEvent contains mouse wheel event information.
 // (https://wiki.libsdl.org/SDL_MouseWheelEvent)
 type MouseWheelEvent struct {
-	Type      uint32 // MOUSEWHEEL
-	Timestamp uint32 // timestamp of the event
-	WindowID  uint32 // the window with mouse focus, if any
-	Which     uint32 // the mouse instance id, or TOUCH_MOUSEID
-	X         int32  // the amount scrolled horizontally, positive to the right and negative to the left
-	Y         int32  // the amount scrolled vertically, positive away from the user and negative toward the user
-	Direction uint32 // MOUSEWHEEL_NORMAL, MOUSEWHEEL_FLIPPED (>= SDL 2.0.4)
+	Type      uint32  // MOUSEWHEEL
+	Timestamp uint32  // timestamp of the event
+	WindowID  uint32  // the window with mouse focus, if any
+	Which     uint32  // the mouse instance id, or TOUCH_MOUSEID
+	X         int32   // the amount scrolled horizontally, positive to the right and negative to the left
+	Y         int32   // the amount scrolled vertically, positive away from the user and negative toward the user
+	Direction uint32  // MOUSEWHEEL_NORMAL, MOUSEWHEEL_FLIPPED (>= SDL 2.0.4)
+	PreciseX  float32 // The amount scrolled horizontally, positive to the right and negative to the left, with float precision (added in 2.0.18)
+	PreciseY  float32 // The amount scrolled vertically, positive away from the user and negative toward the user, with float precision (added in 2.0.18)
 }
 type cMouseWheelEvent C.SDL_MouseWheelEvent
 
@@ -559,9 +563,9 @@ func (e *JoyButtonEvent) GetTimestamp() uint32 {
 // JoyDeviceAddedEvent contains joystick device event information.
 // (https://wiki.libsdl.org/SDL_JoyDeviceEvent)
 type JoyDeviceAddedEvent struct {
-	Type      uint32 // JOYDEVICEADDED
-	Timestamp uint32 // the timestamp of the event
-	Which     JoystickID  // the joystick device index
+	Type      uint32     // JOYDEVICEADDED
+	Timestamp uint32     // the timestamp of the event
+	Which     JoystickID // the joystick device index
 }
 
 // GetType returns the event type.

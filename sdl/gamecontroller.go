@@ -230,10 +230,43 @@ static float SDL_GameControllerGetSensorDataRate(SDL_GameController *gamecontrol
 }
 
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,18))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GameControllerHasRumble is not supported before SDL 2.0.18")
+#pragma message("SDL_GameControllerHasRumbleTriggers is not supported before SDL 2.0.18")
+#pragma message("SDL_GameControllerGetAppleSFSymbolsNameForButton is not supported before SDL 2.0.18")
+#pragma message("SDL_GameControllerGetAppleSFSymbolsNameForAxis is not supported before SDL 2.0.18")
+#endif
+
+static SDL_bool SDL_GameControllerHasRumble(SDL_GameController *gamecontroller)
+{
+	return SDL_FALSE;
+}
+
+static SDL_bool SDL_GameControllerHasRumbleTriggers(SDL_GameController *gamecontroller)
+{
+	return SDL_FALSE;
+}
+
+static const char* SDL_GameControllerGetAppleSFSymbolsNameForButton(SDL_GameController *gamecontroller, SDL_GameControllerButton button)
+{
+	return NULL;
+}
+
+static const char* SDL_GameControllerGetAppleSFSymbolsNameForAxis(SDL_GameController *gamecontroller, SDL_GameControllerAxis axis)
+{
+	return NULL;
+}
+
+#endif
 */
 import "C"
-import "unsafe"
-import "encoding/binary"
+import (
+	"encoding/binary"
+	"unsafe"
+)
 
 // Types of game controller inputs.
 const (
@@ -537,4 +570,34 @@ func (ctrl *GameController) SendEffect(data []byte) (err error) {
 // (https://wiki.libsdl.org/SDL_GameControllerGetSensorDataRate)
 func (ctrl *GameController) SensorDataRate(typ SensorType) (rate float32) {
 	return float32(C.SDL_GameControllerGetSensorDataRate(ctrl.cptr(), C.SDL_SensorType(typ)))
+}
+
+// HasRumble queries whether a game controller has rumble support.
+// (https://wiki.libsdl.org/SDL_GameControllerHasRumble)
+func (ctrl *GameController) HasRumble() bool {
+	return C.SDL_GameControllerHasRumble(ctrl.cptr()) == C.SDL_TRUE
+}
+
+// HasRumbleTriggers queries whether a game controller has rumble support on triggers.
+// (https://wiki.libsdl.org/SDL_GameControllerHasRumbleTriggers)
+func (ctrl *GameController) HasRumbleTriggers() bool {
+	return C.SDL_GameControllerHasRumbleTriggers(ctrl.cptr()) == C.SDL_TRUE
+}
+
+// GetAppleSFSymbolsNameForButton returns the sfSymbolsName for a given button on a game controller on Apple platforms.
+// (https://wiki.libsdl.org/SDL_GameControllerGetAppleSFSymbolsNameForButton)
+func (ctrl *GameController) GetAppleSFSymbolsNameForButton(button GameControllerButton) (sfSymbolsName string) {
+	_button := C.SDL_GameControllerButton(button)
+	_sfSymbolsName := C.SDL_GameControllerGetAppleSFSymbolsNameForButton(ctrl.cptr(), _button)
+	sfSymbolsName = C.GoString(_sfSymbolsName)
+	return
+}
+
+// GetAppleSFSymbolsNameForAxis returns the sfSymbolsName for a given axis on a game controller on Apple platforms.
+// (https://wiki.libsdl.org/SDL_GameControllerGetAppleSFSymbolsNameForAxis)
+func (ctrl *GameController) SDL_GameControllerGetAppleSFSymbolsNameForAxis(axis GameControllerAxis) (sfSymbolsName string) {
+	_axis := C.SDL_GameControllerAxis(axis)
+	_sfSymbolsName := C.SDL_GameControllerGetAppleSFSymbolsNameForAxis(ctrl.cptr(), _axis)
+	sfSymbolsName = C.GoString(_sfSymbolsName)
+	return
 }

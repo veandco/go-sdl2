@@ -215,6 +215,25 @@ static int SDL_JoystickRumble(SDL_Joystick *joystick, Uint16 low_frequency_rumbl
 }
 
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,18))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_JoystickHasRumble is not supported before SDL 2.0.18")
+#pragma message("SDL_JoystickHasRumbleTriggers is not supported before SDL 2.0.18")
+#endif
+
+static SDL_bool SDL_JoystickHasRumble(SDL_Joystick *joystick)
+{
+	return SDL_FALSE;
+}
+
+static SDL_bool SDL_JoystickHasRumbleTriggers(SDL_Joystick *joystick)
+{
+	return SDL_FALSE;
+}
+
+#endif
 */
 import "C"
 import "unsafe"
@@ -519,4 +538,16 @@ func (joy *Joystick) Close() {
 // (https://wiki.libsdl.org/SDL_JoystickCurrentPowerLevel)
 func (joy *Joystick) CurrentPowerLevel() JoystickPowerLevel {
 	return JoystickPowerLevel(C.SDL_JoystickCurrentPowerLevel(joy.cptr()))
+}
+
+// HasRumble queries whether a game controller has rumble support.
+// (https://wiki.libsdl.org/SDL_JoystickHasRumble)
+func (ctrl *Joystick) HasRumble() bool {
+	return C.SDL_JoystickHasRumble(ctrl.cptr()) == C.SDL_TRUE
+}
+
+// HasRumbleTriggers queries whether a game controller has rumble support on triggers.
+// (https://wiki.libsdl.org/SDL_JoystickHasRumbleTriggers)
+func (ctrl *Joystick) HasRumbleTriggers() bool {
+	return C.SDL_JoystickHasRumbleTriggers(ctrl.cptr()) == C.SDL_TRUE
 }

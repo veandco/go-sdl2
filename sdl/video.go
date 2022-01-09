@@ -203,6 +203,34 @@ static void SDL_SetWindowKeyboardGrab(SDL_Window * window, SDL_bool grabbed)
 }
 
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,18))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GetWindowICCProfile is not supported before SDL 2.0.18")
+#pragma message("SDL_SetWindowMouseRect is not supported before SDL 2.0.18")
+#pragma message("SDL_GetWindowMouseRect is not supported before SDL 2.0.18")
+#endif
+
+static const int SDL_WINDOWEVENT_ICCPROF_CHANGED = 17; // The ICC profile of the window's display has changed.
+static const int SDL_WINDOWEVENT_DISPLAY_CHANGED = 18; // Window has been moved to display data1.
+
+static void* SDLCALL SDL_GetWindowICCProfile(SDL_Window * window, size_t* size)
+{
+	return NULL;
+}
+
+static int SDL_SetWindowMouseRect(SDL_Window * window, const SDL_Rect * rect)
+{
+	return -1;
+}
+
+static const SDL_Rect * SDLCALL SDL_GetWindowMouseRect(SDL_Window * window)
+{
+	return NULL;
+}
+
+#endif
 */
 import "C"
 import "unsafe"
@@ -236,23 +264,25 @@ const (
 // An enumeration of window events.
 // (https://wiki.libsdl.org/SDL_WindowEventID)
 const (
-	WINDOWEVENT_NONE         = C.SDL_WINDOWEVENT_NONE         // (never used)
-	WINDOWEVENT_SHOWN        = C.SDL_WINDOWEVENT_SHOWN        // window has been shown
-	WINDOWEVENT_HIDDEN       = C.SDL_WINDOWEVENT_HIDDEN       // window has been hidden
-	WINDOWEVENT_EXPOSED      = C.SDL_WINDOWEVENT_EXPOSED      // window has been exposed and should be redrawn
-	WINDOWEVENT_MOVED        = C.SDL_WINDOWEVENT_MOVED        // window has been moved to data1, data2
-	WINDOWEVENT_RESIZED      = C.SDL_WINDOWEVENT_RESIZED      // window has been resized to data1xdata2; this event is always preceded by WINDOWEVENT_SIZE_CHANGED
-	WINDOWEVENT_SIZE_CHANGED = C.SDL_WINDOWEVENT_SIZE_CHANGED // window size has changed, either as a result of an API call or through the system or user changing the window size; this event is followed by WINDOWEVENT_RESIZED if the size was changed by an external event, i.e. the user or the window manager
-	WINDOWEVENT_MINIMIZED    = C.SDL_WINDOWEVENT_MINIMIZED    // window has been minimized
-	WINDOWEVENT_MAXIMIZED    = C.SDL_WINDOWEVENT_MAXIMIZED    // window has been maximized
-	WINDOWEVENT_RESTORED     = C.SDL_WINDOWEVENT_RESTORED     // window has been restored to normal size and position
-	WINDOWEVENT_ENTER        = C.SDL_WINDOWEVENT_ENTER        // window has gained mouse focus
-	WINDOWEVENT_LEAVE        = C.SDL_WINDOWEVENT_LEAVE        // window has lost mouse focus
-	WINDOWEVENT_FOCUS_GAINED = C.SDL_WINDOWEVENT_FOCUS_GAINED // window has gained keyboard focus
-	WINDOWEVENT_FOCUS_LOST   = C.SDL_WINDOWEVENT_FOCUS_LOST   // window has lost keyboard focus
-	WINDOWEVENT_CLOSE        = C.SDL_WINDOWEVENT_CLOSE        // the window manager requests that the window be closed
-	WINDOWEVENT_TAKE_FOCUS   = C.SDL_WINDOWEVENT_TAKE_FOCUS   // window is being offered a focus (should SDL_SetWindowInputFocus() on itself or a subwindow, or ignore) (>= SDL 2.0.5)
-	WINDOWEVENT_HIT_TEST     = C.SDL_WINDOWEVENT_HIT_TEST     // window had a hit test that wasn't SDL_HITTEST_NORMAL (>= SDL 2.0.5)
+	WINDOWEVENT_NONE            = C.SDL_WINDOWEVENT_NONE            // (never used)
+	WINDOWEVENT_SHOWN           = C.SDL_WINDOWEVENT_SHOWN           // window has been shown
+	WINDOWEVENT_HIDDEN          = C.SDL_WINDOWEVENT_HIDDEN          // window has been hidden
+	WINDOWEVENT_EXPOSED         = C.SDL_WINDOWEVENT_EXPOSED         // window has been exposed and should be redrawn
+	WINDOWEVENT_MOVED           = C.SDL_WINDOWEVENT_MOVED           // window has been moved to data1, data2
+	WINDOWEVENT_RESIZED         = C.SDL_WINDOWEVENT_RESIZED         // window has been resized to data1xdata2; this event is always preceded by WINDOWEVENT_SIZE_CHANGED
+	WINDOWEVENT_SIZE_CHANGED    = C.SDL_WINDOWEVENT_SIZE_CHANGED    // window size has changed, either as a result of an API call or through the system or user changing the window size; this event is followed by WINDOWEVENT_RESIZED if the size was changed by an external event, i.e. the user or the window manager
+	WINDOWEVENT_MINIMIZED       = C.SDL_WINDOWEVENT_MINIMIZED       // window has been minimized
+	WINDOWEVENT_MAXIMIZED       = C.SDL_WINDOWEVENT_MAXIMIZED       // window has been maximized
+	WINDOWEVENT_RESTORED        = C.SDL_WINDOWEVENT_RESTORED        // window has been restored to normal size and position
+	WINDOWEVENT_ENTER           = C.SDL_WINDOWEVENT_ENTER           // window has gained mouse focus
+	WINDOWEVENT_LEAVE           = C.SDL_WINDOWEVENT_LEAVE           // window has lost mouse focus
+	WINDOWEVENT_FOCUS_GAINED    = C.SDL_WINDOWEVENT_FOCUS_GAINED    // window has gained keyboard focus
+	WINDOWEVENT_FOCUS_LOST      = C.SDL_WINDOWEVENT_FOCUS_LOST      // window has lost keyboard focus
+	WINDOWEVENT_CLOSE           = C.SDL_WINDOWEVENT_CLOSE           // the window manager requests that the window be closed
+	WINDOWEVENT_TAKE_FOCUS      = C.SDL_WINDOWEVENT_TAKE_FOCUS      // window is being offered a focus (should SDL_SetWindowInputFocus() on itself or a subwindow, or ignore) (>= SDL 2.0.5)
+	WINDOWEVENT_HIT_TEST        = C.SDL_WINDOWEVENT_HIT_TEST        // window had a hit test that wasn't SDL_HITTEST_NORMAL (>= SDL 2.0.5)
+	WINDOWEVENT_ICCPROF_CHANGED = C.SDL_WINDOWEVENT_ICCPROF_CHANGED // the ICC profile of the window's display has changed
+	WINDOWEVENT_DISPLAY_CHANGED = C.SDL_WINDOWEVENT_DISPLAY_CHANGED // window has been moved to display data1
 )
 
 // Window position flags.
@@ -331,9 +361,9 @@ const (
 // Window flash operation
 //
 const (
-    FLASH_CANCEL FlashOperation = C.SDL_FLASH_CANCEL        // Cancel any window flash state
-    FLASH_BRIEFLY               = C.SDL_FLASH_BRIEFLY       // Flash the window briefly to get attention
-    FLASH_UNTIL_FOCUSED         = C.SDL_FLASH_UNTIL_FOCUSED // Flash the window until it gets focus
+	FLASH_CANCEL        FlashOperation = C.SDL_FLASH_CANCEL        // Cancel any window flash state
+	FLASH_BRIEFLY                      = C.SDL_FLASH_BRIEFLY       // Flash the window briefly to get attention
+	FLASH_UNTIL_FOCUSED                = C.SDL_FLASH_UNTIL_FOCUSED // Flash the window until it gets focus
 )
 
 type FlashOperation C.SDL_FlashOperation
@@ -1042,4 +1072,38 @@ func (window *Window) SetAlwaysOnTop(onTop bool) {
 // (https://wiki.libsdl.org/SDL_GetWindowKeyboardGrab)
 func (window *Window) SetKeyboardGrab(grabbed bool) {
 	C.SDL_SetWindowKeyboardGrab(window.cptr(), C.SDL_bool(Btoi(grabbed)))
+}
+
+// GetICCProfile gets the raw ICC profile data for the screen the window is currently on.
+//
+// Data returned should be freed with SDL_free.
+//
+// (https://wiki.libsdl.org/SDL_GetWindowICCProfile)
+func (window *Window) GetICCProfile() (iccProfile unsafe.Pointer, size uintptr, err error) {
+	_size := (*C.ulong)(unsafe.Pointer(&size))
+	iccProfile = C.SDL_GetWindowICCProfile(window.cptr(), _size)
+	if iccProfile == nil {
+		err = GetError()
+	}
+	return
+}
+
+// SetMouseRect confines the cursor to the specified area of a window.
+//
+// Note that this does NOT grab the cursor, it only defines the area a cursor
+// is restricted to when the window has mouse focus.
+//
+// (https://wiki.libsdl.org/SDL_SetWindowMouseRect)
+func (window *Window) SetMouseRect(rect Rect) (err error) {
+	_rect := (*C.SDL_Rect)(unsafe.Pointer(&rect))
+	err = errorFromInt(int(C.SDL_SetWindowMouseRect(window.cptr(), _rect)))
+	return
+}
+
+// GetMouseRect gets the mouse confinement rectangle of a window.
+// (https://wiki.libsdl.org/SDL_GetWindowMouseRect)
+func (window *Window) GetMouseRect() (rect Rect) {
+	_rect := C.SDL_GetWindowMouseRect(window.cptr())
+	rect = *((*Rect)(unsafe.Pointer(_rect)))
+	return
 }
