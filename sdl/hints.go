@@ -4,6 +4,10 @@ package sdl
 #include "sdl_wrapper.h"
 #include "hints.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,18))
+#define SDL_HINT_APP_NAME ""
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,16))
 #define SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT ""
 #define SDL_HINT_AUDIO_INCLUDE_MONITORS ""
@@ -37,6 +41,7 @@ package sdl
 #if !(SDL_VERSION_ATLEAST(2,0,9))
 #define SDL_HINT_MOUSE_DOUBLE_CLICK_TIME ""
 #define SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS ""
+#define SDL_HINT_JOYSTICK_HIDAPI_STEAM ""
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,8))
@@ -95,11 +100,21 @@ package sdl
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,10))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH has been removed in SDL 2.0.10")
+#endif
+
 #define SDL_HINT_RENDER_BATCHING ""
 #define SDL_HINT_EVENT_LOGGING ""
 #define SDL_HINT_GAMECONTROLLERCONFIG_FILE ""
 #define SDL_HINT_ANDROID_BLOCK_ON_PAUSE ""
 #define SDL_HINT_MOUSE_TOUCH_EVENTS ""
+
+#else
+
+#define SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH "" // For compatibility
+
 #endif
 
 #if SDL_VERSION_ATLEAST(2,0,16)
@@ -112,13 +127,13 @@ package sdl
 
 #endif
 
-#if SDL_VERSION_ATLEAST(2,0,10)
+#if !SDL_VERSION_ATLEAST(2,0,18)
 
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH has been removed in SDL 2.0.10")
-#endif
-
-#define SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH "" // For compatibility
+#define SDL_HINT_IME_SHOW_UI ""
+#define SDL_HINT_JOYSTICK_DEVICE ""
+#define SDL_HINT_LINUX_JOYSTICK_CLASSIC ""
+#define SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME ""
+#define SDL_HINT_VIDEO_EGL_ALLOW_TRANSPARENCY ""
 
 #endif
 */
@@ -210,6 +225,13 @@ const (
 	HINT_EMSCRIPTEN_ASYNCIFY                      = C.SDL_HINT_EMSCRIPTEN_ASYNCIFY                      // Disable giving back control to the browser automatically when running with asyncify.
 	HINT_AUDIO_INCLUDE_MONITORS                   = C.SDL_HINT_AUDIO_INCLUDE_MONITORS                   // Control whether PulseAudio recording should include monitor devices
 	HINT_AUDIO_DEVICE_STREAM_ROLE                 = C.SDL_HINT_AUDIO_DEVICE_STREAM_ROLE                 // Describe the role of your application for audio control panels
+	HINT_APP_NAME                                 = C.SDL_HINT_APP_NAME                                 // Lets you specify the application name sent to the OS when required
+	HINT_VIDEO_EGL_ALLOW_TRANSPARENCY             = C.SDL_HINT_VIDEO_EGL_ALLOW_TRANSPARENCY             // A variable controlling whether the EGL window is allowed to be composited as transparent, rather than opaque
+	HINT_IME_SHOW_UI                              = C.SDL_HINT_IME_SHOW_UI                              // A variable to control whether certain IMEs should show native UI components (such as the Candidate List) instead of suppressing them
+	HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME        = C.SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME        // This hint lets you specify the "activity name" sent to the OS when SDL_DisableScreenSaver() is used (or the screensaver is automatically disabled)
+	HINT_LINUX_JOYSTICK_CLASSIC                   = C.SDL_HINT_LINUX_JOYSTICK_CLASSIC                   // A variable controlling whether to use the classic /dev/input/js* joystick interface or the newer /dev/input/event* joystick interface on Linux
+	HINT_JOYSTICK_DEVICE                          = C.SDL_HINT_JOYSTICK_DEVICE                          // This variable is currently only used by the Linux joystick driver
+	HINT_JOYSTICK_HIDAPI_STEAM                    = C.SDL_HINT_JOYSTICK_HIDAPI_STEAM                    // A variable controlling whether the HIDAPI driver for Steam Controllers should be used
 )
 
 // An enumeration of hint priorities.

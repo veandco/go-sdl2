@@ -114,6 +114,19 @@ static int SDL_SoftStretchLinear(SDL_Surface * src, const SDL_Rect * srcrect, SD
 }
 
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,18))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_PremultiplyAlpha is not supported before SDL 2.0.18")
+#endif
+
+static int SDL_PremultiplyAlpha(int width, int height, Uint32 src_format, const void * src, int src_pitch, Uint32 dst_format, void * dst, int dst_pitch)
+{
+	return -1;
+}
+
+#endif
 */
 import "C"
 import (
@@ -814,4 +827,24 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 // (https://wiki.libsdl.org/SDL_SoftStretchLinear)
 func (surface *Surface) SoftStretchLinear(srcRect *Rect, dst *Surface, dstRect *Rect) (err error) {
 	return errorFromInt(int(C.SDL_SoftStretchLinear(surface.cptr(), srcRect.cptr(), dst.cptr(), dstRect.cptr())))
+}
+
+// PremultiplyAlpha premultiplies the alpha on a block of pixels.
+//
+// This is safe to use with src == dst, but not for other overlapping areas.
+//
+// This function is currently only implemented for SDL_PIXELFORMAT_ARGB8888.
+//
+// (https://wiki.libsdl.org/SDL_PremultiplyAlpha)
+func PremultiplyAlpha(width, height int, srcFormat uint32, src []byte, srcPitch int, dstFormat uint32, dst []byte, dstPitch int) (err error) {
+	_width := C.int(width)
+	_height := C.int(height)
+	_srcFormat := C.Uint32(srcFormat)
+	_src := unsafe.Pointer(&src[0])
+	_srcPitch := C.int(srcPitch)
+	_dstFormat := C.Uint32(dstFormat)
+	_dst := unsafe.Pointer(&dst[0])
+	_dstPitch := C.int(dstPitch)
+	err = errorFromInt(int(C.SDL_PremultiplyAlpha(_width, _height, _srcFormat, _src, _srcPitch, _dstFormat, _dst, _dstPitch)))
+	return
 }
