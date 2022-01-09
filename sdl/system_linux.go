@@ -31,17 +31,25 @@ static int SDL_LinuxSetThreadPriorityAndPolicy(Sint64 threadID, int sdlPriority,
 */
 import "C"
 
-// https://wiki.libsdl.org/SDL_LinuxSetThreadPriorityAndPolicy
+// LinuxSetThreadPriority sets the UNIX nice value for a thread.
+//
+// This uses setpriority() if possible, and RealtimeKit if available.
+//
+// (https://wiki.libsdl.org/SDL_LinuxSetThreadPriority)
 func LinuxSetThreadPriority(threadID int64, priority int) (err error) {
 	_threadID := C.Sint64(threadID)
 	_priority := C.int(priority)
-	return errorFromInt(C.SDL_LinuxSetThreadPriority(_threadID, _priority))
+	return errorFromInt(int(C.SDL_LinuxSetThreadPriority(_threadID, _priority)))
 }
 
-// https://wiki.libsdl.org/SDL_LinuxSetThreadPriorityAndPolicy
-func LinuxSetThreadPriorityAndPolicy(threadID int64, sdlPriority, schedPolicy int) bool {
+// LinuxSetThreadPriority sets the priority (not nice level) and scheduling policy for a thread.
+//
+// This uses setpriority() if possible, and RealtimeKit if available.
+//
+// (https://wiki.libsdl.org/SDL_LinuxSetThreadPriorityAndPolicy)
+func LinuxSetThreadPriorityAndPolicy(threadID int64, sdlPriority, schedPolicy int) (err error) {
 	_threadID := C.Sint64(threadID)
 	_sdlPriority := C.int(sdlPriority)
 	_schedPolicy := C.int(schedPolicy)
-	return errorFromInt(C.SDL_LinuxSetThreadPriority(_threadID, _sdlPriority, _schedPolicy))
+	return errorFromInt(int(C.SDL_LinuxSetThreadPriorityAndPolicy(_threadID, _sdlPriority, _schedPolicy)))
 }
