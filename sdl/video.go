@@ -222,8 +222,8 @@ static void SDL_SetWindowKeyboardGrab(SDL_Window * window, SDL_bool grabbed)
 #pragma message("SDL_GetWindowMouseRect is not supported before SDL 2.0.18")
 #endif
 
-static const int SDL_WINDOWEVENT_ICCPROF_CHANGED = 17; // The ICC profile of the window's display has changed.
-static const int SDL_WINDOWEVENT_DISPLAY_CHANGED = 18; // Window has been moved to display data1.
+#define SDL_WINDOWEVENT_ICCPROF_CHANGED (17) // The ICC profile of the window's display has changed.
+#define SDL_WINDOWEVENT_DISPLAY_CHANGED (18) // Window has been moved to display data1.
 
 static void* SDLCALL SDL_GetWindowICCProfile(SDL_Window * window, size_t* size)
 {
