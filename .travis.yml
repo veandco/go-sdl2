@@ -35,9 +35,9 @@ install:
   - make
   - sudo make install
   - cd ..
-  - wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.15.tar.gz
-  - tar xf SDL2_ttf-2.0.15.tar.gz
-  - cd SDL2_ttf-2.0.15
+  - wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.18.tar.gz
+  - tar xf SDL2_ttf-2.0.18.tar.gz
+  - cd SDL2_ttf-2.0.18
   - ./configure
   - make
   - sudo make install
