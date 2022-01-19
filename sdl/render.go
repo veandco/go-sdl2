@@ -236,7 +236,7 @@ static int SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, cons
 	return -1;
 }
 
-static int SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const int *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices)
+static int SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_Color *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices)
 {
 	return -1;
 }
@@ -264,6 +264,18 @@ static int SDL_RenderSetVSync(SDL_Renderer* renderer, int vsync)
 	return -1;
 }
 
+#endif
+
+#if SDL_COMPILEDVERSION == SDL_VERSIONNUM(2,0,18)
+static inline int RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_Color *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices)
+{
+	return SDL_RenderGeometryRaw(renderer, texture, xy, xy_stride, (int*) color, color_stride, uv, uv_stride, num_vertices, indices, num_indices, size_indices);
+}
+#else
+static inline int RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_Color *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices)
+{
+	return SDL_RenderGeometryRaw(renderer, texture, xy, xy_stride, color, color_stride, uv, uv_stride, num_vertices, indices, num_indices, size_indices);
+}
 #endif
 
 // WORKAROUND: This prevents audio from seemingly going corrupt when drawing outside the screen bounding box?
@@ -1177,7 +1189,7 @@ func (renderer *Renderer) RenderGeometry(texture *Texture, vertices []Vertex, in
 // indices into the vertex arrays Color and alpha modulation is done per vertex
 // (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).
 // (https://wiki.libsdl.org/SDL_RenderGeometryRaw)
-func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy []float32, xy_stride int, color []int32, color_stride int, uv []float32, uv_stride int, num_vertices int, indices interface{}) (err error) {
+func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy []float32, xy_stride int, color []Color, color_stride int, uv []float32, uv_stride int, num_vertices int, indices interface{}) (err error) {
 	size_indices := 0
 	_indices := unsafe.Pointer(nil)
 	num_indices := 0
@@ -1212,7 +1224,7 @@ func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy []float32, xy_s
 	_texture := texture.cptr()
 	_xy := (*C.float)(&xy[0])
 	_xy_stride := C.int(xy_stride)
-	_color := (*C.int)(&color[0])
+	_color := (*C.SDL_Color)(unsafe.Pointer(&color[0]))
 	_color_stride := C.int(color_stride)
 	_uv := (*C.float)(&uv[0])
 	_uv_stride := C.int(uv_stride)
@@ -1220,7 +1232,7 @@ func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy []float32, xy_s
 	_num_indices := C.int(num_indices)
 	_size_indices := C.int(size_indices)
 
-	err = errorFromInt(int(C.SDL_RenderGeometryRaw(renderer.cptr(), _texture, _xy, _xy_stride, _color, _color_stride, _uv, _uv_stride, _num_vertices, _indices, _num_indices, _size_indices)))
+	err = errorFromInt(int(C.RenderGeometryRaw(renderer.cptr(), _texture, _xy, _xy_stride, _color, _color_stride, _uv, _uv_stride, _num_vertices, _indices, _num_indices, _size_indices)))
 	return
 }
 
