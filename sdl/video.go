@@ -1080,7 +1080,7 @@ func (window *Window) SetKeyboardGrab(grabbed bool) {
 //
 // (https://wiki.libsdl.org/SDL_GetWindowICCProfile)
 func (window *Window) GetICCProfile() (iccProfile unsafe.Pointer, size uintptr, err error) {
-	_size := (*C.ulong)(unsafe.Pointer(&size))
+	_size := (*C.size_t)(unsafe.Pointer(&size))
 	iccProfile = C.SDL_GetWindowICCProfile(window.cptr(), _size)
 	if iccProfile == nil {
 		err = GetError()
