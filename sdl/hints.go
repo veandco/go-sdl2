@@ -4,6 +4,10 @@ package sdl
 #include "sdl_wrapper.h"
 #include "hints.h"
 
+#if !(SDL_VERSION_ATLEAST(2,0,20))
+#define SDL_HINT_RENDER_LINE_METHOD ""
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,18))
 #define SDL_HINT_APP_NAME ""
 #endif
@@ -232,6 +236,7 @@ const (
 	HINT_LINUX_JOYSTICK_CLASSIC                   = C.SDL_HINT_LINUX_JOYSTICK_CLASSIC                   // A variable controlling whether to use the classic /dev/input/js* joystick interface or the newer /dev/input/event* joystick interface on Linux
 	HINT_JOYSTICK_DEVICE                          = C.SDL_HINT_JOYSTICK_DEVICE                          // This variable is currently only used by the Linux joystick driver
 	HINT_JOYSTICK_HIDAPI_STEAM                    = C.SDL_HINT_JOYSTICK_HIDAPI_STEAM                    // A variable controlling whether the HIDAPI driver for Steam Controllers should be used
+	HINT_RENDER_LINE_METHOD                       = C.SDL_HINT_RENDER_LINE_METHOD                       // A variable controlling how the 2D render API renders lines
 )
 
 // An enumeration of hint priorities.
