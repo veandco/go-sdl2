@@ -1,11 +1,25 @@
 // Package ttf is a TrueType font rendering library that is used with the SDL library, and almost as portable. It depends on freetype2 to handle the TrueType font data. It allows a programmer to use multiple TrueType fonts without having to code a font rendering routine themselves. With the power of outline fonts and antialiasing, high quality text output can be obtained without much effort.
 package ttf
 
-//#include <stdlib.h>
-//#include "sdl_ttf_wrapper.h"
-//void Do_TTF_SetError(const char *str) {
-//    TTF_SetError("%s", str);
-//}
+/*
+#include <stdlib.h>
+#include "sdl_ttf_wrapper.h"
+void Do_TTF_SetError(const char *str) {
+    TTF_SetError("%s", str);
+}
+
+#if SDL_TTF_VERSION_ATLEAST(2,0,18)
+static inline void ByteSwappedUNICODE(int swapped)
+{
+	TTF_ByteSwappedUNICODE(swapped ? SDL_TRUE : SDL_FALSE);
+}
+#else
+static inline void ByteSwappedUNICODE(int swapped)
+{
+	TTF_ByteSwappedUNICODE(swapped);
+}
+#endif
+*/
 import "C"
 import (
 	"errors"
@@ -82,7 +96,7 @@ func ByteSwappedUnicode(swap bool) {
 	if swap {
 		val = 1
 	}
-	C.TTF_ByteSwappedUNICODE(C.int(val))
+	C.ByteSwappedUNICODE(C.int(val))
 }
 
 // OpenFont loads file for use as a font, at the specified size. This is actually OpenFontIndex(file, size, 0). This can load TTF and FON files.
