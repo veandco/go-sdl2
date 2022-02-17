@@ -8,7 +8,7 @@ void Do_TTF_SetError(const char *str) {
     TTF_SetError("%s", str);
 }
 
-#if SDL_TTF_VERSION_ATLEAST(2,0,18)
+#if SDL_TTF_MAJOR_VERSION == 2 && SDL_TTF_MINOR_VERSION == 0 && SDL_TTF_PATCHLEVEL >= 18
 static inline void ByteSwappedUNICODE(int swapped)
 {
 	TTF_ByteSwappedUNICODE(swapped ? SDL_TRUE : SDL_FALSE);
