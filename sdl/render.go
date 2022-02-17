@@ -1263,8 +1263,8 @@ func (renderer *Renderer) RenderWindowToLogical(windowX, windowY int) (logicalX,
 	_logicalX := C.float(0)
 	_logicalY := C.float(0)
 	C.SDL_RenderWindowToLogical(renderer.cptr(), _windowX, _windowY, &_logicalX, &_logicalY)
-	logicalX = float32(logicalX)
-	logicalY = float32(logicalY)
+	logicalX = float32(_logicalX)
+	logicalY = float32(_logicalY)
 	return
 }
 
