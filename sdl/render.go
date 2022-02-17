@@ -1277,8 +1277,8 @@ func (renderer *Renderer) RenderLogicalToWindow(logicalX, logicalY float32) (win
 	_windowX := C.int(0)
 	_windowY := C.int(0)
 	C.SDL_RenderLogicalToWindow(renderer.cptr(), _logicalX, _logicalY, &_windowX, &_windowY)
-	windowX = int(windowX)
-	windowY = int(windowY)
+	windowX = int(_windowX)
+	windowY = int(_windowY)
 	return
 }
 
