@@ -4,9 +4,22 @@ package sdl
 import "C"
 
 // GetTicks returns the number of milliseconds since the SDL library initialization.
+//
+// Deprecated: This function is not recommended as of SDL 2.0.18; use GetTicks64()
+// instead, where the value doesn't wrap every ~49 days. There are places in
+// SDL where we provide a 32-bit timestamp that can not change without
+// breaking binary compatibility, though, so this function isn't officially
+// deprecated.
+//
 // (https://wiki.libsdl.org/SDL_GetTicks)
 func GetTicks() uint32 {
 	return uint32(C.SDL_GetTicks())
+}
+
+// GetTicks64 returns the number of milliseconds since the SDL library initialization.
+// (https://wiki.libsdl.org/SDL_GetTicks64)
+func GetTicks64() uint64 {
+	return uint64(C.SDL_GetTicks64())
 }
 
 // GetPerformanceCounter returns the current value of the high resolution counter.
