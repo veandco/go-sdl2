@@ -1157,7 +1157,7 @@ func (renderer *Renderer) RenderGeometry(texture *Texture, vertices []Vertex, in
 // indices into the vertex arrays Color and alpha modulation is done per vertex
 // (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).
 // (https://wiki.libsdl.org/SDL_RenderGeometryRaw)
-func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy []float32, xy_stride int, color []Color, color_stride int, uv []float32, uv_stride int, num_vertices int, indices interface{}) (err error) {
+func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy *float32, xy_stride int, color *Color, color_stride int, uv *float32, uv_stride int, num_vertices int, indices interface{}) (err error) {
 	size_indices := 0
 	_indices := unsafe.Pointer(nil)
 	num_indices := 0
@@ -1190,13 +1190,13 @@ func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy []float32, xy_s
 	}
 
 	_texture := texture.cptr()
-	_xy := (*C.float)(&xy[0])
+	_xy := (*C.float)(xy)
 	_xy_stride := C.int(xy_stride)
-	_color := (*C.SDL_Color)(unsafe.Pointer(&color[0]))
+	_color := (*C.SDL_Color)(unsafe.Pointer(color))
 	_color_stride := C.int(color_stride)
-	_uv := (*C.float)(&uv[0])
+	_uv := (*C.float)(uv)
 	_uv_stride := C.int(uv_stride)
-	_num_vertices := C.int(len(xy))
+	_num_vertices := C.int(num_vertices)
 	_num_indices := C.int(num_indices)
 	_size_indices := C.int(size_indices)
 
