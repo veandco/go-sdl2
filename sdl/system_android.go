@@ -55,6 +55,9 @@ static int SDL_AndroidShowToast(const char* message, int duration, int gravity, 
 {
 	return -1;
 }
+
+#endif
+
 */
 import "C"
 import "unsafe"
