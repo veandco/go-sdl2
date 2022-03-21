@@ -1,4 +1,5 @@
 // +build !android
+
 package sdl
 
 /*
