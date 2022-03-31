@@ -653,7 +653,7 @@ func (surface *Surface) At(x, y int) color.Color {
 			return color.RGBA{pix[i], pix[i+3], pix[i+2], pix[i+1]}
 	*/
 	case PIXELFORMAT_RGB888:
-		return color.RGBA{pix[i], pix[i+1], pix[i+2], 0xff}
+		return color.RGBA{pix[i+2], pix[i+1], pix[i], 0xff}
 	default:
 		panic("Not implemented yet")
 	}
