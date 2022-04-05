@@ -645,18 +645,8 @@ func (surface *Surface) Bounds() image.Rectangle {
 func (surface *Surface) At(x, y int) color.Color {
 	pix := surface.Pixels()
 	i := int32(y)*surface.Pitch + int32(x)*int32(surface.Format.BytesPerPixel)
-	switch surface.Format.Format {
-	/*
-		case PIXELFORMAT_ARGB8888:
-			return color.RGBA{pix[i+3], pix[i], pix[i+1], pix[i+2]}
-		case PIXELFORMAT_ABGR8888:
-			return color.RGBA{pix[i], pix[i+3], pix[i+2], pix[i+1]}
-	*/
-	case PIXELFORMAT_RGB888:
-		return color.RGBA{pix[i], pix[i+1], pix[i+2], 0xff}
-	default:
-		panic("Not implemented yet")
-	}
+	r, g, b, a := GetRGBA(*((*uint32)(unsafe.Pointer(&pix[i]))), surface.Format)
+	return color.RGBA{r, g, b, a}
 }
 
 // Set the color of the pixel at (x, y) using this surface's color model to
