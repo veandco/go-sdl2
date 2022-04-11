@@ -1144,9 +1144,10 @@ func (renderer *Renderer) RenderGeometry(texture *Texture, vertices []Vertex, in
 	_texture := texture.cptr()
 	_vertices := (*C.SDL_Vertex)(unsafe.Pointer(&vertices[0]))
 	_num_vertices := C.int(len(vertices))
-	_indices := (*C.int)(unsafe.Pointer(&indices[0]))
+	var _indices *C.int
 	_num_indices := C.int(0)
 	if indices != nil {
+		_indices = (*C.int)(unsafe.Pointer(&indices[0]))
 		_num_indices = C.int(len(indices))
 	}
 	err = errorFromInt(int(C.SDL_RenderGeometry(renderer.cptr(), _texture, _vertices, _num_vertices, _indices, _num_indices)))
