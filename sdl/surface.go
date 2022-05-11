@@ -797,7 +797,7 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 		}
 		*buf = b<<11 | g<<6 | r<<1 | a
 	case PIXELFORMAT_RGBA8888:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(RGBA8888)
 		pix[i+3] = col.R
 		pix[i+2] = col.G
 		pix[i+1] = col.B
