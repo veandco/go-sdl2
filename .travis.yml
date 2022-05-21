@@ -43,4 +43,5 @@ install:
   - sudo make install
 
 script:
+  - go generate ../sdl
   - go build ../{sdl,gfx,img,mix,ttf}
