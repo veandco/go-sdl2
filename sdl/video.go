@@ -605,8 +605,8 @@ func (window *Window) GetDisplayMode() (mode DisplayMode, err error) {
 
 // GetPixelFormat returns the pixel format associated with the window.
 // (https://wiki.libsdl.org/SDL_GetWindowPixelFormat)
-func (window *Window) GetPixelFormat() (uint32, error) {
-	f := (uint32)(C.SDL_GetWindowPixelFormat(window.cptr()))
+func (window *Window) GetPixelFormat() (PixelFormatConstant, error) {
+	f := (PixelFormatConstant)(C.SDL_GetWindowPixelFormat(window.cptr()))
 	if f == PIXELFORMAT_UNKNOWN {
 		return f, GetError()
 	}
