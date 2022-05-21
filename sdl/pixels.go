@@ -382,6 +382,8 @@ var (
 	RGB555Model   color.Model = color.ModelFunc(rgb555Model)
 	BGR565Model   color.Model = color.ModelFunc(bgr565Model)
 	BGR555Model   color.Model = color.ModelFunc(bgr555Model)
+	RGB888Model   color.Model = color.ModelFunc(rgb888Model)
+	BGR888Model   color.Model = color.ModelFunc(bgr888Model)
 	ARGB4444Model color.Model = color.ModelFunc(argb4444Model)
 	ABGR4444Model color.Model = color.ModelFunc(abgr4444Model)
 	RGBA4444Model color.Model = color.ModelFunc(rgba4444Model)
@@ -392,6 +394,8 @@ var (
 	BGRA5551Model color.Model = color.ModelFunc(bgra5551Model)
 	RGBA8888Model color.Model = color.ModelFunc(rgba8888Model)
 	BGRA8888Model color.Model = color.ModelFunc(bgra8888Model)
+	ARGB8888Model color.Model = color.ModelFunc(argb8888Model)
+	ABGR8888Model color.Model = color.ModelFunc(abgr8888Model)
 )
 
 func rgb444Model(c color.Color) color.Color {
@@ -495,6 +499,46 @@ func bgr555Model(c color.Color) color.Color {
 	}
 	r, g, b, _ := c.RGBA()
 	return BGR555{uint8(b >> 11), uint8(g >> 11), uint8(r >> 11)}
+}
+
+type RGB888 struct {
+	R, G, B byte
+}
+
+func (c RGB888) RGBA() (r, g, b, a uint32) {
+	r = uint32(c.R)
+	g = uint32(c.G)
+	b = uint32(c.B)
+	a = 255
+	return
+}
+
+func rgb888Model(c color.Color) color.Color {
+	if _, ok := c.(color.RGBA); ok {
+		return c
+	}
+	r, g, b, _ := c.RGBA()
+	return RGB888{uint8(r), uint8(g), uint8(b)}
+}
+
+type BGR888 struct {
+	B, G, R byte
+}
+
+func (c BGR888) RGBA() (r, g, b, a uint32) {
+	b = uint32(c.B)
+	g = uint32(c.G)
+	r = uint32(c.R)
+	a = 255
+	return
+}
+
+func bgr888Model(c color.Color) color.Color {
+	if _, ok := c.(color.RGBA); ok {
+		return c
+	}
+	r, g, b, _ := c.RGBA()
+	return BGR888{uint8(b), uint8(g), uint8(r)}
 }
 
 type ARGB4444 struct {
@@ -727,4 +771,44 @@ func bgra8888Model(c color.Color) color.Color {
 	}
 	r, g, b, a := c.RGBA()
 	return BGRA8888{uint8(b), uint8(g), uint8(r), uint8(a)}
+}
+
+type ARGB8888 struct {
+	A, R, G, B byte
+}
+
+func (c ARGB8888) RGBA() (r, g, b, a uint32) {
+	a = uint32(c.A)
+	r = uint32(c.R)
+	g = uint32(c.G)
+	b = uint32(c.B)
+	return
+}
+
+func argb8888Model(c color.Color) color.Color {
+	if _, ok := c.(color.RGBA); ok {
+		return c
+	}
+	r, g, b, a := c.RGBA()
+	return ARGB8888{uint8(a), uint8(r), uint8(g), uint8(b)}
+}
+
+type ABGR8888 struct {
+	A, B, G, R byte
+}
+
+func (c ABGR8888) RGBA() (r, g, b, a uint32) {
+	a = uint32(c.A)
+	r = uint32(c.R)
+	g = uint32(c.G)
+	b = uint32(c.B)
+	return
+}
+
+func abgr8888Model(c color.Color) color.Color {
+	if _, ok := c.(color.RGBA); ok {
+		return c
+	}
+	r, g, b, a := c.RGBA()
+	return ABGR8888{uint8(a), uint8(b), uint8(g), uint8(r)}
 }

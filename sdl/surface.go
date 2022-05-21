@@ -594,10 +594,10 @@ func (surface *Surface) Duplicate() (newSurface *Surface, err error) {
 // ColorModel returns the color model used by this Surface.
 func (surface *Surface) ColorModel() color.Model {
 	switch surface.Format.Format {
-	case PIXELFORMAT_ARGB8888, PIXELFORMAT_ABGR8888:
-		return color.RGBAModel
-	case PIXELFORMAT_RGB888:
-		return color.RGBAModel
+	case PIXELFORMAT_ARGB8888:
+		return ARGB8888Model
+	case PIXELFORMAT_ABGR8888:
+		return ABGR8888Model
 	case PIXELFORMAT_RGB444:
 		return RGB444Model
 	case PIXELFORMAT_RGB332:
@@ -610,6 +610,10 @@ func (surface *Surface) ColorModel() color.Model {
 		return BGR555Model
 	case PIXELFORMAT_BGR565:
 		return BGR565Model
+	case PIXELFORMAT_RGB888:
+		return RGB888Model
+	case PIXELFORMAT_BGR888:
+		return BGR888Model
 	case PIXELFORMAT_ARGB4444:
 		return ARGB4444Model
 	case PIXELFORMAT_ABGR4444:
@@ -657,27 +661,27 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 	i := int32(y)*surface.Pitch + int32(x)*int32(surface.Format.BytesPerPixel)
 	switch surface.Format.Format {
 	case PIXELFORMAT_ARGB8888:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
-		pix[i+0] = col.B
-		pix[i+1] = col.G
-		pix[i+2] = col.R
+		col := surface.ColorModel().Convert(c).(ARGB8888)
 		pix[i+3] = col.A
+		pix[i+2] = col.R
+		pix[i+1] = col.G
+		pix[i+0] = col.B
 	case PIXELFORMAT_ABGR8888:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
-		pix[i+3] = col.R
-		pix[i+2] = col.G
-		pix[i+1] = col.B
-		pix[i+0] = col.A
+		col := surface.ColorModel().Convert(c).(ABGR8888)
+		pix[i+3] = col.A
+		pix[i+2] = col.B
+		pix[i+1] = col.G
+		pix[i+0] = col.R
 	case PIXELFORMAT_RGB24, PIXELFORMAT_RGB888:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
-		pix[i+0] = col.B
-		pix[i+1] = col.G
+		col := surface.ColorModel().Convert(c).(RGB888)
 		pix[i+2] = col.R
+		pix[i+1] = col.G
+		pix[i+0] = col.B
 	case PIXELFORMAT_BGR24, PIXELFORMAT_BGR888:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
-		pix[i+2] = col.R
+		col := surface.ColorModel().Convert(c).(BGR888)
+		pix[i+2] = col.B
 		pix[i+1] = col.G
-		pix[i+0] = col.B
+		pix[i+0] = col.R
 	case PIXELFORMAT_RGB444:
 		col := surface.ColorModel().Convert(c).(color.RGBA)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
@@ -803,7 +807,7 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 		pix[i+1] = col.B
 		pix[i+0] = col.A
 	case PIXELFORMAT_BGRA8888:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(BGRA8888)
 		pix[i+3] = col.B
 		pix[i+2] = col.G
 		pix[i+1] = col.R
