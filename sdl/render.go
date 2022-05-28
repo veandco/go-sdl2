@@ -19,6 +19,7 @@ static inline int SDL_UpdateYUVTexture(SDL_Texture* texture, const SDL_Rect* rec
 
 #if defined(WARN_OUTDATED)
 #pragma message("SDL_RenderSetIntegerScale is not supported before SDL 2.0.5")
+#pragma message("SDL_RenderGetIntegerScale is not supported before SDL 2.0.5")
 #endif
 
 static inline int SDL_RenderSetIntegerScale(SDL_Renderer* renderer, SDL_bool enable)
@@ -26,10 +27,6 @@ static inline int SDL_RenderSetIntegerScale(SDL_Renderer* renderer, SDL_bool ena
 	SDL_Unsupported();
 	return -1;
 }
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_RenderGetIntegerScale is not supported before SDL 2.0.5")
-#endif
 
 static inline SDL_bool SDL_RenderGetIntegerScale(SDL_Renderer* renderer)
 {
@@ -43,17 +40,13 @@ static inline SDL_bool SDL_RenderGetIntegerScale(SDL_Renderer* renderer)
 
 #if defined(WARN_OUTDATED)
 #pragma message("SDL_RenderGetMetalLayer is not supported before SDL 2.0.8")
+#pragma message("SDL_RenderGetMetalCommandEncoder is not supported before SDL 2.0.8")
 #endif
 
 static inline void * SDL_RenderGetMetalLayer(SDL_Renderer *renderer)
 {
 	return NULL;
 }
-
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_RenderGetMetalCommandEncoder is not supported before SDL 2.0.8")
-#endif
 
 static inline void * SDL_RenderGetMetalCommandEncoder(SDL_Renderer *renderer)
 {
@@ -66,6 +59,16 @@ static inline void * SDL_RenderGetMetalCommandEncoder(SDL_Renderer *renderer)
 
 #if defined(WARN_OUTDATED)
 #pragma message("SDL_RenderDrawPointF is not supported before SDL 2.0.10")
+#pragma message("SDL_RenderDrawPointsF is not supported before SDL 2.0.10")
+#pragma message("SDL_RenderDrawLineF is not supported before SDL 2.0.10")
+#pragma message("SDL_RenderDrawLinesF is not supported before SDL 2.0.10")
+#pragma message("SDL_RenderDrawRectF is not supported before SDL 2.0.10")
+#pragma message("SDL_RenderDrawRectsF is not supported before SDL 2.0.10")
+#pragma message("SDL_RenderFillRectF is not supported before SDL 2.0.10")
+#pragma message("SDL_RenderFillRectsF is not supported before SDL 2.0.10")
+#pragma message("SDL_RenderCopyF is not supported before SDL 2.0.10")
+#pragma message("SDL_RenderCopyExF is not supported before SDL 2.0.10")
+#pragma message("SDL_RenderFlush is not supported before SDL 2.0.10")
 #endif
 
 static inline int SDL_RenderDrawPointF(SDL_Renderer * renderer, float x, float y)
@@ -73,90 +76,50 @@ static inline int SDL_RenderDrawPointF(SDL_Renderer * renderer, float x, float y
 	return SDL_RenderDrawPoint(renderer, (int) x, (int) y);
 }
 
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_RenderDrawPointsF is not supported before SDL 2.0.10")
-#endif
-
 static inline int SDL_RenderDrawPointsF(SDL_Renderer * renderer, const SDL_FPoint * points, int count)
 {
 	return SDL_RenderDrawPoints(renderer, (const SDL_Point *) points, count);
 }
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_RenderDrawLineF is not supported before SDL 2.0.10")
-#endif
 
 static inline int SDL_RenderDrawLineF(SDL_Renderer * renderer, float x1, float y1, float x2, float y2)
 {
 	return SDL_RenderDrawLine(renderer, (int) x1, (int) y1, (int) x2, (int) y2);
 }
 
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_RenderDrawLinesF is not supported before SDL 2.0.10")
-#endif
-
 static inline int SDL_RenderDrawLinesF(SDL_Renderer * renderer, const SDL_FPoint * points, int count)
 {
 	return SDL_RenderDrawLines(renderer, (const SDL_Point *) points, count);
 }
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_RenderDrawRectF is not supported before SDL 2.0.10")
-#endif
 
 static inline int SDL_RenderDrawRectF(SDL_Renderer * renderer, const SDL_FRect * rect)
 {
 	return SDL_RenderDrawRect(renderer, (const SDL_Rect *) rect);
 }
 
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_RenderDrawRectsF is not supported before SDL 2.0.10")
-#endif
-
 static inline int SDL_RenderDrawRectsF(SDL_Renderer * renderer, const SDL_FRect *rects, int count)
 {
 	return SDL_RenderDrawRects(renderer, (const SDL_Rect *) rects, count);
 }
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_RenderFillRectF is not supported before SDL 2.0.10")
-#endif
 
 static inline int SDL_RenderFillRectF(SDL_Renderer * renderer, const SDL_FRect * rect)
 {
 	return SDL_RenderFillRect(renderer, (const SDL_Rect *) rect);
 }
 
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_RenderFillRectsF is not supported before SDL 2.0.10")
-#endif
-
 static inline int SDL_RenderFillRectsF(SDL_Renderer * renderer, const SDL_FRect * rects, int count)
 {
 	return SDL_RenderFillRects(renderer, (const SDL_Rect *) rects, count);
 }
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_RenderCopyF is not supported before SDL 2.0.10")
-#endif
 
 static inline int SDL_RenderCopyF(SDL_Renderer * renderer, SDL_Texture * texture, const SDL_Rect * srcrect, const SDL_FRect * dstrect)
 {
 	return SDL_RenderCopy(renderer, texture, srcrect, (const SDL_Rect *) dstrect);
 }
 
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_RenderCopyExF is not supported before SDL 2.0.10")
-#endif
-
 static inline int SDL_RenderCopyExF(SDL_Renderer * renderer, SDL_Texture * texture, const SDL_Rect * srcrect, const SDL_FRect * dstrect, const double angle, const SDL_FPoint * center, const SDL_RendererFlip flip)
 {
 	return SDL_RenderCopyEx(renderer, texture, srcrect, (const SDL_Rect *) dstrect, angle, (const SDL_Point *) center, flip);
 }
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_RenderFlush is not supported before SDL 2.0.10")
-#endif
 
 static inline int SDL_RenderFlush(SDL_Renderer * renderer)
 {
