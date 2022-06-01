@@ -91,6 +91,14 @@ typedef struct SDL_SensorEvent {
     float data[6];
 } SDL_SensorEvent;
 #endif
+
+#if !SDL_VERSION_ATLEAST(2,0,22)
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_TEXTEDITING_EXT is not supported before SDL 2.0.22")
+#endif
+
+#define TEXTEDITING_EXT (0x305)
+#endif
 */
 import "C"
 import (
@@ -131,11 +139,12 @@ const (
 	SYSWMEVENT  = C.SDL_SYSWMEVENT  // system specific event
 
 	// Keyboard events
-	KEYDOWN       = C.SDL_KEYDOWN       // key pressed
-	KEYUP         = C.SDL_KEYUP         // key released
-	TEXTEDITING   = C.SDL_TEXTEDITING   // keyboard text editing (composition)
-	TEXTINPUT     = C.SDL_TEXTINPUT     // keyboard text input
-	KEYMAPCHANGED = C.SDL_KEYMAPCHANGED // keymap changed due to a system event such as an input language or keyboard layout change (>= SDL 2.0.4)
+	KEYDOWN         = C.SDL_KEYDOWN         // key pressed
+	KEYUP           = C.SDL_KEYUP           // key released
+	TEXTEDITING     = C.SDL_TEXTEDITING     // keyboard text editing (composition)
+	TEXTINPUT       = C.SDL_TEXTINPUT       // keyboard text input
+	TEXTEDITING_EXT = C.SDL_TEXTEDITING_EXT // keyboard text editing (composition)
+	KEYMAPCHANGED   = C.SDL_KEYMAPCHANGED   // keymap changed due to a system event such as an input language or keyboard layout change (>= SDL 2.0.4)
 
 	// Mouse events
 	MOUSEMOTION     = C.SDL_MOUSEMOTION     // mouse moved
