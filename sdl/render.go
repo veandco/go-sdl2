@@ -241,6 +241,19 @@ static inline int RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture
 }
 #endif
 
+#if !(SDL_VERSION_ATLEAST(2,0,22))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderGetWindow is not supported before SDL 2.0.22")
+#endif
+
+static inline SDL_Window * SDLCALL SDL_RenderGetWindow(SDL_Renderer *renderer)
+{
+	return NULL;
+}
+
+#endif
+
 // WORKAROUND: This prevents audio from seemingly going corrupt when drawing outside the screen bounding box?
 // It does that by allocating SDL_Rect in the C context instead of Go context.
 static inline int RenderCopy(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect *src, int dst_x, int dst_y, int dst_w, int dst_h)
@@ -1251,5 +1264,12 @@ func (renderer *Renderer) RenderLogicalToWindow(logicalX, logicalY float32) (win
 func (renderer *Renderer) RenderSetVSync(vsync bool) (err error) {
 	_vsync := C.int(Btoi(vsync))
 	err = errorFromInt(int(C.SDL_RenderSetVSync(renderer.cptr(), _vsync)))
+	return
+}
+
+// GetWindow gets the window associated with a renderer.
+// (https://wiki.libsdl.org/SDL_RenderGetWindow)
+func (renderer *Renderer) GetWindow() (window *Window, err error) {
+	window = (*Window)(unsafe.Pointer(C.SDL_RenderGetWindow(renderer.cptr())))
 	return
 }

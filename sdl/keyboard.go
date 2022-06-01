@@ -1,9 +1,26 @@
 package sdl
 
-// #include "sdl_wrapper.h"
+/*
+#include "sdl_wrapper.h"
+
+#if !(SDL_VERSION_ATLEAST(2,0,22))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_IsTextInputShown is not supported before SDL 2.0.22")
+#endif
+
+static inline SDL_bool SDL_IsTextInputShown(void)
+{
+	return SDL_FALSE;
+}
+
+#endif
+*/
 import "C"
-import "unsafe"
-import "reflect"
+import (
+	"reflect"
+	"unsafe"
+)
 
 // Keysym contains key information used in key events.
 // (https://wiki.libsdl.org/SDL_Keysym)
@@ -118,4 +135,16 @@ func HasScreenKeyboardSupport() bool {
 // (https://wiki.libsdl.org/SDL_IsScreenKeyboardShown)
 func IsScreenKeyboardShown(window *Window) bool {
 	return C.SDL_IsScreenKeyboardShown(window.cptr()) > 0
+}
+
+// IsTextInputShown returns if an IME Composite or Candidate window is currently shown.
+// (https://wiki.libsdl.org/SDL_IsTextInputShown)
+func IsTextInputShown() bool {
+	return C.SDL_IsTextInputShown() > 0
+}
+
+// ClearComposition dismisses the composition window/IME without disabling the subsystem.
+// (https://wiki.libsdl.org/SDL_ClearComposition)
+func ClearComposition() {
+	C.SDL_ClearComposition()
 }

@@ -140,6 +140,18 @@ package sdl
 #define SDL_HINT_VIDEO_EGL_ALLOW_TRANSPARENCY ""
 
 #endif
+
+#if !SDL_VERSION_ATLEAST(2,0,22)
+
+#define SDL_HINT_IME_SUPPORT_EXTENDED_TEXT ""
+#define SDL_HINT_MOUSE_RELATIVE_MODE_CENTER ""
+#define SDL_HINT_MOUSE_AUTO_CAPTURE ""
+#define SDL_HINT_VIDEO_FOREIGN_WINDOW_OPENGL ""
+#define SDL_HINT_VIDEO_FOREIGN_WINDOW_VULKAN ""
+#define SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE ""
+#define SDL_HINT_JOYSTICK_ROG_CHAKRAM ""
+
+#endif
 */
 import "C"
 import "unsafe"
@@ -232,6 +244,7 @@ const (
 	HINT_APP_NAME                                 = C.SDL_HINT_APP_NAME                                 // Lets you specify the application name sent to the OS when required
 	HINT_VIDEO_EGL_ALLOW_TRANSPARENCY             = C.SDL_HINT_VIDEO_EGL_ALLOW_TRANSPARENCY             // A variable controlling whether the EGL window is allowed to be composited as transparent, rather than opaque
 	HINT_IME_SHOW_UI                              = C.SDL_HINT_IME_SHOW_UI                              // A variable to control whether certain IMEs should show native UI components (such as the Candidate List) instead of suppressing them
+	HINT_IME_SUPPORT_EXTENDED_TEXT                = C.SDL_HINT_IME_SUPPORT_EXTENDED_TEXT                // A variable to control if extended IME text support is enabled.
 	HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME        = C.SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME        // This hint lets you specify the "activity name" sent to the OS when SDL_DisableScreenSaver() is used (or the screensaver is automatically disabled)
 	HINT_LINUX_JOYSTICK_CLASSIC                   = C.SDL_HINT_LINUX_JOYSTICK_CLASSIC                   // A variable controlling whether to use the classic /dev/input/js* joystick interface or the newer /dev/input/event* joystick interface on Linux
 	HINT_JOYSTICK_DEVICE                          = C.SDL_HINT_JOYSTICK_DEVICE                          // This variable is currently only used by the Linux joystick driver

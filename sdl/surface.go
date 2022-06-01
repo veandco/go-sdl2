@@ -683,49 +683,49 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 		pix[i+1] = col.G
 		pix[i+0] = col.R
 	case PIXELFORMAT_RGB444:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(RGB444)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
 		r := uint32(col.R) >> 4 & 0x0F
 		g := uint32(col.G) >> 4 & 0x0F
 		b := uint32(col.B) >> 4 & 0x0F
 		*buf = r<<8 | g<<4 | b
 	case PIXELFORMAT_RGB332:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(RGB332)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
 		r := uint32(col.R) >> 5 & 0x0F
 		g := uint32(col.G) >> 5 & 0x0F
 		b := uint32(col.B) >> 6 & 0x0F
 		*buf = r<<5 | g<<2 | b
 	case PIXELFORMAT_RGB565:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(RGB565)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
 		r := uint32(col.R) >> 3 & 0xFF
 		g := uint32(col.G) >> 2 & 0xFF
 		b := uint32(col.B) >> 3 & 0xFF
 		*buf = r<<11 | g<<5 | b
 	case PIXELFORMAT_RGB555:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(RGB555)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
 		r := uint32(col.R) >> 3 & 0xFF
 		g := uint32(col.G) >> 3 & 0xFF
 		b := uint32(col.B) >> 3 & 0xFF
 		*buf = r<<10 | g<<5 | b
 	case PIXELFORMAT_BGR565:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(BGR565)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
 		r := uint32(col.R) >> 3 & 0xFF
 		g := uint32(col.G) >> 2 & 0xFF
 		b := uint32(col.B) >> 3 & 0xFF
 		*buf = b<<11 | g<<5 | r
 	case PIXELFORMAT_BGR555:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(BGR555)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
 		r := uint32(col.R) >> 3 & 0xFF
 		g := uint32(col.G) >> 3 & 0xFF
 		b := uint32(col.B) >> 3 & 0xFF
 		*buf = b<<10 | g<<5 | r
 	case PIXELFORMAT_ARGB4444:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(ARGB4444)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
 		a := uint32(col.A) >> 4 & 0x0F
 		r := uint32(col.R) >> 4 & 0x0F
@@ -733,7 +733,7 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 		b := uint32(col.B) >> 4 & 0x0F
 		*buf = a<<12 | r<<8 | g<<4 | b
 	case PIXELFORMAT_ABGR4444:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(ABGR4444)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
 		a := uint32(col.A) >> 4 & 0x0F
 		r := uint32(col.R) >> 4 & 0x0F
@@ -741,7 +741,7 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 		b := uint32(col.B) >> 4 & 0x0F
 		*buf = a<<12 | b<<8 | g<<4 | r
 	case PIXELFORMAT_RGBA4444:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(RGBA4444)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
 		r := uint32(col.R) >> 4 & 0x0F
 		g := uint32(col.G) >> 4 & 0x0F
@@ -749,7 +749,7 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 		a := uint32(col.A) >> 4 & 0x0F
 		*buf = r<<12 | g<<8 | b<<4 | a
 	case PIXELFORMAT_BGRA4444:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(BGRA4444)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
 		r := uint32(col.R) >> 4 & 0x0F
 		g := uint32(col.G) >> 4 & 0x0F
@@ -757,7 +757,7 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 		a := uint32(col.A) >> 4 & 0x0F
 		*buf = b<<12 | g<<8 | r<<4 | a
 	case PIXELFORMAT_ARGB1555:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(ARGB1555)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
 		r := uint32(col.R) >> 3 & 0xFF
 		g := uint32(col.G) >> 3 & 0xFF
@@ -768,7 +768,7 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 		}
 		*buf = a<<15 | r<<10 | g<<5 | b
 	case PIXELFORMAT_RGBA5551:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(RGBA5551)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
 		r := uint32(col.R) >> 3 & 0xFF
 		g := uint32(col.G) >> 3 & 0xFF
@@ -779,7 +779,7 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 		}
 		*buf = r<<11 | g<<6 | b<<1 | a
 	case PIXELFORMAT_ABGR1555:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(ABGR1555)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
 		r := uint32(col.R) >> 3 & 0xFF
 		g := uint32(col.G) >> 3 & 0xFF
@@ -790,7 +790,7 @@ func (surface *Surface) Set(x, y int, c color.Color) {
 		}
 		*buf = a<<15 | b<<10 | g<<5 | r
 	case PIXELFORMAT_BGRA5551:
-		col := surface.ColorModel().Convert(c).(color.RGBA)
+		col := surface.ColorModel().Convert(c).(BGRA5551)
 		buf := (*uint32)(unsafe.Pointer(&pix[i]))
 		r := uint32(col.R) >> 3 & 0xFF
 		g := uint32(col.G) >> 3 & 0xFF
