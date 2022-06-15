@@ -63,6 +63,14 @@ static char* SDL_GameControllerMappingForIndex(int mapping_index)
 #pragma message("SDL_GameControllerMappingForDeviceIndex is not supported before SDL 2.0.9")
 #endif
 
+typedef enum
+{
+    SDL_SENSOR_INVALID = -1,
+    SDL_SENSOR_UNKNOWN,
+    SDL_SENSOR_ACCEL,
+    SDL_SENSOR_GYRO
+} SDL_SensorType;
+
 static int SDL_GameControllerGetPlayerIndex(SDL_GameController *gamecontroller)
 {
 	return -1;
