@@ -1,0 +1,42 @@
+name: test-older-versions-build
+on: [push]
+jobs:
+  test-older-versions-build:
+    strategy:
+      matrix:
+        SDL_VERSION: [2.0.8, 2.0.9, 2.0.10, 2.0.12, 2.0.14, 2.0.16, 2.0.18, 2.0.20, 2.0.22]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '1.13.15'
+      - run: go version
+
+      - name: Cache Go
+        id: cache-go
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: set PKG_CONFIG_PATH environment variable
+        run: |
+          echo "PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig:$PKG_CONFIG_PATH" >> $GITHUB_ENV
+
+      - name: Download, build, and install SDL2 packages
+        run: |
+          wget https://www.libsdl.org/release/SDL2-${{ matrix.SDL_VERSION }}.tar.gz
+          tar xf SDL2-${{ matrix.SDL_VERSION }}.tar.gz
+          cd SDL2-${{ matrix.SDL_VERSION }}
+          ./configure --prefix=$HOME/.local
+          make install
+          cd ..
+
+      - name: Test if Go-SDL2 works with the SDL2 package
+        run: |
+          go build ./sdl
