@@ -169,10 +169,10 @@ const (
 // Here are the additional Android sensors:
 // https://developer.android.com/reference/android/hardware/SensorEvent.html#values
 const (
-	SENSOR_INVALID SensorType = -1 // Returned for an invalid sensor
-	SENSOR_UNKNOWN                 // Unknown sensor type
-	SENSOR_ACCEL                   // Accelerometer
-	SENSOR_GYRO                    // Gyroscope
+	SENSOR_INVALID SensorType = C.SDL_SENSOR_INVALID // Returned for an invalid sensor
+	SENSOR_UNKNOWN SensorType = C.SDL_SENSOR_UNKNOWN // Unknown sensor type
+	SENSOR_ACCEL   SensorType = C.SDL_SENSOR_ACCEL   // Accelerometer
+	SENSOR_GYRO    SensorType = C.SDL_SENSOR_GYRO    // Gyroscope
 )
 
 type Sensor C.SDL_Sensor
