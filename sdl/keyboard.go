@@ -7,11 +7,16 @@ package sdl
 
 #if defined(WARN_OUTDATED)
 #pragma message("SDL_IsTextInputShown is not supported before SDL 2.0.22")
+#pragma message("SDL_ClearComposition is not supported before SDL 2.0.22")
 #endif
 
 static inline SDL_bool SDL_IsTextInputShown(void)
 {
 	return SDL_FALSE;
+}
+
+static inline void SDL_ClearComposition(void)
+{
 }
 
 #endif
