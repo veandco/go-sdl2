@@ -57,14 +57,6 @@ static char* SDL_GameControllerMappingForIndex(int mapping_index)
 
 #if !(SDL_VERSION_ATLEAST(2,0,9))
 
-typedef enum
-{
-    SDL_SENSOR_INVALID = -1,
-    SDL_SENSOR_UNKNOWN,
-    SDL_SENSOR_ACCEL,
-    SDL_SENSOR_GYRO
-} SDL_SensorType;
-
 #if defined(WARN_OUTDATED)
 #pragma message("SDL_GameControllerGetPlayerIndex is not supported before SDL 2.0.9")
 #pragma message("SDL_GameControllerRumble is not supported before SDL 2.0.9")
