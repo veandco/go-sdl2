@@ -78,7 +78,7 @@ typedef struct SDL_SensorEvent {
 #pragma message("SDL_TEXTEDITING_EXT is not supported before SDL 2.0.22")
 #endif
 
-#define TEXTEDITING_EXT (0x305)
+#define SDL_TEXTEDITING_EXT (0x305)
 #endif
 */
 import "C"
