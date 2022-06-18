@@ -150,6 +150,8 @@ package sdl
 #define SDL_HINT_VIDEO_FOREIGN_WINDOW_VULKAN ""
 #define SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE ""
 #define SDL_HINT_JOYSTICK_ROG_CHAKRAM ""
+#define SDL_HINT_X11_WINDOW_TYPE ""
+#define SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR ""
 
 #endif
 */
@@ -250,6 +252,14 @@ const (
 	HINT_JOYSTICK_DEVICE                          = C.SDL_HINT_JOYSTICK_DEVICE                          // This variable is currently only used by the Linux joystick driver
 	HINT_JOYSTICK_HIDAPI_STEAM                    = C.SDL_HINT_JOYSTICK_HIDAPI_STEAM                    // A variable controlling whether the HIDAPI driver for Steam Controllers should be used
 	HINT_RENDER_LINE_METHOD                       = C.SDL_HINT_RENDER_LINE_METHOD                       // A variable controlling how the 2D render API renders lines
+        HINT_MOUSE_RELATIVE_MODE_CENTER               = C.SDL_HINT_MOUSE_RELATIVE_MODE_CENTER               // A variable controlling whether relative mouse mode constrains the mouse to the center of the window
+        HINT_MOUSE_AUTO_CAPTURE                       = C.SDL_HINT_MOUSE_AUTO_CAPTURE                       // A variable controlling whether the mouse is captured while mouse buttons are pressed
+        HINT_VIDEO_FOREIGN_WINDOW_OPENGL              = C.SDL_HINT_VIDEO_FOREIGN_WINDOW_OPENGL              // When calling SDL_CreateWindowFrom(), make the window compatible with OpenGL
+        HINT_VIDEO_FOREIGN_WINDOW_VULKAN              = C.SDL_HINT_VIDEO_FOREIGN_WINDOW_VULKAN              // When calling SDL_CreateWindowFrom(), make the window compatible with Vulkan
+	HINT_QUIT_ON_LAST_WINDOW_CLOSE                = C.SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE                // A variable that decides whether to send SDL_QUIT when closing the final window
+        HINT_JOYSTICK_ROG_CHAKRAM                     = C.SDL_HINT_JOYSTICK_ROG_CHAKRAM                     // A variable controlling whether the ROG Chakram mice should show up as joysticks
+        HINT_X11_WINDOW_TYPE                          = C.SDL_HINT_X11_WINDOW_TYPE                          // A variable that forces X11 windows to create as a custom type
+        HINT_VIDEO_WAYLAND_PREFER_LIBDECOR            = C.SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR            // A variable controlling whether the libdecor Wayland backend is preferred over native decrations
 )
 
 // An enumeration of hint priorities.
