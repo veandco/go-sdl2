@@ -17,6 +17,42 @@
 * [GoDoc documentation for go-sdl2](https://godoc.org/github.com/veandco/go-sdl2)
 * [Original SDL2 wiki](https://wiki.libsdl.org)
 
+# Getting Started
+
+If you haven't created a Go module for your program, you can do it by making a directory called, for example, `app` and running the following command inside it:
+```
+go mod init app
+```
+
+After that you can start writing code that uses `go-sdl2`, for example, like the following:
+```go
+// main.go
+package main
+
+import (
+	"github.com/veandco/go-sdl2/sdl"
+)
+
+func main() {
+	sdl.Init(sdl.INIT_EVERYTHING)
+}
+```
+
+Then to tell Go to fetch dependencies, you can run:
+```
+go mod tidy
+```
+
+and then the program can be built using:
+```
+go build
+```
+
+After that, you can execute your program:
+
+```
+./app
+```
 
 # Examples
 ```go
