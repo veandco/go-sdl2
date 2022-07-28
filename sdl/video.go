@@ -247,53 +247,57 @@ import "unsafe"
 
 // An enumeration of window states.
 // (https://wiki.libsdl.org/SDL_WindowFlags)
+type WindowFlags uint32
+
 const (
-	WINDOW_FULLSCREEN         = C.SDL_WINDOW_FULLSCREEN         // fullscreen window
-	WINDOW_OPENGL             = C.SDL_WINDOW_OPENGL             // window usable with OpenGL context
-	WINDOW_SHOWN              = C.SDL_WINDOW_SHOWN              // window is visible
-	WINDOW_HIDDEN             = C.SDL_WINDOW_HIDDEN             // window is not visible
-	WINDOW_BORDERLESS         = C.SDL_WINDOW_BORDERLESS         // no window decoration
-	WINDOW_RESIZABLE          = C.SDL_WINDOW_RESIZABLE          // window can be resized
-	WINDOW_MINIMIZED          = C.SDL_WINDOW_MINIMIZED          // window is minimized
-	WINDOW_MAXIMIZED          = C.SDL_WINDOW_MAXIMIZED          // window is maximized
-	WINDOW_INPUT_GRABBED      = C.SDL_WINDOW_INPUT_GRABBED      // window has grabbed input focus
-	WINDOW_INPUT_FOCUS        = C.SDL_WINDOW_INPUT_FOCUS        // window has input focus
-	WINDOW_MOUSE_FOCUS        = C.SDL_WINDOW_MOUSE_FOCUS        // window has mouse focus
-	WINDOW_FULLSCREEN_DESKTOP = C.SDL_WINDOW_FULLSCREEN_DESKTOP // fullscreen window at the current desktop resolution
-	WINDOW_FOREIGN            = C.SDL_WINDOW_FOREIGN            // window not created by SDL
-	WINDOW_ALLOW_HIGHDPI      = C.SDL_WINDOW_ALLOW_HIGHDPI      // window should be created in high-DPI mode if supported (>= SDL 2.0.1)
-	WINDOW_MOUSE_CAPTURE      = C.SDL_WINDOW_MOUSE_CAPTURE      // window has mouse captured (unrelated to INPUT_GRABBED, >= SDL 2.0.4)
-	WINDOW_ALWAYS_ON_TOP      = C.SDL_WINDOW_ALWAYS_ON_TOP      // window should always be above others (X11 only, >= SDL 2.0.5)
-	WINDOW_SKIP_TASKBAR       = C.SDL_WINDOW_SKIP_TASKBAR       // window should not be added to the taskbar (X11 only, >= SDL 2.0.5)
-	WINDOW_UTILITY            = C.SDL_WINDOW_UTILITY            // window should be treated as a utility window (X11 only, >= SDL 2.0.5)
-	WINDOW_TOOLTIP            = C.SDL_WINDOW_TOOLTIP            // window should be treated as a tooltip (X11 only, >= SDL 2.0.5)
-	WINDOW_POPUP_MENU         = C.SDL_WINDOW_POPUP_MENU         // window should be treated as a popup menu (X11 only, >= SDL 2.0.5)
-	WINDOW_VULKAN             = C.SDL_WINDOW_VULKAN             // window usable for Vulkan surface (>= SDL 2.0.6)
-	WINDOW_METAL              = C.SDL_WINDOW_METAL              // window usable for Metal view (>= SDL 2.0.14)
+	WINDOW_FULLSCREEN         WindowFlags = C.SDL_WINDOW_FULLSCREEN         // fullscreen window
+	WINDOW_OPENGL             WindowFlags = C.SDL_WINDOW_OPENGL             // window usable with OpenGL context
+	WINDOW_SHOWN              WindowFlags = C.SDL_WINDOW_SHOWN              // window is visible
+	WINDOW_HIDDEN             WindowFlags = C.SDL_WINDOW_HIDDEN             // window is not visible
+	WINDOW_BORDERLESS         WindowFlags = C.SDL_WINDOW_BORDERLESS         // no window decoration
+	WINDOW_RESIZABLE          WindowFlags = C.SDL_WINDOW_RESIZABLE          // window can be resized
+	WINDOW_MINIMIZED          WindowFlags = C.SDL_WINDOW_MINIMIZED          // window is minimized
+	WINDOW_MAXIMIZED          WindowFlags = C.SDL_WINDOW_MAXIMIZED          // window is maximized
+	WINDOW_INPUT_GRABBED      WindowFlags = C.SDL_WINDOW_INPUT_GRABBED      // window has grabbed input focus
+	WINDOW_INPUT_FOCUS        WindowFlags = C.SDL_WINDOW_INPUT_FOCUS        // window has input focus
+	WINDOW_MOUSE_FOCUS        WindowFlags = C.SDL_WINDOW_MOUSE_FOCUS        // window has mouse focus
+	WINDOW_FULLSCREEN_DESKTOP WindowFlags = C.SDL_WINDOW_FULLSCREEN_DESKTOP // fullscreen window at the current desktop resolution
+	WINDOW_FOREIGN            WindowFlags = C.SDL_WINDOW_FOREIGN            // window not created by SDL
+	WINDOW_ALLOW_HIGHDPI      WindowFlags = C.SDL_WINDOW_ALLOW_HIGHDPI      // window should be created in high-DPI mode if supported (>= SDL 2.0.1)
+	WINDOW_MOUSE_CAPTURE      WindowFlags = C.SDL_WINDOW_MOUSE_CAPTURE      // window has mouse captured (unrelated to INPUT_GRABBED, >= SDL 2.0.4)
+	WINDOW_ALWAYS_ON_TOP      WindowFlags = C.SDL_WINDOW_ALWAYS_ON_TOP      // window should always be above others (X11 only, >= SDL 2.0.5)
+	WINDOW_SKIP_TASKBAR       WindowFlags = C.SDL_WINDOW_SKIP_TASKBAR       // window should not be added to the taskbar (X11 only, >= SDL 2.0.5)
+	WINDOW_UTILITY            WindowFlags = C.SDL_WINDOW_UTILITY            // window should be treated as a utility window (X11 only, >= SDL 2.0.5)
+	WINDOW_TOOLTIP            WindowFlags = C.SDL_WINDOW_TOOLTIP            // window should be treated as a tooltip (X11 only, >= SDL 2.0.5)
+	WINDOW_POPUP_MENU         WindowFlags = C.SDL_WINDOW_POPUP_MENU         // window should be treated as a popup menu (X11 only, >= SDL 2.0.5)
+	WINDOW_VULKAN             WindowFlags = C.SDL_WINDOW_VULKAN             // window usable for Vulkan surface (>= SDL 2.0.6)
+	WINDOW_METAL              WindowFlags = C.SDL_WINDOW_METAL              // window usable for Metal view (>= SDL 2.0.14)
 )
 
 // An enumeration of window events.
 // (https://wiki.libsdl.org/SDL_WindowEventID)
+type WindowEventID C.SDL_WindowEventID
+
 const (
-	WINDOWEVENT_NONE            = C.SDL_WINDOWEVENT_NONE            // (never used)
-	WINDOWEVENT_SHOWN           = C.SDL_WINDOWEVENT_SHOWN           // window has been shown
-	WINDOWEVENT_HIDDEN          = C.SDL_WINDOWEVENT_HIDDEN          // window has been hidden
-	WINDOWEVENT_EXPOSED         = C.SDL_WINDOWEVENT_EXPOSED         // window has been exposed and should be redrawn
-	WINDOWEVENT_MOVED           = C.SDL_WINDOWEVENT_MOVED           // window has been moved to data1, data2
-	WINDOWEVENT_RESIZED         = C.SDL_WINDOWEVENT_RESIZED         // window has been resized to data1xdata2; this event is always preceded by WINDOWEVENT_SIZE_CHANGED
-	WINDOWEVENT_SIZE_CHANGED    = C.SDL_WINDOWEVENT_SIZE_CHANGED    // window size has changed, either as a result of an API call or through the system or user changing the window size; this event is followed by WINDOWEVENT_RESIZED if the size was changed by an external event, i.e. the user or the window manager
-	WINDOWEVENT_MINIMIZED       = C.SDL_WINDOWEVENT_MINIMIZED       // window has been minimized
-	WINDOWEVENT_MAXIMIZED       = C.SDL_WINDOWEVENT_MAXIMIZED       // window has been maximized
-	WINDOWEVENT_RESTORED        = C.SDL_WINDOWEVENT_RESTORED        // window has been restored to normal size and position
-	WINDOWEVENT_ENTER           = C.SDL_WINDOWEVENT_ENTER           // window has gained mouse focus
-	WINDOWEVENT_LEAVE           = C.SDL_WINDOWEVENT_LEAVE           // window has lost mouse focus
-	WINDOWEVENT_FOCUS_GAINED    = C.SDL_WINDOWEVENT_FOCUS_GAINED    // window has gained keyboard focus
-	WINDOWEVENT_FOCUS_LOST      = C.SDL_WINDOWEVENT_FOCUS_LOST      // window has lost keyboard focus
-	WINDOWEVENT_CLOSE           = C.SDL_WINDOWEVENT_CLOSE           // the window manager requests that the window be closed
-	WINDOWEVENT_TAKE_FOCUS      = C.SDL_WINDOWEVENT_TAKE_FOCUS      // window is being offered a focus (should SDL_SetWindowInputFocus() on itself or a subwindow, or ignore) (>= SDL 2.0.5)
-	WINDOWEVENT_HIT_TEST        = C.SDL_WINDOWEVENT_HIT_TEST        // window had a hit test that wasn't SDL_HITTEST_NORMAL (>= SDL 2.0.5)
-	WINDOWEVENT_ICCPROF_CHANGED = C.SDL_WINDOWEVENT_ICCPROF_CHANGED // the ICC profile of the window's display has changed
-	WINDOWEVENT_DISPLAY_CHANGED = C.SDL_WINDOWEVENT_DISPLAY_CHANGED // window has been moved to display data1
+	WINDOWEVENT_NONE            WindowEventID = C.SDL_WINDOWEVENT_NONE            // (never used)
+	WINDOWEVENT_SHOWN           WindowEventID = C.SDL_WINDOWEVENT_SHOWN           // window has been shown
+	WINDOWEVENT_HIDDEN          WindowEventID = C.SDL_WINDOWEVENT_HIDDEN          // window has been hidden
+	WINDOWEVENT_EXPOSED         WindowEventID = C.SDL_WINDOWEVENT_EXPOSED         // window has been exposed and should be redrawn
+	WINDOWEVENT_MOVED           WindowEventID = C.SDL_WINDOWEVENT_MOVED           // window has been moved to data1, data2
+	WINDOWEVENT_RESIZED         WindowEventID = C.SDL_WINDOWEVENT_RESIZED         // window has been resized to data1xdata2; this event is always preceded by WINDOWEVENT_SIZE_CHANGED
+	WINDOWEVENT_SIZE_CHANGED    WindowEventID = C.SDL_WINDOWEVENT_SIZE_CHANGED    // window size has changed, either as a result of an API call or through the system or user changing the window size; this event is followed by WINDOWEVENT_RESIZED if the size was changed by an external event, i.e. the user or the window manager
+	WINDOWEVENT_MINIMIZED       WindowEventID = C.SDL_WINDOWEVENT_MINIMIZED       // window has been minimized
+	WINDOWEVENT_MAXIMIZED       WindowEventID = C.SDL_WINDOWEVENT_MAXIMIZED       // window has been maximized
+	WINDOWEVENT_RESTORED        WindowEventID = C.SDL_WINDOWEVENT_RESTORED        // window has been restored to normal size and position
+	WINDOWEVENT_ENTER           WindowEventID = C.SDL_WINDOWEVENT_ENTER           // window has gained mouse focus
+	WINDOWEVENT_LEAVE           WindowEventID = C.SDL_WINDOWEVENT_LEAVE           // window has lost mouse focus
+	WINDOWEVENT_FOCUS_GAINED    WindowEventID = C.SDL_WINDOWEVENT_FOCUS_GAINED    // window has gained keyboard focus
+	WINDOWEVENT_FOCUS_LOST      WindowEventID = C.SDL_WINDOWEVENT_FOCUS_LOST      // window has lost keyboard focus
+	WINDOWEVENT_CLOSE           WindowEventID = C.SDL_WINDOWEVENT_CLOSE           // the window manager requests that the window be closed
+	WINDOWEVENT_TAKE_FOCUS      WindowEventID = C.SDL_WINDOWEVENT_TAKE_FOCUS      // window is being offered a focus (should SDL_SetWindowInputFocus() on itself or a subwindow, or ignore) (>= SDL 2.0.5)
+	WINDOWEVENT_HIT_TEST        WindowEventID = C.SDL_WINDOWEVENT_HIT_TEST        // window had a hit test that wasn't SDL_HITTEST_NORMAL (>= SDL 2.0.5)
+	WINDOWEVENT_ICCPROF_CHANGED WindowEventID = C.SDL_WINDOWEVENT_ICCPROF_CHANGED // the ICC profile of the window's display has changed
+	WINDOWEVENT_DISPLAY_CHANGED WindowEventID = C.SDL_WINDOWEVENT_DISPLAY_CHANGED // window has been moved to display data1
 )
 
 // Window position flags.
@@ -307,48 +311,56 @@ const (
 
 // An enumeration of message box flags (e.g. if supported message box will display warning icon).
 // (https://wiki.libsdl.org/SDL_MessageBoxFlags)
+type MessageBoxFlags uint32
+
 const (
-	MESSAGEBOX_ERROR       = C.SDL_MESSAGEBOX_ERROR       // error dialog
-	MESSAGEBOX_WARNING     = C.SDL_MESSAGEBOX_WARNING     // warning dialog
-	MESSAGEBOX_INFORMATION = C.SDL_MESSAGEBOX_INFORMATION // informational dialog
+	MESSAGEBOX_ERROR       MessageBoxFlags = C.SDL_MESSAGEBOX_ERROR       // error dialog
+	MESSAGEBOX_WARNING     MessageBoxFlags = C.SDL_MESSAGEBOX_WARNING     // warning dialog
+	MESSAGEBOX_INFORMATION MessageBoxFlags = C.SDL_MESSAGEBOX_INFORMATION // informational dialog
 )
 
 // Flags for MessageBoxButtonData.
+// (https://wiki.libsdl.org/SDL_MessageBoxButtonFlags)
+type MessageBoxButtonDataFlags uint32
+
 const (
-	MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT = C.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT // marks the default button when return is hit
-	MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT = C.SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT // marks the default button when escape is hit
+	MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT MessageBoxButtonDataFlags = C.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT // marks the default button when return is hit
+	MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT MessageBoxButtonDataFlags = C.SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT // marks the default button when escape is hit
 )
 
 // OpenGL configuration attributes.
+// (https://wiki.libsdl.org/SDL_GLattr)
 // (https://wiki.libsdl.org/SDL_GL_SetAttribute)
+type GLattr C.SDL_GLattr
+
 const (
-	GL_RED_SIZE                   = C.SDL_GL_RED_SIZE                   // the minimum number of bits for the red channel of the color buffer; defaults to 3
-	GL_GREEN_SIZE                 = C.SDL_GL_GREEN_SIZE                 // the minimum number of bits for the green channel of the color buffer; defaults to 3
-	GL_BLUE_SIZE                  = C.SDL_GL_BLUE_SIZE                  // the minimum number of bits for the blue channel of the color buffer; defaults to 2
-	GL_ALPHA_SIZE                 = C.SDL_GL_ALPHA_SIZE                 // the minimum number of bits for the alpha channel of the color buffer; defaults to 0
-	GL_BUFFER_SIZE                = C.SDL_GL_BUFFER_SIZE                // the minimum number of bits for frame buffer size; defaults to 0
-	GL_DOUBLEBUFFER               = C.SDL_GL_DOUBLEBUFFER               // whether the output is single or double buffered; defaults to double buffering on
-	GL_DEPTH_SIZE                 = C.SDL_GL_DEPTH_SIZE                 // the minimum number of bits in the depth buffer; defaults to 16
-	GL_STENCIL_SIZE               = C.SDL_GL_STENCIL_SIZE               // the minimum number of bits in the stencil buffer; defaults to 0
-	GL_ACCUM_RED_SIZE             = C.SDL_GL_ACCUM_RED_SIZE             // the minimum number of bits for the red channel of the accumulation buffer; defaults to 0
-	GL_ACCUM_GREEN_SIZE           = C.SDL_GL_ACCUM_GREEN_SIZE           // the minimum number of bits for the green channel of the accumulation buffer; defaults to 0
-	GL_ACCUM_BLUE_SIZE            = C.SDL_GL_ACCUM_BLUE_SIZE            // the minimum number of bits for the blue channel of the accumulation buffer; defaults to 0
-	GL_ACCUM_ALPHA_SIZE           = C.SDL_GL_ALPHA_SIZE                 // the minimum number of bits for the alpha channel of the accumulation buffer; defaults to 0
-	GL_STEREO                     = C.SDL_GL_STEREO                     // whether the output is stereo 3D; defaults to off
-	GL_MULTISAMPLEBUFFERS         = C.SDL_GL_MULTISAMPLEBUFFERS         // the number of buffers used for multisample anti-aliasing; defaults to 0; see Remarks for details
-	GL_MULTISAMPLESAMPLES         = C.SDL_GL_MULTISAMPLESAMPLES         // the number of samples used around the current pixel used for multisample anti-aliasing; defaults to 0; see Remarks for details
-	GL_ACCELERATED_VISUAL         = C.SDL_GL_ACCELERATED_VISUAL         // set to 1 to require hardware acceleration, set to 0 to force software rendering; defaults to allow either
-	GL_RETAINED_BACKING           = C.SDL_GL_RETAINED_BACKING           // not used (deprecated)
-	GL_CONTEXT_MAJOR_VERSION      = C.SDL_GL_CONTEXT_MAJOR_VERSION      // OpenGL context major version
-	GL_CONTEXT_MINOR_VERSION      = C.SDL_GL_CONTEXT_MINOR_VERSION      // OpenGL context minor version
-	GL_CONTEXT_EGL                = C.SDL_GL_CONTEXT_EGL                // not used (deprecated)
-	GL_CONTEXT_FLAGS              = C.SDL_GL_CONTEXT_FLAGS              // some combination of 0 or more of elements of the GLcontextFlag enumeration; defaults to 0 (https://wiki.libsdl.org/SDL_GLcontextFlag)
-	GL_CONTEXT_PROFILE_MASK       = C.SDL_GL_CONTEXT_PROFILE_MASK       // type of GL context (Core, Compatibility, ES); default value depends on platform (https://wiki.libsdl.org/SDL_GLprofile)
-	GL_SHARE_WITH_CURRENT_CONTEXT = C.SDL_GL_SHARE_WITH_CURRENT_CONTEXT // OpenGL context sharing; defaults to 0
-	GL_FRAMEBUFFER_SRGB_CAPABLE   = C.SDL_GL_FRAMEBUFFER_SRGB_CAPABLE   // requests sRGB capable visual; defaults to 0 (>= SDL 2.0.1)
-	GL_CONTEXT_RELEASE_BEHAVIOR   = C.SDL_GL_CONTEXT_RELEASE_BEHAVIOR   // sets context the release behavior; defaults to 1 (>= SDL 2.0.4)
-	GL_CONTEXT_RESET_NOTIFICATION = C.SDL_GL_CONTEXT_RESET_NOTIFICATION // (>= SDL 2.0.6)
-	GL_CONTEXT_NO_ERROR           = C.SDL_GL_CONTEXT_NO_ERROR           // (>= SDL 2.0.6)
+	GL_RED_SIZE                   GLattr = C.SDL_GL_RED_SIZE                   // the minimum number of bits for the red channel of the color buffer; defaults to 3
+	GL_GREEN_SIZE                 GLattr = C.SDL_GL_GREEN_SIZE                 // the minimum number of bits for the green channel of the color buffer; defaults to 3
+	GL_BLUE_SIZE                  GLattr = C.SDL_GL_BLUE_SIZE                  // the minimum number of bits for the blue channel of the color buffer; defaults to 2
+	GL_ALPHA_SIZE                 GLattr = C.SDL_GL_ALPHA_SIZE                 // the minimum number of bits for the alpha channel of the color buffer; defaults to 0
+	GL_BUFFER_SIZE                GLattr = C.SDL_GL_BUFFER_SIZE                // the minimum number of bits for frame buffer size; defaults to 0
+	GL_DOUBLEBUFFER               GLattr = C.SDL_GL_DOUBLEBUFFER               // whether the output is single or double buffered; defaults to double buffering on
+	GL_DEPTH_SIZE                 GLattr = C.SDL_GL_DEPTH_SIZE                 // the minimum number of bits in the depth buffer; defaults to 16
+	GL_STENCIL_SIZE               GLattr = C.SDL_GL_STENCIL_SIZE               // the minimum number of bits in the stencil buffer; defaults to 0
+	GL_ACCUM_RED_SIZE             GLattr = C.SDL_GL_ACCUM_RED_SIZE             // the minimum number of bits for the red channel of the accumulation buffer; defaults to 0
+	GL_ACCUM_GREEN_SIZE           GLattr = C.SDL_GL_ACCUM_GREEN_SIZE           // the minimum number of bits for the green channel of the accumulation buffer; defaults to 0
+	GL_ACCUM_BLUE_SIZE            GLattr = C.SDL_GL_ACCUM_BLUE_SIZE            // the minimum number of bits for the blue channel of the accumulation buffer; defaults to 0
+	GL_ACCUM_ALPHA_SIZE           GLattr = C.SDL_GL_ALPHA_SIZE                 // the minimum number of bits for the alpha channel of the accumulation buffer; defaults to 0
+	GL_STEREO                     GLattr = C.SDL_GL_STEREO                     // whether the output is stereo 3D; defaults to off
+	GL_MULTISAMPLEBUFFERS         GLattr = C.SDL_GL_MULTISAMPLEBUFFERS         // the number of buffers used for multisample anti-aliasing; defaults to 0; see Remarks for details
+	GL_MULTISAMPLESAMPLES         GLattr = C.SDL_GL_MULTISAMPLESAMPLES         // the number of samples used around the current pixel used for multisample anti-aliasing; defaults to 0; see Remarks for details
+	GL_ACCELERATED_VISUAL         GLattr = C.SDL_GL_ACCELERATED_VISUAL         // set to 1 to require hardware acceleration, set to 0 to force software rendering; defaults to allow either
+	GL_RETAINED_BACKING           GLattr = C.SDL_GL_RETAINED_BACKING           // not used (deprecated)
+	GL_CONTEXT_MAJOR_VERSION      GLattr = C.SDL_GL_CONTEXT_MAJOR_VERSION      // OpenGL context major version
+	GL_CONTEXT_MINOR_VERSION      GLattr = C.SDL_GL_CONTEXT_MINOR_VERSION      // OpenGL context minor version
+	GL_CONTEXT_EGL                GLattr = C.SDL_GL_CONTEXT_EGL                // not used (deprecated)
+	GL_CONTEXT_FLAGS              GLattr = C.SDL_GL_CONTEXT_FLAGS              // some combination of 0 or more of elements of the GLcontextFlag enumeration; defaults to 0 (https://wiki.libsdl.org/SDL_GLcontextFlag)
+	GL_CONTEXT_PROFILE_MASK       GLattr = C.SDL_GL_CONTEXT_PROFILE_MASK       // type of GL context (Core, Compatibility, ES); default value depends on platform (https://wiki.libsdl.org/SDL_GLprofile)
+	GL_SHARE_WITH_CURRENT_CONTEXT GLattr = C.SDL_GL_SHARE_WITH_CURRENT_CONTEXT // OpenGL context sharing; defaults to 0
+	GL_FRAMEBUFFER_SRGB_CAPABLE   GLattr = C.SDL_GL_FRAMEBUFFER_SRGB_CAPABLE   // requests sRGB capable visual; defaults to 0 (>= SDL 2.0.1)
+	GL_CONTEXT_RELEASE_BEHAVIOR   GLattr = C.SDL_GL_CONTEXT_RELEASE_BEHAVIOR   // sets context the release behavior; defaults to 1 (>= SDL 2.0.4)
+	GL_CONTEXT_RESET_NOTIFICATION GLattr = C.SDL_GL_CONTEXT_RESET_NOTIFICATION // (>= SDL 2.0.6)
+	GL_CONTEXT_NO_ERROR           GLattr = C.SDL_GL_CONTEXT_NO_ERROR           // (>= SDL 2.0.6)
 )
 
 // An enumeration of OpenGL profiles.
@@ -373,8 +385,8 @@ const (
 //
 const (
 	FLASH_CANCEL        FlashOperation = C.SDL_FLASH_CANCEL        // Cancel any window flash state
-	FLASH_BRIEFLY                      = C.SDL_FLASH_BRIEFLY       // Flash the window briefly to get attention
-	FLASH_UNTIL_FOCUSED                = C.SDL_FLASH_UNTIL_FOCUSED // Flash the window until it gets focus
+	FLASH_BRIEFLY       FlashOperation = C.SDL_FLASH_BRIEFLY       // Flash the window briefly to get attention
+	FLASH_UNTIL_FOCUSED FlashOperation = C.SDL_FLASH_UNTIL_FOCUSED // Flash the window until it gets focus
 )
 
 type FlashOperation C.SDL_FlashOperation
@@ -396,10 +408,6 @@ type Window C.SDL_Window
 // GLContext is an opaque handle to an OpenGL context.
 type GLContext C.SDL_GLContext
 
-// GLattr is an OpenGL configuration attribute.
-//(https://wiki.libsdl.org/SDL_GLattr)
-type GLattr C.SDL_GLattr
-
 // MessageBoxColor contains RGB value used in an MessageBoxColorScheme.
 // (https://wiki.libsdl.org/SDL_MessageBoxColor)
 type MessageBoxColor struct {
@@ -419,16 +427,16 @@ type cMessageBoxColorScheme C.SDL_MessageBoxColorScheme
 // MessageBoxButtonData contains individual button data for a message box.
 // (https://wiki.libsdl.org/SDL_MessageBoxButtonData)
 type MessageBoxButtonData struct {
-	Flags    uint32 // MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
-	ButtonID int32  // user defined button id (value returned via ShowMessageBox())
-	Text     string // the UTF-8 button text
+	Flags    MessageBoxButtonDataFlags // MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
+	ButtonID int32                     // user defined button id (value returned via ShowMessageBox())
+	Text     string                    // the UTF-8 button text
 }
 
 // MessageBoxData contains title, text, window and other data for a message box.
 // (https://wiki.libsdl.org/SDL_MessageBoxData)
 type MessageBoxData struct {
-	Flags       uint32  // MESSAGEBOX_ERROR, MESSAGEBOX_WARNING, MESSAGEBOX_INFORMATION
-	Window      *Window // parent window or nil
+	Flags       MessageBoxFlags // MESSAGEBOX_ERROR, MESSAGEBOX_WARNING, MESSAGEBOX_INFORMATION
+	Window      *Window         // parent window or nil
 	Title       string
 	Message     string
 	Buttons     []MessageBoxButtonData
@@ -615,7 +623,7 @@ func (window *Window) GetPixelFormat() (PixelFormatConstant, error) {
 
 // CreateWindow creates a window with the specified position, dimensions, and flags.
 // (https://wiki.libsdl.org/SDL_CreateWindow)
-func CreateWindow(title string, x, y, w, h int32, flags uint32) (*Window, error) {
+func CreateWindow(title string, x, y, w, h int32, flags WindowFlags) (*Window, error) {
 	var _window = C.SDL_CreateWindow(C.CString(title), C.int(x), C.int(y), C.int(w), C.int(h), C.Uint32(flags))
 	if _window == nil {
 		return nil, GetError()
@@ -669,8 +677,8 @@ func GetWindowFromID(id uint32) (*Window, error) {
 
 // GetFlags returns the window flags.
 // (https://wiki.libsdl.org/SDL_GetWindowFlags)
-func (window *Window) GetFlags() uint32 {
-	return (uint32)(C.SDL_GetWindowFlags(window.cptr()))
+func (window *Window) GetFlags() WindowFlags {
+	return (WindowFlags)(C.SDL_GetWindowFlags(window.cptr()))
 }
 
 // SetTitle sets the title of the window.
@@ -901,7 +909,7 @@ func (window *Window) GetWindowOpacity() (opacity float32, err error) {
 
 // ShowSimpleMessageBox displays a simple modal message box.
 // (https://wiki.libsdl.org/SDL_ShowSimpleMessageBox)
-func ShowSimpleMessageBox(flags uint32, title, message string, window *Window) error {
+func ShowSimpleMessageBox(flags MessageBoxFlags, title, message string, window *Window) error {
 	_title := C.CString(title)
 	defer C.free(unsafe.Pointer(_title))
 	_message := C.CString(message)

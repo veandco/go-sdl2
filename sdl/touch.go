@@ -42,9 +42,9 @@ type TouchDeviceType C.SDL_TouchDeviceType
 
 const (
 	TOUCH_DEVICE_INVALID           TouchDeviceType = C.SDL_TOUCH_DEVICE_INVALID
-	TOUCH_DEVICE_DIRECT                            = C.SDL_TOUCH_DEVICE_DIRECT            // touch screen with window-relative coordinates
-	TOUCH_DEVICE_INDIRECT_ABSOLUTE                 = C.SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE // trackpad with absolute device coordinates
-	TOUCH_DEVICE_INDIRECT_RELATIVE                 = C.SDL_TOUCH_DEVICE_INDIRECT_RELATIVE // trackpad with screen cursor-relative coordinates
+	TOUCH_DEVICE_DIRECT            TouchDeviceType = C.SDL_TOUCH_DEVICE_DIRECT            // touch screen with window-relative coordinates
+	TOUCH_DEVICE_INDIRECT_ABSOLUTE TouchDeviceType = C.SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE // trackpad with absolute device coordinates
+	TOUCH_DEVICE_INDIRECT_RELATIVE TouchDeviceType = C.SDL_TOUCH_DEVICE_INDIRECT_RELATIVE // trackpad with screen cursor-relative coordinates
 )
 
 // Finger contains touch information.

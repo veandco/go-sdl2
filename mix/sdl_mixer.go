@@ -37,9 +37,12 @@ package mix
 //}
 //#endif
 import "C"
-import "unsafe"
-import "reflect"
-import "github.com/veandco/go-sdl2/sdl"
+import (
+	"reflect"
+	"unsafe"
+
+	"github.com/veandco/go-sdl2/sdl"
+)
 
 // Chunk is the internal format for an audio chunk.
 // (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_85.html)
@@ -53,33 +56,35 @@ type Chunk struct {
 // The different supported fading types.
 // (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_88.html)
 const (
-	NO_FADING Fading = iota
-	FADING_OUT
-	FADING_IN
+	NO_FADING  Fading = C.MIX_NO_FADING
+	FADING_OUT Fading = C.MIX_FADING_OUT
+	FADING_IN  Fading = C.MIX_FADING_IN
 )
 
 // Dynamic libraries init flags used in mix.Init().
 // (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_9.html)
+type InitFlags C.MIX_InitFlags
+
 const (
-	INIT_FLAC = C.MIX_INIT_FLAC
-	INIT_MOD  = C.MIX_INIT_MOD
-	INIT_MP3  = C.MIX_INIT_MP3
-	INIT_OGG  = C.MIX_INIT_OGG
+	INIT_FLAC InitFlags = C.MIX_INIT_FLAC
+	INIT_MOD  InitFlags = C.MIX_INIT_MOD
+	INIT_MP3  InitFlags = C.MIX_INIT_MP3
+	INIT_OGG  InitFlags = C.MIX_INIT_OGG
 )
 
 // These are types of music files (not libraries used to load them)
 // (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_87.html)
 const (
-	NONE MusicType = iota
-	CMD
-	WAV
-	MOD
-	MID
-	OGG
-	MP3
-	MP3_MAD
-	FLAC
-	MODPLUG
+	NONE    MusicType = C.MUS_NONE
+	CMD     MusicType = C.MUS_CMD
+	WAV     MusicType = C.MUS_WAV
+	MOD     MusicType = C.MUS_MOD
+	MID     MusicType = C.MUS_MID
+	OGG     MusicType = C.MUS_OGG
+	MP3     MusicType = C.MUS_MP3
+	MP3_MAD MusicType = C.MUS_MP3_MAD_UNUSED
+	FLAC    MusicType = C.MUS_FLAC
+	MODPLUG MusicType = C.MUS_MODPLUG_UNUSED
 )
 
 // Good default values for a PC soundcard.
@@ -103,11 +108,11 @@ type Music C.Mix_Music
 
 // MusicType is a file format encoding of the music.
 // (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_87.html)
-type MusicType int
+type MusicType C.Mix_MusicType
 
 // Fading ia a return value from mix.FadingMusic() and mix.FadingChannel(). If no fading is taking place on the queried channel or music, then mix.NO_FADING is returned.
 // (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_88.html)
-type Fading int
+type Fading C.Mix_Fading
 
 func cint(b bool) C.int {
 	if b {
@@ -118,8 +123,8 @@ func cint(b bool) C.int {
 
 // Init loads dynamic libraries and prepares them for use. Flags should be one or more flags from mix.InitFlags OR'd together.
 // (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_9.html)
-func Init(flags int) error {
-	initted := int(C.Mix_Init(C.int(flags)))
+func Init(flags InitFlags) error {
+	initted := InitFlags(C.Mix_Init(C.int(flags)))
 	if initted&flags != flags {
 		return sdl.GetError()
 	}

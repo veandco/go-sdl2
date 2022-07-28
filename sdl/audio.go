@@ -133,53 +133,55 @@ import (
 // Audio format masks.
 // (https://wiki.libsdl.org/SDL_AudioFormat)
 const (
-	AUDIO_MASK_BITSIZE  = C.SDL_AUDIO_MASK_BITSIZE  // (0xFF)
-	AUDIO_MASK_DATATYPE = C.SDL_AUDIO_MASK_DATATYPE // (1<<8)
-	AUDIO_MASK_ENDIAN   = C.SDL_AUDIO_MASK_ENDIAN   // (1<<12)
-	AUDIO_MASK_SIGNED   = C.SDL_AUDIO_MASK_SIGNED   // (1<<15)
+	AUDIO_MASK_BITSIZE  AudioFormat = C.SDL_AUDIO_MASK_BITSIZE  // (0xFF)
+	AUDIO_MASK_DATATYPE AudioFormat = C.SDL_AUDIO_MASK_DATATYPE // (1<<8)
+	AUDIO_MASK_ENDIAN   AudioFormat = C.SDL_AUDIO_MASK_ENDIAN   // (1<<12)
+	AUDIO_MASK_SIGNED   AudioFormat = C.SDL_AUDIO_MASK_SIGNED   // (1<<15)
 )
 
 // Audio format values.
 // (https://wiki.libsdl.org/SDL_AudioFormat)
 const (
-	AUDIO_S8 = C.AUDIO_S8 // signed 8-bit samples
-	AUDIO_U8 = C.AUDIO_U8 // unsigned 8-bit samples
+	AUDIO_S8 AudioFormat = C.AUDIO_S8 // signed 8-bit samples
+	AUDIO_U8 AudioFormat = C.AUDIO_U8 // unsigned 8-bit samples
 
-	AUDIO_S16LSB = C.AUDIO_S16LSB // signed 16-bit samples in little-endian byte order
-	AUDIO_S16MSB = C.AUDIO_S16MSB // signed 16-bit samples in big-endian byte order
-	AUDIO_S16SYS = C.AUDIO_S16SYS // signed 16-bit samples in native byte order
-	AUDIO_S16    = C.AUDIO_S16    // AUDIO_S16LSB
-	AUDIO_U16LSB = C.AUDIO_U16LSB // unsigned 16-bit samples in little-endian byte order
-	AUDIO_U16MSB = C.AUDIO_U16MSB // unsigned 16-bit samples in big-endian byte order
-	AUDIO_U16SYS = C.AUDIO_U16SYS // unsigned 16-bit samples in native byte order
-	AUDIO_U16    = C.AUDIO_U16    // AUDIO_U16LSB
+	AUDIO_S16LSB AudioFormat = C.AUDIO_S16LSB // signed 16-bit samples in little-endian byte order
+	AUDIO_S16MSB AudioFormat = C.AUDIO_S16MSB // signed 16-bit samples in big-endian byte order
+	AUDIO_S16SYS AudioFormat = C.AUDIO_S16SYS // signed 16-bit samples in native byte order
+	AUDIO_S16    AudioFormat = C.AUDIO_S16    // AUDIO_S16LSB
+	AUDIO_U16LSB AudioFormat = C.AUDIO_U16LSB // unsigned 16-bit samples in little-endian byte order
+	AUDIO_U16MSB AudioFormat = C.AUDIO_U16MSB // unsigned 16-bit samples in big-endian byte order
+	AUDIO_U16SYS AudioFormat = C.AUDIO_U16SYS // unsigned 16-bit samples in native byte order
+	AUDIO_U16    AudioFormat = C.AUDIO_U16    // AUDIO_U16LSB
 
-	AUDIO_S32LSB = C.AUDIO_S32LSB // 32-bit integer samples in little-endian byte order
-	AUDIO_S32MSB = C.AUDIO_S32MSB // 32-bit integer samples in big-endian byte order
-	AUDIO_S32SYS = C.AUDIO_S32SYS // 32-bit integer samples in native byte order
-	AUDIO_S32    = C.AUDIO_S32    // AUDIO_S32LSB
+	AUDIO_S32LSB AudioFormat = C.AUDIO_S32LSB // 32-bit integer samples in little-endian byte order
+	AUDIO_S32MSB AudioFormat = C.AUDIO_S32MSB // 32-bit integer samples in big-endian byte order
+	AUDIO_S32SYS AudioFormat = C.AUDIO_S32SYS // 32-bit integer samples in native byte order
+	AUDIO_S32    AudioFormat = C.AUDIO_S32    // AUDIO_S32LSB
 
-	AUDIO_F32LSB = C.AUDIO_F32LSB // 32-bit floating point samples in little-endian byte order
-	AUDIO_F32MSB = C.AUDIO_F32MSB // 32-bit floating point samples in big-endian byte order
-	AUDIO_F32SYS = C.AUDIO_F32SYS // 32-bit floating point samples in native byte order
-	AUDIO_F32    = C.AUDIO_F32    // AUDIO_F32LSB
+	AUDIO_F32LSB AudioFormat = C.AUDIO_F32LSB // 32-bit floating point samples in little-endian byte order
+	AUDIO_F32MSB AudioFormat = C.AUDIO_F32MSB // 32-bit floating point samples in big-endian byte order
+	AUDIO_F32SYS AudioFormat = C.AUDIO_F32SYS // 32-bit floating point samples in native byte order
+	AUDIO_F32    AudioFormat = C.AUDIO_F32    // AUDIO_F32LSB
 )
 
 // AllowedChanges flags specify how SDL should behave when a device cannot offer a specific feature. If the application requests a feature that the hardware doesn't offer, SDL will always try to get the closest equivalent. Used in OpenAudioDevice().
 // (https://wiki.libsdl.org/SDL_OpenAudioDevice)
+type AudioDeviceAllowFlags int
+
 const (
-	AUDIO_ALLOW_FREQUENCY_CHANGE = C.SDL_AUDIO_ALLOW_FREQUENCY_CHANGE
-	AUDIO_ALLOW_FORMAT_CHANGE    = C.SDL_AUDIO_ALLOW_FORMAT_CHANGE
-	AUDIO_ALLOW_CHANNELS_CHANGE  = C.SDL_AUDIO_ALLOW_CHANNELS_CHANGE
-	AUDIO_ALLOW_ANY_CHANGE       = C.SDL_AUDIO_ALLOW_ANY_CHANGE
+	AUDIO_ALLOW_FREQUENCY_CHANGE AudioDeviceAllowFlags = C.SDL_AUDIO_ALLOW_FREQUENCY_CHANGE
+	AUDIO_ALLOW_FORMAT_CHANGE    AudioDeviceAllowFlags = C.SDL_AUDIO_ALLOW_FORMAT_CHANGE
+	AUDIO_ALLOW_CHANNELS_CHANGE  AudioDeviceAllowFlags = C.SDL_AUDIO_ALLOW_CHANNELS_CHANGE
+	AUDIO_ALLOW_ANY_CHANGE       AudioDeviceAllowFlags = C.SDL_AUDIO_ALLOW_ANY_CHANGE
 )
 
 // An enumeration of audio device states used in GetAudioDeviceStatus() and GetAudioStatus().
 // (https://wiki.libsdl.org/SDL_AudioStatus)
 const (
 	AUDIO_STOPPED AudioStatus = C.SDL_AUDIO_STOPPED // audio device is stopped
-	AUDIO_PLAYING             = C.SDL_AUDIO_PLAYING // audio device is playing
-	AUDIO_PAUSED              = C.SDL_AUDIO_PAUSED  // audio device is paused
+	AUDIO_PLAYING AudioStatus = C.SDL_AUDIO_PLAYING // audio device is playing
+	AUDIO_PAUSED  AudioStatus = C.SDL_AUDIO_PAUSED  // audio device is paused
 )
 
 // MIX_MAXVOLUME is the full audio volume value used in MixAudioFormat() and AudioFormat().
@@ -384,7 +386,7 @@ func GetAudioDeviceName(index int, isCapture bool) string {
 
 // OpenAudioDevice opens a specific audio device.
 // (https://wiki.libsdl.org/SDL_OpenAudioDevice)
-func OpenAudioDevice(device string, isCapture bool, desired, obtained *AudioSpec, allowedChanges int) (AudioDeviceID, error) {
+func OpenAudioDevice(device string, isCapture bool, desired, obtained *AudioSpec, allowedChanges AudioDeviceAllowFlags) (AudioDeviceID, error) {
 	_device := C.CString(device)
 	if device == "" {
 		_device = nil

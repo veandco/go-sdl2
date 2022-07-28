@@ -5,7 +5,7 @@ import "testing"
 func TestBytesAndBitsPerPixel(t *testing.T) {
 	tests := []struct {
 		name      string
-		format    uint32
+		format    PixelFormatConstant
 		wantBytes int
 		wantBits  int
 	}{
@@ -47,10 +47,10 @@ func TestBytesAndBitsPerPixel(t *testing.T) {
 		{"YVYU", PIXELFORMAT_YVYU, 2, 86},
 	}
 	for _, tt := range tests {
-		if got := BytesPerPixel(tt.format); got != tt.wantBytes {
+		if got := BytesPerPixel(uint32(tt.format)); got != tt.wantBytes {
 			t.Errorf("BytesPerPixel(%s) want %d, got %d", tt.name, tt.wantBytes, got)
 		}
-		if got := BitsPerPixel(tt.format); got != tt.wantBits {
+		if got := BitsPerPixel(uint32(tt.format)); got != tt.wantBits {
 			t.Errorf("BitsPerPixel(%s) want %d, got %d", tt.name, tt.wantBits, got)
 		}
 	}

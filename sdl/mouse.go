@@ -59,20 +59,23 @@ import "C"
 import "unsafe"
 
 // Cursor types for CreateSystemCursor()
+// (https://wiki.libsdl.org/SDL_SystemCursor)
+type SystemCursor C.SDL_SystemCursor
+
 const (
-	SYSTEM_CURSOR_ARROW     = C.SDL_SYSTEM_CURSOR_ARROW     // arrow
-	SYSTEM_CURSOR_IBEAM     = C.SDL_SYSTEM_CURSOR_IBEAM     // i-beam
-	SYSTEM_CURSOR_WAIT      = C.SDL_SYSTEM_CURSOR_WAIT      // wait
-	SYSTEM_CURSOR_CROSSHAIR = C.SDL_SYSTEM_CURSOR_CROSSHAIR // crosshair
-	SYSTEM_CURSOR_WAITARROW = C.SDL_SYSTEM_CURSOR_WAITARROW // small wait cursor (or wait if not available)
-	SYSTEM_CURSOR_SIZENWSE  = C.SDL_SYSTEM_CURSOR_SIZENWSE  // double arrow pointing northwest and southeast
-	SYSTEM_CURSOR_SIZENESW  = C.SDL_SYSTEM_CURSOR_SIZENESW  // double arrow pointing northeast and southwest
-	SYSTEM_CURSOR_SIZEWE    = C.SDL_SYSTEM_CURSOR_SIZEWE    // double arrow pointing west and east
-	SYSTEM_CURSOR_SIZENS    = C.SDL_SYSTEM_CURSOR_SIZENS    // double arrow pointing north and south
-	SYSTEM_CURSOR_SIZEALL   = C.SDL_SYSTEM_CURSOR_SIZEALL   // four pointed arrow pointing north, south, east, and west
-	SYSTEM_CURSOR_NO        = C.SDL_SYSTEM_CURSOR_NO        // slashed circle or crossbones
-	SYSTEM_CURSOR_HAND      = C.SDL_SYSTEM_CURSOR_HAND      // hand
-	NUM_SYSTEM_CURSORS      = C.SDL_NUM_SYSTEM_CURSORS      // (only for bounding internal arrays)
+	SYSTEM_CURSOR_ARROW     SystemCursor = C.SDL_SYSTEM_CURSOR_ARROW     // arrow
+	SYSTEM_CURSOR_IBEAM     SystemCursor = C.SDL_SYSTEM_CURSOR_IBEAM     // i-beam
+	SYSTEM_CURSOR_WAIT      SystemCursor = C.SDL_SYSTEM_CURSOR_WAIT      // wait
+	SYSTEM_CURSOR_CROSSHAIR SystemCursor = C.SDL_SYSTEM_CURSOR_CROSSHAIR // crosshair
+	SYSTEM_CURSOR_WAITARROW SystemCursor = C.SDL_SYSTEM_CURSOR_WAITARROW // small wait cursor (or wait if not available)
+	SYSTEM_CURSOR_SIZENWSE  SystemCursor = C.SDL_SYSTEM_CURSOR_SIZENWSE  // double arrow pointing northwest and southeast
+	SYSTEM_CURSOR_SIZENESW  SystemCursor = C.SDL_SYSTEM_CURSOR_SIZENESW  // double arrow pointing northeast and southwest
+	SYSTEM_CURSOR_SIZEWE    SystemCursor = C.SDL_SYSTEM_CURSOR_SIZEWE    // double arrow pointing west and east
+	SYSTEM_CURSOR_SIZENS    SystemCursor = C.SDL_SYSTEM_CURSOR_SIZENS    // double arrow pointing north and south
+	SYSTEM_CURSOR_SIZEALL   SystemCursor = C.SDL_SYSTEM_CURSOR_SIZEALL   // four pointed arrow pointing north, south, east, and west
+	SYSTEM_CURSOR_NO        SystemCursor = C.SDL_SYSTEM_CURSOR_NO        // slashed circle or crossbones
+	SYSTEM_CURSOR_HAND      SystemCursor = C.SDL_SYSTEM_CURSOR_HAND      // hand
+	NUM_SYSTEM_CURSORS      SystemCursor = C.SDL_NUM_SYSTEM_CURSORS      // (only for bounding internal arrays)
 )
 
 // Scroll direction types for the Scroll event
@@ -82,19 +85,18 @@ const (
 )
 
 // Used as a mask when testing buttons in buttonstate.
+type ButtonStateMask uint32
+
 const (
-	BUTTON_LEFT   = C.SDL_BUTTON_LEFT   // left mouse button
-	BUTTON_MIDDLE = C.SDL_BUTTON_MIDDLE // middle mouse button
-	BUTTON_RIGHT  = C.SDL_BUTTON_RIGHT  // right mouse button
-	BUTTON_X1     = C.SDL_BUTTON_X1     // x1 mouse button
-	BUTTON_X2     = C.SDL_BUTTON_X2     // x2 mouse button
+	BUTTON_LEFT   ButtonStateMask = C.SDL_BUTTON_LEFT   // left mouse button
+	BUTTON_MIDDLE ButtonStateMask = C.SDL_BUTTON_MIDDLE // middle mouse button
+	BUTTON_RIGHT  ButtonStateMask = C.SDL_BUTTON_RIGHT  // right mouse button
+	BUTTON_X1     ButtonStateMask = C.SDL_BUTTON_X1     // x1 mouse button
+	BUTTON_X2     ButtonStateMask = C.SDL_BUTTON_X2     // x2 mouse button
 )
 
 // Cursor is a custom cursor created by CreateCursor() or CreateColorCursor().
 type Cursor C.SDL_Cursor
-
-// SystemCursor is a system cursor created by CreateSystemCursor().
-type SystemCursor C.SDL_SystemCursor
 
 func (c *Cursor) cptr() *C.SDL_Cursor {
 	return (*C.SDL_Cursor)(unsafe.Pointer(c))
@@ -112,25 +114,25 @@ func GetMouseFocus() *Window {
 
 // GetGlobalMouseState returns the current state of the mouse.
 // (https://wiki.libsdl.org/SDL_GetGlobalMouseState)
-func GetGlobalMouseState() (x, y int32, state uint32) {
+func GetGlobalMouseState() (x, y int32, state ButtonStateMask) {
 	var _x, _y C.int
-	_state := uint32(C.SDL_GetGlobalMouseState(&_x, &_y))
+	_state := ButtonStateMask(C.SDL_GetGlobalMouseState(&_x, &_y))
 	return int32(_x), int32(_y), _state
 }
 
 // GetMouseState returns the current state of the mouse.
 // (https://wiki.libsdl.org/SDL_GetMouseState)
-func GetMouseState() (x, y int32, state uint32) {
+func GetMouseState() (x, y int32, state ButtonStateMask) {
 	var _x, _y C.int
-	_state := uint32(C.SDL_GetMouseState(&_x, &_y))
+	_state := ButtonStateMask(C.SDL_GetMouseState(&_x, &_y))
 	return int32(_x), int32(_y), _state
 }
 
 // GetRelativeMouseState returns the relative state of the mouse.
 // (https://wiki.libsdl.org/SDL_GetRelativeMouseState)
-func GetRelativeMouseState() (x, y int32, state uint32) {
+func GetRelativeMouseState() (x, y int32, state ButtonStateMask) {
 	var _x, _y C.int
-	_state := uint32(C.SDL_GetRelativeMouseState(&_x, &_y))
+	_state := ButtonStateMask(C.SDL_GetRelativeMouseState(&_x, &_y))
 	return int32(_x), int32(_y), _state
 }
 
@@ -198,7 +200,7 @@ func FreeCursor(cursor *Cursor) {
 
 // ShowCursor toggles whether or not the cursor is shown.
 // (https://wiki.libsdl.org/SDL_ShowCursor)
-func ShowCursor(toggle int) (int, error) {
+func ShowCursor(toggle EventStateConstant) (int, error) {
 	i := int(C.SDL_ShowCursor(C.int(toggle)))
 	return i, errorFromInt(i)
 }
@@ -219,32 +221,32 @@ func CaptureMouse(toggle bool) error {
 }
 
 // Button is used as a mask when testing buttons in buttonstate.
-func Button(flag uint32) uint32 {
+func Button(flag ButtonStateMask) ButtonStateMask {
 	return 1 << (flag - 1)
 }
 
 // ButtonLMask is used as a mask when testing buttons in buttonstate.
-func ButtonLMask() uint32 {
+func ButtonLMask() ButtonStateMask {
 	return Button(BUTTON_LEFT)
 }
 
 // ButtonMMask is used as a mask when testing buttons in buttonstate.
-func ButtonMMask() uint32 {
+func ButtonMMask() ButtonStateMask {
 	return Button(BUTTON_MIDDLE)
 }
 
 // ButtonRMask is used as a mask when testing buttons in buttonstate.
-func ButtonRMask() uint32 {
+func ButtonRMask() ButtonStateMask {
 	return Button(BUTTON_RIGHT)
 }
 
 // ButtonX1Mask is used as a mask when testing buttons in buttonstate.
-func ButtonX1Mask() uint32 {
+func ButtonX1Mask() ButtonStateMask {
 	return Button(BUTTON_X1)
 }
 
 // ButtonX2Mask is used as a mask when testing buttons in buttonstate.
-func ButtonX2Mask() uint32 {
+func ButtonX2Mask() ButtonStateMask {
 	return Button(BUTTON_X2)
 }
 

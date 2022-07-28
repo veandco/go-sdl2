@@ -71,12 +71,12 @@ import "unsafe"
 type BlendMode uint32
 
 const (
-	BLENDMODE_NONE    = C.SDL_BLENDMODE_NONE  // no blending
-	BLENDMODE_BLEND   = C.SDL_BLENDMODE_BLEND // alpha blending
-	BLENDMODE_ADD     = C.SDL_BLENDMODE_ADD   // additive blending
-	BLENDMODE_MOD     = C.SDL_BLENDMODE_MOD   // color modulate
-	BLENDMODE_MUL     = C.SDL_BLENDMODE_MUL   // color multiply
-	BLENDMODE_INVALID = C.SDL_BLENDMODE_INVALID
+	BLENDMODE_NONE    BlendMode = C.SDL_BLENDMODE_NONE  // no blending
+	BLENDMODE_BLEND   BlendMode = C.SDL_BLENDMODE_BLEND // alpha blending
+	BLENDMODE_ADD     BlendMode = C.SDL_BLENDMODE_ADD   // additive blending
+	BLENDMODE_MOD     BlendMode = C.SDL_BLENDMODE_MOD   // color modulate
+	BLENDMODE_MUL     BlendMode = C.SDL_BLENDMODE_MUL   // color multiply
+	BLENDMODE_INVALID BlendMode = C.SDL_BLENDMODE_INVALID
 )
 
 func (bm BlendMode) c() C.SDL_BlendMode {
@@ -92,11 +92,11 @@ func (bm *BlendMode) cptr() *C.SDL_BlendMode {
 type BlendOperation C.SDL_BlendOperation
 
 const (
-	BLENDOPERATION_ADD          = C.SDL_BLENDOPERATION_ADD
-	BLENDOPERATION_SUBTRACT     = C.SDL_BLENDOPERATION_SUBTRACT
-	BLENDOPERATION_REV_SUBTRACT = C.SDL_BLENDOPERATION_REV_SUBTRACT
-	BLENDOPERATION_MINIMUM      = C.SDL_BLENDOPERATION_MINIMUM
-	BLENDOPERATION_MAXIMUM      = C.SDL_BLENDOPERATION_MAXIMUM
+	BLENDOPERATION_ADD          BlendOperation = C.SDL_BLENDOPERATION_ADD
+	BLENDOPERATION_SUBTRACT     BlendOperation = C.SDL_BLENDOPERATION_SUBTRACT
+	BLENDOPERATION_REV_SUBTRACT BlendOperation = C.SDL_BLENDOPERATION_REV_SUBTRACT
+	BLENDOPERATION_MINIMUM      BlendOperation = C.SDL_BLENDOPERATION_MINIMUM
+	BLENDOPERATION_MAXIMUM      BlendOperation = C.SDL_BLENDOPERATION_MAXIMUM
 )
 
 // BlendFactor is an enumeration of blend factors used when creating a custom blend mode with ComposeCustomBlendMode().
@@ -104,16 +104,16 @@ const (
 type BlendFactor C.SDL_BlendFactor
 
 const (
-	BLENDFACTOR_ZERO                = C.SDL_BLENDFACTOR_ZERO                // 0, 0, 0, 0
-	BLENDFACTOR_ONE                 = C.SDL_BLENDFACTOR_ONE                 // 1, 1, 1, 1
-	BLENDFACTOR_SRC_COLOR           = C.SDL_BLENDFACTOR_SRC_COLOR           // srcR, srcG, srcB, srcA
-	BLENDFACTOR_ONE_MINUS_SRC_COLOR = C.SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR // 1-srcR, 1-srcG, 1-srcB, 1-srcA
-	BLENDFACTOR_SRC_ALPHA           = C.SDL_BLENDFACTOR_SRC_ALPHA           // srcA, srcA, srcA, srcA
-	BLENDFACTOR_ONE_MINUS_SRC_ALPHA = C.SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA // 1-srcA, 1-srcA, 1-srcA, 1-srcA
-	BLENDFACTOR_DST_COLOR           = C.SDL_BLENDFACTOR_DST_COLOR           // dstR, dstG, dstB, dstA
-	BLENDFACTOR_ONE_MINUS_DST_COLOR = C.SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR // 1-dstR, 1-dstG, 1-dstB, 1-dstA
-	BLENDFACTOR_DST_ALPHA           = C.SDL_BLENDFACTOR_DST_ALPHA           // dstA, dstA, dstA, dstA
-	BLENDFACTOR_ONE_MINUS_DST_ALPHA = C.SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA // 1-dstA, 1-dstA, 1-dstA, 1-dstA
+	BLENDFACTOR_ZERO                BlendFactor = C.SDL_BLENDFACTOR_ZERO                // 0, 0, 0, 0
+	BLENDFACTOR_ONE                 BlendFactor = C.SDL_BLENDFACTOR_ONE                 // 1, 1, 1, 1
+	BLENDFACTOR_SRC_COLOR           BlendFactor = C.SDL_BLENDFACTOR_SRC_COLOR           // srcR, srcG, srcB, srcA
+	BLENDFACTOR_ONE_MINUS_SRC_COLOR BlendFactor = C.SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR // 1-srcR, 1-srcG, 1-srcB, 1-srcA
+	BLENDFACTOR_SRC_ALPHA           BlendFactor = C.SDL_BLENDFACTOR_SRC_ALPHA           // srcA, srcA, srcA, srcA
+	BLENDFACTOR_ONE_MINUS_SRC_ALPHA BlendFactor = C.SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA // 1-srcA, 1-srcA, 1-srcA, 1-srcA
+	BLENDFACTOR_DST_COLOR           BlendFactor = C.SDL_BLENDFACTOR_DST_COLOR           // dstR, dstG, dstB, dstA
+	BLENDFACTOR_ONE_MINUS_DST_COLOR BlendFactor = C.SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR // 1-dstR, 1-dstG, 1-dstB, 1-dstA
+	BLENDFACTOR_DST_ALPHA           BlendFactor = C.SDL_BLENDFACTOR_DST_ALPHA           // dstA, dstA, dstA, dstA
+	BLENDFACTOR_ONE_MINUS_DST_ALPHA BlendFactor = C.SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA // 1-dstA, 1-dstA, 1-dstA, 1-dstA
 )
 
 // ComposeCustomBlendMode creates a custom blend mode, which may or may not be supported by a given renderer
