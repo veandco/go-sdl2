@@ -711,6 +711,12 @@ func (renderer *Renderer) GetViewport() (rect Rect) {
 	return
 }
 
+// IsClipEnabled returns whether clipping is enabled on the given renderer.
+// (https://wiki.libsdl.org/SDL_RenderIsClipEnabled)
+func (renderer *Renderer) IsClipEnabled() bool {
+	return C.SDL_RenderIsClipEnabled(renderer.cptr()) == C.SDL_TRUE
+}
+
 // SetClipRect sets the clip rectangle for rendering on the specified target.
 // (https://wiki.libsdl.org/SDL_RenderSetClipRect)
 func (renderer *Renderer) SetClipRect(rect *Rect) error {
