@@ -324,42 +324,48 @@ import "unsafe"
 
 // Hat positions.
 // (https://wiki.libsdl.org/SDL_JoystickGetHat)
+type JoystickHat int
+
 const (
-	HAT_CENTERED  = C.SDL_HAT_CENTERED
-	HAT_UP        = C.SDL_HAT_UP
-	HAT_RIGHT     = C.SDL_HAT_RIGHT
-	HAT_DOWN      = C.SDL_HAT_DOWN
-	HAT_LEFT      = C.SDL_HAT_LEFT
-	HAT_RIGHTUP   = C.SDL_HAT_RIGHTUP
-	HAT_RIGHTDOWN = C.SDL_HAT_RIGHTDOWN
-	HAT_LEFTUP    = C.SDL_HAT_LEFTUP
-	HAT_LEFTDOWN  = C.SDL_HAT_LEFTDOWN
+	HAT_CENTERED  JoystickHat = C.SDL_HAT_CENTERED
+	HAT_UP        JoystickHat = C.SDL_HAT_UP
+	HAT_RIGHT     JoystickHat = C.SDL_HAT_RIGHT
+	HAT_DOWN      JoystickHat = C.SDL_HAT_DOWN
+	HAT_LEFT      JoystickHat = C.SDL_HAT_LEFT
+	HAT_RIGHTUP   JoystickHat = C.SDL_HAT_RIGHTUP
+	HAT_RIGHTDOWN JoystickHat = C.SDL_HAT_RIGHTDOWN
+	HAT_LEFTUP    JoystickHat = C.SDL_HAT_LEFTUP
+	HAT_LEFTDOWN  JoystickHat = C.SDL_HAT_LEFTDOWN
 )
 
 // Types of a joystick.
+type JoystickType C.SDL_JoystickType
+
 const (
-	JOYSTICK_TYPE_UNKNOWN        = C.SDL_JOYSTICK_TYPE_UNKNOWN
-	JOYSTICK_TYPE_GAMECONTROLLER = C.SDL_JOYSTICK_TYPE_GAMECONTROLLER
-	JOYSTICK_TYPE_WHEEL          = C.SDL_JOYSTICK_TYPE_WHEEL
-	JOYSTICK_TYPE_ARCADE_STICK   = C.SDL_JOYSTICK_TYPE_ARCADE_STICK
-	JOYSTICK_TYPE_FLIGHT_STICK   = C.SDL_JOYSTICK_TYPE_FLIGHT_STICK
-	JOYSTICK_TYPE_DANCE_PAD      = C.SDL_JOYSTICK_TYPE_DANCE_PAD
-	JOYSTICK_TYPE_GUITAR         = C.SDL_JOYSTICK_TYPE_GUITAR
-	JOYSTICK_TYPE_DRUM_KIT       = C.SDL_JOYSTICK_TYPE_DRUM_KIT
-	JOYSTICK_TYPE_ARCADE_PAD     = C.SDL_JOYSTICK_TYPE_ARCADE_PAD
-	JOYSTICK_TYPE_THROTTLE       = C.SDL_JOYSTICK_TYPE_THROTTLE
+	JOYSTICK_TYPE_UNKNOWN        JoystickType = C.SDL_JOYSTICK_TYPE_UNKNOWN
+	JOYSTICK_TYPE_GAMECONTROLLER JoystickType = C.SDL_JOYSTICK_TYPE_GAMECONTROLLER
+	JOYSTICK_TYPE_WHEEL          JoystickType = C.SDL_JOYSTICK_TYPE_WHEEL
+	JOYSTICK_TYPE_ARCADE_STICK   JoystickType = C.SDL_JOYSTICK_TYPE_ARCADE_STICK
+	JOYSTICK_TYPE_FLIGHT_STICK   JoystickType = C.SDL_JOYSTICK_TYPE_FLIGHT_STICK
+	JOYSTICK_TYPE_DANCE_PAD      JoystickType = C.SDL_JOYSTICK_TYPE_DANCE_PAD
+	JOYSTICK_TYPE_GUITAR         JoystickType = C.SDL_JOYSTICK_TYPE_GUITAR
+	JOYSTICK_TYPE_DRUM_KIT       JoystickType = C.SDL_JOYSTICK_TYPE_DRUM_KIT
+	JOYSTICK_TYPE_ARCADE_PAD     JoystickType = C.SDL_JOYSTICK_TYPE_ARCADE_PAD
+	JOYSTICK_TYPE_THROTTLE       JoystickType = C.SDL_JOYSTICK_TYPE_THROTTLE
 )
 
 // An enumeration of battery levels of a joystick.
 // (https://wiki.libsdl.org/SDL_JoystickPowerLevel)
+type JoystickPowerLevel C.SDL_JoystickPowerLevel
+
 const (
-	JOYSTICK_POWER_UNKNOWN = C.SDL_JOYSTICK_POWER_UNKNOWN
-	JOYSTICK_POWER_EMPTY   = C.SDL_JOYSTICK_POWER_EMPTY
-	JOYSTICK_POWER_LOW     = C.SDL_JOYSTICK_POWER_LOW
-	JOYSTICK_POWER_MEDIUM  = C.SDL_JOYSTICK_POWER_MEDIUM
-	JOYSTICK_POWER_FULL    = C.SDL_JOYSTICK_POWER_FULL
-	JOYSTICK_POWER_WIRED   = C.SDL_JOYSTICK_POWER_WIRED
-	JOYSTICK_POWER_MAX     = C.SDL_JOYSTICK_POWER_MAX
+	JOYSTICK_POWER_UNKNOWN JoystickPowerLevel = C.SDL_JOYSTICK_POWER_UNKNOWN
+	JOYSTICK_POWER_EMPTY   JoystickPowerLevel = C.SDL_JOYSTICK_POWER_EMPTY
+	JOYSTICK_POWER_LOW     JoystickPowerLevel = C.SDL_JOYSTICK_POWER_LOW
+	JOYSTICK_POWER_MEDIUM  JoystickPowerLevel = C.SDL_JOYSTICK_POWER_MEDIUM
+	JOYSTICK_POWER_FULL    JoystickPowerLevel = C.SDL_JOYSTICK_POWER_FULL
+	JOYSTICK_POWER_WIRED   JoystickPowerLevel = C.SDL_JOYSTICK_POWER_WIRED
+	JOYSTICK_POWER_MAX     JoystickPowerLevel = C.SDL_JOYSTICK_POWER_MAX
 )
 
 // Joystick is an SDL joystick.
@@ -370,12 +376,6 @@ type JoystickGUID C.SDL_JoystickGUID
 
 // JoystickID is joystick's instance id.
 type JoystickID C.SDL_JoystickID
-
-// JoystickType is a type of a joystick.
-type JoystickType C.SDL_JoystickType
-
-// JoystickPowerLevel is a battery level of a joystick.
-type JoystickPowerLevel C.SDL_JoystickPowerLevel
 
 func (joy *Joystick) cptr() *C.SDL_Joystick {
 	return (*C.SDL_Joystick)(unsafe.Pointer(joy))
@@ -651,7 +651,7 @@ func (joy *Joystick) AxisInitialState(axis int) (state int16, ok bool) {
 
 // Hat returns the current state of a POV hat on a joystick.
 // (https://wiki.libsdl.org/SDL_JoystickGetHat)
-func (joy *Joystick) Hat(hat int) byte {
+func (joy *Joystick) Hat(hat JoystickHat) byte {
 	return (byte)(C.SDL_JoystickGetHat(joy.cptr(), C.int(hat)))
 }
 

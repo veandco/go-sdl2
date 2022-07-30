@@ -34,9 +34,11 @@ const (
 	INIT_EVERYTHING     = C.SDL_INIT_EVERYTHING     // all of the above subsystems
 )
 
+type ButtonState uint8
+
 const (
-	RELEASED = 0
-	PRESSED  = 1
+	RELEASED ButtonState = C.SDL_RELEASED
+	PRESSED  ButtonState = C.SDL_PRESSED
 )
 
 // Calls a function in the main thread. It is only properly initialized inside

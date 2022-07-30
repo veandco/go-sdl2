@@ -9,7 +9,7 @@ func TestLog(t *testing.T) {
 }
 
 func TestLogSetOutputFunction(t *testing.T) {
-	LogSetOutputFunction(func(d interface{}, c int, pri LogPriority, message string) {
+	LogSetOutputFunction(func(d interface{}, c LogCategory, pri LogPriority, message string) {
 		println("CUSTOM:", message)
 	}, nil)
 	Log("log_test: TestLogSetOutputFunction: %s", "this is a message")

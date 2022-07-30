@@ -45,33 +45,36 @@ import "C"
 import "unsafe"
 
 // Various supported windowing subsystems.
+// (https://wiki.libsdl.org/SDL_SYSWM_TYPE)
+type SysWmType C.SDL_SYSWM_TYPE
+
 const (
-	SYSWM_UNKNOWN  = C.SDL_SYSWM_UNKNOWN
-	SYSWM_WINDOWS  = C.SDL_SYSWM_WINDOWS  // Microsoft Windows
-	SYSWM_X11      = C.SDL_SYSWM_X11      // X Window System
-	SYSWM_DIRECTFB = C.SDL_SYSWM_DIRECTFB // DirectFB
-	SYSWM_COCOA    = C.SDL_SYSWM_COCOA    // Apple Mac OS X
-	SYSWM_UIKIT    = C.SDL_SYSWM_UIKIT    // Apple iOS
-	SYSWM_WAYLAND  = C.SDL_SYSWM_WAYLAND  // Wayland (>= SDL 2.0.2)
-	SYSWM_MIR      = C.SDL_SYSWM_MIR      // Mir (>= SDL 2.0.2)
-	SYSWM_WINRT    = C.SDL_SYSWM_WINRT    // WinRT (>= SDL 2.0.3)
-	SYSWM_ANDROID  = C.SDL_SYSWM_ANDROID  // Android (>= SDL 2.0.4)
-	SYSWM_VIVANTE  = C.SDL_SYSWM_VIVANTE  // Vivante (>= SDL 2.0.5)
+	SYSWM_UNKNOWN  SysWmType = C.SDL_SYSWM_UNKNOWN
+	SYSWM_WINDOWS  SysWmType = C.SDL_SYSWM_WINDOWS  // Microsoft Windows
+	SYSWM_X11      SysWmType = C.SDL_SYSWM_X11      // X Window System
+	SYSWM_DIRECTFB SysWmType = C.SDL_SYSWM_DIRECTFB // DirectFB
+	SYSWM_COCOA    SysWmType = C.SDL_SYSWM_COCOA    // Apple Mac OS X
+	SYSWM_UIKIT    SysWmType = C.SDL_SYSWM_UIKIT    // Apple iOS
+	SYSWM_WAYLAND  SysWmType = C.SDL_SYSWM_WAYLAND  // Wayland (>= SDL 2.0.2)
+	SYSWM_MIR      SysWmType = C.SDL_SYSWM_MIR      // Mir (>= SDL 2.0.2)
+	SYSWM_WINRT    SysWmType = C.SDL_SYSWM_WINRT    // WinRT (>= SDL 2.0.3)
+	SYSWM_ANDROID  SysWmType = C.SDL_SYSWM_ANDROID  // Android (>= SDL 2.0.4)
+	SYSWM_VIVANTE  SysWmType = C.SDL_SYSWM_VIVANTE  // Vivante (>= SDL 2.0.5)
 )
 
 // SysWMInfo contains system-dependent information about a window.
 // (https://wiki.libsdl.org/SDL_SysWMinfo)
 type SysWMInfo struct {
-	Version   Version  // a Version structure that contains the current SDL version
-	Subsystem uint32   // the windowing system type
-	dummy     [24]byte // unused (to help compilers when no specific system is available)
+	Version   Version   // a Version structure that contains the current SDL version
+	Subsystem SysWmType // the windowing system type
+	dummy     [24]byte  // unused (to help compilers when no specific system is available)
 }
 
 // WindowsInfo contains Microsoft Windows window information.
 type WindowsInfo struct {
-	Window unsafe.Pointer // the window handle
+	Window        unsafe.Pointer // the window handle
 	DeviceContext unsafe.Pointer // the device context handle
-	Instance unsafe.Pointer // the instance handle
+	Instance      unsafe.Pointer // the instance handle
 }
 
 // X11Info contains X Window System window information.
@@ -100,9 +103,9 @@ type UIKitInfo struct {
 // SysWMmsg contains system-dependent window manager messages.
 // (https://wiki.libsdl.org/SDL_SysWMmsg)
 type SysWMmsg struct {
-	Version   Version  // a Version structure that contains the current SDL version
-	Subsystem uint32   // the windowing system type
-	data      [24]byte // internal data
+	Version   Version   // a Version structure that contains the current SDL version
+	Subsystem SysWmType // the windowing system type
+	data      [24]byte  // internal data
 }
 
 func (info *SysWMInfo) cptr() *C.SDL_SysWMinfo {

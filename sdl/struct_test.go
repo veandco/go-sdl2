@@ -106,7 +106,6 @@ func TestTypeABI(t *testing.T) {
 	}{
 		{AudioStatus(0), cAudioStatus(0)},
 		{ErrorCode(0), cErrorCode(0)},
-		{RendererFlip(0), cRendererFlip(0)},
 	}
 
 	for _, test := range tests {

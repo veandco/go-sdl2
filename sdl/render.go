@@ -270,11 +270,13 @@ import (
 
 // An enumeration of flags used when creating a rendering context.
 // (https://wiki.libsdl.org/SDL_RendererFlags)
+type RendererFlags uint32
+
 const (
-	RENDERER_SOFTWARE      = C.SDL_RENDERER_SOFTWARE      // the renderer is a software fallback
-	RENDERER_ACCELERATED   = C.SDL_RENDERER_ACCELERATED   // the renderer uses hardware acceleration
-	RENDERER_PRESENTVSYNC  = C.SDL_RENDERER_PRESENTVSYNC  // present is synchronized with the refresh rate
-	RENDERER_TARGETTEXTURE = C.SDL_RENDERER_TARGETTEXTURE // the renderer supports rendering to texture
+	RENDERER_SOFTWARE      RendererFlags = C.SDL_RENDERER_SOFTWARE      // the renderer is a software fallback
+	RENDERER_ACCELERATED   RendererFlags = C.SDL_RENDERER_ACCELERATED   // the renderer uses hardware acceleration
+	RENDERER_PRESENTVSYNC  RendererFlags = C.SDL_RENDERER_PRESENTVSYNC  // present is synchronized with the refresh rate
+	RENDERER_TARGETTEXTURE RendererFlags = C.SDL_RENDERER_TARGETTEXTURE // the renderer supports rendering to texture
 )
 
 type ScaleMode uint32
@@ -282,8 +284,8 @@ type ScaleMode uint32
 // The scaling mode for a texture.
 const (
 	ScaleModeNearest ScaleMode = C.SDL_ScaleModeNearest // nearest pixel sampling
-	ScaleModeLinear            = C.SDL_ScaleModeLinear  // linear filtering
-	ScaleModeBest              = C.SDL_ScaleModeBest    // anisotropic filtering
+	ScaleModeLinear  ScaleMode = C.SDL_ScaleModeLinear  // linear filtering
+	ScaleModeBest    ScaleMode = C.SDL_ScaleModeBest    // anisotropic filtering
 )
 
 func (sm ScaleMode) c() C.SDL_ScaleMode {
@@ -296,27 +298,37 @@ func (sm *ScaleMode) cptr() *C.SDL_ScaleMode {
 
 // An enumeration of texture access patterns..
 // (https://wiki.libsdl.org/SDL_TextureAccess)
+type TextureAccess int
+
 const (
-	TEXTUREACCESS_STATIC    = C.SDL_TEXTUREACCESS_STATIC    // changes rarely, not lockable
-	TEXTUREACCESS_STREAMING = C.SDL_TEXTUREACCESS_STREAMING // changes frequently, lockable
-	TEXTUREACCESS_TARGET    = C.SDL_TEXTUREACCESS_TARGET    // can be used as a render target
+	TEXTUREACCESS_STATIC    TextureAccess = C.SDL_TEXTUREACCESS_STATIC    // changes rarely, not lockable
+	TEXTUREACCESS_STREAMING TextureAccess = C.SDL_TEXTUREACCESS_STREAMING // changes frequently, lockable
+	TEXTUREACCESS_TARGET    TextureAccess = C.SDL_TEXTUREACCESS_TARGET    // can be used as a render target
 )
 
 // An enumeration of the texture channel modulation used in Renderer.Copy().
 // (https://wiki.libsdl.org/SDL_TextureModulate)
+type TextureModulate C.SDL_TextureModulate
+
 const (
-	TEXTUREMODULATE_NONE  = C.SDL_TEXTUREMODULATE_NONE  // no modulation
-	TEXTUREMODULATE_COLOR = C.SDL_TEXTUREMODULATE_COLOR // srcC = srcC * color
-	TEXTUREMODULATE_ALPHA = C.SDL_TEXTUREMODULATE_ALPHA // srcA = srcA * alpha
+	TEXTUREMODULATE_NONE  TextureModulate = C.SDL_TEXTUREMODULATE_NONE  // no modulation
+	TEXTUREMODULATE_COLOR TextureModulate = C.SDL_TEXTUREMODULATE_COLOR // srcC = srcC * color
+	TEXTUREMODULATE_ALPHA TextureModulate = C.SDL_TEXTUREMODULATE_ALPHA // srcA = srcA * alpha
 )
 
 // An enumeration of flags that can be used in the flip parameter for Renderer.CopyEx().
 // (https://wiki.libsdl.org/SDL_RendererFlip)
+type RendererFlip C.SDL_RendererFlip
+
 const (
 	FLIP_NONE       RendererFlip = C.SDL_FLIP_NONE       // do not flip
-	FLIP_HORIZONTAL              = C.SDL_FLIP_HORIZONTAL // flip horizontally
-	FLIP_VERTICAL                = C.SDL_FLIP_VERTICAL   // flip vertically
+	FLIP_HORIZONTAL RendererFlip = C.SDL_FLIP_HORIZONTAL // flip horizontally
+	FLIP_VERTICAL   RendererFlip = C.SDL_FLIP_VERTICAL   // flip vertically
 )
+
+func (flip RendererFlip) c() C.SDL_RendererFlip {
+	return C.SDL_RendererFlip(flip)
+}
 
 // RendererInfo contains information on the capabilities of a render driver or the current render context.
 // (https://wiki.libsdl.org/SDL_RendererInfo)
@@ -348,20 +360,11 @@ func (info *cRendererInfo) cptr() *C.SDL_RendererInfo {
 	return (*C.SDL_RendererInfo)(unsafe.Pointer(info))
 }
 
-// RendererFlip is an enumeration of flags that can be used in the flip parameter for Renderer.CopyEx().
-// (https://wiki.libsdl.org/SDL_RendererFlip)
-type RendererFlip uint32
-type cRendererFlip C.SDL_RendererFlip
-
 // Vertex structure
 type Vertex struct {
 	Position FPoint // Vertex position, in SDL_Renderer coordinates
 	Color    Color  // Vertex color
 	TexCoord FPoint // Normalized texture coordinates, if needed
-}
-
-func (flip RendererFlip) c() C.SDL_RendererFlip {
-	return C.SDL_RendererFlip(flip)
 }
 
 // GetNumRenderDrivers returns the number of 2D rendering drivers available for the current display.
@@ -387,7 +390,7 @@ func GetRenderDriverInfo(index int, info *RendererInfo) (int, error) {
 
 // CreateWindowAndRenderer returns a new window and default renderer.
 // (https://wiki.libsdl.org/SDL_CreateWindowAndRenderer)
-func CreateWindowAndRenderer(w, h int32, flags uint32) (*Window, *Renderer, error) {
+func CreateWindowAndRenderer(w, h int32, flags WindowFlags) (*Window, *Renderer, error) {
 	var window *C.SDL_Window
 	var renderer *C.SDL_Renderer
 	ret := C.SDL_CreateWindowAndRenderer(
@@ -404,7 +407,7 @@ func CreateWindowAndRenderer(w, h int32, flags uint32) (*Window, *Renderer, erro
 
 // CreateRenderer returns a new 2D rendering context for a window.
 // (https://wiki.libsdl.org/SDL_CreateRenderer)
-func CreateRenderer(window *Window, index int, flags uint32) (*Renderer, error) {
+func CreateRenderer(window *Window, index int, flags RendererFlags) (*Renderer, error) {
 	renderer := C.SDL_CreateRenderer(window.cptr(), C.int(index), C.Uint32(flags))
 	if renderer == nil {
 		return nil, GetError()
@@ -460,7 +463,7 @@ func (renderer *Renderer) GetOutputSize() (w, h int32, err error) {
 
 // CreateTexture returns a new texture for a rendering context.
 // (https://wiki.libsdl.org/SDL_CreateTexture)
-func (renderer *Renderer) CreateTexture(format uint32, access int, w, h int32) (*Texture, error) {
+func (renderer *Renderer) CreateTexture(format PixelFormatConstant, access TextureAccess, w, h int32) (*Texture, error) {
 	texture := C.SDL_CreateTexture(
 		renderer.cptr(),
 		C.Uint32(format),
@@ -1043,7 +1046,7 @@ func (renderer *Renderer) CopyExF(texture *Texture, src *Rect, dst *FRect, angle
 
 // ReadPixels reads pixels from the current rendering target.
 // (https://wiki.libsdl.org/SDL_RenderReadPixels)
-func (renderer *Renderer) ReadPixels(rect *Rect, format uint32, pixels unsafe.Pointer, pitch int) error {
+func (renderer *Renderer) ReadPixels(rect *Rect, format PixelFormatConstant, pixels unsafe.Pointer, pitch int) error {
 	return errorFromInt(int(
 		C.SDL_RenderReadPixels(
 			renderer.cptr(),

@@ -46,20 +46,26 @@ import (
 )
 
 // RWops types
+// (https://wiki.libsdl.org/SDL_RWops#stream_type)
+type RWStreamType int
+
 const (
-	RWOPS_UNKNOWN   = 0 // unknown stream type
-	RWOPS_WINFILE   = 1 // win32 file
-	RWOPS_STDFILE   = 2 // stdio file
-	RWOPS_JNIFILE   = 3 // android asset
-	RWOPS_MEMORY    = 4 // memory stream
-	RWOPS_MEMORY_RO = 5 // read-only memory stream
+	RWOPS_UNKNOWN   RWStreamType = C.SDL_RWOPS_UNKNOWN   // unknown stream type
+	RWOPS_WINFILE   RWStreamType = C.SDL_RWOPS_WINFILE   // win32 file
+	RWOPS_STDFILE   RWStreamType = C.SDL_RWOPS_STDFILE   // stdio file
+	RWOPS_JNIFILE   RWStreamType = C.SDL_RWOPS_JNIFILE   // android asset
+	RWOPS_MEMORY    RWStreamType = C.SDL_RWOPS_MEMORY    // memory stream
+	RWOPS_MEMORY_RO RWStreamType = C.SDL_RWOPS_MEMORY_RO // read-only memory stream
 )
 
 // RWops seek from
+// (https://wiki.libsdl.org/SDL_RWops#seek_function)
+type RWSeek int
+
 const (
-	RW_SEEK_SET = C.RW_SEEK_SET // seek from the beginning of data
-	RW_SEEK_CUR = C.RW_SEEK_CUR // seek relative to current read point
-	RW_SEEK_END = C.RW_SEEK_END // seek relative to the end of data
+	RW_SEEK_SET RWSeek = C.RW_SEEK_SET // seek from the beginning of data
+	RW_SEEK_CUR RWSeek = C.RW_SEEK_CUR // seek relative to current read point
+	RW_SEEK_END RWSeek = C.RW_SEEK_END // seek relative to the end of data
 )
 
 // RWops provides an abstract interface to stream I/O. Applications can generally ignore the specifics of this structure's internals and treat them as opaque pointers. The details are important to lower-level code that might need to implement one of these, however.
@@ -126,7 +132,7 @@ func (rwops *RWops) Size() (int64, error) {
 
 // Seek seeks within the RWops data stream.
 // (https://wiki.libsdl.org/SDL_RWseek)
-func (rwops *RWops) Seek(offset int64, whence int) (int64, error) {
+func (rwops *RWops) Seek(offset int64, whence RWSeek) (int64, error) {
 	if rwops == nil {
 		return -1, ErrInvalidParameters
 	}

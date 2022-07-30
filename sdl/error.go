@@ -30,11 +30,11 @@ var ErrInvalidParameters = errors.New("Invalid Parameters")
 // SDL error codes with their corresponding predefined strings.
 const (
 	ENOMEM      ErrorCode = C.SDL_ENOMEM      // out of memory
-	EFREAD                = C.SDL_EFREAD      // error reading from datastream
-	EFWRITE               = C.SDL_EFWRITE     // error writing to datastream
-	EFSEEK                = C.SDL_EFSEEK      // error seeking in datastream
-	UNSUPPORTED           = C.SDL_UNSUPPORTED // that operation is not supported
-	LASTERROR             = C.SDL_LASTERROR   // the highest numbered predefined error
+	EFREAD      ErrorCode = C.SDL_EFREAD      // error reading from datastream
+	EFWRITE     ErrorCode = C.SDL_EFWRITE     // error writing to datastream
+	EFSEEK      ErrorCode = C.SDL_EFSEEK      // error seeking in datastream
+	UNSUPPORTED ErrorCode = C.SDL_UNSUPPORTED // that operation is not supported
+	LASTERROR   ErrorCode = C.SDL_LASTERROR   // the highest numbered predefined error
 )
 
 // ErrorCode is an error code used in SDL error messages.

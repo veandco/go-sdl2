@@ -4,16 +4,21 @@ package img
 //#include <stdlib.h>
 //#include "sdl_image_wrapper.h"
 import "C"
-import "unsafe"
-import "errors"
-import "github.com/veandco/go-sdl2/sdl"
+import (
+	"errors"
+	"unsafe"
+
+	"github.com/veandco/go-sdl2/sdl"
+)
 
 // Flags which may be passed to img.Init() to load support of image formats, can be bitwise OR'd together.
+type InitFlags C.IMG_InitFlags
+
 const (
-	INIT_JPG  = 0x00000001 // JPG
-	INIT_PNG  = 0x00000002 // PNG
-	INIT_TIF  = 0x00000004 // TIF
-	INIT_WEBP = 0x00000008 // WebP
+	INIT_JPG  InitFlags = C.IMG_INIT_JPG  // JPG
+	INIT_PNG  InitFlags = C.IMG_INIT_PNG  // PNG
+	INIT_TIF  InitFlags = C.IMG_INIT_TIF  // TIF
+	INIT_WEBP InitFlags = C.IMG_INIT_WEBP // WebP
 )
 
 // LinkedVersion returns the version of the dynamically linked SDL_image library.
@@ -24,7 +29,7 @@ func LinkedVersion() *sdl.Version {
 
 // Init loads dynamic libraries and prepares them for use. Flags should be one or more flags from IMG_InitFlags OR'd together. It returns the flags successfully initialized, or 0 on failure.
 // (http://www.libsdl.org/projects/SDL_image/docs/SDL_image_8.html)
-func Init(flags int) error {
+func Init(flags InitFlags) error {
 	_flags := (C.int)(flags)
 	ret := int(C.IMG_Init(_flags))
 	if ret == 0 {
