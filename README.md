@@ -101,22 +101,18 @@ For more complete examples, see https://github.com/veandco/go-sdl2-examples. You
 
 
 # Requirements
+* [Go v1.13+](https://go.dev/dl/)
 * [SDL2](http://libsdl.org/download-2.0.php)
 * [SDL2_image (optional)](http://www.libsdl.org/projects/SDL_image/)
 * [SDL2_mixer (optional)](http://www.libsdl.org/projects/SDL_mixer/)
 * [SDL2_ttf (optional)](http://www.libsdl.org/projects/SDL_ttf/)
 * [SDL2_gfx (optional)](http://www.ferzkopp.net/wordpress/2016/01/02/sdl_gfx-sdl2_gfx/)
 
-Below is some commands that can be used to install the required packages in
-some Linux distributions. Some older versions of the distributions such as
-Ubuntu 13.10 may also be used but it may miss an optional package such as
-_libsdl2-ttf-dev_ on Ubuntu 13.10's case which is available in Ubuntu 14.04.
-
-On __Ubuntu 14.04 and above__, type:\
+On __Ubuntu 22.04 and above__, type:\
 `apt install libsdl2{,-image,-mixer,-ttf,-gfx}-dev`
 
-On __Fedora 25 and above__, type:\
-`yum install SDL2{,_image,_mixer,_ttf,_gfx}-devel`
+On __Fedora 36 and above__, type:\
+`dnf install SDL2{,_image,_mixer,_ttf,_gfx}-devel`
 
 On __Arch Linux__, type:\
 `pacman -S sdl2{,_image,_mixer,_ttf,_gfx}`
