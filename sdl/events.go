@@ -229,13 +229,15 @@ type CommonEvent struct {
 	Timestamp uint32    // timestamp of the event
 }
 
+type cCommonEvent C.SDL_CommonEvent
+
 // GetType returns the event type.
-func (e *CommonEvent) GetType() EventType {
+func (e CommonEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *CommonEvent) GetTimestamp() uint32 {
+func (e CommonEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -246,19 +248,18 @@ type DisplayEvent struct {
 	Timestamp uint32    // timestamp of the event
 	Display   uint32    // the associated display index
 	Event     uint8     // TODO: (https://wiki.libsdl.org/SDL_DisplayEventID)
-	_         uint8     // padding
-	_         uint8     // padding
-	_         uint8     // padding
 	Data1     int32     // event dependent data
 }
 
+type cDisplayEvent C.SDL_DisplayEvent
+
 // GetType returns the event type.
-func (e *DisplayEvent) GetType() EventType {
+func (e DisplayEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *DisplayEvent) GetTimestamp() uint32 {
+func (e DisplayEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -269,21 +270,18 @@ type WindowEvent struct {
 	Timestamp uint32        // timestamp of the event
 	WindowID  uint32        // the associated window
 	Event     WindowEventID // (https://wiki.libsdl.org/SDL_WindowEventID)
-	_         uint8         // padding
-	_         uint8         // padding
-	_         uint8         // padding
 	Data1     int32         // event dependent data
 	Data2     int32         // event dependent data
 }
 type cWindowEvent C.SDL_WindowEvent
 
 // GetType returns the event type.
-func (e *WindowEvent) GetType() EventType {
+func (e WindowEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *WindowEvent) GetTimestamp() uint32 {
+func (e WindowEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -295,94 +293,60 @@ type KeyboardEvent struct {
 	WindowID  uint32      // the window with keyboard focus, if any
 	State     ButtonState // PRESSED, RELEASED
 	Repeat    uint8       // non-zero if this is a key repeat
-	_         uint8       // padding
-	_         uint8       // padding
 	Keysym    Keysym      // Keysym representing the key that was pressed or released
 }
 type cKeyboardEvent C.SDL_KeyboardEvent
 
 // GetType returns the event type.
-func (e *KeyboardEvent) GetType() EventType {
+func (e KeyboardEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *KeyboardEvent) GetTimestamp() uint32 {
+func (e KeyboardEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
 // TextEditingEvent contains keyboard text editing event information.
 // (https://wiki.libsdl.org/SDL_TextEditingEvent)
 type TextEditingEvent struct {
-	Type      EventType                            // TEXTEDITING
-	Timestamp uint32                               // timestamp of the event
-	WindowID  uint32                               // the window with keyboard focus, if any
-	Text      [C.SDL_TEXTINPUTEVENT_TEXT_SIZE]byte // the null-terminated editing text in UTF-8 encoding
-	Start     int32                                // the location to begin editing from
-	Length    int32                                // the number of characters to edit from the start point
+	Type      EventType // TEXTEDITING
+	Timestamp uint32    // timestamp of the event
+	WindowID  uint32    // the window with keyboard focus, if any
+	Text      string    // the null-terminated editing text in UTF-8 encoding
+	Start     int32     // the location to begin editing from
+	Length    int32     // the number of characters to edit from the start point
 }
 type cTextEditingEvent C.SDL_TextEditingEvent
 
 // GetType returns the event type.
-func (e *TextEditingEvent) GetType() EventType {
+func (e TextEditingEvent) GetType() EventType {
 	return e.Type
 }
 
-// GetText returns the text as string
-func (e *TextEditingEvent) GetText() string {
-	length := func(buf []byte) int {
-		for i := range buf {
-			if buf[i] == 0 {
-				return i
-			}
-		}
-
-		return 0
-	}(e.Text[:])
-
-	text := e.Text[:length]
-	return string(text)
-}
-
 // GetTimestamp returns the timestamp of the event.
-func (e *TextEditingEvent) GetTimestamp() uint32 {
+func (e TextEditingEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
 // TextInputEvent contains keyboard text input event information.
 // (https://wiki.libsdl.org/SDL_TextInputEvent)
 type TextInputEvent struct {
-	Type      EventType                            // TEXTINPUT
-	Timestamp uint32                               // timestamp of the event
-	WindowID  uint32                               // the window with keyboard focus, if any
-	Text      [C.SDL_TEXTINPUTEVENT_TEXT_SIZE]byte // the null-terminated input text in UTF-8 encoding
+	Type      EventType // TEXTINPUT
+	Timestamp uint32    // timestamp of the event
+	WindowID  uint32    // the window with keyboard focus, if any
+	Text      string    // the null-terminated input text in UTF-8 encoding
 }
 type cTextInputEvent C.SDL_TextInputEvent
 
 // GetType returns the event type.
-func (e *TextInputEvent) GetType() EventType {
+func (e TextInputEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *TextInputEvent) GetTimestamp() uint32 {
+func (e TextInputEvent) GetTimestamp() uint32 {
 	return e.Timestamp
-}
-
-// GetText returns the text as string
-func (e *TextInputEvent) GetText() string {
-	length := func(buf []byte) int {
-		for i := range buf {
-			if buf[i] == 0 {
-				return i
-			}
-		}
-
-		return 0
-	}(e.Text[:])
-
-	text := e.Text[:length]
-	return string(text)
 }
 
 // MouseMotionEvent contains mouse motion event information.
@@ -401,12 +365,12 @@ type MouseMotionEvent struct {
 type cMouseMotionEvent C.SDL_MouseMotionEvent
 
 // GetType returns the event type.
-func (e *MouseMotionEvent) GetType() EventType {
+func (e MouseMotionEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *MouseMotionEvent) GetTimestamp() uint32 {
+func (e MouseMotionEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -420,19 +384,18 @@ type MouseButtonEvent struct {
 	Button    ButtonStateMask // BUTTON_LEFT, BUTTON_MIDDLE, BUTTON_RIGHT, BUTTON_X1, BUTTON_X2
 	State     ButtonState     // PRESSED, RELEASED
 	Clicks    uint8           // 1 for single-click, 2 for double-click, etc. (>= SDL 2.0.2)
-	_         uint8           // padding
 	X         int32           // X coordinate, relative to window
 	Y         int32           // Y coordinate, relative to window
 }
 type cMouseButtonEvent C.SDL_MouseButtonEvent
 
 // GetType returns the event type.
-func (e *MouseButtonEvent) GetType() EventType {
+func (e MouseButtonEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *MouseButtonEvent) GetTimestamp() uint32 {
+func (e MouseButtonEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -452,12 +415,12 @@ type MouseWheelEvent struct {
 type cMouseWheelEvent C.SDL_MouseWheelEvent
 
 // GetType returns the event type.
-func (e *MouseWheelEvent) GetType() EventType {
+func (e MouseWheelEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *MouseWheelEvent) GetTimestamp() uint32 {
+func (e MouseWheelEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -468,21 +431,17 @@ type JoyAxisEvent struct {
 	Timestamp uint32     // timestamp of the event
 	Which     JoystickID // the instance id of the joystick that reported the event
 	Axis      uint8      // the index of the axis that changed
-	_         uint8      // padding
-	_         uint8      // padding
-	_         uint8      // padding
 	Value     int16      // the current position of the axis (range: -32768 to 32767)
-	_         uint16     // padding
 }
 type cJoyAxisEvent C.SDL_JoyAxisEvent
 
 // GetType returns the event type.
-func (e *JoyAxisEvent) GetType() EventType {
+func (e JoyAxisEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *JoyAxisEvent) GetTimestamp() uint32 {
+func (e JoyAxisEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -493,21 +452,18 @@ type JoyBallEvent struct {
 	Timestamp uint32     // timestamp of the event
 	Which     JoystickID // the instance id of the joystick that reported the event
 	Ball      uint8      // the index of the trackball that changed
-	_         uint8      // padding
-	_         uint8      // padding
-	_         uint8      // padding
 	XRel      int16      // the relative motion in the X direction
 	YRel      int16      // the relative motion in the Y direction
 }
 type cJoyBallEvent C.SDL_JoyBallEvent
 
 // GetType returns the event type.
-func (e *JoyBallEvent) GetType() EventType {
+func (e JoyBallEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *JoyBallEvent) GetTimestamp() uint32 {
+func (e JoyBallEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -519,18 +475,16 @@ type JoyHatEvent struct {
 	Which     JoystickID  // the instance id of the joystick that reported the event
 	Hat       uint8       // the index of the hat that changed
 	Value     JoystickHat // HAT_LEFTUP, HAT_UP, HAT_RIGHTUP, HAT_LEFT, HAT_CENTERED, HAT_RIGHT, HAT_LEFTDOWN, HAT_DOWN, HAT_RIGHTDOWN
-	_         uint8       // padding
-	_         uint8       // padding
 }
 type cJoyHatEvent C.SDL_JoyHatEvent
 
 // GetType returns the event type.
-func (e *JoyHatEvent) GetType() EventType {
+func (e JoyHatEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *JoyHatEvent) GetTimestamp() uint32 {
+func (e JoyHatEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -542,18 +496,16 @@ type JoyButtonEvent struct {
 	Which     JoystickID  // the instance id of the joystick that reported the event
 	Button    uint8       // the index of the button that changed
 	State     ButtonState // PRESSED, RELEASED
-	_         uint8       // padding
-	_         uint8       // padding
 }
 type cJoyButtonEvent C.SDL_JoyButtonEvent
 
 // GetType returns the event type.
-func (e *JoyButtonEvent) GetType() EventType {
+func (e JoyButtonEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *JoyButtonEvent) GetTimestamp() uint32 {
+func (e JoyButtonEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -565,13 +517,15 @@ type JoyDeviceAddedEvent struct {
 	Which     JoystickID // the joystick device index
 }
 
+type cJoyDeviceEvent C.SDL_JoyDeviceEvent
+
 // GetType returns the event type.
-func (e *JoyDeviceAddedEvent) GetType() EventType {
+func (e JoyDeviceAddedEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *JoyDeviceAddedEvent) GetTimestamp() uint32 {
+func (e JoyDeviceAddedEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -584,12 +538,12 @@ type JoyDeviceRemovedEvent struct {
 }
 
 // GetType returns the event type.
-func (e *JoyDeviceRemovedEvent) GetType() EventType {
+func (e JoyDeviceRemovedEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *JoyDeviceRemovedEvent) GetTimestamp() uint32 {
+func (e JoyDeviceRemovedEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -600,21 +554,17 @@ type ControllerAxisEvent struct {
 	Timestamp uint32             // the timestamp of the event
 	Which     JoystickID         // the joystick instance id
 	Axis      GameControllerAxis // the controller axis (https://wiki.libsdl.org/SDL_GameControllerAxis)
-	_         uint8              // padding
-	_         uint8              // padding
-	_         uint8              // padding
 	Value     int16              // the axis value (range: -32768 to 32767)
-	_         uint16             // padding
 }
 type cControllerAxisEvent C.SDL_ControllerAxisEvent
 
 // GetType returns the event type.
-func (e *ControllerAxisEvent) GetType() EventType {
+func (e ControllerAxisEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *ControllerAxisEvent) GetTimestamp() uint32 {
+func (e ControllerAxisEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -626,18 +576,16 @@ type ControllerButtonEvent struct {
 	Which     JoystickID           // the joystick instance id
 	Button    GameControllerButton // the controller button (https://wiki.libsdl.org/SDL_GameControllerButton)
 	State     ButtonState          // PRESSED, RELEASED
-	_         uint8                // padding
-	_         uint8                // padding
 }
 type cControllerButtonEvent C.SDL_ControllerButtonEvent
 
 // GetType returns the event type.
-func (e *ControllerButtonEvent) GetType() EventType {
+func (e ControllerButtonEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *ControllerButtonEvent) GetTimestamp() uint32 {
+func (e ControllerButtonEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -651,12 +599,12 @@ type ControllerDeviceEvent struct {
 type cControllerDeviceEvent C.SDL_ControllerDeviceEvent
 
 // GetType returns the event type.
-func (e *ControllerDeviceEvent) GetType() EventType {
+func (e ControllerDeviceEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *ControllerDeviceEvent) GetTimestamp() uint32 {
+func (e ControllerDeviceEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -667,19 +615,16 @@ type AudioDeviceEvent struct {
 	Timestamp uint32    // the timestamp of the event
 	Which     uint32    // the audio device index for the AUDIODEVICEADDED event (valid until next GetNumAudioDevices() call), AudioDeviceID for the AUDIODEVICEREMOVED event
 	IsCapture uint8     // zero if an audio output device, non-zero if an audio capture device
-	_         uint8     // padding
-	_         uint8     // padding
-	_         uint8     // padding
 }
 type cAudioDeviceEvent C.SDL_AudioDeviceEvent
 
 // GetType returns the event type.
-func (e *AudioDeviceEvent) GetType() EventType {
+func (e AudioDeviceEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *AudioDeviceEvent) GetTimestamp() uint32 {
+func (e AudioDeviceEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -700,12 +645,12 @@ type TouchFingerEvent struct {
 type cTouchFingerEvent C.SDL_TouchFingerEvent
 
 // GetType returns the event type.
-func (e *TouchFingerEvent) GetType() EventType {
+func (e TouchFingerEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *TouchFingerEvent) GetTimestamp() uint32 {
+func (e TouchFingerEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -720,17 +665,16 @@ type MultiGestureEvent struct {
 	X          float32   // the normalized center of gesture
 	Y          float32   // the normalized center of gesture
 	NumFingers uint16    // the number of fingers used in the gesture
-	_          uint16    // padding
 }
 type cMultiGestureEvent C.SDL_MultiGestureEvent
 
 // GetType returns the event type.
-func (e *MultiGestureEvent) GetType() EventType {
+func (e MultiGestureEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *MultiGestureEvent) GetTimestamp() uint32 {
+func (e MultiGestureEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -749,12 +693,12 @@ type DollarGestureEvent struct {
 type cDollarGestureEvent C.SDL_DollarGestureEvent
 
 // GetType returns the event type.
-func (e *DollarGestureEvent) GetType() EventType {
+func (e DollarGestureEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *DollarGestureEvent) GetTimestamp() uint32 {
+func (e DollarGestureEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -766,22 +710,15 @@ type DropEvent struct {
 	File      string    // the file name
 	WindowID  uint32    // the window that was dropped on, if any
 }
-
-type tDropEvent struct {
-	Type      EventType
-	Timestamp uint32
-	File      unsafe.Pointer
-	WindowID  uint32
-}
 type cDropEvent C.SDL_DropEvent
 
 // GetType returns the event type.
-func (e *DropEvent) GetType() EventType {
+func (e DropEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *DropEvent) GetTimestamp() uint32 {
+func (e DropEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -796,12 +733,12 @@ type SensorEvent struct {
 type cSensorEvent C.SDL_SensorEvent
 
 // GetType returns the event type.
-func (e *SensorEvent) GetType() EventType {
+func (e SensorEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *SensorEvent) GetTimestamp() uint32 {
+func (e SensorEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -813,12 +750,12 @@ type RenderEvent struct {
 }
 
 // GetType returns the event type.
-func (e *RenderEvent) GetType() EventType {
+func (e RenderEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *RenderEvent) GetTimestamp() uint32 {
+func (e RenderEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -830,12 +767,12 @@ type QuitEvent struct {
 }
 
 // GetType returns the event type.
-func (e *QuitEvent) GetType() EventType {
+func (e QuitEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *QuitEvent) GetTimestamp() uint32 {
+func (e QuitEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -846,12 +783,12 @@ type OSEvent struct {
 }
 
 // GetType returns the event type.
-func (e *OSEvent) GetType() EventType {
+func (e OSEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *OSEvent) GetTimestamp() uint32 {
+func (e OSEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -863,12 +800,12 @@ type ClipboardEvent struct {
 }
 
 // GetType returns the event type.
-func (e *ClipboardEvent) GetType() EventType {
+func (e ClipboardEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *ClipboardEvent) GetTimestamp() uint32 {
+func (e ClipboardEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -885,12 +822,12 @@ type UserEvent struct {
 type cUserEvent C.SDL_UserEvent
 
 // GetType returns the event type.
-func (e *UserEvent) GetType() EventType {
+func (e UserEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *UserEvent) GetTimestamp() uint32 {
+func (e UserEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -904,12 +841,12 @@ type SysWMEvent struct {
 type cSysWMEvent C.SDL_SysWMEvent
 
 // GetType returns the event type.
-func (e *SysWMEvent) GetType() EventType {
+func (e SysWMEvent) GetType() EventType {
 	return e.Type
 }
 
 // GetTimestamp returns the timestamp of the event.
-func (e *SysWMEvent) GetTimestamp() uint32 {
+func (e SysWMEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -1008,68 +945,291 @@ func PollEvent() Event {
 func goEvent(cevent *CEvent) Event {
 	switch cevent.Type {
 	case DISPLAYEVENT:
-		return (*DisplayEvent)(unsafe.Pointer(cevent))
+		e := (*cDisplayEvent)(unsafe.Pointer(cevent))
+		return DisplayEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			Display:   uint32(e.display),
+			Event:     uint8(e.event),
+			Data1:     int32(e.data1),
+		}
 	case WINDOWEVENT:
-		return (*WindowEvent)(unsafe.Pointer(cevent))
+		e := (*cWindowEvent)(unsafe.Pointer(cevent))
+		return WindowEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			WindowID:  uint32(e.windowID),
+			Event:     WindowEventID(e.event),
+			Data1:     int32(e.data1),
+			Data2:     int32(e.data2),
+		}
 	case SYSWMEVENT:
-		return (*SysWMEvent)(unsafe.Pointer(cevent))
+		e := (*cSysWMEvent)(unsafe.Pointer(cevent))
+		return SysWMEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			Msg:       (*SysWMmsg)(unsafe.Pointer(e.msg)),
+		}
 	case KEYDOWN, KEYUP:
-		return (*KeyboardEvent)(unsafe.Pointer(cevent))
+		e := (*cKeyboardEvent)(unsafe.Pointer(cevent))
+		return KeyboardEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			WindowID:  uint32(e.windowID),
+			State:     ButtonState(e.state),
+			Keysym: Keysym{
+				Mod:      uint16(e.keysym.mod),
+				Sym:      Keycode(e.keysym.sym),
+				Scancode: Scancode(e.keysym.scancode),
+			},
+		}
 	case TEXTEDITING:
-		return (*TextEditingEvent)(unsafe.Pointer(cevent))
+		e := (*cTextEditingEvent)(unsafe.Pointer(cevent))
+		return TextEditingEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			WindowID:  uint32(e.windowID),
+			Text:      C.GoString(&e.text[0]), // text is null-terminated
+			Start:     int32(e.start),
+			Length:    int32(e.length),
+		}
 	case TEXTINPUT:
-		return (*TextInputEvent)(unsafe.Pointer(cevent))
+		e := (*cTextInputEvent)(unsafe.Pointer(cevent))
+		return TextInputEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			WindowID:  uint32(e.windowID),
+			Text:      C.GoString(&e.text[0]),
+		}
 	case MOUSEMOTION:
-		return (*MouseMotionEvent)(unsafe.Pointer(cevent))
+		e := (*cMouseMotionEvent)(unsafe.Pointer(cevent))
+		return MouseMotionEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			WindowID:  uint32(e.windowID),
+			Which:     uint32(e.which),
+			State:     ButtonStateMask(e.state),
+			X:         int32(e.x),
+			Y:         int32(e.y),
+			XRel:      int32(e.xrel),
+			YRel:      int32(e.yrel),
+		}
 	case MOUSEBUTTONDOWN, MOUSEBUTTONUP:
-		return (*MouseButtonEvent)(unsafe.Pointer(cevent))
+		e := (*cMouseButtonEvent)(unsafe.Pointer(cevent))
+		return MouseButtonEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			WindowID:  uint32(e.windowID),
+			Which:     uint32(e.which),
+			Button:    ButtonStateMask(e.button),
+			State:     ButtonState(e.state),
+			Clicks:    uint8(e.clicks),
+			X:         int32(e.x),
+			Y:         int32(e.y),
+		}
 	case MOUSEWHEEL:
-		return (*MouseWheelEvent)(unsafe.Pointer(cevent))
+		e := (*cMouseWheelEvent)(unsafe.Pointer(cevent))
+		return MouseWheelEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			WindowID:  uint32(e.windowID),
+			Which:     uint32(e.which),
+			X:         int32(e.x),
+			Y:         int32(e.y),
+			Direction: uint32(e.direction),
+			PreciseX:  float32(e.preciseX),
+			PreciseY:  float32(e.preciseY),
+		}
 	case JOYAXISMOTION:
-		return (*JoyAxisEvent)(unsafe.Pointer(cevent))
+		e := (*cJoyAxisEvent)(unsafe.Pointer(cevent))
+		return JoyAxisEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			Which:     JoystickID(e.which),
+			Axis:      uint8(e.axis),
+			Value:     int16(e.value),
+		}
 	case JOYBALLMOTION:
-		return (*JoyBallEvent)(unsafe.Pointer(cevent))
+		e := (*cJoyBallEvent)(unsafe.Pointer(cevent))
+		return JoyBallEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			Which:     JoystickID(e.which),
+			Ball:      uint8(e.ball),
+			XRel:      int16(e.xrel),
+			YRel:      int16(e.yrel),
+		}
 	case JOYHATMOTION:
-		return (*JoyHatEvent)(unsafe.Pointer(cevent))
+		e := (*cJoyHatEvent)(unsafe.Pointer(cevent))
+		return JoyHatEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			Which:     JoystickID(e.which),
+			Hat:       uint8(e.hat),
+			Value:     JoystickHat(e.value),
+		}
 	case JOYBUTTONDOWN, JOYBUTTONUP:
-		return (*JoyButtonEvent)(unsafe.Pointer(cevent))
+		e := (*cJoyButtonEvent)(unsafe.Pointer(cevent))
+		return JoyButtonEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			Which:     JoystickID(e.which),
+			Button:    uint8(e.button),
+			State:     ButtonState(e.state),
+		}
 	case JOYDEVICEADDED:
-		return (*JoyDeviceAddedEvent)(unsafe.Pointer(cevent))
+		e := (*cJoyDeviceEvent)(unsafe.Pointer(cevent))
+		return JoyDeviceAddedEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			Which:     JoystickID(e.which),
+		}
 	case JOYDEVICEREMOVED:
-		return (*JoyDeviceRemovedEvent)(unsafe.Pointer(cevent))
+		e := (*cJoyDeviceEvent)(unsafe.Pointer(cevent))
+		return JoyDeviceRemovedEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			Which:     JoystickID(e.which),
+		}
 	case CONTROLLERAXISMOTION:
-		return (*ControllerAxisEvent)(unsafe.Pointer(cevent))
+		e := (*cControllerAxisEvent)(unsafe.Pointer(cevent))
+		return ControllerAxisEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			Which:     JoystickID(e.which),
+			Axis:      GameControllerAxis(e.axis),
+			Value:     int16(e.value),
+		}
 	case CONTROLLERBUTTONDOWN, CONTROLLERBUTTONUP:
-		return (*ControllerButtonEvent)(unsafe.Pointer(cevent))
+		e := (*cControllerButtonEvent)(unsafe.Pointer(cevent))
+		return ControllerButtonEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			Which:     JoystickID(e.which),
+			Button:    GameControllerButton(e.button),
+			State:     ButtonState(e.state),
+		}
 	case CONTROLLERDEVICEADDED, CONTROLLERDEVICEREMOVED, CONTROLLERDEVICEREMAPPED:
-		return (*ControllerDeviceEvent)(unsafe.Pointer(cevent))
+		e := (*cControllerDeviceEvent)(unsafe.Pointer(cevent))
+		return ControllerDeviceEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			Which:     JoystickID(e.which),
+		}
 	case AUDIODEVICEADDED, AUDIODEVICEREMOVED:
-		return (*AudioDeviceEvent)(unsafe.Pointer(cevent))
+		e := (*cAudioDeviceEvent)(unsafe.Pointer(cevent))
+		return AudioDeviceEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			Which:     uint32(e.which),
+			IsCapture: uint8(e.iscapture),
+		}
 	case FINGERMOTION, FINGERDOWN, FINGERUP:
-		return (*TouchFingerEvent)(unsafe.Pointer(cevent))
+		e := (*cTouchFingerEvent)(unsafe.Pointer(cevent))
+		return TouchFingerEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			TouchID:   TouchID(e.touchId),
+			FingerID:  FingerID(e.fingerId),
+			X:         float32(e.x),
+			Y:         float32(e.y),
+			DX:        float32(e.dx),
+			DY:        float32(e.dy),
+			Pressure:  float32(e.pressure),
+			WindowID:  uint32(e.windowID),
+		}
 	case MULTIGESTURE:
-		return (*MultiGestureEvent)(unsafe.Pointer(cevent))
+		e := (*cMultiGestureEvent)(unsafe.Pointer(cevent))
+		return MultiGestureEvent{
+			Type:       EventType(e._type),
+			Timestamp:  uint32(e.timestamp),
+			TouchID:    TouchID(e.touchId),
+			DTheta:     float32(e.dTheta),
+			DDist:      float32(e.dDist),
+			X:          float32(e.x),
+			Y:          float32(e.y),
+			NumFingers: uint16(e.numFingers),
+		}
 	case DOLLARGESTURE, DOLLARRECORD:
-		return (*DollarGestureEvent)(unsafe.Pointer(cevent))
+		e := (*cDollarGestureEvent)(unsafe.Pointer(cevent))
+		return DollarGestureEvent{
+			Type:       EventType(e._type),
+			Timestamp:  uint32(e.timestamp),
+			TouchID:    TouchID(e.touchId),
+			GestureID:  GestureID(e.gestureId),
+			NumFingers: uint32(e.numFingers),
+			Error:      float32(e.error),
+			X:          float32(e.x),
+			Y:          float32(e.y),
+		}
 	case DROPFILE, DROPTEXT, DROPBEGIN, DROPCOMPLETE:
-		e := (*tDropEvent)(unsafe.Pointer(cevent))
-		event := DropEvent{Type: e.Type, Timestamp: e.Timestamp, File: C.GoString((*C.char)(e.File)), WindowID: e.WindowID}
-		C.SDL_free(e.File)
-		return &event
+		e := (*cDropEvent)(unsafe.Pointer(cevent))
+		// From SDL doc: the file name, which should be freed with SDL_free(), is NULL on BEGIN/COMPLETE.
+		defer func() {
+			if e.file != nil {
+				C.free(unsafe.Pointer(e.file))
+			}
+		}()
+		return DropEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			File:      C.GoString(e.file),
+			WindowID:  uint32(e.windowID),
+		}
 	case SENSORUPDATE:
-		return (*SensorEvent)(unsafe.Pointer(cevent))
+		e := (*cSensorEvent)(unsafe.Pointer(cevent))
+		return SensorEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			Which:     int32(e.which),
+			Data: [6]float32{
+				float32(e.data[0]),
+				float32(e.data[1]),
+				float32(e.data[2]),
+				float32(e.data[3]),
+				float32(e.data[4]),
+				float32(e.data[5]),
+			},
+		}
 	case RENDER_TARGETS_RESET, RENDER_DEVICE_RESET:
-		return (*RenderEvent)(unsafe.Pointer(cevent))
+		// This is a CommonEvent as it doesn't currently (sdl-v2.0.22) have any additional fields
+		e := (*cCommonEvent)(unsafe.Pointer(cevent))
+		return RenderEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+		}
 	case QUIT:
-		return (*QuitEvent)(unsafe.Pointer(cevent))
+		// This is a CommonEvent as it doesn't currently (sdl-v2.0.22) have any additional fields
+		e := (*cCommonEvent)(unsafe.Pointer(cevent))
+		return QuitEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+		}
 	case CLIPBOARDUPDATE:
-		return (*ClipboardEvent)(unsafe.Pointer(cevent))
+		// This is a CommonEvent as it doesn't currently (sdl-v2.0.22) have any additional fields
+		e := (*cCommonEvent)(unsafe.Pointer(cevent))
+		return ClipboardEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+		}
 	default:
 		if cevent.Type >= USEREVENT {
 			// all events beyond USEREVENT are UserEvents to be registered with RegisterEvents
-			return (*UserEvent)(unsafe.Pointer(cevent))
+			e := (*cUserEvent)(unsafe.Pointer(cevent))
+			return UserEvent{
+				Type:      EventType(e._type),
+				Timestamp: uint32(e.timestamp),
+				WindowID:  uint32(e.windowID),
+				Code:      int32(e.code),
+				Data1:     e.data1,
+				Data2:     e.data2,
+			}
 		}
-		return (*CommonEvent)(unsafe.Pointer(cevent))
+		e := (*cCommonEvent)(unsafe.Pointer(cevent))
+		return CommonEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+		}
 	}
 }
 
