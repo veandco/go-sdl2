@@ -8,7 +8,6 @@ jobs:
       IMG_VERSION: 2.0.5
       MIX_VERSION: 2.0.4
       TTF_VERSION: 2.0.18
-      GFX_VERSION: 1.0.4
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
@@ -25,7 +24,6 @@ jobs:
             IMG-$IMG_VERSION
             MIX-$MIX_VERSION
             TTF-$TTF_VERSION
-            GFX-$GFX_VERSION
           key: ${{ runner.os }}-sdl2-${{ hashFiles('**/*.h') }}
           restore-keys: |
             ${{ runner.os }}-sdl2-
@@ -53,12 +51,6 @@ jobs:
           ./configure --prefix=$HOME/.local
           make install
           cd ..
-          wget https://excellmedia.dl.sourceforge.net/project/sdl2gfx/SDL2_gfx-$GFX_VERSION.tar.gz
-          tar xf SDL2_gfx-$GFX_VERSION.tar.gz
-          cd SDL2_gfx-$GFX_VERSION
-          ./configure --prefix=$HOME/.local
-          make install
-          cd ..
           wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-$IMG_VERSION.tar.gz
           tar xf SDL2_image-$IMG_VERSION.tar.gz
           cd SDL2_image-$IMG_VERSION
@@ -80,4 +72,4 @@ jobs:
 
       - name: Test if Go-SDL2 works with the SDL2 packages
         run: |
-          go build ./{sdl,gfx,img,mix,ttf}
+          go build ./{sdl,img,mix,ttf}
