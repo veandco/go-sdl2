@@ -43,6 +43,16 @@ static inline void _SDL_LogMessage(int category, SDL_LogPriority priority, const
 {
     SDL_LogCritical(category, "%s", fmt);
 }
+
+#if !(SDL_VERSION_ATLEAST(2,0,12))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_LogCategory is not supported before SDL 2.0.12")
+#endif
+
+typedef int SDL_LogCategory;
+
+#endif
 */
 import "C"
 import (
