@@ -276,7 +276,7 @@ const (
 
 // An enumeration of window events.
 // (https://wiki.libsdl.org/SDL_WindowEventID)
-type WindowEventID C.SDL_WindowEventID
+type WindowEventID uint32
 
 const (
 	WINDOWEVENT_NONE            WindowEventID = C.SDL_WINDOWEVENT_NONE            // (never used)
