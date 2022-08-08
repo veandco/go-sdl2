@@ -15,6 +15,19 @@ static inline int SDL_UpdateYUVTexture(SDL_Texture* texture, const SDL_Rect* rec
 }
 #endif
 
+#if !(SDL_VERSION_ATLEAST(2,0,4))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderIsClipEnabled is not supported before SDL 2.0.4")
+#endif
+
+static inline SDL_bool SDLCALL SDL_RenderIsClipEnabled(SDL_Renderer * renderer)
+{
+	return SDL_FALSE;
+}
+
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,5))
 
 #if defined(WARN_OUTDATED)
