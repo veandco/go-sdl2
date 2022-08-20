@@ -4,11 +4,10 @@ jobs:
   test-build:
     runs-on: ubuntu-latest
     env:
-      SDL_VERSION: 2.0.22
-      IMG_VERSION: 2.0.5
-      MIX_VERSION: 2.0.4
-      TTF_VERSION: 2.0.18
-      GFX_VERSION: 1.0.4
+      SDL_VERSION: 2.24.0
+      IMG_VERSION: 2.6.0
+      MIX_VERSION: 2.6.0
+      TTF_VERSION: 2.20.0
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
@@ -25,7 +24,6 @@ jobs:
             IMG-$IMG_VERSION
             MIX-$MIX_VERSION
             TTF-$TTF_VERSION
-            GFX-$GFX_VERSION
           key: ${{ runner.os }}-sdl2-${{ hashFiles('**/*.h') }}
           restore-keys: |
             ${{ runner.os }}-sdl2-
@@ -47,32 +45,26 @@ jobs:
 
       - name: Download, build, and install SDL2 packages
         run: |
-          wget https://www.libsdl.org/release/SDL2-$SDL_VERSION.tar.gz
-          tar xf SDL2-$SDL_VERSION.tar.gz
+          wget https://github.com/libsdl-org/SDL/releases/download/release-$SDL_VERSION/SDL2-$SDL_VERSION.zip
+          unzip SDL2-$SDL_VERSION.zip
           cd SDL2-$SDL_VERSION
           ./configure --prefix=$HOME/.local
           make install
           cd ..
-          wget https://excellmedia.dl.sourceforge.net/project/sdl2gfx/SDL2_gfx-$GFX_VERSION.tar.gz
-          tar xf SDL2_gfx-$GFX_VERSION.tar.gz
-          cd SDL2_gfx-$GFX_VERSION
-          ./configure --prefix=$HOME/.local
-          make install
-          cd ..
-          wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-$IMG_VERSION.tar.gz
-          tar xf SDL2_image-$IMG_VERSION.tar.gz
+          wget https://github.com/libsdl-org/SDL_image/releases/download/release-$IMG_VERSION/SDL2_image-$IMG_VERSION.zip
+          unzip SDL2_image-$IMG_VERSION.zip
           cd SDL2_image-$IMG_VERSION
           ./configure --prefix=$HOME/.local
           make install
           cd ..
-          wget https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-$MIX_VERSION.tar.gz
-          tar xf SDL2_mixer-$MIX_VERSION.tar.gz
+          wget https://github.com/libsdl-org/SDL_mixer/releases/download/release-$MIX_VERSION/SDL2_mixer-$MIX_VERSION.zip
+          unzip SDL2_mixer-$MIX_VERSION.zip
           cd SDL2_mixer-$MIX_VERSION
           ./configure --prefix=$HOME/.local
           make install
           cd ..
-          wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-$TTF_VERSION.tar.gz
-          tar xf SDL2_ttf-$TTF_VERSION.tar.gz
+          wget https://github.com/libsdl-org/SDL_ttf/releases/download/release-$TTF_VERSION/SDL2_ttf-$TTF_VERSION.zip
+          unzip SDL2_ttf-$TTF_VERSION.zip
           cd SDL2_ttf-$TTF_VERSION
           ./configure --prefix=$HOME/.local
           make install
@@ -80,4 +72,4 @@ jobs:
 
       - name: Test if Go-SDL2 works with the SDL2 packages
         run: |
-          go build ./{sdl,gfx,img,mix,ttf}
+          go build ./{sdl,img,mix,ttf}
