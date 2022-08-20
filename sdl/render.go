@@ -572,7 +572,7 @@ func (texture *Texture) GetBlendMode() (bm BlendMode, err error) {
 
 // Update updates the given texture rectangle with new pixel data.
 // (https://wiki.libsdl.org/SDL_UpdateTexture)
-func (texture *Texture) Update(rect *Rect, pixels []byte, pitch int) error {
+func (texture *Texture) Update(rect *Rect, pixels unsafe.Pointer, pitch int) error {
 	if pixels == nil {
 		return nil
 	}
@@ -580,7 +580,7 @@ func (texture *Texture) Update(rect *Rect, pixels []byte, pitch int) error {
 		C.SDL_UpdateTexture(
 			texture.cptr(),
 			rect.cptr(),
-			unsafe.Pointer(&pixels[0]),
+			pixels,
 			C.int(pitch))))
 }
 
