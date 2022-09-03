@@ -1,3 +1,35 @@
+## 2.24.0
+
+[x] SDL_GetPointDisplayIndex
+[x] SDL_GetRectDisplayIndex
+[x] SDL_ResetHint
+[x] SDL_ResetKeyboard
+
+[x] SDL_HINT_MOUSE_RELATIVE_WARP_MOTION
+[x] SDL_HINT_TRACKPAD_IS_TOUCH_ONLY
+[x] SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS
+[x] SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS
+[x] SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED
+[x] SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED
+[x] SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED
+[x] SDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC
+[x] SDL_HINT_JOYSTICK_HIDAPI_SHIELD
+
+[x] SDL_JoystickPathForIndex
+[x] SDL_JoystickPath
+[x] SDL_JoystickGetFirmwareVersion
+[x] SDL_JoystickAttachVirtualEx
+[x] SDL_JOYBATTERYUPDATED
+[x] SDL_GameControllerPathForIndex
+[x] SDL_GameControllerPath
+[x] SDL_GameControllerGetFirmwareVersion
+
+[x] SDL_GUIDToString
+[x] SDL_GUIDFromString
+[x] SDL_HasLSX
+[x] SDL_HasLASX
+[x] SDL_GetDefaultAudioInfo
+
 ## 2.0.16
 
 [x] SDL_FlashWindow() to get a user’s attention

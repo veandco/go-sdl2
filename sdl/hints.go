@@ -154,6 +154,37 @@ package sdl
 #define SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR ""
 
 #endif
+
+#if !SDL_VERSION_ATLEAST(2,24,0)
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_ResetHint is not supported before SDL 2.24.0")
+#endif
+
+static inline SDL_bool SDL_ResetHint(const char *name)
+{
+	return SDL_FALSE;
+}
+
+#define SDL_HINT_MOUSE_RELATIVE_WARP_MOTION ""
+#define SDL_HINT_TRACKPAD_IS_TOUCH_ONLY ""
+#define SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS ""
+#define SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS ""
+#define SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED ""
+#define SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED ""
+#define SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED ""
+#define SDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC ""
+#define SDL_HINT_JOYSTICK_HIDAPI_SHIELD ""
+#define SDL_HINT_WINDOWS_DPI_AWARENESS ""
+#define SDL_HINT_WINDOWS_DPI_SCALING ""
+#define SDL_HINT_DIRECTINPUT_ENABLED ""
+#define SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION ""
+#define SDL_HINT_KMSDRM_DEVICE_INDEX ""
+#define SDL_HINT_LINUX_DIGITAL_HATS ""
+#define SDL_HINT_LINUX_HAT_DEADZONES ""
+#define SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH ""
+
+#endif
 */
 import "C"
 import "unsafe"
@@ -260,6 +291,25 @@ const (
 	HINT_JOYSTICK_ROG_CHAKRAM                     = C.SDL_HINT_JOYSTICK_ROG_CHAKRAM                     // A variable controlling whether the ROG Chakram mice should show up as joysticks
 	HINT_X11_WINDOW_TYPE                          = C.SDL_HINT_X11_WINDOW_TYPE                          // A variable that forces X11 windows to create as a custom type
 	HINT_VIDEO_WAYLAND_PREFER_LIBDECOR            = C.SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR            // A variable controlling whether the libdecor Wayland backend is preferred over native decrations
+
+	// SDL2 2.0.24
+	HINT_MOUSE_RELATIVE_WARP_MOTION        = C.SDL_HINT_MOUSE_RELATIVE_WARP_MOTION        // A variable controlling whether a motion event should be generated for mouse warping in relative mode
+	HINT_TRACKPAD_IS_TOUCH_ONLY            = C.SDL_HINT_TRACKPAD_IS_TOUCH_ONLY            // A variable that treats trackpads as touch devices
+	HINT_JOYSTICK_HIDAPI_JOY_CONS          = C.SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS          // A variable controlling whether the HIDAPI driver for Nintendo Switch Joy-Cons should be used
+	HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS  = C.SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS  // A variable controlling whether Nintendo Switch Joy-Con controllers will be combined into a single Pro-like controller when using the HIDAPI driver
+	HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED   = C.SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED   // A variable controlling whether the Home button LED should be turned on when a Nintendo Switch Pro controller is opened
+	HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED   = C.SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED   // A variable controlling whether the Home button LED should be turned on when a Nintendo Switch Joy-Con controller is opened
+	HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED = C.SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED // A variable controlling whether the player LEDs should be lit to indicate which player is associated with a Nintendo Switch controller
+	HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC  = C.SDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC  // A variable controlling whether the HIDAPI driver for Nintendo Online classic controllers should be used
+	HINT_JOYSTICK_HIDAPI_SHIELD            = C.SDL_HINT_JOYSTICK_HIDAPI_SHIELD            // A variable controlling whether the HIDAPI driver for NVIDIA SHIELD controllers should be used
+	HINT_WINDOWS_DPI_AWARENESS             = C.SDL_HINT_WINDOWS_DPI_AWARENESS             // Controls whether SDL will declare the process to be DPI aware
+	HINT_WINDOWS_DPI_SCALING               = C.SDL_HINT_WINDOWS_DPI_SCALING               // Uses DPI-scaled points as the SDL coordinate system on Windows
+	HINT_DIRECTINPUT_ENABLED               = C.SDL_HINT_DIRECTINPUT_ENABLED               // A variable that lets you disable the detection and use of DirectInput gamepad devices
+	HINT_VIDEO_WAYLAND_MODE_EMULATION      = C.SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION      // A variable controlling whether video mode emulation is enabled under Wayland
+	HINT_KMSDRM_DEVICE_INDEX               = C.SDL_HINT_KMSDRM_DEVICE_INDEX               // A variable that decides what KMSDRM device to use
+	HINT_LINUX_DIGITAL_HATS                = C.SDL_HINT_LINUX_DIGITAL_HATS                // A variable controlling whether joysticks on Linux will always treat 'hat' axis inputs (ABS_HAT0X - ABS_HAT3Y) as 8-way digital hats without checking whether they may be analog
+	HINT_LINUX_HAT_DEADZONES               = C.SDL_HINT_LINUX_HAT_DEADZONES               // A variable controlling whether digital hats on Linux will apply deadzones to their underlying input axes or use unfiltered values
+	HINT_MAC_OPENGL_ASYNC_DISPATCH         = C.SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH         // A variable controlling whether dispatching OpenGL context updates should block the dispatching thread until the main thread finishes processing
 )
 
 // An enumeration of hint priorities.
@@ -306,6 +356,14 @@ func SetHint(name, value string) bool {
 	defer C.free(unsafe.Pointer(_name))
 	defer C.free(unsafe.Pointer(_value))
 	return C.SDL_SetHint(_name, _value) > 0
+}
+
+// ResetHint resets a hint to the default value.
+// (https://wiki.libsdl.org/SDL_ResetHint)
+func ResetHint(name string) bool {
+	_name := C.CString(name)
+	defer C.free(unsafe.Pointer(_name))
+	return C.SDL_ResetHint(_name) == C.SDL_TRUE
 }
 
 // GetHint returns the value of a hint.

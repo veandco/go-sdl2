@@ -155,6 +155,14 @@ typedef struct DropEvent
 } DropEvent;
 
 #endif
+
+#if !SDL_VERSION_ATLEAST(2,24,0)
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_JOYBATTEYUPDATED is not supported before SDL 2.24.0")
+#endif
+
+#define SDL_JOYBATTERYUPDATED (1543)
+#endif
 */
 import "C"
 import (
@@ -211,13 +219,14 @@ const (
 	MOUSEWHEEL      EventType = C.SDL_MOUSEWHEEL      // mouse wheel motion
 
 	// Joystick events
-	JOYAXISMOTION    EventType = C.SDL_JOYAXISMOTION    // joystick axis motion
-	JOYBALLMOTION    EventType = C.SDL_JOYBALLMOTION    // joystick trackball motion
-	JOYHATMOTION     EventType = C.SDL_JOYHATMOTION     // joystick hat position change
-	JOYBUTTONDOWN    EventType = C.SDL_JOYBUTTONDOWN    // joystick button pressed
-	JOYBUTTONUP      EventType = C.SDL_JOYBUTTONUP      // joystick button released
-	JOYDEVICEADDED   EventType = C.SDL_JOYDEVICEADDED   // joystick connected
-	JOYDEVICEREMOVED EventType = C.SDL_JOYDEVICEREMOVED // joystick disconnected
+	JOYAXISMOTION     EventType = C.SDL_JOYAXISMOTION     // joystick axis motion
+	JOYBALLMOTION     EventType = C.SDL_JOYBALLMOTION     // joystick trackball motion
+	JOYHATMOTION      EventType = C.SDL_JOYHATMOTION      // joystick hat position change
+	JOYBUTTONDOWN     EventType = C.SDL_JOYBUTTONDOWN     // joystick button pressed
+	JOYBUTTONUP       EventType = C.SDL_JOYBUTTONUP       // joystick button released
+	JOYDEVICEADDED    EventType = C.SDL_JOYDEVICEADDED    // joystick connected
+	JOYDEVICEREMOVED  EventType = C.SDL_JOYDEVICEREMOVED  // joystick disconnected
+	JOYBATTERYUPDATED EventType = C.SDL_JOYBATTERYUPDATED // joystick battery level change
 
 	// Game controller events
 	CONTROLLERAXISMOTION     EventType = C.SDL_CONTROLLERAXISMOTION     // controller axis motion
@@ -619,6 +628,26 @@ func (e JoyDeviceRemovedEvent) GetType() EventType {
 
 // GetTimestamp returns the timestamp of the event.
 func (e JoyDeviceRemovedEvent) GetTimestamp() uint32 {
+	return e.Timestamp
+}
+
+// JoyBatteryEvent contains joystick button event information.
+// (https://wiki.libsdl.org/SDL_JoyBatteryEvent)
+type JoyBatteryEvent struct {
+	Type      EventType          // JOYBATTERYUPDATED
+	Timestamp uint32             // timestamp of the event
+	Which     JoystickID         // the instance id of the joystick that reported the event
+	Level     JoystickPowerLevel // the joystick battery level
+}
+type cJoyBatteryEvent C.SDL_JoyBatteryEvent
+
+// GetType returns the event type.
+func (e JoyBatteryEvent) GetType() EventType {
+	return e.Type
+}
+
+// GetTimestamp returns the timestamp of the event.
+func (e JoyBatteryEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
@@ -1165,6 +1194,14 @@ func goEvent(cevent *CEvent) Event {
 			Type:      EventType(e._type),
 			Timestamp: uint32(e.timestamp),
 			Which:     JoystickID(e.which),
+		}
+	case JOYBATTERYUPDATED:
+		e := (*cJoyBatteryEvent)(unsafe.Pointer(cevent))
+		return JoyBatteryEvent{
+			Type:      EventType(e._type),
+			Timestamp: uint32(e.timestamp),
+			Which:     JoystickID(e.which),
+			Level:     JoystickPowerLevel(e.level),
 		}
 	case CONTROLLERAXISMOTION:
 		e := (*cControllerAxisEvent)(unsafe.Pointer(cevent))

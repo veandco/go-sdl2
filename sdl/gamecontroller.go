@@ -269,6 +269,31 @@ static const char* SDL_GameControllerGetAppleSFSymbolsNameForAxis(SDL_GameContro
 }
 
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,24,0))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GameControllerPathForIndex is not supported before SDL 2.24.0")
+#pragma message("SDL_GameControllerPath is not supported before SDL 2.24.0")
+#pragma message("SDL_GameControllerGetFirmwareVersion is not supported before SDL 2.24.0")
+#endif
+
+static const char *SDL_GameControllerPathForIndex(int device_index)
+{
+	return NULL;
+}
+
+static const char *SDL_GameControllerPath(SDL_GameController *gamecontroller)
+{
+	return NULL;
+}
+
+static Uint16 SDL_GameControllerGetFirmwareVersion(SDL_GameController *gamecontroller)
+{
+	return 0;
+}
+
+#endif
 */
 import "C"
 import (
@@ -400,6 +425,12 @@ func GameControllerNameForIndex(index int) string {
 	return C.GoString(C.SDL_GameControllerNameForIndex(C.int(index)))
 }
 
+// GameControllerPathForIndex returns the implementation dependent path for the game controller.
+// (https://wiki.libsdl.org/SDL_GameControllerPathForIndex)
+func GameControllerPathForIndex(index int) string {
+	return (C.GoString)(C.SDL_GameControllerPathForIndex(C.int(index)))
+}
+
 // GameControllerTypeForIndex the type of a game controller.
 // (https://wiki.libsdl.org/SDL_GameControllerTypeForIndex)
 func GameControllerTypeForIndex(index int) GameControllerType {
@@ -437,6 +468,12 @@ func (ctrl *GameController) Name() string {
 	return C.GoString(C.SDL_GameControllerName(ctrl.cptr()))
 }
 
+// Path returns the implementation dependent path of an opened game controller.
+// (https://wiki.libsdl.org/SDL_GameControllerPath)
+func (ctrl *GameController) Path() string {
+	return (C.GoString)(C.SDL_GameControllerPath(ctrl.cptr()))
+}
+
 // Type returns the type of this currently opened controller
 // TODO: (https://wiki.libsdl.org/SDL_GameControllerType)
 func (ctrl *GameController) Type() GameControllerType {
@@ -468,6 +505,12 @@ func (ctrl *GameController) Product() int {
 // ProductVersion returns the product version of an opened controller, if available, 0 otherwise.
 func (ctrl *GameController) ProductVersion() int {
 	return int(C.SDL_GameControllerGetProductVersion(ctrl.cptr()))
+}
+
+// FirmwareVersion returns the firmware version of an opened controller, if available.
+// (https://wiki.libsdl.org/SDL_GameControllerGetFirmwareVersion)
+func (ctrl *GameController) FirmwareVersion() uint16 {
+	return uint16(C.SDL_GameControllerGetFirmwareVersion(ctrl.cptr()))
 }
 
 // Serial returns the serial number of an opened controller, if available.

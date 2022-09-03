@@ -121,6 +121,18 @@ static int SDL_GetAudioDeviceSpec(int index, int iscapture, SDL_AudioSpec *spec)
 	return -1;
 }
 
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,24,0))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GetDefaultAudioInfo is not supported before SDL 2.24.0")
+#endif
+
+static inline int SDL_GetDefaultAudioInfo(char **name, SDL_AudioSpec *spec, int iscapture)
+{
+	return -1;
+}
 
 #endif
 */
@@ -648,5 +660,14 @@ func (stream *AudioStream) Free() {
 func GetAudioDeviceSpec(index int, isCapture bool) (spec *AudioSpec, err error) {
 	spec = &AudioSpec{}
 	err = errorFromInt(int(C.SDL_GetAudioDeviceSpec(C.int(index), C.int(Btoi(isCapture)), spec.cptr())))
+	return
+}
+
+// GetDefaultAudioInfo returns the name and preferred format of the default audio device.
+// (https://wiki.libsdl.org/SDL_GetDefaultAudioInfo)
+func GetDefaultAudioInfo(isCapture bool) (name string, spec *AudioSpec, err error) {
+	var _name *C.char
+	spec = &AudioSpec{}
+	err = errorFromInt(int(C.SDL_GetDefaultAudioInfo(&_name, spec.cptr(), C.int(Btoi(isCapture)))))
 	return
 }
