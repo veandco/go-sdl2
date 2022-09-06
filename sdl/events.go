@@ -162,6 +162,28 @@ typedef struct DropEvent
 #endif
 
 #define SDL_JOYBATTERYUPDATED (1543)
+
+#if !defined(SDL_JoystickPowerLevel)
+typedef enum
+{
+    SDL_JOYSTICK_POWER_UNKNOWN = -1,
+    SDL_JOYSTICK_POWER_EMPTY,
+    SDL_JOYSTICK_POWER_LOW,
+    SDL_JOYSTICK_POWER_MEDIUM,
+    SDL_JOYSTICK_POWER_FULL,
+    SDL_JOYSTICK_POWER_WIRED,
+    SDL_JOYSTICK_POWER_MAX
+} SDL_JoystickPowerLevel;
+#endif
+
+typedef struct SDL_JoyBatteryEvent
+{
+    Uint32 type;
+    Uint32 timestamp;
+    SDL_JoystickID which;
+    SDL_JoystickPowerLevel level;
+} SDL_JoyBatteryEvent;
+
 #endif
 */
 import "C"
