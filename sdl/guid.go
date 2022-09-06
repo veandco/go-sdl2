@@ -9,6 +9,10 @@ package sdl
 #pragma message("SDL_GUIDFromString is not supported before SDL 2.24.0")
 #endif
 
+typedef struct {
+    Uint8 data[16];
+} SDL_GUID;
+
 static inline void SDL_GUIDToString(SDL_GUID guid, char *pszGUID, int cbGUID)
 {
 	return;
