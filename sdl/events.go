@@ -168,7 +168,7 @@ typedef struct DropEvent
 
 #define SDL_JOYBATTERYUPDATED (1543)
 
-#if !defined(SDL_JoystickPowerLevel)
+#if !SDL_VERSION_ATLEAST(2,0,4)
 typedef enum
 {
     SDL_JOYSTICK_POWER_UNKNOWN = -1,
