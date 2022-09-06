@@ -99,6 +99,97 @@ typedef struct SDL_SensorEvent {
 
 #define SDL_TEXTEDITING_EXT (0x305)
 #endif
+
+// NOTE: To prevent build from failing when using older SDL2, we create a
+// structure definiton that directly maps to the SDL2 struct definition if
+// using the latest SDL2. Otherwise, we copy the latest definition and paste
+// it here.
+#if SDL_VERSION_ATLEAST(2,0,22)
+typedef SDL_MouseButtonEvent MouseButtonEvent;
+typedef SDL_MouseWheelEvent MouseWheelEvent;
+typedef SDL_TouchFingerEvent TouchFingerEvent;
+typedef SDL_DropEvent DropEvent;
+#else
+typedef struct MouseButtonEvent
+{
+    Uint32 type;        // ::SDL_MOUSEBUTTONDOWN or ::SDL_MOUSEBUTTONUP
+    Uint32 timestamp;
+    Uint32 windowID;    // The window with mouse focus, if any
+    Uint32 which;       // The mouse instance id, or SDL_TOUCH_MOUSEID
+    Uint8 button;       // The mouse button index
+    Uint8 state;        // ::SDL_PRESSED or ::SDL_RELEASED
+    Uint8 clicks;       // 1 for single-click, 2 for double-click, etc.
+    Uint8 padding1;
+    Sint32 x;           // X coordinate, relative to window
+    Sint32 y;           // Y coordinate, relative to window
+} MouseButtonEvent;
+
+typedef struct MouseWheelEvent
+{
+    Uint32 type;        // ::SDL_MOUSEWHEEL
+    Uint32 timestamp;   // In milliseconds, populated using SDL_GetTicks()
+    Uint32 windowID;    // The window with mouse focus, if any
+    Uint32 which;       // The mouse instance id, or SDL_TOUCH_MOUSEID
+    Sint32 x;           // The amount scrolled horizontally, positive to the right and negative to the left
+    Sint32 y;           // The amount scrolled vertically, positive away from the user and negative toward the user
+    Uint32 direction;   // Set to one of the SDL_MOUSEWHEEL_* defines. When FLIPPED the values in X and Y will be opposite. Multiply by -1 to change them back
+    float preciseX;     // The amount scrolled horizontally, positive to the right and negative to the left, with float precision (added in 2.0.18)
+    float preciseY;     // The amount scrolled vertically, positive away from the user and negative toward the user, with float precision (added in 2.0.18)
+} MouseWheelEvent;
+
+typedef struct TouchFingerEvent
+{
+    Uint32 type;           // ::SDL_FINGERMOTION or ::SDL_FINGERDOWN or ::SDL_FINGERUP
+    Uint32 timestamp;      // In milliseconds, populated using SDL_GetTicks()
+    SDL_TouchID touchId;   // The touch device id
+    SDL_FingerID fingerId; //
+    float x;               // Normalized in the range 0...1
+    float y;               // Normalized in the range 0...1
+    float dx;              // Normalized in the range -1...1
+    float dy;              // Normalized in the range -1...1
+    float pressure;        // Normalized in the range 0...1
+    Uint32 windowID;       // The window underneath the finger, if any
+} TouchFingerEvent;
+
+typedef struct DropEvent
+{
+    Uint32 type;        // ::SDL_DROPBEGIN or ::SDL_DROPFILE or ::SDL_DROPTEXT or ::SDL_DROPCOMPLETE
+    Uint32 timestamp;   // In milliseconds, populated using SDL_GetTicks()
+    char *file;         // The file name, which should be freed with SDL_free(), is NULL on begin/complete
+    Uint32 windowID;    // The window that was dropped on, if any
+} DropEvent;
+
+#endif
+
+#if !SDL_VERSION_ATLEAST(2,24,0)
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_JOYBATTEYUPDATED is not supported before SDL 2.24.0")
+#endif
+
+#define SDL_JOYBATTERYUPDATED (1543)
+
+#if !defined(SDL_JoystickPowerLevel)
+typedef enum
+{
+    SDL_JOYSTICK_POWER_UNKNOWN = -1,
+    SDL_JOYSTICK_POWER_EMPTY,
+    SDL_JOYSTICK_POWER_LOW,
+    SDL_JOYSTICK_POWER_MEDIUM,
+    SDL_JOYSTICK_POWER_FULL,
+    SDL_JOYSTICK_POWER_WIRED,
+    SDL_JOYSTICK_POWER_MAX
+} SDL_JoystickPowerLevel;
+#endif
+
+typedef struct SDL_JoyBatteryEvent
+{
+    Uint32 type;
+    Uint32 timestamp;
+    SDL_JoystickID which;
+    SDL_JoystickPowerLevel level;
+} SDL_JoyBatteryEvent;
+
+#endif
 */
 import "C"
 import (
