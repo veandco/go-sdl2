@@ -435,6 +435,11 @@ func (e TextEditingEvent) GetTimestamp() uint32 {
 	return e.Timestamp
 }
 
+// GetText returns the text as string
+func (e TextEditingEvent) GetText() string {
+	return e.Text
+}
+
 // TextInputEvent contains keyboard text input event information.
 // (https://wiki.libsdl.org/SDL_TextInputEvent)
 type TextInputEvent struct {
@@ -453,6 +458,11 @@ func (e TextInputEvent) GetType() EventType {
 // GetTimestamp returns the timestamp of the event.
 func (e TextInputEvent) GetTimestamp() uint32 {
 	return e.Timestamp
+}
+
+// GetText returns the text as string
+func (e TextInputEvent) GetText() string {
+	return e.Text
 }
 
 // MouseMotionEvent contains mouse motion event information.
