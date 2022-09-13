@@ -34,7 +34,7 @@ type GUID C.SDL_GUID
 
 // ToString returns an ASCII string representation for a given GUID.
 func (guid GUID) ToString() (ascii string) {
-	_cap := C.ulong(33)
+	_cap := C.size_t(33)
 	_buf := (*C.char)(C.SDL_malloc(_cap))
 	defer C.SDL_free(unsafe.Pointer(_buf))
 	C.SDL_GUIDToString(C.SDL_GUID(guid), _buf, C.int(_cap))
