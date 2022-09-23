@@ -230,12 +230,12 @@ static int SDL_JoystickRumble(SDL_Joystick *joystick, Uint16 low_frequency_rumbl
 #pragma message("SDL_JoystickSetVirtualHat is not supported before SDL 2.0.14")
 #endif
 
-static const char * SDLCALL SDL_JoystickGetSerial(SDL_Joystick *joystick)
+static inline const char * SDL_JoystickGetSerial(SDL_Joystick *joystick)
 {
 	return NULL;
 }
 
-static int SDL_JoystickRumbleTriggers(SDL_Joystick *joystick, Uint16 left_rumble, Uint16 right_rumble, Uint32 duration_ms)
+static inline int SDL_JoystickRumbleTriggers(SDL_Joystick *joystick, Uint16 left_rumble, Uint16 right_rumble, Uint32 duration_ms)
 {
 	return -1;
 }
@@ -289,12 +289,12 @@ static int SDL_JoystickSetVirtualHat(SDL_Joystick *joystick, int hat, Uint8 valu
 #pragma message("SDL_JoystickSetPlayerIndex is not supported before SDL 2.0.12")
 #endif
 
-static SDL_Joystick *SDL_JoystickFromPlayerIndex(int player_index)
+static inline SDL_Joystick *SDL_JoystickFromPlayerIndex(int player_index)
 {
 	return NULL;
 }
 
-static void SDLCALL SDL_JoystickSetPlayerIndex(SDL_Joystick *joystick, int player_index)
+static inline void SDL_JoystickSetPlayerIndex(SDL_Joystick *joystick, int player_index)
 {
 	// do nothing
 }
@@ -317,6 +317,62 @@ static SDL_bool SDL_JoystickHasRumbleTriggers(SDL_Joystick *joystick)
 {
 	return SDL_FALSE;
 }
+
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,24,0))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_JoystickPathForIndex is not supported before SDL 2.24.0")
+#pragma message("SDL_JoystickPath is not supported before SDL 2.24.0")
+#pragma message("SDL_JoystickGetFirmwareVersion is not supported before SDL 2.24.0")
+#pragma message("SDL_JoystickAttachVirtualEx is not supported before SDL 2.24.0")
+#endif
+
+typedef struct SDL_VirtualJoystickDesc
+{
+    Uint16 version;     // `SDL_VIRTUAL_JOYSTICK_DESC_VERSION`
+    Uint16 type;        // `SDL_JoystickType`
+    Uint16 naxes;       // the number of axes on this joystick
+    Uint16 nbuttons;    // the number of buttons on this joystick
+    Uint16 nhats;       // the number of hats on this joystick
+    Uint16 vendor_id;   // the USB vendor ID of this joystick
+    Uint16 product_id;  // the USB product ID of this joystick
+    Uint16 padding;     // unused
+    Uint32 button_mask; // A mask of which buttons are valid for this controller e.g. (1 << SDL_CONTROLLER_BUTTON_A)
+    Uint32 axis_mask;   // A mask of which axes are valid for this controller e.g. (1 << SDL_CONTROLLER_AXIS_LEFTX)
+    const char *name;   // the name of the joystick
+
+    void *userdata;     // User data pointer passed to callbacks
+    void (SDLCALL *Update)(void *userdata); // Called when the joystick state should be updated
+    void (SDLCALL *SetPlayerIndex)(void *userdata, int player_index); // Called when the player index is set
+    int (SDLCALL *Rumble)(void *userdata, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble); // Implements SDL_JoystickRumble()
+    int (SDLCALL *RumbleTriggers)(void *userdata, Uint16 left_rumble, Uint16 right_rumble); // Implements SDL_JoystickRumbleTriggers()
+    int (SDLCALL *SetLED)(void *userdata, Uint8 red, Uint8 green, Uint8 blue); // Implements SDL_JoystickSetLED()
+    int (SDLCALL *SendEffect)(void *userdata, const void *data, int size); // Implements SDL_JoystickSendEffect()
+
+} SDL_VirtualJoystickDesc;
+
+static const char *SDL_JoystickPathForIndex(int device_index)
+{
+	return NULL;
+}
+
+static const char *SDL_JoystickPath(SDL_Joystick *joystick)
+{
+	return NULL;
+}
+
+static Uint16 SDL_JoystickGetFirmwareVersion(SDL_Joystick *joystick)
+{
+	return 0;
+}
+
+static inline int SDL_JoystickAttachVirtualEx(const SDL_VirtualJoystickDesc *desc)
+{
+	return -1;
+}
+
 #endif
 */
 import "C"
@@ -399,6 +455,12 @@ func NumJoysticks() int {
 // (https://wiki.libsdl.org/SDL_JoystickNameForIndex)
 func JoystickNameForIndex(index int) string {
 	return (C.GoString)(C.SDL_JoystickNameForIndex(C.int(index)))
+}
+
+// JoystickPathForIndex returns the implementation dependent path of a joystick.
+// (https://wiki.libsdl.org/SDL_JoystickPathForIndex)
+func JoystickPathForIndex(index int) string {
+	return (C.GoString)(C.SDL_JoystickPathForIndex(C.int(index)))
 }
 
 // JoystickGetDevicePlayerIndex returns the player index of a joystick, or -1 if it's not available
@@ -494,6 +556,14 @@ func JoystickAttachVirtual(typ JoystickType, naxes, nbuttons, nhats int) (device
 	return
 }
 
+// JoystickAttachVirtualEx attaches a new virtual joystick with extended properties.
+// (https://wiki.libsdl.org/SDL_JoystickAttachVirtualEx)
+func JoystickAttachVirtualEx(desc *C.SDL_VirtualJoystickDesc) (deviceIndex int, err error) {
+	deviceIndex = int(C.SDL_JoystickAttachVirtualEx(desc))
+	err = errorFromInt(deviceIndex)
+	return
+}
+
 // JoystickDetachVirtual detaches a virtual joystick.
 // TODO: (https://wiki.libsdl.org/SDL_JoystickDetachVirtual)
 func JoystickDetachVirtual(deviceIndex int) error {
@@ -557,6 +627,12 @@ func (joy *Joystick) Name() string {
 	return (C.GoString)(C.SDL_JoystickName(joy.cptr()))
 }
 
+// Path returns the implementation dependent path of a joystick.
+// (https://wiki.libsdl.org/SDL_JoystickPath)
+func (joy *Joystick) Path() string {
+	return (C.GoString)(C.SDL_JoystickPath(joy.cptr()))
+}
+
 // PlayerIndex returns the player index of an opened joystick, or -1 if it's not available.
 // (https://wiki.libsdl.org/SDL_JoystickGetPlayerIndex)
 func (joy *Joystick) PlayerIndex() int {
@@ -588,6 +664,12 @@ func (joy *Joystick) Product() int {
 // ProductVersion returns the product version of an opened joystick, if available, 0 otherwise.
 func (joy *Joystick) ProductVersion() int {
 	return int(C.SDL_JoystickGetProductVersion(joy.cptr()))
+}
+
+// FirmwareVersion returns the firmware version of an opened joystick, if available.
+// (https://wiki.libsdl.org/SDL_JoystickGetFirmwareVersion)
+func (joy *Joystick) FirmwareVersion() uint16 {
+	return uint16(C.SDL_JoystickGetFirmwareVersion(joy.cptr()))
 }
 
 // Serial returns the serial number of an opened joystick, if available.

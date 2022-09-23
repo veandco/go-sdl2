@@ -3,13 +3,32 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
+#if !(SDL_VERSION_ATLEAST(2,24,0))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_HasLSX is not supported before SDL 2.24.0")
+#pragma message("SDL_HasLASX is not supported before SDL 2.24.0")
+#endif
+
+static inline SDL_bool SDL_HasLSX()
+{
+	return SDL_FALSE;
+}
+
+static inline SDL_bool SDL_HasLASX()
+{
+	return SDL_FALSE;
+}
+
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,14))
 
 #if defined(WARN_OUTDATED)
 #pragma message("SDL_SIMDRealloc is not supported before SDL 2.0.14")
 #endif
 
-static void * SDLCALL SDL_SIMDRealloc(void *mem, const size_t len)
+static void * SDL_SIMDRealloc(void *mem, const size_t len)
 {
 	return NULL;
 }

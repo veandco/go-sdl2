@@ -95,26 +95,16 @@ const (
 	ButtonX2     Button = C.SDL_BUTTON_X2     // x2 mouse button
 )
 
-// Mask returns the corresponding bitmask for the given button.
-func (b Button) Mask() ButtonMask {
-	return 1 << (b - 1)
-}
-
 // Used as a mask when testing buttons in buttonstate.
 type ButtonMask uint32
 
 const (
-	ButtonMaskLeft   ButtonMask = 1 << (ButtonLeft - 1)   // left mouse button mask
-	ButtonMaskMiddle Button     = 1 << (ButtonMiddle - 1) // middle mouse button mask
-	ButtonMaskRight  Button     = 1 << (ButtonRight - 1)  // right mouse button mask
-	ButtonMaskX1     Button     = 1 << (ButtonX1 - 1)     // x1 mouse button mask
-	ButtonMaskX2     Button     = 1 << (ButtonX2 - 1)     // x2 mouse button mask
+	ButtonLMask  ButtonMask = 1 << (ButtonLeft - 1)   // left mouse button mask
+	ButtonMMask  ButtonMask = 1 << (ButtonMiddle - 1) // middle mouse button mask
+	ButtonRMask  ButtonMask = 1 << (ButtonRight - 1)  // right mouse button mask
+	ButtonX1Mask ButtonMask = 1 << (ButtonX1 - 1)     // x1 mouse button mask
+	ButtonX2Mask ButtonMask = 1 << (ButtonX2 - 1)     // x2 mouse button mask
 )
-
-// Has tests the button mask against the given button.
-func (b ButtonMask) Has(o Button) bool {
-	return b&o.Mask() != 0
-}
 
 // Cursor is a custom cursor created by CreateCursor() or CreateColorCursor().
 type Cursor C.SDL_Cursor
@@ -239,36 +229,6 @@ func CaptureMouse(toggle bool) error {
 		return GetError()
 	}
 	return nil
-}
-
-// ButtonLMask is used as a mask when testing buttons in buttonstate.
-//		Not needed anymore, but here for compatibility
-func ButtonLMask() ButtonMask {
-	return ButtonLeft.Mask()
-}
-
-// ButtonMMask is used as a mask when testing buttons in buttonstate.
-//		Not needed anymore, but here for compatibility
-func ButtonMMask() ButtonMask {
-	return ButtonMiddle.Mask()
-}
-
-// ButtonRMask is used as a mask when testing buttons in buttonstate.
-//		Not needed anymore, but here for compatibility
-func ButtonRMask() ButtonMask {
-	return ButtonRight.Mask()
-}
-
-// ButtonX1Mask is used as a mask when testing buttons in buttonstate.
-//		Not needed anymore, but here for compatibility
-func ButtonX1Mask() ButtonMask {
-	return ButtonX1.Mask()
-}
-
-// ButtonX2Mask is used as a mask when testing buttons in buttonstate.
-//		Not needed anymore, but here for compatibility
-func ButtonX2Mask() ButtonMask {
-	return ButtonX2.Mask()
 }
 
 // WarpMouseGlobal moves the mouse to the given position in global screen space.

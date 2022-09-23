@@ -225,19 +225,40 @@ static void SDL_SetWindowKeyboardGrab(SDL_Window * window, SDL_bool grabbed)
 #define SDL_WINDOWEVENT_ICCPROF_CHANGED (17) // The ICC profile of the window's display has changed.
 #define SDL_WINDOWEVENT_DISPLAY_CHANGED (18) // Window has been moved to display data1.
 
-static void* SDLCALL SDL_GetWindowICCProfile(SDL_Window * window, size_t* size)
+static inline void* SDL_GetWindowICCProfile(SDL_Window * window, size_t* size)
 {
 	return NULL;
 }
 
-static int SDL_SetWindowMouseRect(SDL_Window * window, const SDL_Rect * rect)
+static inline int SDL_SetWindowMouseRect(SDL_Window * window, const SDL_Rect * rect)
 {
 	return -1;
 }
 
-static const SDL_Rect * SDLCALL SDL_GetWindowMouseRect(SDL_Window * window)
+static inline const SDL_Rect * SDL_GetWindowMouseRect(SDL_Window * window)
 {
 	return NULL;
+}
+
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,24,0))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GetPointDisplayIndex is not supported before SDL 2.24.0")
+#pragma message("SDL_GetRectDisplayIndex is not supported before SDL 2.24.0")
+#endif
+
+#define SDL_GL_FLOATBUFFERS (27)
+
+static inline int SDL_GetPointDisplayIndex(const SDL_Point * point)
+{
+	return -1;
+}
+
+static inline int SDL_GetRectDisplayIndex(const SDL_Rect * rect)
+{
+	return -1;
 }
 
 #endif
@@ -361,6 +382,7 @@ const (
 	GL_CONTEXT_RELEASE_BEHAVIOR   GLattr = C.SDL_GL_CONTEXT_RELEASE_BEHAVIOR   // sets context the release behavior; defaults to 1 (>= SDL 2.0.4)
 	GL_CONTEXT_RESET_NOTIFICATION GLattr = C.SDL_GL_CONTEXT_RESET_NOTIFICATION // (>= SDL 2.0.6)
 	GL_CONTEXT_NO_ERROR           GLattr = C.SDL_GL_CONTEXT_NO_ERROR           // (>= SDL 2.0.6)
+	GL_FLOATBUFFERS               GLattr = C.SDL_GL_FLOATBUFFERS               // (>= SDL 2.24.0)
 )
 
 // An enumeration of OpenGL profiles.
@@ -380,9 +402,7 @@ const (
 	GL_CONTEXT_RESET_ISOLATION_FLAG    = C.SDL_GL_CONTEXT_RESET_ISOLATION_FLAG    // intended to require the GL to make promises about what to do in the face of driver or hardware failure
 )
 
-//
 // Window flash operation
-//
 const (
 	FLASH_CANCEL        FlashOperation = C.SDL_FLASH_CANCEL        // Cancel any window flash state
 	FLASH_BRIEFLY       FlashOperation = C.SDL_FLASH_BRIEFLY       // Flash the window briefly to get attention
@@ -581,6 +601,22 @@ func GetClosestDisplayMode(displayIndex int, mode *DisplayMode, closest *Display
 	return m, nil
 }
 
+// GetPointDisplayIndex returns the index of the display containing a point.
+// (https://wiki.libsdl.org/SDL_GetPointDisplayIndex)
+func GetPointDisplayIndex(p Point) (index int, err error) {
+	_index := C.SDL_GetPointDisplayIndex(p.cptr())
+	index = int(_index)
+	return index, errorFromInt(index)
+}
+
+// GetRectDisplayIndex returns the index of the display containing a point.
+// (https://wiki.libsdl.org/SDL_GetPointDisplayIndex)
+func GetRectDisplayIndex(r Rect) (index int, err error) {
+	_index := C.SDL_GetRectDisplayIndex(r.cptr())
+	index = int(_index)
+	return index, errorFromInt(index)
+}
+
 // GetDisplayDPI returns the dots/pixels-per-inch for a display.
 // (https://wiki.libsdl.org/SDL_GetDisplayDPI)
 func GetDisplayDPI(displayIndex int) (ddpi, hdpi, vdpi float32, err error) {
@@ -656,7 +692,8 @@ func (window *Window) Destroy() error {
 }
 
 // GetID returns the numeric ID of the window, for logging purposes.
-//  (https://wiki.libsdl.org/SDL_GetWindowID)
+//
+//	(https://wiki.libsdl.org/SDL_GetWindowID)
 func (window *Window) GetID() (uint32, error) {
 	id := uint32(C.SDL_GetWindowID(window.cptr()))
 	if id == 0 {

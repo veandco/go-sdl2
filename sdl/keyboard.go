@@ -3,6 +3,19 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
+#if !(SDL_VERSION_ATLEAST(2,24,0))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_ResetKeyboard is not supported before SDL 2.24.0")
+#endif
+
+static inline void SDL_ResetKeyboard(void)
+{
+	return;
+}
+
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,22))
 
 #if defined(WARN_OUTDATED)
