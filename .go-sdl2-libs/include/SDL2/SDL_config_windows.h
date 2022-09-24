@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2020 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2022 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -25,10 +25,23 @@
 
 #include "SDL_platform.h"
 
+/* winsdkver.h defines _WIN32_MAXVER for SDK version detection. It is present since at least the Windows 7 SDK,
+ * but out of caution we'll only use it if the compiler supports __has_include() to confirm its presence.
+ * If your compiler doesn't support __has_include() but you have winsdkver.h, define HAVE_WINSDKVER_H.  */
+#if !defined(HAVE_WINSDKVER_H) && defined(__has_include)
+#if __has_include(<winsdkver.h>)
+#define HAVE_WINSDKVER_H 1
+#endif
+#endif
+
+#ifdef HAVE_WINSDKVER_H
+#include <winsdkver.h>
+#endif
+
 /* This is a set of defines to configure the SDL features */
 
 #if !defined(_STDINT_H_) && (!defined(HAVE_STDINT_H) || !_HAVE_STDINT_H)
-#if defined(__GNUC__) || defined(__DMC__) || defined(__WATCOMC__)
+#if defined(__GNUC__) || defined(__DMC__) || defined(__WATCOMC__) || defined(__clang__) || defined(__BORLANDC__) || defined(__CODEGEARC__)
 #define HAVE_STDINT_H   1
 #elif defined(_MSC_VER)
 typedef signed __int8 int8_t;
@@ -82,9 +95,23 @@ typedef unsigned int uintptr_t;
 #define HAVE_DSOUND_H 1
 #define HAVE_DXGI_H 1
 #define HAVE_XINPUT_H 1
+#if defined(_WIN32_MAXVER) && _WIN32_MAXVER >= 0x0A00  /* Windows 10 SDK */
+#define HAVE_WINDOWS_GAMING_INPUT_H 1
+#endif
+#if defined(_WIN32_MAXVER) && _WIN32_MAXVER >= 0x0602  /* Windows 8 SDK */
+#define HAVE_D3D11_H 1
+#endif
 #define HAVE_MMDEVICEAPI_H 1
 #define HAVE_AUDIOCLIENT_H 1
-#define HAVE_SENSORSAPI_H
+#define HAVE_TPCSHRD_H 1
+#define HAVE_SENSORSAPI_H 1
+#if (defined(_M_IX86) || defined(_M_X64) || defined(_M_AMD64)) && (defined(_MSC_VER) && _MSC_VER >= 1600)
+#define HAVE_IMMINTRIN_H 1
+#elif defined(__has_include) && (defined(__i386__) || defined(__x86_64))
+# if __has_include(<immintrin.h>)
+#   define HAVE_IMMINTRIN_H 1
+# endif
+#endif
 
 /* This is disabled by default to avoid C runtime dependencies and manifest requirements */
 #ifdef HAVE_LIBC
@@ -119,9 +146,6 @@ typedef unsigned int uintptr_t;
 #define HAVE_STRRCHR 1
 #define HAVE_STRSTR 1
 /* #undef HAVE_STRTOK_R */
-#if defined(_MSC_VER)
-#define HAVE_STRTOK_S 1
-#endif
 /* These functions have security warnings, so we won't use them */
 /* #undef HAVE__LTOA */
 /* #undef HAVE__ULTOA */
@@ -136,6 +160,7 @@ typedef unsigned int uintptr_t;
 #define HAVE__STRNICMP 1
 #define HAVE__WCSICMP 1
 #define HAVE__WCSNICMP 1
+#define HAVE__WCSDUP 1
 #define HAVE_ACOS   1
 #define HAVE_ACOSF  1
 #define HAVE_ASIN   1
@@ -172,7 +197,12 @@ typedef unsigned int uintptr_t;
 /* These functions were added with the VC++ 2013 C runtime library */
 #if _MSC_VER >= 1800
 #define HAVE_STRTOLL 1
+#define HAVE_STRTOULL 1
 #define HAVE_VSSCANF 1
+#define HAVE_LROUND 1
+#define HAVE_LROUNDF 1
+#define HAVE_ROUND 1
+#define HAVE_ROUNDF 1
 #define HAVE_SCALBN 1
 #define HAVE_SCALBNF 1
 #define HAVE_TRUNC  1
@@ -191,20 +221,6 @@ typedef unsigned int uintptr_t;
 #define HAVE_STDDEF_H   1
 #endif
 
-/* Check to see if we have Windows 10 build environment */
-#if _MSC_VER >= 1911        /* Visual Studio 15.3 */
-#include <sdkddkver.h>
-#if _WIN32_WINNT >= 0x0601  /* Windows 7 */
-#define SDL_WINDOWS7_SDK
-#endif
-#if _WIN32_WINNT >= 0x0602  /* Windows 8 */
-#define SDL_WINDOWS8_SDK
-#endif
-#if _WIN32_WINNT >= 0x0A00  /* Windows 10 */
-#define SDL_WINDOWS10_SDK
-#endif
-#endif /* _MSC_VER >= 1911 */
-
 /* Enable various audio drivers */
 #define SDL_AUDIO_DRIVER_WASAPI 1
 #define SDL_AUDIO_DRIVER_DSOUND 1
@@ -219,7 +235,7 @@ typedef unsigned int uintptr_t;
 #define SDL_JOYSTICK_RAWINPUT   1
 #endif
 #define SDL_JOYSTICK_VIRTUAL    1
-#ifdef SDL_WINDOWS10_SDK
+#ifdef HAVE_WINDOWS_GAMING_INPUT_H
 #define SDL_JOYSTICK_WGI    1
 #endif
 #define SDL_JOYSTICK_XINPUT 1
@@ -233,6 +249,7 @@ typedef unsigned int uintptr_t;
 #define SDL_LOADSO_WINDOWS  1
 
 /* Enable various threading systems */
+#define SDL_THREAD_GENERIC_COND_SUFFIX 1
 #define SDL_THREAD_WINDOWS  1
 
 /* Enable various timer systems */
@@ -245,7 +262,7 @@ typedef unsigned int uintptr_t;
 #ifndef SDL_VIDEO_RENDER_D3D
 #define SDL_VIDEO_RENDER_D3D    1
 #endif
-#ifdef SDL_WINDOWS7_SDK
+#if !defined(SDL_VIDEO_RENDER_D3D11) && defined(HAVE_D3D11_H)
 #define SDL_VIDEO_RENDER_D3D11  1
 #endif
 

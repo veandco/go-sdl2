@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2020 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2022 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -25,25 +25,31 @@
 
 #include "SDL_platform.h"
 
+#define SIZEOF_VOIDP 4
+
 #define SDL_AUDIO_DRIVER_DUMMY 1
 #define SDL_AUDIO_DRIVER_DISK 1
 #define SDL_AUDIO_DRIVER_OS2 1
 
 #define SDL_POWER_DISABLED  1
-#define SDL_JOYSTICK_DISABLED 1
 #define SDL_HAPTIC_DISABLED 1
-/*#undef SDL_JOYSTICK_HIDAPI */
-/*#undef SDL_JOYSTICK_VIRTUAL */
 
 #define SDL_SENSOR_DUMMY 1
 #define SDL_VIDEO_DRIVER_DUMMY 1
 #define SDL_VIDEO_DRIVER_OS2 1
+#define SDL_JOYSTICK_OS2 1
+#ifndef HAVE_LIBUSB_H  /* see Makefile */
+#define SDL_HIDAPI_DISABLED 1
+/*#undef SDL_JOYSTICK_HIDAPI */
+#else
+#define SDL_JOYSTICK_HIDAPI 1
+/* dynamically loaded libusb-1.0 dll: */
+#define SDL_LIBUSB_DYNAMIC "usb100.dll"
+#endif
+/*#undef SDL_JOYSTICK_VIRTUAL */
 
 /* Enable OpenGL support */
 /* #undef SDL_VIDEO_OPENGL */
-
-/* Enable Vulkan support */
-/* #undef SDL_VIDEO_VULKAN */
 
 #define SDL_THREAD_OS2 1
 #define SDL_LOADSO_OS2 1
@@ -61,25 +67,32 @@
 
 #define HAVE_LIBC 1
 
+#define HAVE_STDARG_H 1
+#define HAVE_STDDEF_H 1
+#define HAVE_STDINT_H 1
+
 #define HAVE_SYS_TYPES_H 1
 #define HAVE_STDIO_H 1
 #define STDC_HEADERS 1
 #define HAVE_STDLIB_H 1
-#define HAVE_STDARG_H 1
-#define HAVE_STDDEF_H 1
 #define HAVE_MALLOC_H 1
 #define HAVE_MEMORY_H 1
 #define HAVE_STRING_H 1
 #define HAVE_STRINGS_H 1
 #define HAVE_WCHAR_H 1
 #define HAVE_INTTYPES_H 1
-#define HAVE_STDINT_H 1
 #define HAVE_LIMITS_H 1
 #define HAVE_CTYPE_H 1
 #define HAVE_MATH_H 1
 #define HAVE_FLOAT_H 1
 #define HAVE_SIGNAL_H 1
 
+#if 0 /* see Makefile */
+#define HAVE_ICONV 1
+#define HAVE_ICONV_H 1
+#endif
+
+/* #undef HAVE_DLOPEN */
 #define HAVE_MALLOC 1
 #define HAVE_CALLOC 1
 #define HAVE_REALLOC 1
@@ -105,14 +118,22 @@
 #define HAVE_WCSCMP 1
 #define HAVE__WCSICMP 1
 #define HAVE__WCSNICMP 1
+#define HAVE_WCSLEN 1
+#define HAVE_WCSLCPY 1
+#define HAVE_WCSLCAT 1
+/* #undef HAVE_WCSDUP */
+#define HAVE__WCSDUP 1
+#define HAVE_WCSSTR 1
+#define HAVE_WCSCMP 1
+#define HAVE_WCSNCMP 1
 #define HAVE_STRLEN 1
 #define HAVE_STRLCPY 1
 #define HAVE_STRLCAT 1
 #define HAVE__STRREV 1
 #define HAVE__STRUPR 1
 #define HAVE__STRLWR 1
-#define HAVE_INDEX 1
-#define HAVE_RINDEX 1
+/* #undef HAVE_INDEX */
+/* #undef HAVE_RINDEX */
 #define HAVE_STRCHR 1
 #define HAVE_STRRCHR 1
 #define HAVE_STRSTR 1
@@ -129,14 +150,6 @@
 #define HAVE_STRTOD 1
 #define HAVE_ATOI 1
 #define HAVE_ATOF 1
-#define HAVE_WCSLEN 1
-#define HAVE_WCSLCPY 1
-#define HAVE_WCSLCAT 1
-/* #define HAVE_WCSDUP 1 */
-/* #define wcsdup _wcsdup */
-#define HAVE_WCSSTR 1
-#define HAVE_WCSCMP 1
-#define HAVE_WCSNCMP 1
 #define HAVE_STRCMP 1
 #define HAVE_STRNCMP 1
 #define HAVE_STRICMP 1
@@ -184,5 +197,9 @@
 /* #undef HAVE_TANF */
 /* #undef HAVE_TRUNC */
 /* #undef HAVE_TRUNCF */
+/* #undef HAVE_LROUND */
+/* #undef HAVE_LROUNDF */
+/* #undef HAVE_ROUND */
+/* #undef HAVE_ROUNDF */
 
 #endif /* SDL_config_os2_h_ */
