@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2020 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2022 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -52,7 +52,7 @@ typedef enum
     SDLK_UNKNOWN = 0,
 
     SDLK_RETURN = '\r',
-    SDLK_ESCAPE = '\033',
+    SDLK_ESCAPE = '\x1B',
     SDLK_BACKSPACE = '\b',
     SDLK_TAB = '\t',
     SDLK_SPACE = ' ',
@@ -147,7 +147,7 @@ typedef enum
     SDLK_INSERT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_INSERT),
     SDLK_HOME = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_HOME),
     SDLK_PAGEUP = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_PAGEUP),
-    SDLK_DELETE = '\177',
+    SDLK_DELETE = '\x7F',
     SDLK_END = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_END),
     SDLK_PAGEDOWN = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_PAGEDOWN),
     SDLK_RIGHT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RIGHT),
@@ -338,12 +338,14 @@ typedef enum
     KMOD_NUM = 0x1000,
     KMOD_CAPS = 0x2000,
     KMOD_MODE = 0x4000,
-    KMOD_RESERVED = 0x8000,
+    KMOD_SCROLL = 0x8000,
 
     KMOD_CTRL = KMOD_LCTRL | KMOD_RCTRL,
     KMOD_SHIFT = KMOD_LSHIFT | KMOD_RSHIFT,
     KMOD_ALT = KMOD_LALT | KMOD_RALT,
-    KMOD_GUI = KMOD_LGUI | KMOD_RGUI
+    KMOD_GUI = KMOD_LGUI | KMOD_RGUI,
+
+    KMOD_RESERVED = KMOD_SCROLL /* This is for source-level compatibility with SDL 2.0.0. */
 } SDL_Keymod;
 
 #endif /* SDL_keycode_h_ */
