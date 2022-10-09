@@ -16,6 +16,8 @@
 #	include "SDL_config_linux_arm.h"
 #elif defined(__ANDROID__)
 #	include "SDL_config_android_arm.h"
+#elif defined(__APPLE__)
+#	include "SDL_config_darwin_arm64.h"
 #else
 #	error "No ABI matched"
 #endif
