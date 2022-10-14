@@ -468,15 +468,15 @@ func (e TextInputEvent) GetText() string {
 // MouseMotionEvent contains mouse motion event information.
 // (https://wiki.libsdl.org/SDL_MouseMotionEvent)
 type MouseMotionEvent struct {
-	Type      EventType       // MOUSEMOTION
-	Timestamp uint32          // timestamp of the event
-	WindowID  uint32          // the window with mouse focus, if any
-	Which     uint32          // the mouse instance id, or TOUCH_MOUSEID
-	State     ButtonStateMask // BUTTON_LEFT, BUTTON_MIDDLE, BUTTON_RIGHT, BUTTON_X1, BUTTON_X2
-	X         int32           // X coordinate, relative to window
-	Y         int32           // Y coordinate, relative to window
-	XRel      int32           // relative motion in the X direction
-	YRel      int32           // relative motion in the Y direction
+	Type      EventType  // MOUSEMOTION
+	Timestamp uint32     // timestamp of the event
+	WindowID  uint32     // the window with mouse focus, if any
+	Which     uint32     // the mouse instance id, or TOUCH_MOUSEID
+	State     ButtonMask // BUTTON_LEFT, BUTTON_MIDDLE, BUTTON_RIGHT, BUTTON_X1, BUTTON_X2
+	X         int32      // X coordinate, relative to window
+	Y         int32      // Y coordinate, relative to window
+	XRel      int32      // relative motion in the X direction
+	YRel      int32      // relative motion in the Y direction
 }
 type cMouseMotionEvent C.SDL_MouseMotionEvent
 
@@ -493,15 +493,15 @@ func (e MouseMotionEvent) GetTimestamp() uint32 {
 // MouseButtonEvent contains mouse button event information.
 // (https://wiki.libsdl.org/SDL_MouseButtonEvent)
 type MouseButtonEvent struct {
-	Type      EventType       // MOUSEBUTTONDOWN, MOUSEBUTTONUP
-	Timestamp uint32          // timestamp of the event
-	WindowID  uint32          // the window with mouse focus, if any
-	Which     uint32          // the mouse instance id, or TOUCH_MOUSEID
-	Button    ButtonStateMask // BUTTON_LEFT, BUTTON_MIDDLE, BUTTON_RIGHT, BUTTON_X1, BUTTON_X2
-	State     ButtonState     // PRESSED, RELEASED
-	Clicks    uint8           // 1 for single-click, 2 for double-click, etc. (>= SDL 2.0.2)
-	X         int32           // X coordinate, relative to window
-	Y         int32           // Y coordinate, relative to window
+	Type      EventType   // MOUSEBUTTONDOWN, MOUSEBUTTONUP
+	Timestamp uint32      // timestamp of the event
+	WindowID  uint32      // the window with mouse focus, if any
+	Which     uint32      // the mouse instance id, or TOUCH_MOUSEID
+	Button    ButtonMask  // BUTTON_LEFT, BUTTON_MIDDLE, BUTTON_RIGHT, BUTTON_X1, BUTTON_X2
+	State     ButtonState // PRESSED, RELEASED
+	Clicks    uint8       // 1 for single-click, 2 for double-click, etc. (>= SDL 2.0.2)
+	X         int32       // X coordinate, relative to window
+	Y         int32       // Y coordinate, relative to window
 }
 type cMouseButtonEvent C.MouseButtonEvent
 
@@ -1144,7 +1144,7 @@ func goEvent(cevent *CEvent) Event {
 			Timestamp: uint32(e.timestamp),
 			WindowID:  uint32(e.windowID),
 			Which:     uint32(e.which),
-			State:     ButtonStateMask(e.state),
+			State:     ButtonMask(e.state),
 			X:         int32(e.x),
 			Y:         int32(e.y),
 			XRel:      int32(e.xrel),
@@ -1157,7 +1157,7 @@ func goEvent(cevent *CEvent) Event {
 			Timestamp: uint32(e.timestamp),
 			WindowID:  uint32(e.windowID),
 			Which:     uint32(e.which),
-			Button:    ButtonStateMask(e.button),
+			Button:    ButtonMask(e.button),
 			State:     ButtonState(e.state),
 			Clicks:    uint8(e.clicks),
 			X:         int32(e.x),

@@ -84,15 +84,26 @@ const (
 	MOUSEWHEEL_FLIPPED = C.SDL_MOUSEWHEEL_FLIPPED // the scroll direction is flipped / natural
 )
 
-// Used as a mask when testing buttons in buttonstate.
-type ButtonStateMask uint32
+// Mouse buttons
+type Button uint32
 
 const (
-	BUTTON_LEFT   ButtonStateMask = C.SDL_BUTTON_LEFT   // left mouse button
-	BUTTON_MIDDLE ButtonStateMask = C.SDL_BUTTON_MIDDLE // middle mouse button
-	BUTTON_RIGHT  ButtonStateMask = C.SDL_BUTTON_RIGHT  // right mouse button
-	BUTTON_X1     ButtonStateMask = C.SDL_BUTTON_X1     // x1 mouse button
-	BUTTON_X2     ButtonStateMask = C.SDL_BUTTON_X2     // x2 mouse button
+	ButtonLeft   Button = C.SDL_BUTTON_LEFT   // left mouse button
+	ButtonMiddle Button = C.SDL_BUTTON_MIDDLE // middle mouse button
+	ButtonRight  Button = C.SDL_BUTTON_RIGHT  // right mouse button
+	ButtonX1     Button = C.SDL_BUTTON_X1     // x1 mouse button
+	ButtonX2     Button = C.SDL_BUTTON_X2     // x2 mouse button
+)
+
+// Used as a mask when testing buttons in buttonstate.
+type ButtonMask uint32
+
+const (
+	ButtonLMask  ButtonMask = 1 << (ButtonLeft - 1)   // left mouse button mask
+	ButtonMMask  ButtonMask = 1 << (ButtonMiddle - 1) // middle mouse button mask
+	ButtonRMask  ButtonMask = 1 << (ButtonRight - 1)  // right mouse button mask
+	ButtonX1Mask ButtonMask = 1 << (ButtonX1 - 1)     // x1 mouse button mask
+	ButtonX2Mask ButtonMask = 1 << (ButtonX2 - 1)     // x2 mouse button mask
 )
 
 // Cursor is a custom cursor created by CreateCursor() or CreateColorCursor().
@@ -114,25 +125,25 @@ func GetMouseFocus() *Window {
 
 // GetGlobalMouseState returns the current state of the mouse.
 // (https://wiki.libsdl.org/SDL_GetGlobalMouseState)
-func GetGlobalMouseState() (x, y int32, state ButtonStateMask) {
+func GetGlobalMouseState() (x, y int32, state ButtonMask) {
 	var _x, _y C.int
-	_state := ButtonStateMask(C.SDL_GetGlobalMouseState(&_x, &_y))
+	_state := ButtonMask(C.SDL_GetGlobalMouseState(&_x, &_y))
 	return int32(_x), int32(_y), _state
 }
 
 // GetMouseState returns the current state of the mouse.
 // (https://wiki.libsdl.org/SDL_GetMouseState)
-func GetMouseState() (x, y int32, state ButtonStateMask) {
+func GetMouseState() (x, y int32, state ButtonMask) {
 	var _x, _y C.int
-	_state := ButtonStateMask(C.SDL_GetMouseState(&_x, &_y))
+	_state := ButtonMask(C.SDL_GetMouseState(&_x, &_y))
 	return int32(_x), int32(_y), _state
 }
 
 // GetRelativeMouseState returns the relative state of the mouse.
 // (https://wiki.libsdl.org/SDL_GetRelativeMouseState)
-func GetRelativeMouseState() (x, y int32, state ButtonStateMask) {
+func GetRelativeMouseState() (x, y int32, state ButtonMask) {
 	var _x, _y C.int
-	_state := ButtonStateMask(C.SDL_GetRelativeMouseState(&_x, &_y))
+	_state := ButtonMask(C.SDL_GetRelativeMouseState(&_x, &_y))
 	return int32(_x), int32(_y), _state
 }
 
@@ -218,36 +229,6 @@ func CaptureMouse(toggle bool) error {
 		return GetError()
 	}
 	return nil
-}
-
-// Button is used as a mask when testing buttons in buttonstate.
-func Button(flag ButtonStateMask) ButtonStateMask {
-	return 1 << (flag - 1)
-}
-
-// ButtonLMask is used as a mask when testing buttons in buttonstate.
-func ButtonLMask() ButtonStateMask {
-	return Button(BUTTON_LEFT)
-}
-
-// ButtonMMask is used as a mask when testing buttons in buttonstate.
-func ButtonMMask() ButtonStateMask {
-	return Button(BUTTON_MIDDLE)
-}
-
-// ButtonRMask is used as a mask when testing buttons in buttonstate.
-func ButtonRMask() ButtonStateMask {
-	return Button(BUTTON_RIGHT)
-}
-
-// ButtonX1Mask is used as a mask when testing buttons in buttonstate.
-func ButtonX1Mask() ButtonStateMask {
-	return Button(BUTTON_X1)
-}
-
-// ButtonX2Mask is used as a mask when testing buttons in buttonstate.
-func ButtonX2Mask() ButtonStateMask {
-	return Button(BUTTON_X2)
 }
 
 // WarpMouseGlobal moves the mouse to the given position in global screen space.
