@@ -102,10 +102,10 @@ For more complete examples, see https://github.com/veandco/go-sdl2-examples. You
 
 # Requirements
 * [Go v1.13+](https://go.dev/dl/)
-* [SDL2](http://libsdl.org/download-2.0.php)
-* [SDL2_image (optional)](http://www.libsdl.org/projects/SDL_image/)
-* [SDL2_mixer (optional)](http://www.libsdl.org/projects/SDL_mixer/)
-* [SDL2_ttf (optional)](http://www.libsdl.org/projects/SDL_ttf/)
+* [SDL2](https://github.com/libsdl-org/SDL/releases)
+* [SDL2_image (optional)](https://github.com/libsdl-org/SDL_image/releases)
+* [SDL2_mixer (optional)](https://github.com/libsdl-org/SDL_mixer/releases)
+* [SDL2_ttf (optional)](https://github.com/libsdl-org/SDL_ttf/releases)
 * [SDL2_gfx (optional)](http://www.ferzkopp.net/wordpress/2016/01/02/sdl_gfx-sdl2_gfx/)
 
 On __Ubuntu 22.04 and above__, type:\
@@ -131,9 +131,9 @@ On __Windows__,
     * Exception: seh
     * Build revision: 1
     * Destination Folder: Select a folder that your Windows user owns
-2. Install SDL2 http://libsdl.org/download-2.0.php
+2. Download and install SDL2-devel from https://github.com/libsdl-org/SDL/releases
     * Extract the SDL2 folder from the archive using a tool like [7zip](http://7-zip.org)
-    * Inside the folder, copy the `i686-w64-mingw32` and/or `x86_64-w64-mingw32` depending on the architecture you chose into your mingw-w64 folder e.g. `C:\Program Files\mingw-w64\x86_64-6.3.0-win32-seh-rt_v5-rev1\mingw64`
+    * Inside the extracted SDL2 folder, copy the `i686-w64-mingw32` and/or `x86_64-w64-mingw32` depending on the architecture you chose into your mingw-w64 folder e.g. `C:\Program Files\mingw-w64\x86_64-6.3.0-win32-seh-rt_v5-rev1\mingw64`
 3. Setup Path environment variable
     * Put your mingw-w64 binaries location into your system Path environment variable. e.g. `C:\Program Files\mingw-w64\x86_64-6.3.0-win32-seh-rt_v5-rev1\mingw64\bin` and `C:\Program Files\mingw-w64\x86_64-6.3.0-win32-seh-rt_v5-rev1\mingw64\x86_64-w64-mingw32\bin`
 4. Open up a terminal such as `Git Bash` and run `go get -v github.com/veandco/go-sdl2/sdl`.
