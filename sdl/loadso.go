@@ -11,7 +11,7 @@ type SharedObject uintptr
 // (https://wiki.libsdl.org/SDL_LoadObject)
 func LoadObject(sofile string) SharedObject {
 	_sofile := C.CString(sofile)
-	defer C.free(unsafe.Pointer(_sofile))
+	defer C.SDL_free(unsafe.Pointer(_sofile))
 	return (SharedObject)(C.SDL_LoadObject(_sofile))
 }
 
@@ -19,7 +19,7 @@ func LoadObject(sofile string) SharedObject {
 // (https://wiki.libsdl.org/SDL_LoadFunction)
 func (handle SharedObject) LoadFunction(name string) unsafe.Pointer {
 	_name := C.CString(name)
-	defer C.free(unsafe.Pointer(_name))
+	defer C.SDL_free(unsafe.Pointer(_name))
 	return (unsafe.Pointer)(C.SDL_LoadFunction((unsafe.Pointer)(handle), _name))
 }
 

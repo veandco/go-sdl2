@@ -135,7 +135,7 @@ func Log(str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_Log(cstr)
 }
@@ -146,7 +146,7 @@ func LogVerbose(category LogCategory, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_LogVerbose(C.int(category), cstr)
 }
@@ -157,7 +157,7 @@ func LogDebug(category LogCategory, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_LogDebug(C.int(category), cstr)
 }
@@ -168,7 +168,7 @@ func LogInfo(category LogCategory, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_LogInfo(C.int(category), cstr)
 }
@@ -179,7 +179,7 @@ func LogWarn(category LogCategory, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_LogWarn(C.int(category), cstr)
 }
@@ -190,7 +190,7 @@ func LogError(category LogCategory, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_LogError(C.int(category), cstr)
 }
@@ -201,7 +201,7 @@ func LogCritical(category LogCategory, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_LogCritical(C.int(category), cstr)
 }
@@ -212,7 +212,7 @@ func LogMessage(category LogCategory, pri LogPriority, str string, args ...inter
 	str = fmt.Sprintf(str, args...)
 
 	cstr := C.CString(str)
-	defer C.free(unsafe.Pointer(cstr))
+	defer C.SDL_free(unsafe.Pointer(cstr))
 
 	C._SDL_LogMessage(C.int(category), C.SDL_LogPriority(pri), cstr)
 }

@@ -343,8 +343,8 @@ func (hp HintPriority) c() C.SDL_HintPriority {
 func SetHintWithPriority(name, value string, hp HintPriority) bool {
 	_name := C.CString(name)
 	_value := C.CString(value)
-	defer C.free(unsafe.Pointer(_name))
-	defer C.free(unsafe.Pointer(_value))
+	defer C.SDL_free(unsafe.Pointer(_name))
+	defer C.SDL_free(unsafe.Pointer(_value))
 	return C.SDL_SetHintWithPriority(_name, _value, hp.c()) > 0
 }
 
@@ -353,8 +353,8 @@ func SetHintWithPriority(name, value string, hp HintPriority) bool {
 func SetHint(name, value string) bool {
 	_name := C.CString(name)
 	_value := C.CString(value)
-	defer C.free(unsafe.Pointer(_name))
-	defer C.free(unsafe.Pointer(_value))
+	defer C.SDL_free(unsafe.Pointer(_name))
+	defer C.SDL_free(unsafe.Pointer(_value))
 	return C.SDL_SetHint(_name, _value) > 0
 }
 
@@ -362,7 +362,7 @@ func SetHint(name, value string) bool {
 // (https://wiki.libsdl.org/SDL_ResetHint)
 func ResetHint(name string) bool {
 	_name := C.CString(name)
-	defer C.free(unsafe.Pointer(_name))
+	defer C.SDL_free(unsafe.Pointer(_name))
 	return C.SDL_ResetHint(_name) == C.SDL_TRUE
 }
 
@@ -370,7 +370,7 @@ func ResetHint(name string) bool {
 // (https://wiki.libsdl.org/SDL_GetHint)
 func GetHint(name string) string {
 	_name := C.CString(name)
-	defer C.free(unsafe.Pointer(_name))
+	defer C.SDL_free(unsafe.Pointer(_name))
 	return C.GoString(C.SDL_GetHint(_name))
 }
 

@@ -246,7 +246,7 @@ func HIDOpen(vendorID, productID uint16, _serialNumber *C.wchar_t) (device *HIDD
 // (https://wiki.libsdl.org/SDL_hid_open_path)
 func HIDOpenPath(path string, exclusive bool) (device *HIDDevice) {
 	_path := C.CString(path)
-	defer C.free(unsafe.Pointer(_path))
+	defer C.SDL_free(unsafe.Pointer(_path))
 	_exclusive := C.int(0)
 	if exclusive {
 		_exclusive = C.int(1)

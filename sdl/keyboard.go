@@ -101,7 +101,7 @@ func GetScancodeName(code Scancode) string {
 // (https://wiki.libsdl.org/SDL_GetScancodeFromName)
 func GetScancodeFromName(name string) Scancode {
 	_name := C.CString(name)
-	defer C.free(unsafe.Pointer(_name))
+	defer C.SDL_free(unsafe.Pointer(_name))
 	return (Scancode)(C.SDL_GetScancodeFromName(_name))
 }
 
@@ -115,7 +115,7 @@ func GetKeyName(code Keycode) string {
 // (https://wiki.libsdl.org/SDL_GetKeyFromName)
 func GetKeyFromName(name string) Keycode {
 	_name := C.CString(name)
-	defer C.free(unsafe.Pointer(_name))
+	defer C.SDL_free(unsafe.Pointer(_name))
 	return (Keycode)(C.SDL_GetKeyFromName(_name))
 }
 

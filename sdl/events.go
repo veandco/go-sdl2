@@ -1311,7 +1311,7 @@ func goEvent(cevent *CEvent) Event {
 		// From SDL doc: the file name, which should be freed with SDL_free(), is NULL on BEGIN/COMPLETE.
 		defer func() {
 			if e.file != nil {
-				C.free(unsafe.Pointer(e.file))
+				C.SDL_free(unsafe.Pointer(e.file))
 			}
 		}()
 		return DropEvent{

@@ -8,7 +8,7 @@ import "unsafe"
 // (https://wiki.libsdl.org/SDL_SetClipboardText)
 func SetClipboardText(text string) error {
 	_text := C.CString(text)
-	defer C.free(unsafe.Pointer(_text))
+	defer C.SDL_free(unsafe.Pointer(_text))
 	if C.SDL_SetClipboardText(_text) < 0 {
 		return GetError()
 	}

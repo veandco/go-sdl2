@@ -389,7 +389,7 @@ func (btn GameControllerButton) c() C.SDL_GameControllerButton {
 // (https://wiki.libsdl.org/SDL_GameControllerAddMapping)
 func GameControllerAddMapping(mappingString string) int {
 	_mappingString := C.CString(mappingString)
-	defer C.free(unsafe.Pointer(_mappingString))
+	defer C.SDL_free(unsafe.Pointer(_mappingString))
 	return int(C.SDL_GameControllerAddMapping(_mappingString))
 }
 
@@ -401,7 +401,7 @@ func GameControllerNumMappings() int {
 // GameControllerMappingForIndex returns the game controller mapping string at a particular index.
 func GameControllerMappingForIndex(index int) string {
 	mappingString := C.SDL_GameControllerMappingForIndex(C.int(index))
-	defer C.free(unsafe.Pointer(mappingString))
+	defer C.SDL_free(unsafe.Pointer(mappingString))
 	return C.GoString(mappingString)
 }
 
@@ -409,7 +409,7 @@ func GameControllerMappingForIndex(index int) string {
 // (https://wiki.libsdl.org/SDL_GameControllerMappingForGUID)
 func GameControllerMappingForGUID(guid JoystickGUID) string {
 	mappingString := C.SDL_GameControllerMappingForGUID(guid.c())
-	defer C.free(unsafe.Pointer(mappingString))
+	defer C.SDL_free(unsafe.Pointer(mappingString))
 	return C.GoString(mappingString)
 }
 
@@ -440,7 +440,7 @@ func GameControllerTypeForIndex(index int) GameControllerType {
 // GameControllerMappingForDeviceIndex returns the game controller mapping string at a particular index.
 func GameControllerMappingForDeviceIndex(index int) string {
 	mappingString := C.SDL_GameControllerMappingForDeviceIndex(C.int(index))
-	defer C.free(unsafe.Pointer(mappingString))
+	defer C.SDL_free(unsafe.Pointer(mappingString))
 	return C.GoString(mappingString)
 }
 
@@ -529,7 +529,7 @@ func (ctrl *GameController) Attached() bool {
 // (https://wiki.libsdl.org/SDL_GameControllerMapping)
 func (ctrl *GameController) Mapping() string {
 	mappingString := C.SDL_GameControllerMapping(ctrl.cptr())
-	defer C.free(unsafe.Pointer(mappingString))
+	defer C.SDL_free(unsafe.Pointer(mappingString))
 	return C.GoString(mappingString)
 }
 
@@ -555,7 +555,7 @@ func GameControllerUpdate() {
 // (https://wiki.libsdl.org/SDL_GameControllerGetAxisFromString)
 func GameControllerGetAxisFromString(pchString string) GameControllerAxis {
 	_pchString := C.CString(pchString)
-	defer C.free(unsafe.Pointer(_pchString))
+	defer C.SDL_free(unsafe.Pointer(_pchString))
 	return GameControllerAxis(C.SDL_GameControllerGetAxisFromString(_pchString))
 }
 
@@ -587,7 +587,7 @@ func (ctrl *GameController) Axis(axis GameControllerAxis) int16 {
 // (https://wiki.libsdl.org/SDL_GameControllerGetButtonFromString)
 func GameControllerGetButtonFromString(pchString string) GameControllerButton {
 	_pchString := C.CString(pchString)
-	defer C.free(unsafe.Pointer(_pchString))
+	defer C.SDL_free(unsafe.Pointer(_pchString))
 	return GameControllerButton(C.SDL_GameControllerGetButtonFromString(_pchString))
 }
 

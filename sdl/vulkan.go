@@ -97,7 +97,7 @@ func VulkanLoadLibrary(path string) error {
 		ret = C.SDL_Vulkan_LoadLibrary(nil)
 	} else {
 		cpath := C.CString(path)
-		defer C.free(unsafe.Pointer(cpath))
+		defer C.SDL_free(unsafe.Pointer(cpath))
 		ret = C.SDL_Vulkan_LoadLibrary(cpath)
 	}
 	if int(ret) == -1 {
