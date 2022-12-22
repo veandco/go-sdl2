@@ -1171,37 +1171,10 @@ func (renderer *Renderer) RenderGeometry(texture *Texture, vertices []Vertex, in
 // indices into the vertex arrays Color and alpha modulation is done per vertex
 // (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).
 // (https://wiki.libsdl.org/SDL_RenderGeometryRaw)
-func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy *float32, xy_stride int, color *Color, color_stride int, uv *float32, uv_stride int, num_vertices int, indices interface{}) (err error) {
-	size_indices := 0
-	_indices := unsafe.Pointer(nil)
-	num_indices := 0
-
-	switch t := indices.(type) {
-	case []byte:
-		_indices = unsafe.Pointer(&t[0])
-		size_indices = 1
-		num_indices = len(t)
-	case []int8:
-		_indices = unsafe.Pointer(&t[0])
-		size_indices = 1
-		num_indices = len(t)
-	case []int16:
-		_indices = unsafe.Pointer(&t[0])
-		size_indices = 2
-		num_indices = len(t)
-	case []uint16:
-		_indices = unsafe.Pointer(&t[0])
-		size_indices = 2
-		num_indices = len(t)
-	case []int32:
-		_indices = unsafe.Pointer(&t[0])
-		size_indices = 4
-		num_indices = len(t)
-	case []uint32:
-		_indices = unsafe.Pointer(&t[0])
-		size_indices = 4
-		num_indices = len(t)
-	}
+func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy *float32, xy_stride int, color *Color, color_stride int, uv *float32, uv_stride int, num_vertices int,
+		indices unsafe.Pointer, num_indices int, size_indices int,
+		//indices interface{}
+	) (err error) {
 
 	_texture := texture.cptr()
 	_xy := (*C.float)(xy)
@@ -1213,6 +1186,7 @@ func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy *float32, xy_st
 	_num_vertices := C.int(num_vertices)
 	_num_indices := C.int(num_indices)
 	_size_indices := C.int(size_indices)
+	_indices := indices
 
 	err = errorFromInt(int(C.RenderGeometryRaw(renderer.cptr(), _texture, _xy, _xy_stride, _color, _color_stride, _uv, _uv_stride, _num_vertices, _indices, _num_indices, _size_indices)))
 	return
