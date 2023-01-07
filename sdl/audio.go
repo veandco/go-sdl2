@@ -511,16 +511,16 @@ func QueueAudio(dev AudioDeviceID, data []byte) error {
 	return nil
 }
 
-// DequeueAudio dequeues more audio on non-callback devices.
+// DequeueAudio dequeues more audio on non-callback devices. Returns the number of bytes dequeued, which could be less than requested
 // (https://wiki.libsdl.org/SDL_DequeueAudio)
-func DequeueAudio(dev AudioDeviceID, data []byte) error {
+func DequeueAudio(dev AudioDeviceID, data []byte) (n int, err error) {
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&data))
 	_data := unsafe.Pointer(sliceHeader.Data)
 	_len := (C.Uint32)(sliceHeader.Len)
-	if C.SDL_DequeueAudio(dev.c(), _data, _len) != 0 {
-		return GetError()
+	if dequeued := C.SDL_DequeueAudio(dev.c(), _data, _len); dequeued > 0 {
+		return dequeued, nil
 	}
-	return nil
+	return 0, GetError()
 }
 
 // GetQueuedAudioSize returns the number of bytes of still-queued audio.
