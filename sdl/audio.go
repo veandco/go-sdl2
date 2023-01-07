@@ -517,7 +517,7 @@ func DequeueAudio(dev AudioDeviceID, data []byte) (n int, err error) {
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&data))
 	_data := unsafe.Pointer(sliceHeader.Data)
 	_len := (C.Uint32)(sliceHeader.Len)
-	if dequeued := C.SDL_DequeueAudio(dev.c(), _data, _len); dequeued > 0 {
+	if dequeued := int(C.SDL_DequeueAudio(dev.c(), _data, _len)); dequeued > 0 {
 		return dequeued, nil
 	}
 	return 0, GetError()
