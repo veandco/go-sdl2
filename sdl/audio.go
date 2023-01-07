@@ -615,15 +615,17 @@ func (stream *AudioStream) Put(buf []byte) (err error) {
 	return
 }
 
-// Get gets converted/resampled data from the stream
-// TODO: (https://wiki.libsdl.org/SDL_AudioStreamGet)
-func (stream *AudioStream) Get(buf []byte) (err error) {
+// Get gets converted/resampled data from the stream. Returns the number of bytes read from the stream.
+// (https://wiki.libsdl.org/SDL_AudioStreamGet)
+func (stream *AudioStream) Get(buf []byte) (n int, err error) {
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
 	_buf := unsafe.Pointer(sliceHeader.Data)
 	_len := C.int(len(buf))
-	ret := int(C.SDL_AudioStreamGet(stream.cptr(), _buf, _len))
-	err = errorFromInt(ret)
-	return
+	if ret := int(C.SDL_AudioStreamGet(stream.cptr(), _buf, _len)); ret < 0 {
+		return 0, errorFromInt(ret)
+	} else {
+		return ret, nil
+	}
 }
 
 // Available gets the number of converted/resampled bytes available
