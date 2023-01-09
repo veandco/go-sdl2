@@ -511,16 +511,16 @@ func QueueAudio(dev AudioDeviceID, data []byte) error {
 	return nil
 }
 
-// DequeueAudio dequeues more audio on non-callback devices.
+// DequeueAudio dequeues more audio on non-callback devices. Returns the number of bytes dequeued, which could be less than requested
 // (https://wiki.libsdl.org/SDL_DequeueAudio)
-func DequeueAudio(dev AudioDeviceID, data []byte) error {
+func DequeueAudio(dev AudioDeviceID, data []byte) (n int, err error) {
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&data))
 	_data := unsafe.Pointer(sliceHeader.Data)
 	_len := (C.Uint32)(sliceHeader.Len)
-	if C.SDL_DequeueAudio(dev.c(), _data, _len) != 0 {
-		return GetError()
+	if dequeued := int(C.SDL_DequeueAudio(dev.c(), _data, _len)); dequeued > 0 {
+		return dequeued, nil
 	}
-	return nil
+	return 0, GetError()
 }
 
 // GetQueuedAudioSize returns the number of bytes of still-queued audio.
@@ -615,15 +615,17 @@ func (stream *AudioStream) Put(buf []byte) (err error) {
 	return
 }
 
-// Get gets converted/resampled data from the stream
-// TODO: (https://wiki.libsdl.org/SDL_AudioStreamGet)
-func (stream *AudioStream) Get(buf []byte) (err error) {
+// Get gets converted/resampled data from the stream. Returns the number of bytes read from the stream.
+// (https://wiki.libsdl.org/SDL_AudioStreamGet)
+func (stream *AudioStream) Get(buf []byte) (n int, err error) {
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
 	_buf := unsafe.Pointer(sliceHeader.Data)
 	_len := C.int(len(buf))
-	ret := int(C.SDL_AudioStreamGet(stream.cptr(), _buf, _len))
-	err = errorFromInt(ret)
-	return
+	if ret := int(C.SDL_AudioStreamGet(stream.cptr(), _buf, _len)); ret < 0 {
+		return 0, errorFromInt(ret)
+	} else {
+		return ret, nil
+	}
 }
 
 // Available gets the number of converted/resampled bytes available
