@@ -15,6 +15,16 @@ static inline int SDL_UpdateYUVTexture(SDL_Texture* texture, const SDL_Rect* rec
 }
 #endif
 
+#if !(SDL_VERSION_ATLEAST(2,0,4))
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_RenderIsClipEnabled is not supported before SDL 2.0.4")
+#endif
+static inline SDL_bool SDLCALL SDL_RenderIsClipEnabled(SDL_Renderer * renderer)
+{
+	return SDL_FALSE;
+}
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,5))
 
 #if defined(WARN_OUTDATED)
@@ -713,6 +723,12 @@ func (renderer *Renderer) GetViewport() (rect Rect) {
 	return
 }
 
+// IsClipEnabled returns whether clipping is enabled on the given renderer.
+// (https://wiki.libsdl.org/SDL_RenderIsClipEnabled)
+func (renderer *Renderer) IsClipEnabled() bool {
+	return C.SDL_RenderIsClipEnabled(renderer.cptr()) == C.SDL_TRUE
+}
+
 // SetClipRect sets the clip rectangle for rendering on the specified target.
 // (https://wiki.libsdl.org/SDL_RenderSetClipRect)
 func (renderer *Renderer) SetClipRect(rect *Rect) error {
@@ -1171,11 +1187,7 @@ func (renderer *Renderer) RenderGeometry(texture *Texture, vertices []Vertex, in
 // indices into the vertex arrays Color and alpha modulation is done per vertex
 // (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).
 // (https://wiki.libsdl.org/SDL_RenderGeometryRaw)
-func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy *float32, xy_stride int, color *Color, color_stride int, uv *float32, uv_stride int, num_vertices int,
-		indices unsafe.Pointer, num_indices int, size_indices int,
-		//indices interface{}
-	) (err error) {
-
+func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy *float32, xy_stride int, color *Color, color_stride int, uv *float32, uv_stride int, num_vertices int, indices unsafe.Pointer, num_indices int, size_indices int) (err error) {
 	_texture := texture.cptr()
 	_xy := (*C.float)(xy)
 	_xy_stride := C.int(xy_stride)
