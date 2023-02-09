@@ -13,3 +13,7 @@ package sdl
 //#cgo android,arm LDFLAGS: -lSDL2_android_arm -lm -ldl -llog -landroid -lGLESv2 -lGLESv1_CM
 //#cgo linux,arm,!android LDFLAGS: -L/opt/vc/lib -L/opt/vc/lib64 -lSDL2_linux_arm -lm -ldl -liconv -lbcm_host -lvcos -lvchiq_arm -pthread
 import "C"
+import (
+       "github.com/veandco/go-sdl2/.go-sdl2-libs"
+       "github.com/veandco/go-sdl2/.go-sdl2-libs/include/SDL2"
+)
