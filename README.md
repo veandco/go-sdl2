@@ -165,6 +165,121 @@ Before building the program.
 6. Before running the program, you need to put `SDL2.dll` from the [SDL2 runtime package](http://libsdl.org/download-2.0.php) (For others like *SDL_image*, *SDL_mixer*, etc.., look for them [here](https://www.libsdl.org/projects/)) for Windows in the same folder as your executable.
 7. Now you should be able to run the program using Wine or Windows!
 
+### Linux to macOS (static build using podman or docker)
+1. Run a container. This example uses Debian image with Podman.
+```
+podman run -it --name debian debian:latest bash
+```
+
+2. Install required packages.
+```
+apt update && apt install -y vim git curl xz-utils clang make cmake libxml2-dev libssl-dev libz-dev
+```
+
+3. Clone osxcross
+```
+cd /opt
+git clone https://github.com/tpoechtrager/osxcross
+```
+
+4. Build macOS SDK
+```
+cd /opt/osxcross/tarballs
+curl -O https://s3.veand.co/go-sdl2/MacOSX11.3.sdk.tar.xz
+cd /opt/osxcross
+SDK_VERSION=11.3 ./build.sh
+```
+
+5. Download and extract Go
+```
+cd /opt
+curl -L -O https://go.dev/dl/go1.20.linux-amd64.tar.gz
+tar xf go1.20.linux-amd64.tar.gz
+```
+
+6. Set up PATH for Go by editing ~/.profile
+
+```
+vim ~/.profile
+```
+
+Put the following content at the bottom of `~/.profile`:
+```
+# ~/.profile
+export GOROOT="/opt/go"
+export GOPATH="/opt/.go"
+export PATH="$GOPATH/bin:$GOROOT/bin:$PATH"
+```
+
+Reload .profile
+```
+. ~/.profile
+```
+
+7. Set up an example go-sdl2 project
+```
+cd /opt
+mkdir example
+cd /opt/example
+go mod init example
+vim main.go
+```
+
+Put the following code in `main.go`:
+```go
+package main
+
+import (
+	"github.com/veandco/go-sdl2/sdl"
+	"github.com/veandco/go-sdl2/ttf"
+	"github.com/veandco/go-sdl2/img"
+	"github.com/veandco/go-sdl2/mix"
+)
+
+func main() {
+	sdl.Init(sdl.INIT_EVERYTHING)
+	ttf.Init()
+	img.Init(img.INIT_PNG)
+	mix.Init(mix.INIT_MP3)
+}
+```
+
+Then run `go mod tidy` to download the dependencies.
+
+8. Create a build script for cross-compiling the program to macOS
+
+```
+vim build.sh
+```
+
+Put the following content in `build.sh`:
+```
+#!/usr/bin/env bash
+
+export TARGET="x86_64-apple-darwin20.4"
+export OSXCROSS="/opt/osxcross"
+export SDK_VERSION=11.3
+export DARWIN="${OSXCROSS}/target"
+export DARWIN_SDK="${DARWIN}/SDK/MacOSX${SDK_VERSION}.sdk"
+
+export PATH="${DARWIN}/bin:${DARWIN_SDK}/bin:${PATH}"
+export LDFLAGS="-L${DARWIN_SDK}/lib -mmacosx-version-min=10.10"
+export CC="${TARGET}-clang"
+export CXX="${TARGET}-clang++"
+
+CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build -tags static -ldflags "-s -w"
+```
+
+Then make it executable and run it:
+```
+chmod +x build.sh
+./build.sh
+```
+
+9. After it finished building, you can copy the executable to your local machine by running this on the host machine:
+```
+podman cp debian:/opt/example/example .
+```
 
 # FAQ
 __Why does the program not run on Windows?__
