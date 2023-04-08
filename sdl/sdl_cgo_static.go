@@ -2,8 +2,8 @@
 
 package sdl
 
-//#cgo CFLAGS: -I${SRCDIR}/../.go-sdl2-libs/include -I${SRCDIR}/../.go-sdl2-libs/include/SDL2
-//#cgo LDFLAGS: -L${SRCDIR}/../.go-sdl2-libs
+//#cgo CFLAGS: -I${SRCDIR}/../_libs/include -I${SRCDIR}/../_libs/include/SDL2
+//#cgo LDFLAGS: -L${SRCDIR}/../_libs
 //#cgo linux,386 LDFLAGS: -lSDL2_linux_386 -lm -ldl -lasound -lm -ldl -lpthread -lX11 -lXext -lXcursor -lXinerama -lXi -lXrandr -lXss -lXxf86vm -lpthread -lrt
 //#cgo linux,amd64 LDFLAGS: -lSDL2_linux_amd64 -lm -ldl -lasound -lm -ldl -lpthread -lX11 -lXext -lXcursor -lXinerama -lXi -lXrandr -lXss -lXxf86vm -lpthread -lrt
 //#cgo linux,mipsle LDFLAGS: -lSDL2_linux_mipsle -lm -ldl
@@ -15,6 +15,6 @@ package sdl
 //#cgo linux,arm,!android LDFLAGS: -L/opt/vc/lib -L/opt/vc/lib64 -lSDL2_linux_arm -lm -ldl -liconv -lbcm_host -lvcos -lvchiq_arm -pthread
 import "C"
 import (
-       _ "github.com/veandco/go-sdl2/.go-sdl2-libs"
-       _ "github.com/veandco/go-sdl2/.go-sdl2-libs/include/SDL2"
+       _ "github.com/veandco/go-sdl2/_libs"
+       _ "github.com/veandco/go-sdl2/_libs/include/SDL2"
 )

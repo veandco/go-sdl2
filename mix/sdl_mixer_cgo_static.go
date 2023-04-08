@@ -2,8 +2,8 @@
 
 package mix
 
-//#cgo CFLAGS: -I${SRCDIR}/../.go-sdl2-libs/include -I${SRCDIR}/../.go-sdl2-libs/include/SDL2
-//#cgo LDFLAGS: -L${SRCDIR}/../.go-sdl2-libs
+//#cgo CFLAGS: -I${SRCDIR}/../_libs/include -I${SRCDIR}/../_libs/include/SDL2
+//#cgo LDFLAGS: -L${SRCDIR}/../_libs
 //#cgo linux,386 LDFLAGS: -lSDL2_mixer_linux_386 -Wl,--no-undefined -lmpg123_linux_386 -lvorbisfile_linux_386 -lvorbis_linux_386 -logg_linux_386 -lSDL2_linux_386 -lm -ldl -lasound -lm -ldl -lstdc++ -lpthread -lX11 -lXext -lXcursor -lXinerama -lXi -lXrandr -lXss -lXxf86vm -lpthread -lrt
 //#cgo linux,amd64 LDFLAGS: -lSDL2_mixer_linux_amd64 -Wl,--no-undefined -lmpg123_linux_amd64 -lvorbisfile_linux_amd64 -lvorbis_linux_amd64 -logg_linux_amd64 -lSDL2_linux_amd64 -lm -ldl -lstdc++ -lasound -lm -ldl -lpthread -lX11 -lXext -lXcursor -lXinerama -lXi -lXrandr -lXss -lXxf86vm -lpthread -lrt
 //#cgo linux,mipsle LDFLAGS: -lSDL2_mixer_linux_mipsle -Wl,--no-undefined -lmpg123_linux_mipsle -lvorbisfile_linux_mipsle -lvorbis_linux_mipsle -logg_linux_mipsle -lSDL2_linux_mipsle -lm -ldl -lstdc++ -lm -ldl

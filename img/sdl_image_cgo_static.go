@@ -2,8 +2,8 @@
 
 package img
 
-//#cgo CFLAGS: -I${SRCDIR}/../.go-sdl2-libs/include -I${SRCDIR}/../.go-sdl2-libs/include/SDL2
-//#cgo LDFLAGS: -L${SRCDIR}/../.go-sdl2-libs
+//#cgo CFLAGS: -I${SRCDIR}/../_libs/include -I${SRCDIR}/../_libs/include/SDL2
+//#cgo LDFLAGS: -L${SRCDIR}/../_libs
 //#cgo linux,386 LDFLAGS: -lSDL2_image_linux_386 -Wl,--no-undefined -lpng_linux_386 -ljpeg_linux_386 -lSDL2_linux_386 -lm -ldl -lz -lasound -lm -ldl -lpthread -lX11 -lXext -lXcursor -lXinerama -lXi -lXrandr -lXss -lXxf86vm -lpthread -lrt
 //#cgo linux,amd64 LDFLAGS: -lSDL2_image_linux_amd64 -Wl,--no-undefined -lpng_linux_amd64 -ljpeg_linux_amd64 -lSDL2_linux_amd64 -lm -ldl -lz -lasound -lm -ldl -lpthread -lX11 -lXext -lXcursor -lXinerama -lXi -lXrandr -lXss -lXxf86vm -lpthread -lrt
 //#cgo linux,mipsle LDFLAGS: -lSDL2_image_linux_mipsle -Wl,--no-undefined -lpng_linux_mipsle -ljpeg_linux_mipsle -lSDL2_linux_mipsle -lm -ldl
