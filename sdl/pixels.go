@@ -87,6 +87,7 @@ type cPalette C.SDL_Palette
 type Color color.RGBA
 
 // Uint32 return uint32 representation of RGBA color.
+// NOTE: Don't use this as color for SDL2's rendering operations. For that, please use `sdl.MapRGB()` or `sdl.MapRGBA()`.
 func (c Color) Uint32() uint32 {
 	var v uint32
 	v |= uint32(c.R) << 24
