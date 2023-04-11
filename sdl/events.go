@@ -472,7 +472,7 @@ type MouseMotionEvent struct {
 	Timestamp uint32     // timestamp of the event
 	WindowID  uint32     // the window with mouse focus, if any
 	Which     uint32     // the mouse instance id, or TOUCH_MOUSEID
-	State     ButtonMask // BUTTON_LEFT, BUTTON_MIDDLE, BUTTON_RIGHT, BUTTON_X1, BUTTON_X2
+	State     ButtonMask // masks for BUTTON_LEFT, BUTTON_MIDDLE, BUTTON_RIGHT, BUTTON_X1, BUTTON_X2
 	X         int32      // X coordinate, relative to window
 	Y         int32      // Y coordinate, relative to window
 	XRel      int32      // relative motion in the X direction
@@ -497,7 +497,7 @@ type MouseButtonEvent struct {
 	Timestamp uint32      // timestamp of the event
 	WindowID  uint32      // the window with mouse focus, if any
 	Which     uint32      // the mouse instance id, or TOUCH_MOUSEID
-	Button    ButtonMask  // BUTTON_LEFT, BUTTON_MIDDLE, BUTTON_RIGHT, BUTTON_X1, BUTTON_X2
+	Button    Button      // BUTTON_LEFT, BUTTON_MIDDLE, BUTTON_RIGHT, BUTTON_X1, BUTTON_X2
 	State     ButtonState // PRESSED, RELEASED
 	Clicks    uint8       // 1 for single-click, 2 for double-click, etc. (>= SDL 2.0.2)
 	X         int32       // X coordinate, relative to window
@@ -1157,7 +1157,7 @@ func goEvent(cevent *CEvent) Event {
 			Timestamp: uint32(e.timestamp),
 			WindowID:  uint32(e.windowID),
 			Which:     uint32(e.which),
-			Button:    ButtonMask(e.button),
+			Button:    Button(e.button),
 			State:     ButtonState(e.state),
 			Clicks:    uint8(e.clicks),
 			X:         int32(e.x),

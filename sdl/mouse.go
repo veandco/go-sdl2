@@ -95,6 +95,10 @@ const (
 	ButtonX2     Button = C.SDL_BUTTON_X2     // x2 mouse button
 )
 
+func (b Button) Mask() ButtonMask {
+	return ButtonMask(1 << (b - 1))
+}
+
 // Used as a mask when testing buttons in buttonstate.
 type ButtonMask uint32
 
@@ -105,6 +109,10 @@ const (
 	ButtonX1Mask ButtonMask = 1 << (ButtonX1 - 1)     // x1 mouse button mask
 	ButtonX2Mask ButtonMask = 1 << (ButtonX2 - 1)     // x2 mouse button mask
 )
+
+func (m ButtonMask) Has(b Button) bool {
+	return m&b.Mask() != 0
+}
 
 // Cursor is a custom cursor created by CreateCursor() or CreateColorCursor().
 type Cursor C.SDL_Cursor
