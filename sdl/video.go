@@ -1089,6 +1089,13 @@ func GLSetSwapInterval(interval int) error {
 // (https://wiki.libsdl.org/SDL_GL_GetSwapInterval)
 func GLGetSwapInterval() (int, error) {
 	i := int(C.SDL_GL_GetSwapInterval())
+	// -1 means adaptive vsync, not an error
+	// 0 means vsync off
+	// 1 means vsync on
+	if i == -1 || i == 0 || i == 1 {
+		return i, nil
+	}
+	// any other value should be an error
 	return i, errorFromInt(i)
 }
 
