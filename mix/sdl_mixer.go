@@ -738,7 +738,9 @@ func HookMusic(musicFunc func([]uint8)) {
 
 //export callHookMusicFinished
 func callHookMusicFinished() {
-	hookMusicFinishedFunc()
+	if hookMusicFinishedFunc != nil {
+		hookMusicFinishedFunc()
+	}
 }
 
 var hookMusicFinishedFunc func()
