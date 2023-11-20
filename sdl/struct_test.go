@@ -87,7 +87,7 @@ func TestStructABI(t *testing.T) {
 		{TouchFingerEvent{}, cTouchFingerEvent{}, nil},
 		{MultiGestureEvent{}, cMultiGestureEvent{}, nil},
 		{DollarGestureEvent{}, cDollarGestureEvent{}, nil},
-		{tDropEvent{}, cDropEvent{}, dropEventEdgeCase},
+		{DropEvent{}, cDropEvent{}, dropEventEdgeCase},
 		{UserEvent{}, cUserEvent{}, nil},
 		{SysWMEvent{}, cSysWMEvent{}, nil},
 	}
