@@ -84,7 +84,7 @@ type cPalette C.SDL_Palette
 
 // Color represents a color. This implements image/color.Color interface.
 // (https://wiki.libsdl.org/SDL_Color)
-type Color color.RGBA
+type Color color.NRGBA
 
 // Uint32 return uint32 representation of RGBA color.
 // NOTE: Don't use this as color for SDL2's rendering operations. For that, please use `sdl.MapRGB()` or `sdl.MapRGBA()`.
