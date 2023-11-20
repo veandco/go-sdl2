@@ -650,7 +650,7 @@ func (surface *Surface) At(x, y int) color.Color {
 	pix := surface.Pixels()
 	i := int32(y)*surface.Pitch + int32(x)*int32(surface.Format.BytesPerPixel)
 	r, g, b, a := GetRGBA(*((*uint32)(unsafe.Pointer(&pix[i]))), surface.Format)
-	return color.RGBA{r, g, b, a}
+	return color.NRGBA{R: r, G: g, B: b, A: a}
 }
 
 // Set the color of the pixel at (x, y) using this surface's color format to
