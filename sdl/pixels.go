@@ -365,17 +365,6 @@ func BitsPerPixel(format uint32) int {
 	return int(C.bitsPerPixel(C.Uint32(format)))
 }
 
-type RGB444 struct {
-	R, G, B byte
-}
-
-func (c RGB444) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R) << 12
-	g = uint32(c.G) << 12
-	b = uint32(c.B) << 12
-	return
-}
-
 var (
 	RGB444Model   color.Model = color.ModelFunc(rgb444Model)
 	RGB332Model   color.Model = color.ModelFunc(rgb332Model)
@@ -399,12 +388,30 @@ var (
 	ABGR8888Model color.Model = color.ModelFunc(abgr8888Model)
 )
 
+type RGB444 struct {
+	R, G, B byte
+}
+
+func (c RGB444) RGBA() (r, g, b, a uint32) {
+	nrgba := color.NRGBA{
+		R: c.R << 4,
+		G: c.G << 4,
+		B: c.B << 4,
+		A: 0xFF,
+	}
+	return nrgba.RGBA()
+}
+
 func rgb444Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(RGB444); ok {
 		return c
 	}
-	r, g, b, _ := c.RGBA()
-	return RGB444{uint8(r >> 12), uint8(g >> 12), uint8(b >> 12)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return RGB444{
+		R: nrgba.R >> 4,
+		G: nrgba.G >> 4,
+		B: nrgba.B >> 4,
+	}
 }
 
 type RGB332 struct {
@@ -412,18 +419,25 @@ type RGB332 struct {
 }
 
 func (c RGB332) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R) << 13
-	g = uint32(c.G) << 13
-	b = uint32(c.B) << 14
-	return
+	nrgba := color.NRGBA{
+		R: c.R << 5,
+		G: c.G << 5,
+		B: c.B << 6,
+		A: 0xFF,
+	}
+	return nrgba.RGBA()
 }
 
 func rgb332Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(RGB332); ok {
 		return c
 	}
-	r, g, b, _ := c.RGBA()
-	return RGB332{uint8(r >> 13), uint8(g >> 13), uint8(b >> 14)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return RGB332{
+		R: nrgba.R >> 5,
+		G: nrgba.G >> 5,
+		B: nrgba.B >> 6,
+	}
 }
 
 type RGB565 struct {
@@ -431,18 +445,25 @@ type RGB565 struct {
 }
 
 func (c RGB565) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R) << 11
-	g = uint32(c.G) << 10
-	b = uint32(c.B) << 11
-	return
+	nrgba := color.NRGBA{
+		R: c.R << 3,
+		G: c.G << 2,
+		B: c.B << 3,
+		A: 0xFF,
+	}
+	return nrgba.RGBA()
 }
 
 func rgb565Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(RGB565); ok {
 		return c
 	}
-	r, g, b, _ := c.RGBA()
-	return RGB565{uint8(r >> 11), uint8(g >> 10), uint8(b >> 11)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return RGB565{
+		R: nrgba.R >> 3,
+		G: nrgba.G >> 2,
+		B: nrgba.B >> 3,
+	}
 }
 
 type RGB555 struct {
@@ -450,18 +471,25 @@ type RGB555 struct {
 }
 
 func (c RGB555) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R) << 11
-	g = uint32(c.G) << 11
-	b = uint32(c.B) << 11
-	return
+	nrgba := color.NRGBA{
+		R: c.R << 3,
+		G: c.G << 3,
+		B: c.B << 3,
+		A: 0xFF,
+	}
+	return nrgba.RGBA()
 }
 
 func rgb555Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(RGB555); ok {
 		return c
 	}
-	r, g, b, _ := c.RGBA()
-	return RGB555{uint8(r >> 11), uint8(g >> 11), uint8(b >> 11)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return RGB555{
+		R: nrgba.R >> 3,
+		G: nrgba.G >> 3,
+		B: nrgba.B >> 3,
+	}
 }
 
 type BGR565 struct {
@@ -469,18 +497,25 @@ type BGR565 struct {
 }
 
 func (c BGR565) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R) << 11
-	g = uint32(c.G) << 10
-	b = uint32(c.B) << 11
-	return
+	nrgba := color.NRGBA{
+		R: c.R << 3,
+		G: c.G << 2,
+		B: c.B << 3,
+		A: 0xFF,
+	}
+	return nrgba.RGBA()
 }
 
 func bgr565Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(BGR565); ok {
 		return c
 	}
-	r, g, b, _ := c.RGBA()
-	return BGR565{uint8(b >> 11), uint8(g >> 10), uint8(r >> 11)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return BGR565{
+		B: uint8(nrgba.B >> 3),
+		G: uint8(nrgba.G >> 2),
+		R: uint8(nrgba.R >> 3),
+	}
 }
 
 type BGR555 struct {
@@ -488,18 +523,25 @@ type BGR555 struct {
 }
 
 func (c BGR555) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R) << 11
-	g = uint32(c.G) << 11
-	b = uint32(c.B) << 11
-	return
+	nrgba := color.NRGBA{
+		R: c.R << 3,
+		G: c.G << 3,
+		B: c.B << 3,
+		A: 0xFF,
+	}
+	return nrgba.RGBA()
 }
 
 func bgr555Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(BGR555); ok {
 		return c
 	}
-	r, g, b, _ := c.RGBA()
-	return BGR555{uint8(b >> 11), uint8(g >> 11), uint8(r >> 11)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return BGR555{
+		B: uint8(nrgba.B >> 3),
+		G: uint8(nrgba.G >> 3),
+		R: uint8(nrgba.R >> 3),
+	}
 }
 
 type RGB888 struct {
@@ -507,19 +549,25 @@ type RGB888 struct {
 }
 
 func (c RGB888) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R)
-	g = uint32(c.G)
-	b = uint32(c.B)
-	a = 255
-	return
+	nrgba := color.NRGBA{
+		R: c.R,
+		G: c.G,
+		B: c.B,
+		A: 0xFF,
+	}
+	return nrgba.RGBA()
 }
 
 func rgb888Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(RGB888); ok {
 		return c
 	}
-	r, g, b, _ := c.RGBA()
-	return RGB888{uint8(r), uint8(g), uint8(b)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return RGB888{
+		R: nrgba.R,
+		G: nrgba.G,
+		B: nrgba.B,
+	}
 }
 
 type BGR888 struct {
@@ -527,19 +575,25 @@ type BGR888 struct {
 }
 
 func (c BGR888) RGBA() (r, g, b, a uint32) {
-	b = uint32(c.B)
-	g = uint32(c.G)
-	r = uint32(c.R)
-	a = 255
-	return
+	nrgba := color.NRGBA{
+		R: c.R,
+		G: c.G,
+		B: c.B,
+		A: 0xFF,
+	}
+	return nrgba.RGBA()
 }
 
 func bgr888Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(BGR888); ok {
 		return c
 	}
-	r, g, b, _ := c.RGBA()
-	return BGR888{uint8(b), uint8(g), uint8(r)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return BGR888{
+		B: nrgba.B,
+		G: nrgba.G,
+		R: nrgba.R,
+	}
 }
 
 type ARGB4444 struct {
@@ -547,19 +601,26 @@ type ARGB4444 struct {
 }
 
 func (c ARGB4444) RGBA() (r, g, b, a uint32) {
-	a = uint32(c.A) << 4
-	r = uint32(c.R) << 4
-	g = uint32(c.G) << 4
-	b = uint32(c.B) << 4
-	return
+	nrgba := color.NRGBA{
+		R: c.R << 4,
+		G: c.G << 4,
+		B: c.B << 4,
+		A: c.A << 4,
+	}
+	return nrgba.RGBA()
 }
 
 func argb4444Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(ARGB4444); ok {
 		return c
 	}
-	r, g, b, a := c.RGBA()
-	return ARGB4444{uint8(a >> 4), uint8(r >> 4), uint8(g >> 4), uint8(b >> 4)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return ARGB4444{
+		nrgba.A >> 4,
+		nrgba.R >> 4,
+		nrgba.G >> 4,
+		nrgba.B >> 4,
+	}
 }
 
 type ABGR4444 struct {
@@ -567,19 +628,26 @@ type ABGR4444 struct {
 }
 
 func (c ABGR4444) RGBA() (r, g, b, a uint32) {
-	a = uint32(c.A) << 4
-	r = uint32(c.R) << 4
-	g = uint32(c.G) << 4
-	b = uint32(c.B) << 4
-	return
+	nrgba := color.NRGBA{
+		R: c.R << 4,
+		G: c.G << 4,
+		B: c.B << 4,
+		A: c.A << 4,
+	}
+	return nrgba.RGBA()
 }
 
 func abgr4444Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(ABGR4444); ok {
 		return c
 	}
-	r, g, b, a := c.RGBA()
-	return ABGR4444{uint8(a >> 4), uint8(b >> 4), uint8(g >> 4), uint8(r >> 4)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return ABGR4444{
+		nrgba.A >> 4,
+		nrgba.B >> 4,
+		nrgba.G >> 4,
+		nrgba.R >> 4,
+	}
 }
 
 type RGBA4444 struct {
@@ -587,19 +655,26 @@ type RGBA4444 struct {
 }
 
 func (c RGBA4444) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R) << 4
-	g = uint32(c.G) << 4
-	b = uint32(c.B) << 4
-	a = uint32(c.A) << 4
-	return
+	nrgba := color.NRGBA{
+		R: c.R << 4,
+		G: c.G << 4,
+		B: c.B << 4,
+		A: c.A << 4,
+	}
+	return nrgba.RGBA()
 }
 
 func rgba4444Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(RGBA4444); ok {
 		return c
 	}
-	r, g, b, a := c.RGBA()
-	return RGBA4444{uint8(r >> 4), uint8(g >> 4), uint8(b >> 4), uint8(a >> 4)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return RGBA4444{
+		nrgba.R >> 4,
+		nrgba.G >> 4,
+		nrgba.B >> 4,
+		nrgba.A >> 4,
+	}
 }
 
 type BGRA4444 struct {
@@ -607,19 +682,26 @@ type BGRA4444 struct {
 }
 
 func (c BGRA4444) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R) << 4
-	g = uint32(c.G) << 4
-	b = uint32(c.B) << 4
-	a = uint32(c.A) << 4
-	return
+	nrgba := color.NRGBA{
+		R: c.R << 4,
+		G: c.G << 4,
+		B: c.B << 4,
+		A: c.A << 4,
+	}
+	return nrgba.RGBA()
 }
 
 func bgra4444Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(BGRA4444); ok {
 		return c
 	}
-	r, g, b, a := c.RGBA()
-	return BGRA4444{uint8(b >> 4), uint8(g >> 4), uint8(r >> 4), uint8(a >> 4)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return BGRA4444{
+		nrgba.B >> 4,
+		nrgba.G >> 4,
+		nrgba.R >> 4,
+		nrgba.A >> 4,
+	}
 }
 
 type ARGB1555 struct {
@@ -627,27 +709,26 @@ type ARGB1555 struct {
 }
 
 func (c ARGB1555) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R) << 3
-	g = uint32(c.G) << 3
-	b = uint32(c.B) << 3
-	if c.A > 0 {
-		tmp := int32(-1)
-		a = uint32(tmp)
+	nrgba := color.NRGBA{
+		R: c.R << 3,
+		G: c.G << 3,
+		B: c.B << 3,
+		A: alphaByte(c.A),
 	}
-	return
+	return nrgba.RGBA()
 }
 
 func argb1555Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(ARGB1555); ok {
 		return c
 	}
-	r, g, b, a := c.RGBA()
-	if a > 0 {
-		a = 1
-	} else {
-		a = 0
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return ARGB1555{
+		A: alphaBit(nrgba.A),
+		R: nrgba.R >> 3,
+		G: nrgba.G >> 3,
+		B: nrgba.B >> 3,
 	}
-	return ARGB1555{uint8(a), uint8(r >> 3), uint8(g >> 3), uint8(b >> 3)}
 }
 
 type RGBA5551 struct {
@@ -655,27 +736,26 @@ type RGBA5551 struct {
 }
 
 func (c RGBA5551) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R) << 3
-	g = uint32(c.G) << 3
-	b = uint32(c.B) << 3
-	if c.A > 0 {
-		tmp := int32(-1)
-		a = uint32(tmp)
+	nrgba := color.NRGBA{
+		R: c.R << 3,
+		G: c.G << 3,
+		B: c.B << 3,
+		A: alphaByte(c.A),
 	}
-	return
+	return nrgba.RGBA()
 }
 
 func rgba5551Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(RGBA5551); ok {
 		return c
 	}
-	r, g, b, a := c.RGBA()
-	if a > 0 {
-		a = 1
-	} else {
-		a = 0
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return RGBA5551{
+		R: nrgba.R >> 3,
+		G: nrgba.G >> 3,
+		B: nrgba.B >> 3,
+		A: alphaBit(nrgba.A),
 	}
-	return RGBA5551{uint8(r >> 3), uint8(g >> 3), uint8(b >> 3), uint8(a)}
 }
 
 type ABGR1555 struct {
@@ -683,27 +763,26 @@ type ABGR1555 struct {
 }
 
 func (c ABGR1555) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R) << 3
-	g = uint32(c.G) << 3
-	b = uint32(c.B) << 3
-	if c.A > 0 {
-		tmp := int32(-1)
-		a = uint32(tmp)
+	nrgba := color.NRGBA{
+		R: c.R << 3,
+		G: c.G << 3,
+		B: c.B << 3,
+		A: alphaByte(c.A),
 	}
-	return
+	return nrgba.RGBA()
 }
 
 func abgr1555Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(ABGR1555); ok {
 		return c
 	}
-	r, g, b, a := c.RGBA()
-	if a > 0 {
-		a = 1
-	} else {
-		a = 0
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return ABGR1555{
+		A: alphaBit(nrgba.A),
+		R: nrgba.R >> 3,
+		G: nrgba.G >> 3,
+		B: nrgba.B >> 3,
 	}
-	return ABGR1555{uint8(a), uint8(r >> 3), uint8(g >> 3), uint8(b >> 3)}
 }
 
 type BGRA5551 struct {
@@ -711,27 +790,26 @@ type BGRA5551 struct {
 }
 
 func (c BGRA5551) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R) << 3
-	g = uint32(c.G) << 3
-	b = uint32(c.B) << 3
-	if c.A > 0 {
-		tmp := int32(-1)
-		a = uint32(tmp)
+	nrgba := color.NRGBA{
+		R: c.R << 3,
+		G: c.G << 3,
+		B: c.B << 3,
+		A: alphaByte(c.A),
 	}
-	return
+	return nrgba.RGBA()
 }
 
 func bgra5551Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(BGRA5551); ok {
 		return c
 	}
-	r, g, b, a := c.RGBA()
-	if a > 0 {
-		a = 1
-	} else {
-		a = 0
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return BGRA5551{
+		B: nrgba.B >> 3,
+		G: nrgba.G >> 3,
+		R: nrgba.R >> 3,
+		A: alphaBit(nrgba.A),
 	}
-	return BGRA5551{uint8(b >> 3), uint8(g >> 3), uint8(r >> 3), uint8(a)}
 }
 
 type RGBA8888 struct {
@@ -739,19 +817,26 @@ type RGBA8888 struct {
 }
 
 func (c RGBA8888) RGBA() (r, g, b, a uint32) {
-	r = uint32(c.R)
-	g = uint32(c.G)
-	b = uint32(c.B)
-	a = uint32(c.A)
-	return
+	nrgba := color.NRGBA{
+		R: c.R,
+		G: c.G,
+		B: c.B,
+		A: c.A,
+	}
+	return nrgba.RGBA()
 }
 
 func rgba8888Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(RGBA8888); ok {
 		return c
 	}
-	r, g, b, a := c.RGBA()
-	return RGBA8888{uint8(r), uint8(g), uint8(b), uint8(a)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return RGBA8888{
+		R: nrgba.R,
+		G: nrgba.G,
+		B: nrgba.B,
+		A: nrgba.A,
+	}
 }
 
 type BGRA8888 struct {
@@ -759,19 +844,26 @@ type BGRA8888 struct {
 }
 
 func (c BGRA8888) RGBA() (r, g, b, a uint32) {
-	b = uint32(c.B)
-	g = uint32(c.G)
-	r = uint32(c.R)
-	a = uint32(c.A)
-	return
+	nrgba := color.NRGBA{
+		R: c.R,
+		G: c.G,
+		B: c.B,
+		A: c.A,
+	}
+	return nrgba.RGBA()
 }
 
 func bgra8888Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(BGRA8888); ok {
 		return c
 	}
-	r, g, b, a := c.RGBA()
-	return BGRA8888{uint8(b), uint8(g), uint8(r), uint8(a)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return BGRA8888{
+		B: nrgba.B,
+		G: nrgba.G,
+		R: nrgba.R,
+		A: nrgba.A,
+	}
 }
 
 type ARGB8888 struct {
@@ -779,19 +871,26 @@ type ARGB8888 struct {
 }
 
 func (c ARGB8888) RGBA() (r, g, b, a uint32) {
-	a = uint32(c.A)
-	r = uint32(c.R)
-	g = uint32(c.G)
-	b = uint32(c.B)
-	return
+	nrgba := color.NRGBA{
+		R: c.R,
+		G: c.G,
+		B: c.B,
+		A: c.A,
+	}
+	return nrgba.RGBA()
 }
 
 func argb8888Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(ARGB8888); ok {
 		return c
 	}
-	r, g, b, a := c.RGBA()
-	return ARGB8888{uint8(a), uint8(r), uint8(g), uint8(b)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return ARGB8888{
+		A: nrgba.A,
+		R: nrgba.R,
+		G: nrgba.G,
+		B: nrgba.B,
+	}
 }
 
 type ABGR8888 struct {
@@ -799,17 +898,38 @@ type ABGR8888 struct {
 }
 
 func (c ABGR8888) RGBA() (r, g, b, a uint32) {
-	a = uint32(c.A)
-	r = uint32(c.R)
-	g = uint32(c.G)
-	b = uint32(c.B)
-	return
+	nrgba := color.NRGBA{
+		R: c.R,
+		G: c.G,
+		B: c.B,
+		A: c.A,
+	}
+	return nrgba.RGBA()
 }
 
 func abgr8888Model(c color.Color) color.Color {
-	if _, ok := c.(color.RGBA); ok {
+	if _, ok := c.(ABGR8888); ok {
 		return c
 	}
-	r, g, b, a := c.RGBA()
-	return ABGR8888{uint8(a), uint8(b), uint8(g), uint8(r)}
+	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
+	return ABGR8888{
+		A: nrgba.A,
+		B: nrgba.B,
+		G: nrgba.G,
+		R: nrgba.R,
+	}
+}
+
+func alphaBit(alpha byte) byte {
+	if alpha == 0 {
+		return 0
+	}
+	return 1
+}
+
+func alphaByte(alphaBit byte) byte {
+	if alphaBit == 0 {
+		return 0
+	}
+	return 0xFF
 }
