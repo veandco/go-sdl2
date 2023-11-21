@@ -394,9 +394,9 @@ type RGB444 struct {
 
 func (c RGB444) RGBA() (r, g, b, a uint32) {
 	nrgba := color.NRGBA{
-		R: c.R << 4,
-		G: c.G << 4,
-		B: c.B << 4,
+		R: upscale4to8bit(c.R),
+		G: upscale4to8bit(c.G),
+		B: upscale4to8bit(c.B),
 		A: 0xFF,
 	}
 	return nrgba.RGBA()
@@ -408,9 +408,9 @@ func rgb444Model(c color.Color) color.Color {
 	}
 	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
 	return RGB444{
-		R: nrgba.R >> 4,
-		G: nrgba.G >> 4,
-		B: nrgba.B >> 4,
+		R: downscale8to4bit(nrgba.R),
+		G: downscale8to4bit(nrgba.G),
+		B: downscale8to4bit(nrgba.B),
 	}
 }
 
@@ -420,9 +420,9 @@ type RGB332 struct {
 
 func (c RGB332) RGBA() (r, g, b, a uint32) {
 	nrgba := color.NRGBA{
-		R: c.R << 5,
-		G: c.G << 5,
-		B: c.B << 6,
+		R: upscale3to8bit(c.R),
+		G: upscale3to8bit(c.G),
+		B: upscale2to8bit(c.B),
 		A: 0xFF,
 	}
 	return nrgba.RGBA()
@@ -434,9 +434,9 @@ func rgb332Model(c color.Color) color.Color {
 	}
 	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
 	return RGB332{
-		R: nrgba.R >> 5,
-		G: nrgba.G >> 5,
-		B: nrgba.B >> 6,
+		R: downscale8to3bit(nrgba.R),
+		G: downscale8to3bit(nrgba.G),
+		B: downscale8to2bit(nrgba.B),
 	}
 }
 
@@ -446,9 +446,9 @@ type RGB565 struct {
 
 func (c RGB565) RGBA() (r, g, b, a uint32) {
 	nrgba := color.NRGBA{
-		R: c.R << 3,
-		G: c.G << 2,
-		B: c.B << 3,
+		R: upscale5to8bit(c.R),
+		G: upscale6to8bit(c.G),
+		B: upscale5to8bit(c.B),
 		A: 0xFF,
 	}
 	return nrgba.RGBA()
@@ -460,9 +460,9 @@ func rgb565Model(c color.Color) color.Color {
 	}
 	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
 	return RGB565{
-		R: nrgba.R >> 3,
-		G: nrgba.G >> 2,
-		B: nrgba.B >> 3,
+		R: downscale8to5bit(nrgba.R),
+		G: downscale8to6bit(nrgba.G),
+		B: downscale8to5bit(nrgba.B),
 	}
 }
 
@@ -472,9 +472,9 @@ type RGB555 struct {
 
 func (c RGB555) RGBA() (r, g, b, a uint32) {
 	nrgba := color.NRGBA{
-		R: c.R << 3,
-		G: c.G << 3,
-		B: c.B << 3,
+		R: upscale5to8bit(c.R),
+		G: upscale5to8bit(c.G),
+		B: upscale5to8bit(c.B),
 		A: 0xFF,
 	}
 	return nrgba.RGBA()
@@ -486,9 +486,9 @@ func rgb555Model(c color.Color) color.Color {
 	}
 	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
 	return RGB555{
-		R: nrgba.R >> 3,
-		G: nrgba.G >> 3,
-		B: nrgba.B >> 3,
+		R: downscale8to5bit(nrgba.R),
+		G: downscale8to5bit(nrgba.G),
+		B: downscale8to5bit(nrgba.B),
 	}
 }
 
@@ -498,9 +498,9 @@ type BGR565 struct {
 
 func (c BGR565) RGBA() (r, g, b, a uint32) {
 	nrgba := color.NRGBA{
-		R: c.R << 3,
-		G: c.G << 2,
-		B: c.B << 3,
+		R: upscale5to8bit(c.R),
+		G: upscale6to8bit(c.G),
+		B: upscale5to8bit(c.B),
 		A: 0xFF,
 	}
 	return nrgba.RGBA()
@@ -512,9 +512,9 @@ func bgr565Model(c color.Color) color.Color {
 	}
 	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
 	return BGR565{
-		B: uint8(nrgba.B >> 3),
-		G: uint8(nrgba.G >> 2),
-		R: uint8(nrgba.R >> 3),
+		B: downscale8to5bit(nrgba.B),
+		G: downscale8to6bit(nrgba.G),
+		R: downscale8to5bit(nrgba.R),
 	}
 }
 
@@ -524,9 +524,9 @@ type BGR555 struct {
 
 func (c BGR555) RGBA() (r, g, b, a uint32) {
 	nrgba := color.NRGBA{
-		R: c.R << 3,
-		G: c.G << 3,
-		B: c.B << 3,
+		R: upscale5to8bit(c.R),
+		G: upscale5to8bit(c.G),
+		B: upscale5to8bit(c.B),
 		A: 0xFF,
 	}
 	return nrgba.RGBA()
@@ -538,9 +538,9 @@ func bgr555Model(c color.Color) color.Color {
 	}
 	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
 	return BGR555{
-		B: uint8(nrgba.B >> 3),
-		G: uint8(nrgba.G >> 3),
-		R: uint8(nrgba.R >> 3),
+		B: downscale8to5bit(nrgba.B),
+		G: downscale8to5bit(nrgba.G),
+		R: downscale8to5bit(nrgba.R),
 	}
 }
 
@@ -602,10 +602,10 @@ type ARGB4444 struct {
 
 func (c ARGB4444) RGBA() (r, g, b, a uint32) {
 	nrgba := color.NRGBA{
-		R: c.R << 4,
-		G: c.G << 4,
-		B: c.B << 4,
-		A: c.A << 4,
+		R: upscale4to8bit(c.R),
+		G: upscale4to8bit(c.G),
+		B: upscale4to8bit(c.B),
+		A: upscale4to8bit(c.A),
 	}
 	return nrgba.RGBA()
 }
@@ -616,10 +616,10 @@ func argb4444Model(c color.Color) color.Color {
 	}
 	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
 	return ARGB4444{
-		nrgba.A >> 4,
-		nrgba.R >> 4,
-		nrgba.G >> 4,
-		nrgba.B >> 4,
+		A: downscale8to4bit(nrgba.A),
+		R: downscale8to4bit(nrgba.R),
+		G: downscale8to4bit(nrgba.G),
+		B: downscale8to4bit(nrgba.B),
 	}
 }
 
@@ -629,10 +629,10 @@ type ABGR4444 struct {
 
 func (c ABGR4444) RGBA() (r, g, b, a uint32) {
 	nrgba := color.NRGBA{
-		R: c.R << 4,
-		G: c.G << 4,
-		B: c.B << 4,
-		A: c.A << 4,
+		R: upscale4to8bit(c.R),
+		G: upscale4to8bit(c.G),
+		B: upscale4to8bit(c.B),
+		A: upscale4to8bit(c.A),
 	}
 	return nrgba.RGBA()
 }
@@ -643,10 +643,10 @@ func abgr4444Model(c color.Color) color.Color {
 	}
 	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
 	return ABGR4444{
-		nrgba.A >> 4,
-		nrgba.B >> 4,
-		nrgba.G >> 4,
-		nrgba.R >> 4,
+		A: downscale8to4bit(nrgba.A),
+		B: downscale8to4bit(nrgba.B),
+		G: downscale8to4bit(nrgba.G),
+		R: downscale8to4bit(nrgba.R),
 	}
 }
 
@@ -656,10 +656,10 @@ type RGBA4444 struct {
 
 func (c RGBA4444) RGBA() (r, g, b, a uint32) {
 	nrgba := color.NRGBA{
-		R: c.R << 4,
-		G: c.G << 4,
-		B: c.B << 4,
-		A: c.A << 4,
+		R: upscale4to8bit(c.R),
+		G: upscale4to8bit(c.G),
+		B: upscale4to8bit(c.B),
+		A: upscale4to8bit(c.A),
 	}
 	return nrgba.RGBA()
 }
@@ -670,10 +670,10 @@ func rgba4444Model(c color.Color) color.Color {
 	}
 	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
 	return RGBA4444{
-		nrgba.R >> 4,
-		nrgba.G >> 4,
-		nrgba.B >> 4,
-		nrgba.A >> 4,
+		R: downscale8to4bit(nrgba.R),
+		G: downscale8to4bit(nrgba.G),
+		B: downscale8to4bit(nrgba.B),
+		A: downscale8to4bit(nrgba.A),
 	}
 }
 
@@ -683,10 +683,10 @@ type BGRA4444 struct {
 
 func (c BGRA4444) RGBA() (r, g, b, a uint32) {
 	nrgba := color.NRGBA{
-		R: c.R << 4,
-		G: c.G << 4,
-		B: c.B << 4,
-		A: c.A << 4,
+		R: upscale4to8bit(c.R),
+		G: upscale4to8bit(c.G),
+		B: upscale4to8bit(c.B),
+		A: upscale4to8bit(c.A),
 	}
 	return nrgba.RGBA()
 }
@@ -697,10 +697,10 @@ func bgra4444Model(c color.Color) color.Color {
 	}
 	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
 	return BGRA4444{
-		nrgba.B >> 4,
-		nrgba.G >> 4,
-		nrgba.R >> 4,
-		nrgba.A >> 4,
+		B: downscale8to4bit(nrgba.B),
+		G: downscale8to4bit(nrgba.G),
+		R: downscale8to4bit(nrgba.R),
+		A: downscale8to4bit(nrgba.A),
 	}
 }
 
@@ -710,10 +710,10 @@ type ARGB1555 struct {
 
 func (c ARGB1555) RGBA() (r, g, b, a uint32) {
 	nrgba := color.NRGBA{
-		R: c.R << 3,
-		G: c.G << 3,
-		B: c.B << 3,
-		A: alphaByte(c.A),
+		R: upscale5to8bit(c.R),
+		G: upscale5to8bit(c.G),
+		B: upscale5to8bit(c.B),
+		A: upscale1to8bit(c.A),
 	}
 	return nrgba.RGBA()
 }
@@ -724,10 +724,10 @@ func argb1555Model(c color.Color) color.Color {
 	}
 	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
 	return ARGB1555{
-		A: alphaBit(nrgba.A),
-		R: nrgba.R >> 3,
-		G: nrgba.G >> 3,
-		B: nrgba.B >> 3,
+		A: downscale8to1bit(nrgba.A),
+		R: downscale8to5bit(nrgba.R),
+		G: downscale8to5bit(nrgba.G),
+		B: downscale8to5bit(nrgba.B),
 	}
 }
 
@@ -737,10 +737,10 @@ type RGBA5551 struct {
 
 func (c RGBA5551) RGBA() (r, g, b, a uint32) {
 	nrgba := color.NRGBA{
-		R: c.R << 3,
-		G: c.G << 3,
-		B: c.B << 3,
-		A: alphaByte(c.A),
+		R: upscale5to8bit(c.R),
+		G: upscale5to8bit(c.G),
+		B: upscale5to8bit(c.B),
+		A: upscale1to8bit(c.A),
 	}
 	return nrgba.RGBA()
 }
@@ -751,10 +751,10 @@ func rgba5551Model(c color.Color) color.Color {
 	}
 	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
 	return RGBA5551{
-		R: nrgba.R >> 3,
-		G: nrgba.G >> 3,
-		B: nrgba.B >> 3,
-		A: alphaBit(nrgba.A),
+		R: downscale8to5bit(nrgba.R),
+		G: downscale8to5bit(nrgba.G),
+		B: downscale8to5bit(nrgba.B),
+		A: downscale8to1bit(nrgba.A),
 	}
 }
 
@@ -764,10 +764,10 @@ type ABGR1555 struct {
 
 func (c ABGR1555) RGBA() (r, g, b, a uint32) {
 	nrgba := color.NRGBA{
-		R: c.R << 3,
-		G: c.G << 3,
-		B: c.B << 3,
-		A: alphaByte(c.A),
+		R: upscale5to8bit(c.R),
+		G: upscale5to8bit(c.G),
+		B: upscale5to8bit(c.B),
+		A: upscale1to8bit(c.A),
 	}
 	return nrgba.RGBA()
 }
@@ -778,10 +778,10 @@ func abgr1555Model(c color.Color) color.Color {
 	}
 	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
 	return ABGR1555{
-		A: alphaBit(nrgba.A),
-		R: nrgba.R >> 3,
-		G: nrgba.G >> 3,
-		B: nrgba.B >> 3,
+		A: downscale8to1bit(nrgba.A),
+		R: downscale8to5bit(nrgba.R),
+		G: downscale8to5bit(nrgba.G),
+		B: downscale8to5bit(nrgba.B),
 	}
 }
 
@@ -791,10 +791,10 @@ type BGRA5551 struct {
 
 func (c BGRA5551) RGBA() (r, g, b, a uint32) {
 	nrgba := color.NRGBA{
-		R: c.R << 3,
-		G: c.G << 3,
-		B: c.B << 3,
-		A: alphaByte(c.A),
+		R: upscale5to8bit(c.R),
+		G: upscale5to8bit(c.G),
+		B: upscale5to8bit(c.B),
+		A: upscale1to8bit(c.A),
 	}
 	return nrgba.RGBA()
 }
@@ -805,10 +805,10 @@ func bgra5551Model(c color.Color) color.Color {
 	}
 	nrgba := color.NRGBAModel.Convert(c).(color.NRGBA)
 	return BGRA5551{
-		B: nrgba.B >> 3,
-		G: nrgba.G >> 3,
-		R: nrgba.R >> 3,
-		A: alphaBit(nrgba.A),
+		B: downscale8to5bit(nrgba.B),
+		G: downscale8to5bit(nrgba.G),
+		R: downscale8to5bit(nrgba.R),
+		A: downscale8to1bit(nrgba.A),
 	}
 }
 
@@ -920,16 +920,56 @@ func abgr8888Model(c color.Color) color.Color {
 	}
 }
 
-func alphaBit(alpha byte) byte {
+func downscale8to1bit(alpha byte) byte {
 	if alpha == 0 {
 		return 0
 	}
 	return 1
 }
 
-func alphaByte(alphaBit byte) byte {
+func downscale8to2bit(in byte) byte {
+	return in >> 6
+}
+
+func downscale8to3bit(in byte) byte {
+	return in >> 5
+}
+
+func downscale8to4bit(in byte) byte {
+	return in >> 4
+}
+
+func downscale8to5bit(in byte) byte {
+	return in >> 3
+}
+
+func downscale8to6bit(in byte) byte {
+	return in >> 2
+}
+
+func upscale1to8bit(alphaBit byte) byte {
 	if alphaBit == 0 {
 		return 0
 	}
 	return 0xFF
+}
+
+func upscale2to8bit(in byte) byte {
+	return in<<6 | in<<4 | in<<2 | in
+}
+
+func upscale3to8bit(in byte) byte {
+	return in<<5 | in<<2 | (in>>1)&0b11
+}
+
+func upscale4to8bit(in byte) byte {
+	return in<<4 | in
+}
+
+func upscale5to8bit(in byte) byte {
+	return in<<3 | (in>>2)&0b111
+}
+
+func upscale6to8bit(in byte) byte {
+	return in<<2 | (in>>4)&0b11
 }
