@@ -505,7 +505,7 @@ func JoystickGetDeviceInstanceID(index int) JoystickID {
 func JoystickGetGUIDString(guid JoystickGUID) string {
 	_pszGUID := make([]rune, 1024)
 	pszGUID := C.CString(string(_pszGUID[:]))
-	defer C.SDL_free(unsafe.Pointer(pszGUID))
+	defer C.free(unsafe.Pointer(pszGUID))
 	C.SDL_JoystickGetGUIDString(guid.c(), pszGUID, C.int(unsafe.Sizeof(_pszGUID)))
 	return C.GoString(pszGUID)
 }
@@ -514,7 +514,7 @@ func JoystickGetGUIDString(guid JoystickGUID) string {
 // (https://wiki.libsdl.org/SDL_JoystickGetGUIDFromString)
 func JoystickGetGUIDFromString(pchGUID string) JoystickGUID {
 	_pchGUID := C.CString(pchGUID)
-	defer C.SDL_free(unsafe.Pointer(_pchGUID))
+	defer C.free(unsafe.Pointer(_pchGUID))
 	return (JoystickGUID)(C.SDL_JoystickGetGUIDFromString(_pchGUID))
 }
 

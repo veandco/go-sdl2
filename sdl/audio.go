@@ -356,7 +356,7 @@ func GetAudioDriver(index int) string {
 // (https://wiki.libsdl.org/SDL_AudioInit)
 func AudioInit(driverName string) error {
 	_driverName := C.CString(driverName)
-	defer C.SDL_free(unsafe.Pointer(_driverName))
+	defer C.free(unsafe.Pointer(_driverName))
 	if C.SDL_AudioInit(_driverName) != 0 {
 		return GetError()
 	}
@@ -403,7 +403,7 @@ func OpenAudioDevice(device string, isCapture bool, desired, obtained *AudioSpec
 	if device == "" {
 		_device = nil
 	}
-	defer C.SDL_free(unsafe.Pointer(_device))
+	defer C.free(unsafe.Pointer(_device))
 	if id := AudioDeviceID(C.SDL_OpenAudioDevice(_device, C.int(Btoi(isCapture)), desired.cptr(), obtained.cptr(), C.int(allowedChanges))); id > 0 {
 		return id, nil
 	}
@@ -454,8 +454,8 @@ func LoadWAVRW(src *RWops, freeSrc bool) ([]byte, *AudioSpec) {
 func LoadWAV(file string) ([]byte, *AudioSpec) {
 	_file := C.CString(file)
 	_rb := C.CString("rb")
-	defer C.SDL_free(unsafe.Pointer(_file))
-	defer C.SDL_free(unsafe.Pointer(_rb))
+	defer C.free(unsafe.Pointer(_file))
+	defer C.free(unsafe.Pointer(_rb))
 
 	var _audioBuf *C.Uint8
 	var _audioLen C.Uint32

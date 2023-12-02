@@ -389,7 +389,7 @@ func (btn GameControllerButton) c() C.SDL_GameControllerButton {
 // (https://wiki.libsdl.org/SDL_GameControllerAddMapping)
 func GameControllerAddMapping(mappingString string) int {
 	_mappingString := C.CString(mappingString)
-	defer C.SDL_free(unsafe.Pointer(_mappingString))
+	defer C.free(unsafe.Pointer(_mappingString))
 	return int(C.SDL_GameControllerAddMapping(_mappingString))
 }
 
@@ -555,7 +555,7 @@ func GameControllerUpdate() {
 // (https://wiki.libsdl.org/SDL_GameControllerGetAxisFromString)
 func GameControllerGetAxisFromString(pchString string) GameControllerAxis {
 	_pchString := C.CString(pchString)
-	defer C.SDL_free(unsafe.Pointer(_pchString))
+	defer C.free(unsafe.Pointer(_pchString))
 	return GameControllerAxis(C.SDL_GameControllerGetAxisFromString(_pchString))
 }
 
@@ -587,7 +587,7 @@ func (ctrl *GameController) Axis(axis GameControllerAxis) int16 {
 // (https://wiki.libsdl.org/SDL_GameControllerGetButtonFromString)
 func GameControllerGetButtonFromString(pchString string) GameControllerButton {
 	_pchString := C.CString(pchString)
-	defer C.SDL_free(unsafe.Pointer(_pchString))
+	defer C.free(unsafe.Pointer(_pchString))
 	return GameControllerButton(C.SDL_GameControllerGetButtonFromString(_pchString))
 }
 

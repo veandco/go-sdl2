@@ -948,9 +948,9 @@ func (window *Window) GetWindowOpacity() (opacity float32, err error) {
 // (https://wiki.libsdl.org/SDL_ShowSimpleMessageBox)
 func ShowSimpleMessageBox(flags MessageBoxFlags, title, message string, window *Window) error {
 	_title := C.CString(title)
-	defer C.SDL_free(unsafe.Pointer(_title))
+	defer C.free(unsafe.Pointer(_title))
 	_message := C.CString(message)
-	defer C.SDL_free(unsafe.Pointer(_message))
+	defer C.free(unsafe.Pointer(_message))
 	return errorFromInt(int(
 		C.SDL_ShowSimpleMessageBox(C.Uint32(flags), _title, _message, window.cptr())))
 }
@@ -959,15 +959,15 @@ func ShowSimpleMessageBox(flags MessageBoxFlags, title, message string, window *
 // (https://wiki.libsdl.org/SDL_ShowMessageBox)
 func ShowMessageBox(data *MessageBoxData) (buttonid int32, err error) {
 	_title := C.CString(data.Title)
-	defer C.SDL_free(unsafe.Pointer(_title))
+	defer C.free(unsafe.Pointer(_title))
 	_message := C.CString(data.Message)
-	defer C.SDL_free(unsafe.Pointer(_message))
+	defer C.free(unsafe.Pointer(_message))
 
 	var cbuttons []C.SDL_MessageBoxButtonData
 	var cbtntexts []*C.char
 	defer func(texts []*C.char) {
 		for _, t := range texts {
-			C.SDL_free(unsafe.Pointer(t))
+			C.free(unsafe.Pointer(t))
 		}
 	}(cbtntexts)
 

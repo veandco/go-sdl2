@@ -121,6 +121,6 @@ func IsAndroidTV() bool {
 // (https://wiki.libsdl.org/SDL_AndroidShowToast)
 func AndroidShowToast(message string, duration, gravity, xoffset, yoffset int) (err error) {
 	_message := C.CString(message)
-	defer C.SDL_free(unsafe.Pointer(_message))
+	defer C.free(unsafe.Pointer(_message))
 	return errorFromInt(int(C.SDL_AndroidShowToast(_message, C.int(duration), C.int(gravity), C.int(xoffset), C.int(yoffset))))
 }
