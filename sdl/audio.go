@@ -326,7 +326,7 @@ func (cvt *AudioCVT) AllocBuf(size uintptr) {
 
 // FreeBuf deallocates the memory previously allocated from AudioCVT buffer.
 func (cvt *AudioCVT) FreeBuf() {
-	C.SDL_free(cvt.Buf)
+	C.free(cvt.Buf)
 }
 
 // BufAsSlice returns AudioCVT.buf as byte slice.
