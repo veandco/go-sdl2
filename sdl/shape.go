@@ -146,7 +146,9 @@ func (wsm *cWindowShapeMode) cptr() *C.SDL_WindowShapeMode {
 // CreateShapedWindow creates a window that can be shaped with the specified position, dimensions, and flags
 // (https://wiki.libsdl.org/SDL_CreateShapedWindow)
 func CreateShapedWindow(title string, x, y, w, h uint32, flags uint32) (*Window, error) {
-	var _window = C.SDL_CreateShapedWindow(C.CString(title), C.uint(x), C.uint(y), C.uint(w), C.uint(h), C.Uint32(flags))
+	_title := C.CString(title)
+	defer C.free(unsafe.Pointer(_title))
+	_window := C.SDL_CreateShapedWindow(_title, C.uint(x), C.uint(y), C.uint(w), C.uint(h), C.Uint32(flags))
 	if _window == nil {
 		return nil, GetError()
 	}

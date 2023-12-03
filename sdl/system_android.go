@@ -84,7 +84,9 @@ func AndroidGetExternalStoragePath() string {
 // AndroidRequestPermission requests permissions at runtime.
 // (https://wiki.libsdl.org/SDL_AndroidRequestPermission)
 func AndroidRequestPermission(permission string) bool {
-	return bool(C.SDL_AndroidRequestPermission(C.CString(permission)))
+	_permission := C.CString(permission)
+	defer C.free(unsafe.Pointer(_permission))
+	return bool(C.SDL_AndroidRequestPermission(_permission))
 }
 
 // AndroidGetExternalStorageState returns the current state of external storage.

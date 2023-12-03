@@ -44,5 +44,6 @@ func (guid GUID) ToString() (ascii string) {
 // GUIDFromString converts a GUID string into a GUID structure.
 func GUIDFromString(ascii string) (guid GUID) {
 	_ascii := C.CString(ascii)
+	defer C.free(unsafe.Pointer(_ascii))
 	return GUID(C.SDL_GUIDFromString(_ascii))
 }

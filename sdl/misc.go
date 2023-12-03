@@ -17,9 +17,12 @@ static int SDL_OpenURL(const char *url)
 #endif
 */
 import "C"
+import "unsafe"
 
 // OpenURL opens an URL / URI in the browser or other
 // (https://wiki.libsdl.org/SDL_OpenURL)
 func OpenURL(url string) error {
-	return errorFromInt(int(C.SDL_OpenURL(C.CString(url))))
+	_url := C.CString(url)
+	defer C.free(unsafe.Pointer(_url))
+	return errorFromInt(int(C.SDL_OpenURL(_url)))
 }

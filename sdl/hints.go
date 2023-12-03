@@ -384,6 +384,7 @@ func ClearHints() {
 // (https://wiki.libsdl.org/SDL_AddHintCallback)
 func AddHintCallback(name string, fn HintCallback, data interface{}) {
 	_name := C.CString(name)
+	defer C.free(unsafe.Pointer(_name))
 	hintCallbacks[name] = HintCallbackAndData{
 		callback: fn,
 		data:     data,
@@ -395,6 +396,7 @@ func AddHintCallback(name string, fn HintCallback, data interface{}) {
 // (https://wiki.libsdl.org/SDL_DelHintCallback)
 func DelHintCallback(name string) {
 	_name := C.CString(name)
+	defer C.free(unsafe.Pointer(_name))
 	delete(hintCallbacks, name)
 	C.delHintCallback(_name)
 }
