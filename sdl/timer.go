@@ -1,6 +1,21 @@
 package sdl
 
-// #include "sdl_wrapper.h"
+/*
+#include "sdl_wrapper.h"
+
+#if !(SDL_VERSION_ATLEAST(2,0,18))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GetTicks64 is not supported before SDL 2.0.18")
+#endif
+
+static inline Uint64 SDL_GetTicks64(void)
+{
+    return 0;
+}
+
+#endif
+*/
 import "C"
 
 // GetTicks returns the number of milliseconds since the SDL library initialization.
