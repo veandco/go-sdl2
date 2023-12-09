@@ -22,7 +22,10 @@ void GoSetError(const char *fmt) {
 
 */
 import "C"
-import "errors"
+import (
+	"errors"
+	"unsafe"
+)
 
 var emptyCString *C.char = C.CString("")
 var ErrInvalidParameters = errors.New("Invalid Parameters")
@@ -76,7 +79,9 @@ func GetErrorMsg(maxlen int) error {
 // (https://wiki.libsdl.org/SDL_SetError)
 func SetError(err error) {
 	if err != nil {
-		C.GoSetError(C.CString(err.Error()))
+		_err := C.CString(err.Error())
+		defer C.free(unsafe.Pointer(_err))
+		C.GoSetError(_err)
 		return
 	}
 	C.GoSetError(emptyCString)

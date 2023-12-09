@@ -524,8 +524,9 @@ func GetVideoDriver(index int) string {
 // VideoInit initializes the video subsystem, optionally specifying a video driver.
 // (https://wiki.libsdl.org/SDL_VideoInit)
 func VideoInit(driverName string) error {
-	return errorFromInt(int(
-		C.SDL_VideoInit(C.CString(driverName))))
+	_driverName := C.CString(driverName)
+	defer C.free(unsafe.Pointer(_driverName))
+	return errorFromInt(int(C.SDL_VideoInit(_driverName)))
 }
 
 // VideoQuit shuts down the video subsystem, if initialized with VideoInit().
@@ -660,7 +661,9 @@ func (window *Window) GetPixelFormat() (PixelFormatConstant, error) {
 // CreateWindow creates a window with the specified position, dimensions, and flags.
 // (https://wiki.libsdl.org/SDL_CreateWindow)
 func CreateWindow(title string, x, y, w, h int32, flags WindowFlags) (*Window, error) {
-	var _window = C.SDL_CreateWindow(C.CString(title), C.int(x), C.int(y), C.int(w), C.int(h), C.Uint32(flags))
+	_title := C.CString(title)
+	defer C.free(unsafe.Pointer(_title))
+	var _window = C.SDL_CreateWindow(_title, C.int(x), C.int(y), C.int(w), C.int(h), C.Uint32(flags))
 	if _window == nil {
 		return nil, GetError()
 	}
@@ -721,7 +724,9 @@ func (window *Window) GetFlags() WindowFlags {
 // SetTitle sets the title of the window.
 // (https://wiki.libsdl.org/SDL_SetWindowTitle)
 func (window *Window) SetTitle(title string) {
-	C.SDL_SetWindowTitle(window.cptr(), C.CString(title))
+	_title := C.CString(title)
+	defer C.free(unsafe.Pointer(_title))
+	C.SDL_SetWindowTitle(window.cptr(), _title)
 }
 
 // GetTitle returns the title of the window.
@@ -739,13 +744,17 @@ func (window *Window) SetIcon(icon *Surface) {
 // SetData associates an arbitrary named pointer with the window.
 // (https://wiki.libsdl.org/SDL_SetWindowData)
 func (window *Window) SetData(name string, userdata unsafe.Pointer) unsafe.Pointer {
-	return unsafe.Pointer(C.SDL_SetWindowData(window.cptr(), C.CString(name), userdata))
+	_name := C.CString(name)
+	defer C.free(unsafe.Pointer(_name))
+	return unsafe.Pointer(C.SDL_SetWindowData(window.cptr(), _name, userdata))
 }
 
 // GetData returns the data pointer associated with the window.
 // (https://wiki.libsdl.org/SDL_GetWindowData)
 func (window *Window) GetData(name string) unsafe.Pointer {
-	return unsafe.Pointer(C.SDL_GetWindowData(window.cptr(), C.CString(name)))
+	_name := C.CString(name)
+	defer C.free(unsafe.Pointer(_name))
+	return unsafe.Pointer(C.SDL_GetWindowData(window.cptr(), _name))
 }
 
 // SetPosition sets the position of the window.
@@ -1022,14 +1031,18 @@ func DisableScreenSaver() {
 // GLLoadLibrary dynamically loads an OpenGL library.
 // (https://wiki.libsdl.org/SDL_GL_LoadLibrary)
 func GLLoadLibrary(path string) error {
+	_path := C.CString(path)
+	defer C.free(unsafe.Pointer(_path))
 	return errorFromInt(int(
-		C.SDL_GL_LoadLibrary(C.CString(path))))
+		C.SDL_GL_LoadLibrary(_path)))
 }
 
 // GLGetProcAddress returns an OpenGL function by name.
 // (https://wiki.libsdl.org/SDL_GL_GetProcAddress)
 func GLGetProcAddress(proc string) unsafe.Pointer {
-	return unsafe.Pointer(C.SDL_GL_GetProcAddress(C.CString(proc)))
+	_proc := C.CString(proc)
+	defer C.free(unsafe.Pointer(_proc))
+	return unsafe.Pointer(C.SDL_GL_GetProcAddress(_proc))
 }
 
 // GLUnloadLibrary unloads the OpenGL library previously loaded by GLLoadLibrary().
@@ -1041,7 +1054,9 @@ func GLUnloadLibrary() {
 // GLExtensionSupported reports whether an OpenGL extension is supported for the current context.
 // (https://wiki.libsdl.org/SDL_GL_ExtensionSupported)
 func GLExtensionSupported(extension string) bool {
-	return C.SDL_GL_ExtensionSupported(C.CString(extension)) != 0
+	_extension := C.CString(extension)
+	defer C.free(unsafe.Pointer(_extension))
+	return C.SDL_GL_ExtensionSupported(_extension) != 0
 }
 
 // GLSetAttribute sets an OpenGL window attribute before window creation.
