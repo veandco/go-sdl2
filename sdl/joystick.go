@@ -3,6 +3,17 @@ package sdl
 /*
 #include "sdl_wrapper.h"
 
+#if !(SDL_VERSION_ATLEAST(2,26,0))
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GetJoystickGUIDInfo is not supported before SDL 2.26.0")
+#endif
+
+static inline void SDL_GetJoystickGUIDInfo(SDL_JoystickGUID guid, Uint16 *vendor, Uint16 *product, Uint16 *version, Uint16 *crc16)
+{
+    // do nothing
+}
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,4))
 
 #if defined(WARN_OUTDATED)
@@ -443,6 +454,17 @@ func (guid JoystickGUID) c() C.SDL_JoystickGUID {
 
 func (joyid JoystickID) c() C.SDL_JoystickID {
 	return C.SDL_JoystickID(joyid)
+}
+
+// GetInfo returns the device information encoded in a JoystickGUID structure.
+// (https://wiki.libsdl.org/SDL_GetJoystickGUIDInfo)
+func (guid JoystickGUID) GetInfo() (vendor, product, version, crc16 uint16) {
+    _vendor := (*C.Uint16)(&vendor)
+    _product := (*C.Uint16)(&product)
+    _version := (*C.Uint16)(&version)
+    _crc16 := (*C.Uint16)(&crc16)
+    C.SDL_GetJoystickGUIDInfo(guid.c(), _vendor, _product, _version, _crc16)
+    return
 }
 
 // NumJoysticks returns the number of joysticks attached to the system.

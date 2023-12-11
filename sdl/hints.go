@@ -4,6 +4,38 @@ package sdl
 #include "sdl_wrapper.h"
 #include "hints.h"
 
+#if !(SDL_VERSION_ATLEAST(2,28,0))
+
+#define SDL_HINT_ENABLE_SCREEN_KEYBOARD ""
+
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,26,0))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_ResetHints is not supported before SDL 2.26.0")
+#endif
+
+#define SDL_HINT_JOYSTICK_HIDAPI_XBOX_360 ""
+#define SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED ""
+#define SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS ""
+#define SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE ""
+#define SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED ""
+#define SDL_HINT_JOYSTICK_HIDAPI_PS3 ""
+#define SDL_HINT_JOYSTICK_HIDAPI_WII ""
+#define SDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED ""
+#define SDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS ""
+#define SDL_HINT_HIDAPI_IGNORE_DEVICES ""
+#define SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE ""
+#define SDL_HINT_VIDEO_WAYLAND_EMULATE_MOUSE_WARP ""
+
+static inline void SDLCALL SDL_ResetHints(void)
+{
+    // do nothing
+}
+
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,20))
 #define SDL_HINT_RENDER_LINE_METHOD ""
 #endif
@@ -13,11 +45,13 @@ package sdl
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,16))
+#define SDL_HINT_JOYSTICK_HIDAPI_PS5_RUMBLE ""
 #define SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT ""
 #define SDL_HINT_AUDIO_INCLUDE_MONITORS ""
 #define SDL_HINT_AUDIO_DEVICE_STREAM_ROLE ""
 #define SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS ""
 #define SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED ""
+#define SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED ""
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,14))
@@ -48,6 +82,9 @@ package sdl
 #define SDL_HINT_MOUSE_DOUBLE_CLICK_TIME ""
 #define SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS ""
 #define SDL_HINT_JOYSTICK_HIDAPI_STEAM ""
+#define SDL_HINT_JOYSTICK_HIDAPI_XBOX ""
+#define SDL_HINT_JOYSTICK_HIDAPI_PS4 ""
+#define SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE ""
 #endif
 
 #if !(SDL_VERSION_ATLEAST(2,0,8))
@@ -259,7 +296,6 @@ const (
 	HINT_JOYSTICK_HIDAPI_GAMECUBE                 = C.SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE                 // A variable controlling whether the HIDAPI driver for Nintendo GameCube controllers should be used.
 	HINT_VIDEO_X11_WINDOW_VISUALID                = C.SDL_HINT_VIDEO_X11_WINDOW_VISUALID                // A variable forcing the visual ID chosen for new X11 windows.
 	HINT_VIDEO_X11_FORCE_EGL                      = C.SDL_HINT_VIDEO_X11_FORCE_EGL                      // A variable controlling whether X11 should use GLX or EGL by default.
-	HINT_JOYSTICK_HIDAPI_PS5                      = C.SDL_HINT_JOYSTICK_HIDAPI_PS5                      // A variable controlling whether the HIDAPI driver for PS5 controllers should be used.
 	HINT_MOUSE_RELATIVE_SCALING                   = C.SDL_HINT_MOUSE_RELATIVE_SCALING                   // A variable controlling whether relative mouse motion is affected by renderer scaling.
 	HINT_PREFERRED_LOCALES                        = C.SDL_HINT_PREFERRED_LOCALES                        // Override for SDL_GetPreferredLocales().
 	HINT_JOYSTICK_RAWINPUT                        = C.SDL_HINT_JOYSTICK_RAWINPUT                        // A variable controlling whether the RAWINPUT joystick drivers should be used for better handling XInput-capable devices.
@@ -291,15 +327,20 @@ const (
 	HINT_JOYSTICK_ROG_CHAKRAM                     = C.SDL_HINT_JOYSTICK_ROG_CHAKRAM                     // A variable controlling whether the ROG Chakram mice should show up as joysticks
 	HINT_X11_WINDOW_TYPE                          = C.SDL_HINT_X11_WINDOW_TYPE                          // A variable that forces X11 windows to create as a custom type
 	HINT_VIDEO_WAYLAND_PREFER_LIBDECOR            = C.SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR            // A variable controlling whether the libdecor Wayland backend is preferred over native decrations
+	HINT_JOYSTICK_HIDAPI_PS4                      = C.SDL_HINT_JOYSTICK_HIDAPI_PS4                 // A variable controlling whether the HIDAPI driver for PS4 controllers should be used
+	HINT_JOYSTICK_HIDAPI_PS4_RUMBLE               = C.SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE          // A variable controlling whether extended input reports should be used for PS4 controllers when using the HIDAPI driver
+	HINT_JOYSTICK_HIDAPI_PS5                      = C.SDL_HINT_JOYSTICK_HIDAPI_PS5                 // A variable controlling whether the HIDAPI driver for PS5 controllers should be used
+	HINT_JOYSTICK_HIDAPI_PS5_RUMBLE               = C.SDL_HINT_JOYSTICK_HIDAPI_PS5_RUMBLE          // A variable controlling whether extended input reports should be used for PS5 controllers when using the HIDAPI driver
+	HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED           = C.SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED      // A variable controlling whether the player LEDs should be lit to indicate which player is associated with a PS5 controller
 
-	// SDL2 2.0.24
-	HINT_MOUSE_RELATIVE_WARP_MOTION        = C.SDL_HINT_MOUSE_RELATIVE_WARP_MOTION        // A variable controlling whether a motion event should be generated for mouse warping in relative mode
-	HINT_TRACKPAD_IS_TOUCH_ONLY            = C.SDL_HINT_TRACKPAD_IS_TOUCH_ONLY            // A variable that treats trackpads as touch devices
-	HINT_JOYSTICK_HIDAPI_JOY_CONS          = C.SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS          // A variable controlling whether the HIDAPI driver for Nintendo Switch Joy-Cons should be used
-	HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS  = C.SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS  // A variable controlling whether Nintendo Switch Joy-Con controllers will be combined into a single Pro-like controller when using the HIDAPI driver
-	HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED   = C.SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED   // A variable controlling whether the Home button LED should be turned on when a Nintendo Switch Pro controller is opened
-	HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED   = C.SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED   // A variable controlling whether the Home button LED should be turned on when a Nintendo Switch Joy-Con controller is opened
-	HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED = C.SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED // A variable controlling whether the player LEDs should be lit to indicate which player is associated with a Nintendo Switch controller
+	// 2.24.0
+	HINT_MOUSE_RELATIVE_WARP_MOTION               = C.SDL_HINT_MOUSE_RELATIVE_WARP_MOTION        // A variable controlling whether a motion event should be generated for mouse warping in relative mode
+	HINT_TRACKPAD_IS_TOUCH_ONLY                   = C.SDL_HINT_TRACKPAD_IS_TOUCH_ONLY            // A variable that treats trackpads as touch devices
+	HINT_JOYSTICK_HIDAPI_JOY_CONS                 = C.SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS          // A variable controlling whether the HIDAPI driver for Nintendo Switch Joy-Cons should be used
+	HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS         = C.SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS  // A variable controlling whether Nintendo Switch Joy-Con controllers will be combined into a single Pro-like controller when using the HIDAPI driver
+	HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED          = C.SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED   // A variable controlling whether the Home button LED should be turned on when a Nintendo Switch Pro controller is opened
+	HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED          = C.SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED   // A variable controlling whether the Home button LED should be turned on when a Nintendo Switch Joy-Con controller is opened
+	HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED        = C.SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED // A variable controlling whether the player LEDs should be lit to indicate which player is associated with a Nintendo Switch controller
 	HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC  = C.SDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC  // A variable controlling whether the HIDAPI driver for Nintendo Online classic controllers should be used
 	HINT_JOYSTICK_HIDAPI_SHIELD            = C.SDL_HINT_JOYSTICK_HIDAPI_SHIELD            // A variable controlling whether the HIDAPI driver for NVIDIA SHIELD controllers should be used
 	HINT_WINDOWS_DPI_AWARENESS             = C.SDL_HINT_WINDOWS_DPI_AWARENESS             // Controls whether SDL will declare the process to be DPI aware
@@ -310,6 +351,24 @@ const (
 	HINT_LINUX_DIGITAL_HATS                = C.SDL_HINT_LINUX_DIGITAL_HATS                // A variable controlling whether joysticks on Linux will always treat 'hat' axis inputs (ABS_HAT0X - ABS_HAT3Y) as 8-way digital hats without checking whether they may be analog
 	HINT_LINUX_HAT_DEADZONES               = C.SDL_HINT_LINUX_HAT_DEADZONES               // A variable controlling whether digital hats on Linux will apply deadzones to their underlying input axes or use unfiltered values
 	HINT_MAC_OPENGL_ASYNC_DISPATCH         = C.SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH         // A variable controlling whether dispatching OpenGL context updates should block the dispatching thread until the main thread finishes processing
+
+    // 2.26.0
+	HINT_JOYSTICK_HIDAPI_WII                 = C.SDL_HINT_JOYSTICK_HIDAPI_WII                 // A variable controlling whether the HIDAPI driver for Nintendo Wii and Wii U controllers should be used
+	HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED      = C.SDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED      // A variable controlling whether the player LEDs should be lit to indicate which player is associated with a Wii controller
+	HINT_JOYSTICK_HIDAPI_XBOX                = C.SDL_HINT_JOYSTICK_HIDAPI_XBOX                // A variable controlling whether the HIDAPI driver for XBox controllers should be used
+	HINT_JOYSTICK_HIDAPI_XBOX_360            = C.SDL_HINT_JOYSTICK_HIDAPI_XBOX_360            // A variable controlling whether the HIDAPI driver for XBox 360 controllers should be used
+	HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED = C.SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED // A variable controlling whether the player LEDs should be lit to indicate which player is associated with an Xbox 360 controller
+	HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS   = C.SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS   // A variable controlling whether the HIDAPI driver for XBox 360 wireless controllers should be used
+	HINT_JOYSTICK_HIDAPI_XBOX_ONE            = C.SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE            // A variable controlling whether the HIDAPI driver for XBox One controllers should be used
+	HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED   = C.SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED   // A variable controlling whether the Home button LED should be turned on when an Xbox One controller is opened
+	HINT_JOYSTICK_HIDAPI_PS3                 = C.SDL_HINT_JOYSTICK_HIDAPI_PS3                 // A variable controlling whether the HIDAPI driver for PS3 controllers should be used
+	HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS   = C.SDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS   // A variable controlling whether Nintendo Switch Joy-Con controllers will be in vertical mode when using the HIDAPI driver
+	HINT_HIDAPI_IGNORE_DEVICES               = C.SDL_HINT_HIDAPI_IGNORE_DEVICES               // A variable containing a list of devices to ignore in SDL_hid_enumerate()
+    HINT_MOUSE_RELATIVE_SYSTEM_SCALE         = C.SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE         // A variable controlling whether the system mouse acceleration curve is used for relative mouse motion
+    HINT_VIDEO_WAYLAND_EMULATE_MOUSE_WARP    = C.SDL_HINT_VIDEO_WAYLAND_EMULATE_MOUSE_WARP    // Enable or disable mouse pointer warp emulation, needed by some older games
+
+    // 2.28.0
+    HINT_ENABLE_SCREEN_KEYBOARD              = C.SDL_HINT_ENABLE_SCREEN_KEYBOARD              // A variable that controls whether the on-screen keyboard should be shown when text input is active
 )
 
 // An enumeration of hint priorities.
@@ -364,6 +423,12 @@ func ResetHint(name string) bool {
 	_name := C.CString(name)
 	defer C.free(unsafe.Pointer(_name))
 	return C.SDL_ResetHint(_name) == C.SDL_TRUE
+}
+
+// ResetHints resets all hints to the default values.
+// (https://wiki.libsdl.org/SDL_ResetHints)
+func ResetHints() {
+	C.SDL_ResetHints()
 }
 
 // GetHint returns the value of a hint.

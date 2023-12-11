@@ -152,7 +152,7 @@ static void SDL_GameControllerSetPlayerIndex(SDL_GameController *gamecontroller,
 #pragma message("SDL_GameControllerSetLED is not supported before SDL 2.0.14")
 #endif
 
-static const char * SDLCALL SDL_GameControllerGetSerial(SDL_GameController *gamecontroller)
+static const char * SDL_GameControllerGetSerial(SDL_GameController *gamecontroller)
 {
 	return NULL;
 }
@@ -162,12 +162,12 @@ static SDL_bool SDL_GameControllerHasAxis(SDL_GameController *gamecontroller, SD
 	return SDL_FALSE;
 }
 
-static SDL_bool SDLCALL SDL_GameControllerHasButton(SDL_GameController *gamecontroller, SDL_GameControllerButton button)
+static SDL_bool SDL_GameControllerHasButton(SDL_GameController *gamecontroller, SDL_GameControllerButton button)
 {
 	return SDL_FALSE;
 }
 
-static int SDLCALL SDL_GameControllerGetNumTouchpads(SDL_GameController *gamecontroller)
+static int SDL_GameControllerGetNumTouchpads(SDL_GameController *gamecontroller)
 {
 	return 0;
 }
@@ -293,6 +293,18 @@ static Uint16 SDL_GameControllerGetFirmwareVersion(SDL_GameController *gamecontr
 	return 0;
 }
 
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,26,0))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GameControllerGetSensorDataWithTimestamp is not supported before SDL 2.26.0")
+#endif
+
+static inline int SDL_GameControllerGetSensorDataWithTimestamp(SDL_GameController *gamecontroller, SDL_SensorType type, Uint64 *timestamp, float *data, int num_values)
+{
+    return -1;
+}
 #endif
 */
 import "C"
@@ -735,8 +747,37 @@ func (ctrl *GameController) SendEffect(data []byte) (err error) {
 
 // GetSensorDataRate gets the data rate (number of events per second) of a game controller sensor.
 // (https://wiki.libsdl.org/SDL_GameControllerGetSensorDataRate)
-func (ctrl *GameController) SensorDataRate(typ SensorType) (rate float32) {
+func (ctrl *GameController) GetSensorDataRate(typ SensorType) (rate float32) {
 	return float32(C.SDL_GameControllerGetSensorDataRate(ctrl.cptr(), C.SDL_SensorType(typ)))
+}
+
+// GameControllerGetSensorData gets the current state of a game controller sensor.
+//
+// The number of values and interpretation of the data is sensor dependent.
+// (https://wiki.libsdl.org/SDL_GameControllerGetSensorData)
+func (ctrl *GameController) GetSensorData(typ SensorType, data []float32) (err error) {
+	if data == nil {
+		return nil
+	}
+	_data := (*C.float)(unsafe.Pointer(&data[0]))
+	_numValues := C.int(len(data))
+	err = errorFromInt(int(C.SDL_GameControllerGetSensorData((*C.SDL_GameController)(ctrl), C.SDL_SensorType(typ), _data, _numValues)))
+	return
+}
+
+// GameeControllerGetSensorDataWithTimestamp gets current state of a game controller sensor with the timestamp of the last update.
+//
+// The number of values and interpretation of the data is sensor dependent.
+// (https://wiki.libsdl.org/SDL_GameControllerGetSensorDataWithTimestamp)
+func (ctrl *GameController) GetSensorDataWithTimestamp(typ SensorType, timestamp *uint64, data []float32) (err error) {
+	if data == nil {
+		return nil
+	}
+	_data := (*C.float)(unsafe.Pointer(&data[0]))
+	_numValues := C.int(len(data))
+	_timestamp := (*C.Uint64)(timestamp)
+	err = errorFromInt(int(C.SDL_GameControllerGetSensorDataWithTimestamp((*C.SDL_GameController)(ctrl), C.SDL_SensorType(typ), _timestamp, _data, _numValues)))
+	return
 }
 
 // HasRumble queries whether a game controller has rumble support.

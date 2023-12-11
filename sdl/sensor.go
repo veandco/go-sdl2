@@ -37,6 +37,19 @@ typedef enum
 
 #if defined(WARN_OUTDATED)
 #pragma message("SDL_NumSensors is not supported before SDL 2.0.9")
+#pragma message("SDL_SensorGetDeviceName is not supported before SDL 2.0.9")
+#pragma message("SDL_SensorGetDeviceType is not supported before SDL 2.0.9")
+#pragma message("SDL_SensorGetDeviceNonPortableType is not supported before SDL 2.0.9")
+#pragma message("SDL_SensorGetDeviceInstanceID is not supported before SDL 2.0.9")
+#pragma message("SDL_SensorOpen is not supported before SDL 2.0.9")
+#pragma message("SDL_SensorFromInstanceID is not supported before SDL 2.0.9")
+#pragma message("SDL_SensorGetName is not supported before SDL 2.0.9")
+#pragma message("SDL_SensorGetType is not supported before SDL 2.0.9")
+#pragma message("SDL_SensorGetNonPortableType is not supported before SDL 2.0.9")
+#pragma message("SDL_SensorGetInstanceID is not supported before SDL 2.0.9")
+#pragma message("SDL_SensorGetData is not supported before SDL 2.0.9")
+#pragma message("SDL_SensorClose is not supported before SDL 2.0.9")
+#pragma message("SDL_SensorUpdate is not supported before SDL 2.0.9")
 #endif
 
 static inline int SDL_NumSensors()
@@ -44,132 +57,79 @@ static inline int SDL_NumSensors()
 	return 0;
 }
 
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_SensorGetDeviceName is not supported before SDL 2.0.9")
-#endif
-
 static const char * SDL_SensorGetDeviceName(int device_index)
 {
 	return NULL;
 }
-
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_SensorGetDeviceType is not supported before SDL 2.0.9")
-#endif
 
 static SDL_SensorType SDL_SensorGetDeviceType(int device_index)
 {
 	return SDL_SENSOR_INVALID;
 }
 
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_SensorGetDeviceNonPortableType is not supported before SDL 2.0.9")
-#endif
-
 static int SDL_SensorGetDeviceNonPortableType(int device_index)
 {
 	return -1;
 }
-
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_SensorGetDeviceInstanceID is not supported before SDL 2.0.9")
-#endif
 
 static SDL_SensorID SDL_SensorGetDeviceInstanceID(int device_index)
 {
 	return -1;
 }
 
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_SensorOpen is not supported before SDL 2.0.9")
-#endif
-
 static SDL_Sensor * SDL_SensorOpen(int device_index)
 {
 	return NULL;
 }
-
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_SensorFromInstanceID is not supported before SDL 2.0.9")
-#endif
 
 static SDL_Sensor * SDL_SensorFromInstanceID(SDL_SensorID instance_id)
 {
 	return NULL;
 }
 
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_SensorGetName is not supported before SDL 2.0.9")
-#endif
-
 static const char * SDL_SensorGetName(SDL_Sensor *sensor)
 {
 	return NULL;
 }
-
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_SensorGetType is not supported before SDL 2.0.9")
-#endif
 
 static SDL_SensorType SDL_SensorGetType(SDL_Sensor *sensor)
 {
 	return SDL_SENSOR_INVALID;
 }
 
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_SensorGetNonPortableType is not supported before SDL 2.0.9")
-#endif
-
 static int SDL_SensorGetNonPortableType(SDL_Sensor *sensor)
 {
 	return -1;
 }
-
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_SensorGetInstanceID is not supported before SDL 2.0.9")
-#endif
 
 static SDL_SensorID SDL_SensorGetInstanceID(SDL_Sensor *sensor)
 {
 	return -1;
 }
 
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_SensorGetData is not supported before SDL 2.0.9")
-#endif
-
 static int SDL_SensorGetData(SDL_Sensor *sensor, float *data, int num_values)
 {
 	return -1;
 }
 
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_SensorClose is not supported before SDL 2.0.9")
-#endif
-
 static void SDL_SensorClose(SDL_Sensor *sensor)
 {
 }
 
-
-#if defined(WARN_OUTDATED)
-#pragma message("SDL_SensorUpdate is not supported before SDL 2.0.9")
-#endif
-
 static void SDL_SensorUpdate()
 {
+}
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,26,0))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_SensorGetDataWithTimestamp is not supported before SDL 2.26.0")
+#endif
+
+static inline int SDL_SensorGetDataWithTimestamp(SDL_Sensor *sensor, Uint64 *timestamp, float *data, int num_values)
+{
+    return -1;
 }
 #endif
 */
@@ -330,6 +290,21 @@ func (sensor *Sensor) GetData(data []float32) (err error) {
 	_data := (*C.float)(unsafe.Pointer(&data[0]))
 	_numValues := C.int(len(data))
 	err = errorFromInt(int(C.SDL_SensorGetData((*C.SDL_Sensor)(sensor), _data, _numValues)))
+	return
+}
+
+// GetDataWithTimestamp gets the current state of an opened sensor with the timestamp of the last update.
+//
+// The number of values and interpretation of the data is sensor dependent.
+// (https://wiki.libsdl.org/SDL_SensorGetDataWithTimestamp)
+func (sensor *Sensor) GetDataWithTimestamp(timestamp *uint64, data []float32) (err error) {
+	if data == nil {
+		return nil
+	}
+	_data := (*C.float)(unsafe.Pointer(&data[0]))
+	_numValues := C.int(len(data))
+	_timestamp := (*C.Uint64)(timestamp)
+	err = errorFromInt(int(C.SDL_SensorGetDataWithTimestamp((*C.SDL_Sensor)(sensor), _timestamp, _data, _numValues)))
 	return
 }
 

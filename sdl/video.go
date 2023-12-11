@@ -9,6 +9,37 @@ static inline Sint32 ShowMessageBox(SDL_MessageBoxData data)
 	return buttonid;
 }
 
+#if !(SDL_VERSION_ATLEAST(2,28,0))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_HasWindowSurface is not supported before SDL 2.28.0")
+#pragma message("SDL_DestroyWindowSurface is not supported before SDL 2.28.0")
+#endif
+
+static inline SDL_bool SDL_HasWindowSurface(SDL_Window *window)
+{
+    return SDL_FALSE;
+}
+
+static inline int SDL_DestroyWindowSurface(SDL_Window *window)
+{
+    return -1;
+}
+
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,26,0))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GetWindowSizeInPixels is not supported before SDL 2.26.0")
+#endif
+
+static inline void SDLCALL SDL_GetWindowSizeInPixels(SDL_Window * window, int *w, int *h)
+{
+    // do nothing
+}
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,0,14))
 
 #if defined(WARN_OUTDATED)
@@ -16,6 +47,23 @@ static inline Sint32 ShowMessageBox(SDL_MessageBoxData data)
 #endif
 
 #define SDL_WINDOW_METAL (0x20000000)
+
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,0,9))
+
+typedef enum {
+    SDL_ORIENTATION_UNKNOWN,            // The display orientation can't be determined
+    SDL_ORIENTATION_LANDSCAPE,          // The display is in landscape mode, with the right side up, relative to portrait mode
+    SDL_ORIENTATION_LANDSCAPE_FLIPPED,  // The display is in landscape mode, with the left side up, relative to portrait mode
+    SDL_ORIENTATION_PORTRAIT,           // The display is in portrait mode
+    SDL_ORIENTATION_PORTRAIT_FLIPPED    // The display is in portrait mode, upside down
+} SDL_DisplayOrientation;
+
+static inline SDL_DisplayOrientation SDL_GetDisplayOrientation(int displayIndex)
+{
+    return SDL_ORIENTATION_UNKNOWN;
+}
 
 #endif
 
@@ -411,6 +459,16 @@ const (
 
 type FlashOperation C.SDL_FlashOperation
 
+const (
+    ORIENTATION_UNKNOWN           DisplayOrientation = C.SDL_ORIENTATION_UNKNOWN           // The display orientation can't be determined
+    ORIENTATION_LANDSCAPE         DisplayOrientation = C.SDL_ORIENTATION_LANDSCAPE         // The display is in landscape mode, with the right side up, relative to portrait mode
+    ORIENTATION_LANDSCAPE_FLIPPED DisplayOrientation = C.SDL_ORIENTATION_LANDSCAPE_FLIPPED // The display is in landscape mode, with the left side up, relative to portrait mode
+    ORIENTATION_PORTRAIT          DisplayOrientation = C.SDL_ORIENTATION_PORTRAIT          // The display is in portrait mode
+    ORIENTATION_PORTRAIT_FLIPPED  DisplayOrientation = C.SDL_ORIENTATION_PORTRAIT_FLIPPED  // The display is in portrait mode, upside down
+)
+
+type DisplayOrientation C.SDL_DisplayOrientation
+
 // DisplayMode contains the description of a display mode.
 // (https://wiki.libsdl.org/SDL_DisplayMode)
 type DisplayMode struct {
@@ -543,6 +601,12 @@ func GetCurrentVideoDriver() (string, error) {
 		return "", GetError()
 	}
 	return C.GoString(name), nil
+}
+
+// GetDisplayOrientation returns the orientation of a display
+// ((https://wiki.libsdl.org/SDLL_GetDisplayOrientation)
+func GetDisplayOrientation(displayIndex int) DisplayOrientation {
+    return DisplayOrientation(C.SDL_GetDisplayOrientation(C.int(displayIndex)))
 }
 
 // GetNumDisplayModes returns the number of available display modes.
@@ -791,6 +855,14 @@ func (window *Window) GetSize() (w, h int32) {
 	return int32(_w), int32(_h)
 }
 
+// GetSizeInPixels returns the size of a window in pixels.
+// (https://wiki.libsdl.org/SDL_GetWindowSizeInPixels)
+func (window *Window) GetSizeInPixels() (w, h int32) {
+	var _w, _h C.int
+	C.SDL_GetWindowSizeInPixels(window.cptr(), &_w, &_h)
+	return int32(_w), int32(_h)
+}
+
 // SetMinimumSize sets the minimum size of the window's client area.
 // (https://wiki.libsdl.org/SDL_SetWindowMinimumSize)
 func (window *Window) SetMinimumSize(minW, minH int32) {
@@ -866,6 +938,18 @@ func (window *Window) Restore() {
 func (window *Window) SetFullscreen(flags uint32) error {
 	return errorFromInt(int(
 		C.SDL_SetWindowFullscreen(window.cptr(), C.Uint32(flags))))
+}
+
+// HasSurface returns whether the window has a surface associated with it.
+// (https://wiki.libsdl.org/SDL_HasWindowSurface)
+func (window *Window) HasSurface() bool {
+    return C.SDL_HasWindowSurface(window.cptr()) == C.SDL_TRUE
+}
+
+// DestroySurface destroys the surface associated with the window..
+// (https://wiki.libsdl.org/SDL_DestroyWindowSurface)
+func (window *Window) DestroySurface() error {
+    return errorFromInt(int(C.SDL_DestroyWindowSurface(window.cptr())))
 }
 
 // GetSurface returns the SDL surface associated with the window.
