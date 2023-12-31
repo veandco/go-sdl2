@@ -615,10 +615,9 @@ func (stream *AudioStream) Get(buf []byte) (n int, err error) {
 }
 
 // Available gets the number of converted/resampled bytes available
-// TODO: (https://wiki.libsdl.org/SDL_AudioStreamAvailable)
-func (stream *AudioStream) Available() (err error) {
-	ret := int(C.SDL_AudioStreamAvailable(stream.cptr()))
-	err = errorFromInt(ret)
+// (https://wiki.libsdl.org/SDL_AudioStreamAvailable)
+func (stream *AudioStream) Available() (n int) {
+	n = int(C.SDL_AudioStreamAvailable(stream.cptr()))
 	return
 }
 
