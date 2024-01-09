@@ -191,6 +191,7 @@ static inline void SDLCALL SDL_ResetHints(void)
 #define SDL_HINT_JOYSTICK_ROG_CHAKRAM ""
 #define SDL_HINT_X11_WINDOW_TYPE ""
 #define SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR ""
+#define SDL_HINT_VIDEODRIVER ""
 
 #endif
 
@@ -327,6 +328,7 @@ const (
 	HINT_JOYSTICK_ROG_CHAKRAM                     = C.SDL_HINT_JOYSTICK_ROG_CHAKRAM                     // A variable controlling whether the ROG Chakram mice should show up as joysticks
 	HINT_X11_WINDOW_TYPE                          = C.SDL_HINT_X11_WINDOW_TYPE                          // A variable that forces X11 windows to create as a custom type
 	HINT_VIDEO_WAYLAND_PREFER_LIBDECOR            = C.SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR            // A variable controlling whether the libdecor Wayland backend is preferred over native decrations
+	HINT_VIDEODRIVER                              = C.SDL_HINT_VIDEODRIVER                              // A variable that decides what video backend to use
 	HINT_JOYSTICK_HIDAPI_PS4                      = C.SDL_HINT_JOYSTICK_HIDAPI_PS4                 // A variable controlling whether the HIDAPI driver for PS4 controllers should be used
 	HINT_JOYSTICK_HIDAPI_PS4_RUMBLE               = C.SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE          // A variable controlling whether extended input reports should be used for PS4 controllers when using the HIDAPI driver
 	HINT_JOYSTICK_HIDAPI_PS5                      = C.SDL_HINT_JOYSTICK_HIDAPI_PS5                 // A variable controlling whether the HIDAPI driver for PS5 controllers should be used
