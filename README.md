@@ -2,6 +2,7 @@
 
 `go-sdl2` is SDL2 wrapped for Go users. It enables interoperability between Go and the SDL2 library which is written in C. That means the original SDL2 installation is required for this to work. Note that the first build may take several minutes on machines that are not powerful such as Raspberry Pi.
 
+NOTE: For the latest versions of SDL2, please use the `master` branch!
 
 # Table of Contents
 * [Documentation](#documentation)
@@ -55,6 +56,9 @@ After that, you can execute your program:
 ```
 
 # Examples
+
+NOTE: The following example is for the `master` branch. Please check the [README](https://github.com/veandco/go-sdl2/tree/v0.4.x?tab=readme-ov-file#examples) of `v0.4.x` for the stable version.
+
 ```go
 package main
 
