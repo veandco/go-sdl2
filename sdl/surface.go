@@ -251,20 +251,20 @@ func CreateRGBSurfaceWithFormatFrom(pixels unsafe.Pointer, width, height, depth,
 }
 
 // SetYUVConversionMode sets the YUV conversion mode
-// TODO: (https://wiki.libsdl.org/SDL_SetYUVConversionMode)
+// (https://wiki.libsdl.org/SDL_SetYUVConversionMode)
 func SetYUVConversionMode(mode YUV_CONVERSION_MODE) {
 	_mode := C.SDL_YUV_CONVERSION_MODE(mode)
 	C.SDL_SetYUVConversionMode(_mode)
 }
 
 // GetYUVConversionMode gets the YUV conversion mode
-// TODO: (https://wiki.libsdl.org/SDL_GetYUVConversionMode)
+// (https://wiki.libsdl.org/SDL_GetYUVConversionMode)
 func GetYUVConversionMode() YUV_CONVERSION_MODE {
 	return YUV_CONVERSION_MODE(C.SDL_GetYUVConversionMode())
 }
 
 // GetYUVConversionModeForResolution gets the YUV conversion mode
-// TODO: (https://wiki.libsdl.org/SDL_GetYUVConversionModeForResolution)
+// (https://wiki.libsdl.org/SDL_GetYUVConversionModeForResolution)
 func GetYUVConversionModeForResolution(width, height int) YUV_CONVERSION_MODE {
 	_width := C.int(width)
 	_height := C.int(height)
@@ -357,7 +357,7 @@ func (surface *Surface) SetColorKey(flag bool, key uint32) error {
 }
 
 // HasColorKey returns the color key (transparent pixel) for the surface.
-// TODO: (https://wiki.libsdl.org/SDL_HasColorKey)
+// (https://wiki.libsdl.org/SDL_HasColorKey)
 func (surface *Surface) HasColorKey() bool {
 	return C.SDL_HasColorKey(surface.cptr()) == C.SDL_TRUE
 }

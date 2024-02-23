@@ -225,7 +225,7 @@ func HasAVX() bool {
 }
 
 // HasAVX512F reports whether the CPU has AVX-512F (foundation) features.
-// TODO: (https://wiki.libsdl.org/SDL_HasAVX512F)
+// (https://wiki.libsdl.org/SDL_HasAVX512F)
 func HasAVX512F() bool {
 	return C.SDL_HasAVX512F() > 0
 }
@@ -237,7 +237,7 @@ func HasAVX2() bool {
 }
 
 // HasARMSIMD reports whether the CPU has ARM SIMD (ARMv6) features.
-// TODO: (https://wiki.libsdl.org/SDL_HasARMSIMD)
+// (https://wiki.libsdl.org/SDL_HasARMSIMD)
 func HasARMSIMD() bool {
 	return C.SDL_HasARMSIMD() > 0
 }
@@ -249,25 +249,25 @@ func HasNEON() bool {
 }
 
 // SIMDGetAlignment reports the alignment this system needs for SIMD allocations.
-// TODO: (https://wiki.libsdl.org/SDL_SIMDGetAlignment)
+// (https://wiki.libsdl.org/SDL_SIMDGetAlignment)
 func SIMDGetAlignment() int {
 	return int(C.SDL_SIMDGetAlignment())
 }
 
 // SIMDAlloc allocates memory in a SIMD-friendly way.
-// TODO: (https://wiki.libsdl.org/SDL_SIMDAlloc)
+// (https://wiki.libsdl.org/SDL_SIMDAlloc)
 func SIMDAlloc(_len int) unsafe.Pointer {
 	return C.SDL_SIMDAlloc(C.size_t(_len))
 }
 
 // SIMDRealloc reallocates memory obtained from SDL_SIMDAlloc.
-// TODO: (https://wiki.libsdl.org/SDL_SIMDRealloc)
+// (https://wiki.libsdl.org/SDL_SIMDRealloc)
 func SIMDRealloc(mem unsafe.Pointer, _len int) unsafe.Pointer {
 	return C.SDL_SIMDRealloc(mem, C.size_t(_len))
 }
 
 // SIMDFree deallocates memory obtained from SDL_SIMDAlloc.
-// TODO: (https://wiki.libsdl.org/SDL_SIMDFree)
+// (https://wiki.libsdl.org/SDL_SIMDFree)
 func SIMDFree(p unsafe.Pointer) {
 	C.SDL_SIMDFree(p)
 }

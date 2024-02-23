@@ -486,7 +486,7 @@ func JoystickPathForIndex(index int) string {
 }
 
 // JoystickGetDevicePlayerIndex returns the player index of a joystick, or -1 if it's not available
-// TODO: (https://wiki.libsdl.org/SDL_JoystickGetDevicePlayerIndex)
+// (https://wiki.libsdl.org/SDL_JoystickGetDevicePlayerIndex)
 func JoystickGetDevicePlayerIndex(index int) int {
 	return int(C.SDL_JoystickGetDevicePlayerIndex(C.int(index)))
 }
@@ -565,13 +565,13 @@ func JoystickFromInstanceID(joyid JoystickID) *Joystick {
 }
 
 // JoystickFromPlayerIndex returns the Joystick associated with a player index.
-// TODO: (https://wiki.libsdl.org/SDL_JoystickFromPlayerIndex)
+// (https://wiki.libsdl.org/SDL_JoystickFromPlayerIndex)
 func JoystickFromPlayerIndex(playerIndex int) *Joystick {
 	return (*Joystick)(C.SDL_JoystickFromPlayerIndex(C.int(playerIndex)))
 }
 
 // JoystickAttachVirtual attaches a new virtual joystick.
-// TODO: (https://wiki.libsdl.org/SDL_JoystickAttachVirtual)
+// (https://wiki.libsdl.org/SDL_JoystickAttachVirtual)
 func JoystickAttachVirtual(typ JoystickType, naxes, nbuttons, nhats int) (deviceIndex int, err error) {
 	deviceIndex = int(C.SDL_JoystickAttachVirtual(C.SDL_JoystickType(typ), C.int(naxes), C.int(nbuttons), C.int(nhats)))
 	err = errorFromInt(deviceIndex)
@@ -587,13 +587,13 @@ func JoystickAttachVirtualEx(desc *C.SDL_VirtualJoystickDesc) (deviceIndex int, 
 }
 
 // JoystickDetachVirtual detaches a virtual joystick.
-// TODO: (https://wiki.libsdl.org/SDL_JoystickDetachVirtual)
+// (https://wiki.libsdl.org/SDL_JoystickDetachVirtual)
 func JoystickDetachVirtual(deviceIndex int) error {
 	return errorFromInt(int(C.SDL_JoystickDetachVirtual(C.int(deviceIndex))))
 }
 
 // JoystickIsVirtual indicates whether or not a virtual-joystick is at a given device index.
-// TODO: (https://wiki.libsdl.org/SDL_JoystickIsVirtual)
+// (https://wiki.libsdl.org/SDL_JoystickIsVirtual)
 func JoystickIsVirtual(deviceIndex int) bool {
 	return C.SDL_JoystickIsVirtual(C.int(deviceIndex)) == C.SDL_TRUE
 }
@@ -604,7 +604,7 @@ func JoystickIsVirtual(deviceIndex int) bool {
 // or can be called indirectly through various other SDL APIS,
 // including, but not limited to the following: SDL_PollEvent,
 // SDL_PumpEvents, SDL_WaitEventTimeout, SDL_WaitEvent..
-// TODO: (https://wiki.libsdl.org/SDL_JoystickSetVirtualAxis)
+// (https://wiki.libsdl.org/SDL_JoystickSetVirtualAxis)
 func (joy *Joystick) SetVirtualAxis(axis int, value int16) error {
 	return errorFromInt(int(C.SDL_JoystickSetVirtualAxis(joy.cptr(), C.int(axis), C.Sint16(value))))
 }
@@ -615,7 +615,7 @@ func (joy *Joystick) SetVirtualAxis(axis int, value int16) error {
 // or can be called indirectly through various other SDL APIS,
 // including, but not limited to the following: SDL_PollEvent,
 // SDL_PumpEvents, SDL_WaitEventTimeout, SDL_WaitEvent..
-// TODO: (https://wiki.libsdl.org/SDL_JoystickSetVirtualButton)
+// (https://wiki.libsdl.org/SDL_JoystickSetVirtualButton)
 func (joy *Joystick) SetVirtualButton(button int, value uint8) error {
 	return errorFromInt(int(C.SDL_JoystickSetVirtualButton(joy.cptr(), C.int(button), C.Uint8(value))))
 }
@@ -626,19 +626,19 @@ func (joy *Joystick) SetVirtualButton(button int, value uint8) error {
 // or can be called indirectly through various other SDL APIS,
 // including, but not limited to the following: SDL_PollEvent,
 // SDL_PumpEvents, SDL_WaitEventTimeout, SDL_WaitEvent..
-// TODO: (https://wiki.libsdl.org/SDL_JoystickSetVirtualHat)
+// (https://wiki.libsdl.org/SDL_JoystickSetVirtualHat)
 func (joy *Joystick) SetVirtualHat(hat int, value uint8) error {
 	return errorFromInt(int(C.SDL_JoystickSetVirtualHat(joy.cptr(), C.int(hat), C.Uint8(value))))
 }
 
 // LockJoysticks locks joysticks for multi-threaded access to the joystick API
-// TODO: (https://wiki.libsdl.org/SDL_LockJoysticks)
+// (https://wiki.libsdl.org/SDL_LockJoysticks)
 func LockJoysticks() {
 	C.SDL_LockJoysticks()
 }
 
 // UnlockJoysticks unlocks joysticks for multi-threaded access to the joystick API
-// TODO: (https://wiki.libsdl.org/SDL_UnlockJoysticks)
+// (https://wiki.libsdl.org/SDL_UnlockJoysticks)
 func UnlockJoysticks() {
 	C.SDL_UnlockJoysticks()
 }
@@ -782,7 +782,7 @@ func (joy *Joystick) Button(button int) byte {
 //
 // Returns error if rumble isn't supported on this joystick.
 //
-// TODO: (https://wiki.libsdl.org/SDL_JoystickRumble)
+// (https://wiki.libsdl.org/SDL_JoystickRumble)
 func (joy *Joystick) Rumble(lowFrequencyRumble, highFrequencyRumble uint16, durationMS uint32) error {
 	return errorFromInt(int(C.SDL_JoystickRumble(joy.cptr(), C.Uint16(lowFrequencyRumble), C.Uint16(highFrequencyRumble), C.Uint32(durationMS))))
 }

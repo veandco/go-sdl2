@@ -24,14 +24,14 @@ type Rect struct {
 }
 
 // FPoint defines a two dimensional point.
-// TODO: (https://wiki.libsdl.org/SDL_FPoint)
+// (https://wiki.libsdl.org/SDL_FPoint)
 type FPoint struct {
 	X float32 // the x coordinate of the point
 	Y float32 // the y coordinate of the point
 }
 
 // FRect contains the definition of a rectangle, with the origin at the upper left.
-// TODO: (https://wiki.libsdl.org/SDL_FRect)
+// (https://wiki.libsdl.org/SDL_FRect)
 type FRect struct {
 	X float32 // the x location of the rectangle's upper left corner
 	Y float32 // the y location of the rectangle's upper left corner

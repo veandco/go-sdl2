@@ -558,14 +558,14 @@ func (texture *Texture) GetBlendMode() (bm BlendMode, err error) {
 }
 
 // SetScaleMode Set the scale mode used for texture scale operations.
-// TODO: (https://wiki.libsdl.org/SDL_SetTextureScaleMode)
+// (https://wiki.libsdl.org/SDL_SetTextureScaleMode)
 func (texture *Texture) SetScaleMode(sm ScaleMode) error {
 	return errorFromInt(int(
 		C.SDL_SetTextureScaleMode(texture.cptr(), sm.c())))
 }
 
 // GetScaleMode returns the scale mode used for texture scale operations.
-// TODO: (https://wiki.libsdl.org/SDL_GetTextureScaleMode)
+// (https://wiki.libsdl.org/SDL_GetTextureScaleMode)
 func (texture *Texture) GetScaleMode() (sm ScaleMode, err error) {
 	ret := C.SDL_GetTextureScaleMode(texture.cptr(), sm.cptr())
 	return sm, errorFromInt(int(ret))
@@ -960,14 +960,14 @@ func (renderer *Renderer) CopyEx(texture *Texture, src, dst *Rect, angle float64
 }
 
 // DrawPointF draws a point on the current rendering target.
-// TODO: (https://wiki.libsdl.org/SDL_RenderDrawPointF)
+// (https://wiki.libsdl.org/SDL_RenderDrawPointF)
 func (renderer *Renderer) DrawPointF(x, y float32) error {
 	return errorFromInt(int(
 		C.SDL_RenderDrawPointF(renderer.cptr(), C.float(x), C.float(y))))
 }
 
 // DrawPointsF draws multiple points on the current rendering target.
-// TODO: (https://wiki.libsdl.org/SDL_RenderDrawPointsF)
+// (https://wiki.libsdl.org/SDL_RenderDrawPointsF)
 func (renderer *Renderer) DrawPointsF(points []FPoint) error {
 	return errorFromInt(int(
 		C.SDL_RenderDrawPointsF(
@@ -977,7 +977,7 @@ func (renderer *Renderer) DrawPointsF(points []FPoint) error {
 }
 
 // DrawLineF draws a line on the current rendering target.
-// TODO: (https://wiki.libsdl.org/SDL_RenderDrawLineF)
+// (https://wiki.libsdl.org/SDL_RenderDrawLineF)
 func (renderer *Renderer) DrawLineF(x1, y1, x2, y2 float32) error {
 	return errorFromInt(int(
 		C.SDL_RenderDrawLineF(
@@ -989,7 +989,7 @@ func (renderer *Renderer) DrawLineF(x1, y1, x2, y2 float32) error {
 }
 
 // DrawLinesF draws a series of connected lines on the current rendering target.
-// TODO: (https://wiki.libsdl.org/SDL_RenderDrawLinesF)
+// (https://wiki.libsdl.org/SDL_RenderDrawLinesF)
 func (renderer *Renderer) DrawLinesF(points []FPoint) error {
 	return errorFromInt(int(
 		C.SDL_RenderDrawLinesF(
@@ -999,14 +999,14 @@ func (renderer *Renderer) DrawLinesF(points []FPoint) error {
 }
 
 // DrawRectF draws a rectangle on the current rendering target.
-// TODO: (https://wiki.libsdl.org/SDL_RenderDrawRectF)
+// (https://wiki.libsdl.org/SDL_RenderDrawRectF)
 func (renderer *Renderer) DrawRectF(rect *FRect) error {
 	return errorFromInt(int(
 		C.SDL_RenderDrawRectF(renderer.cptr(), rect.cptr())))
 }
 
 // DrawRectsF draws some number of rectangles on the current rendering target.
-// TODO: (https://wiki.libsdl.org/SDL_RenderDrawRectsF)
+// (https://wiki.libsdl.org/SDL_RenderDrawRectsF)
 func (renderer *Renderer) DrawRectsF(rects []FRect) error {
 	return errorFromInt(int(
 		C.SDL_RenderDrawRectsF(
@@ -1016,14 +1016,14 @@ func (renderer *Renderer) DrawRectsF(rects []FRect) error {
 }
 
 // FillRectF fills a rectangle on the current rendering target with the drawing color.
-// TODO: (https://wiki.libsdl.org/SDL_RenderFillRectF)
+// (https://wiki.libsdl.org/SDL_RenderFillRectF)
 func (renderer *Renderer) FillRectF(rect *FRect) error {
 	return errorFromInt(int(
 		C.SDL_RenderFillRectF(renderer.cptr(), rect.cptr())))
 }
 
 // FillRectsF fills some number of rectangles on the current rendering target with the drawing color.
-// TODO: (https://wiki.libsdl.org/SDL_RenderFillRectsF)
+// (https://wiki.libsdl.org/SDL_RenderFillRectsF)
 func (renderer *Renderer) FillRectsF(rects []FRect) error {
 	return errorFromInt(int(
 		C.SDL_RenderFillRectsF(
@@ -1033,7 +1033,7 @@ func (renderer *Renderer) FillRectsF(rects []FRect) error {
 }
 
 // CopyF copies a portion of the texture to the current rendering target.
-// TODO: (https://wiki.libsdl.org/SDL_RenderCopyF)
+// (https://wiki.libsdl.org/SDL_RenderCopyF)
 func (renderer *Renderer) CopyF(texture *Texture, src *Rect, dst *FRect) error {
 	return errorFromInt(int(
 		C.SDL_RenderCopyF(
@@ -1044,7 +1044,7 @@ func (renderer *Renderer) CopyF(texture *Texture, src *Rect, dst *FRect) error {
 }
 
 // CopyExF copies a portion of the texture to the current rendering target, optionally rotating it by angle around the given center and also flipping it top-bottom and/or left-right.
-// TODO: (https://wiki.libsdl.org/SDL_RenderCopyExF)
+// (https://wiki.libsdl.org/SDL_RenderCopyExF)
 func (renderer *Renderer) CopyExF(texture *Texture, src *Rect, dst *FRect, angle float64, center *FPoint, flip RendererFlip) error {
 	return errorFromInt(int(
 		C.SDL_RenderCopyExF(
@@ -1104,7 +1104,7 @@ func (renderer *Renderer) Destroy() error {
 }
 
 // Flush forces the rendering context to flush any pending commands to the underlying rendering API.
-// TODO: (https://wiki.libsdl.org/SDL_RenderFlush)
+// (https://wiki.libsdl.org/SDL_RenderFlush)
 func (renderer *Renderer) Flush() error {
 	return errorFromInt(int(C.SDL_RenderFlush(renderer.cptr())))
 }

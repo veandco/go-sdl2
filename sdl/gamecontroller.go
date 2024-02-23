@@ -493,13 +493,13 @@ func (ctrl *GameController) Type() GameControllerType {
 }
 
 // PlayerIndex the player index of an opened game controller, or -1 if it's not available.
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerGetPlayerIndex)
+// (https://wiki.libsdl.org/SDL_GameControllerGetPlayerIndex)
 func (ctrl *GameController) PlayerIndex() int {
 	return int(C.SDL_GameControllerGetPlayerIndex(ctrl.cptr()))
 }
 
 // SetPlayerIndex sets the player index of an opened game controller.
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerSetPlayerIndex)
+// (https://wiki.libsdl.org/SDL_GameControllerSetPlayerIndex)
 func (ctrl *GameController) SetPlayerIndex(playerIndex int) {
 	C.SDL_GameControllerSetPlayerIndex(ctrl.cptr(), C.int(playerIndex))
 }
@@ -526,7 +526,7 @@ func (ctrl *GameController) FirmwareVersion() uint16 {
 }
 
 // Serial returns the serial number of an opened controller, if available.
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerGetSerial)
+// (https://wiki.libsdl.org/SDL_GameControllerGetSerial)
 func (ctrl *GameController) Serial() string {
 	return C.GoString(C.SDL_GameControllerGetSerial(ctrl.cptr()))
 }
@@ -584,7 +584,7 @@ func (ctrl *GameController) BindForAxis(axis GameControllerAxis) GameControllerB
 }
 
 // HasAxis returns whether a game controller has a given axis.
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerHasAxis)
+// (https://wiki.libsdl.org/SDL_GameControllerHasAxis)
 func (ctrl *GameController) HasAxis(axis GameControllerAxis) bool {
 	return C.SDL_GameControllerHasAxis(ctrl.cptr(), axis.c()) == C.SDL_TRUE
 }
@@ -630,25 +630,25 @@ func (ctrl *GameController) HasButton(btn GameControllerButton) bool {
 //
 // Returns error if rumble isn't supported on this joystick.
 //
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerRumble)
+// (https://wiki.libsdl.org/SDL_GameControllerRumble)
 func (ctrl *GameController) Rumble(lowFrequencyRumble, highFrequencyRumble uint16, durationMS uint32) error {
 	return errorFromInt(int(C.SDL_GameControllerRumble(ctrl.cptr(), C.Uint16(lowFrequencyRumble), C.Uint16(highFrequencyRumble), C.Uint32(durationMS))))
 }
 
 // RumbleTriggers starts a rumble effect in the game controller's triggers.
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerRumbleTriggers)
+// (https://wiki.libsdl.org/SDL_GameControllerRumbleTriggers)
 func (ctrl *GameController) RumbleTriggers(leftRumble, rightRumble uint16, durationMS uint32) error {
 	return errorFromInt(int(C.SDL_GameControllerRumble(ctrl.cptr(), C.Uint16(leftRumble), C.Uint16(rightRumble), C.Uint32(durationMS))))
 }
 
 // HasLED returns whether a controller has an LED.
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerHasLED)
+// (https://wiki.libsdl.org/SDL_GameControllerHasLED)
 func (ctrl *GameController) HasLED() bool {
 	return C.SDL_GameControllerHasLED(ctrl.cptr()) == C.SDL_TRUE
 }
 
 // SetLED updates a controller's LED color.
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerSetLED)
+// (https://wiki.libsdl.org/SDL_GameControllerSetLED)
 func (ctrl *GameController) SetLED(red, green, blue uint8) error {
 	return errorFromInt(int(C.SDL_GameControllerSetLED(ctrl.cptr(), C.Uint8(red), C.Uint8(blue), C.Uint8(green))))
 }
@@ -660,44 +660,44 @@ func (ctrl *GameController) Button(btn GameControllerButton) byte {
 }
 
 // NumTouchpads returns the number of touchpads on a game controller.
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerGetNumTouchpads)
+// (https://wiki.libsdl.org/SDL_GameControllerGetNumTouchpads)
 func (ctrl *GameController) NumTouchpads() int {
 	return int(C.SDL_GameControllerGetNumTouchpads(ctrl.cptr()))
 }
 
 // NumTouchpadFingers returns the number of supported simultaneous fingers on a touchpad on a game controller.
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerGetNumTouchpadFingers)
+// (https://wiki.libsdl.org/SDL_GameControllerGetNumTouchpadFingers)
 func (ctrl *GameController) NumTouchpadFingers(touchpad int) int {
 	return int(C.SDL_GameControllerGetNumTouchpadFingers(ctrl.cptr(), C.int(touchpad)))
 }
 
 // TouchpadFinger returns the current state of a finger on a touchpad on a game controller.
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerGetTouchpadFinger)
+// (https://wiki.libsdl.org/SDL_GameControllerGetTouchpadFinger)
 func (ctrl *GameController) TouchpadFinger(touchpad, finger int) (state uint8, x, y, pressure float32) {
 	C.SDL_GameControllerGetTouchpadFinger(ctrl.cptr(), C.int(touchpad), C.int(finger), (*C.Uint8)(&state), (*C.float)(&x), (*C.float)(&y), (*C.float)(&pressure))
 	return
 }
 
 // HasSensor returns whether a game controller has a particular sensor.
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerHasSensor)
+// (https://wiki.libsdl.org/SDL_GameControllerHasSensor)
 func (ctrl *GameController) HasSensor(typ SensorType) bool {
 	return C.SDL_GameControllerHasSensor(ctrl.cptr(), C.SDL_SensorType(typ)) == C.SDL_TRUE
 }
 
 // SetSensorEnabled sets whether data reporting for a game controller sensor is enabled.
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerSetSensorEnabled)
+// (https://wiki.libsdl.org/SDL_GameControllerSetSensorEnabled)
 func (ctrl *GameController) SetSensorEnabled(typ SensorType, enabled bool) error {
 	return errorFromInt(int(C.SDL_GameControllerSetSensorEnabled(ctrl.cptr(), C.SDL_SensorType(typ), C.SDL_bool(Btoi(enabled)))))
 }
 
 // IsSensorEnabled queries whether sensor data reporting is enabled for a game controller.
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerIsSensorEnabled)
+// (https://wiki.libsdl.org/SDL_GameControllerIsSensorEnabled)
 func (ctrl *GameController) IsSensorEnabled(typ SensorType) bool {
 	return C.SDL_GameControllerIsSensorEnabled(ctrl.cptr(), C.SDL_SensorType(typ)) == C.SDL_TRUE
 }
 
 // SensorData returns the current state of a game controller sensor.
-// TODO: (https://wiki.libsdl.org/SDL_GameControllerGetSensorData)
+// (https://wiki.libsdl.org/SDL_GameControllerGetSensorData)
 func (ctrl *GameController) SensorData(typ SensorType, numValues int) (data []float32, err error) {
 	err = errorFromInt(int(C.SDL_GameControllerGetSensorData(ctrl.cptr(), C.SDL_SensorType(typ), (*C.float)(&data[0]), C.int(numValues))))
 	return
