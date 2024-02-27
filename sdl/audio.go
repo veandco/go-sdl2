@@ -588,7 +588,7 @@ func CloseAudioDevice(dev AudioDeviceID) {
 }
 
 // NewAudioStream creates a new audio stream
-// TODO: (https://wiki.libsdl.org/SDL_NewAudioStream)
+// (https://wiki.libsdl.org/SDL_NewAudioStream)
 func NewAudioStream(srcFormat AudioFormat, srcChannels uint8, srcRate int, dstFormat AudioFormat, dstChannels uint8, dstRate int) (stream *AudioStream, err error) {
 	_srcFormat := C.SDL_AudioFormat(srcFormat)
 	_srcChannels := C.Uint8(srcChannels)
@@ -605,7 +605,7 @@ func NewAudioStream(srcFormat AudioFormat, srcChannels uint8, srcRate int, dstFo
 }
 
 // Put adds data to be converted/resampled to the stream
-// TODO: (https://wiki.libsdl.org/SDL_AudioStreamPut)
+// (https://wiki.libsdl.org/SDL_AudioStreamPut)
 func (stream *AudioStream) Put(buf []byte) (err error) {
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
 	_buf := unsafe.Pointer(sliceHeader.Data)
@@ -637,7 +637,7 @@ func (stream *AudioStream) Available() (n int) {
 
 // Flush tells the stream that you're done sending data, and anything being buffered
 // should be converted/resampled and made available immediately.
-// TODO: (https://wiki.libsdl.org/SDL_AudioStreamFlush)
+// (https://wiki.libsdl.org/SDL_AudioStreamFlush)
 func (stream *AudioStream) Flush() (err error) {
 	ret := int(C.SDL_AudioStreamFlush(stream.cptr()))
 	err = errorFromInt(ret)
@@ -645,7 +645,7 @@ func (stream *AudioStream) Flush() (err error) {
 }
 
 // Clear clears any pending data in the stream without converting it
-// TODO: (https://wiki.libsdl.org/SDL_AudioStreamClear)
+// (https://wiki.libsdl.org/SDL_AudioStreamClear)
 func (stream *AudioStream) Clear() {
 	C.SDL_AudioStreamClear(stream.cptr())
 }

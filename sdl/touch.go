@@ -72,7 +72,7 @@ func GetTouchDevice(index int) TouchID {
 }
 
 // GetTouchDeviceType returns the type of the given touch device.
-// TODO: (https://wiki.libsdl.org/SDL_GetTouchDeviceType)
+// (https://wiki.libsdl.org/SDL_GetTouchDeviceType)
 func GetTouchDeviceType(id TouchID) TouchDeviceType {
 	return TouchDeviceType(C.SDL_GetTouchDeviceType(C.SDL_TouchID(id)))
 }
