@@ -93,7 +93,7 @@ func main() {
 	for running {
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 			switch event.(type) {
-			case sdl.QuitEvent:
+			case *sdl.QuitEvent:
 				println("Quit")
 				running = false
 				break
