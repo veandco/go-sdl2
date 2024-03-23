@@ -55,57 +55,6 @@ After that, you can execute your program:
 ./app
 ```
 
-# Examples
-
-NOTE: The following example is for the `master` branch. Please check the [README](https://github.com/veandco/go-sdl2/tree/v0.4.x?tab=readme-ov-file#examples) of `v0.4.x` for the stable version.
-
-```go
-package main
-
-import "github.com/veandco/go-sdl2/sdl"
-
-func main() {
-	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
-		panic(err)
-	}
-	defer sdl.Quit()
-
-	window, err := sdl.CreateWindow("test", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
-		800, 600, sdl.WINDOW_SHOWN)
-	if err != nil {
-		panic(err)
-	}
-	defer window.Destroy()
-
-	surface, err := window.GetSurface()
-	if err != nil {
-		panic(err)
-	}
-	surface.FillRect(nil, 0)
-
-	rect := sdl.Rect{0, 0, 200, 200}
-	colour := sdl.Color{R: 255, G: 0, B: 255, A: 255} // purple
-	pixel := sdl.MapRGBA(surface.Format, colour.R, colour.G, colour.B, colour.A)
-	surface.FillRect(&rect, pixel)
-	window.UpdateSurface()
-
-	running := true
-	for running {
-		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
-			switch event.(type) {
-			case sdl.QuitEvent: # NOTE: Please use `*sdl.QuitEvent` for `v0.4.x` (current version).
-				println("Quit")
-				running = false
-				break
-			}
-		}
-	}
-}
-```
-
-For more complete examples, see https://github.com/veandco/go-sdl2-examples. You can run any of the `.go` files with `go run`.
-
-
 # Requirements
 * [Go v1.13+](https://go.dev/dl/)
 * [SDL2](https://github.com/libsdl-org/SDL/releases)
@@ -200,6 +149,250 @@ Before building the program.
 ```
 CGO_ENABLED=1 CC=[path-to-osxcross]/target/bin/[arch]-apple-darwin[version]-clang GOOS=darwin GOARCH=[arch] go build -tags static -ldflags "-s -w" -a
 ```
+
+# Examples
+
+NOTE: The following example is for the `master` branch. Please check the [README](https://github.com/veandco/go-sdl2/tree/v0.4.x?tab=readme-ov-file#examples) of `v0.4.x` for the stable version.
+
+```go
+package main
+
+import "github.com/veandco/go-sdl2/sdl"
+
+func main() {
+	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
+		panic(err)
+	}
+	defer sdl.Quit()
+
+	window, err := sdl.CreateWindow("test", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, 800, 600, sdl.WINDOW_SHOWN)
+	if err != nil {
+		panic(err)
+	}
+	defer window.Destroy()
+
+	surface, err := window.GetSurface()
+	if err != nil {
+		panic(err)
+	}
+	surface.FillRect(nil, 0)
+
+	rect := sdl.Rect{0, 0, 200, 200}
+	colour := sdl.Color{R: 255, G: 0, B: 255, A: 255} // purple
+	pixel := sdl.MapRGBA(surface.Format, colour.R, colour.G, colour.B, colour.A)
+	surface.FillRect(&rect, pixel)
+	window.UpdateSurface()
+
+	running := true
+	for running {
+		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
+			switch event.(type) {
+			case sdl.QuitEvent: // NOTE: Please use `*sdl.QuitEvent` for `v0.4.x` (current version).
+				println("Quit")
+				running = false
+				break
+			}
+		}
+
+        sdl.Delay(33)
+	}
+}
+```
+
+There are two ways a game might be running: one that updates on user input and one that updates regardless of user input. The following example updates on user input:
+```
+package main
+
+import "github.com/veandco/go-sdl2/sdl"
+
+const (
+    TITLE = "README"
+    WIDTH = 800
+    HEIGHT = 600
+)
+
+var (
+    playerX, playerY = int32(WIDTH / 2), int32(HEIGHT / 2)
+    running = true
+)
+
+func main() {
+	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
+		panic(err)
+	}
+	defer sdl.Quit()
+
+	window, err := sdl.CreateWindow(TITLE, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, sdl.WINDOW_SHOWN)
+	if err != nil {
+		panic(err)
+	}
+	defer window.Destroy()
+
+	surface, err := window.GetSurface()
+	if err != nil {
+		panic(err)
+	}
+
+    // Draw initial frame
+    draw(window, surface)
+
+	for running {
+		for event := sdl.WaitEvent(); event != nil; event = sdl.PollEvent() {
+            switch t := event.(type) {
+            case sdl.QuitEvent: // NOTE: Please use `*sdl.QuitEvent` for `v0.4.x` (current version).
+                println("Quitting..")
+                running = false
+                break
+            case sdl.KeyboardEvent:
+                if t.State == sdl.RELEASED {
+                    if t.Keysym.Sym == sdl.K_LEFT {
+                        playerX -= 4
+                    } else if t.Keysym.Sym == sdl.K_RIGHT {
+                        playerX += 4
+                    }
+                    if t.Keysym.Sym == sdl.K_UP {
+                        playerY -= 4
+                    } else if t.Keysym.Sym == sdl.K_DOWN {
+                        playerY += 4
+                    }
+                    if playerX < 0 {
+                        playerX = WIDTH
+                    } else if playerX > WIDTH {
+                        playerX = 0
+                    }
+                    if playerY < 0 {
+                        playerY = HEIGHT
+                    } else if playerY > HEIGHT {
+                        playerY = 0
+                    }
+                    draw(window, surface)
+                }
+                break
+            }
+		}
+	}
+}
+
+func draw(window *sdl.Window, surface *sdl.Surface) {
+    // Clear surface
+	surface.FillRect(nil, 0)
+
+    // Draw on the surface
+	rect := sdl.Rect{playerX, playerY, 4, 4}
+	colour := sdl.Color{R: 255, G: 0, B: 255, A: 255} // purple
+	pixel := sdl.MapRGBA(surface.Format, colour.R, colour.G, colour.B, colour.A)
+	surface.FillRect(&rect, pixel)
+
+    window.UpdateSurface()
+}
+```
+
+And this one updates many times per second regardless of user input according to the desired framerate:
+```
+package main
+
+import "github.com/veandco/go-sdl2/sdl"
+
+const (
+    TITLE = "README"
+    WIDTH = 800
+    HEIGHT = 600
+    FRAMERATE = 60
+)
+
+var (
+    playerX, playerY = int32(WIDTH / 2), int32(HEIGHT / 2)
+    playerVX, playerVY = int32(0), int32(0)
+    running = true
+)
+
+func main() {
+	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
+		panic(err)
+	}
+	defer sdl.Quit()
+
+	window, err := sdl.CreateWindow(TITLE, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, sdl.WINDOW_SHOWN)
+	if err != nil {
+		panic(err)
+	}
+	defer window.Destroy()
+
+	surface, err := window.GetSurface()
+	if err != nil {
+		panic(err)
+	}
+
+	for running {
+		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
+            handleEvent(event)
+		}
+
+        loopTime := loop(surface)
+        window.UpdateSurface()
+
+        delay := (1000 / FRAMERATE) - loopTime
+        sdl.Delay(delay)
+	}
+}
+
+func handleEvent(event sdl.Event) {
+    switch t := event.(type) {
+    case sdl.QuitEvent: // NOTE: Please use `*sdl.QuitEvent` for `v0.4.x` (current version).
+        println("Quitting..")
+        running = false
+        break
+    case sdl.KeyboardEvent:
+        if t.State == sdl.RELEASED {
+            if t.Keysym.Sym == sdl.K_LEFT {
+                playerVX -= 1
+            } else if t.Keysym.Sym == sdl.K_RIGHT {
+                playerVX += 1
+            }
+            if t.Keysym.Sym == sdl.K_UP {
+                playerVY -= 1
+            } else if t.Keysym.Sym == sdl.K_DOWN {
+                playerVY += 1
+            }
+        }
+        break
+    }
+}
+
+func loop(surface *sdl.Surface) (loopTime uint32) {
+    // Get time at the start of the function
+    startTime := sdl.GetTicks()
+
+    // Update player position
+    playerX += playerVX
+    playerY += playerVY
+    if playerX < 0 {
+        playerX = WIDTH
+    } else if playerX > WIDTH {
+        playerX = 0
+    }
+    if playerY < 0 {
+        playerY = HEIGHT
+    } else if playerY > HEIGHT {
+        playerY = 0
+    }
+
+    // Clear surface
+	surface.FillRect(nil, 0)
+
+    // Draw on the surface
+	rect := sdl.Rect{playerX, playerY, 4, 4}
+	colour := sdl.Color{R: 255, G: 0, B: 255, A: 255} // purple
+	pixel := sdl.MapRGBA(surface.Format, colour.R, colour.G, colour.B, colour.A)
+	surface.FillRect(&rect, pixel)
+
+    // Calculate time passed since start of the function
+    endTime := sdl.GetTicks()
+    return endTime - startTime
+}
+```
+
+For more runnable examples, see https://github.com/veandco/go-sdl2-examples. You can run any of the `.go` files with `go run`.
 
 # FAQ
 __Why does the program not run on Windows?__
