@@ -200,7 +200,7 @@ func main() {
 ```
 
 There are two ways a game might be running: one that updates on user input and one that updates regardless of user input. The following example updates on user input:
-```
+```go
 package main
 
 import "github.com/veandco/go-sdl2/sdl"
@@ -288,7 +288,7 @@ func draw(window *sdl.Window, surface *sdl.Surface) {
 ```
 
 And this one updates many times per second regardless of user input according to the desired framerate:
-```
+```go
 package main
 
 import "github.com/veandco/go-sdl2/sdl"
