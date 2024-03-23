@@ -206,14 +206,14 @@ package main
 import "github.com/veandco/go-sdl2/sdl"
 
 const (
-    TITLE = "README"
-    WIDTH = 800
-    HEIGHT = 600
+	TITLE  = "README"
+	WIDTH  = 800
+	HEIGHT = 600
 )
 
 var (
-    playerX, playerY = int32(WIDTH / 2), int32(HEIGHT / 2)
-    running = true
+	playerX, playerY = int32(WIDTH / 2), int32(HEIGHT / 2)
+	running          = true
 )
 
 func main() {
@@ -233,57 +233,57 @@ func main() {
 		panic(err)
 	}
 
-    // Draw initial frame
-    draw(window, surface)
+	// Draw initial frame
+	draw(window, surface)
 
 	for running {
 		for event := sdl.WaitEvent(); event != nil; event = sdl.PollEvent() {
-            switch t := event.(type) {
-            case sdl.QuitEvent: // NOTE: Please use `*sdl.QuitEvent` for `v0.4.x` (current version).
-                println("Quitting..")
-                running = false
-                break
-            case sdl.KeyboardEvent:
-                if t.State == sdl.RELEASED {
-                    if t.Keysym.Sym == sdl.K_LEFT {
-                        playerX -= 4
-                    } else if t.Keysym.Sym == sdl.K_RIGHT {
-                        playerX += 4
-                    }
-                    if t.Keysym.Sym == sdl.K_UP {
-                        playerY -= 4
-                    } else if t.Keysym.Sym == sdl.K_DOWN {
-                        playerY += 4
-                    }
-                    if playerX < 0 {
-                        playerX = WIDTH
-                    } else if playerX > WIDTH {
-                        playerX = 0
-                    }
-                    if playerY < 0 {
-                        playerY = HEIGHT
-                    } else if playerY > HEIGHT {
-                        playerY = 0
-                    }
-                    draw(window, surface)
-                }
-                break
-            }
+			switch t := event.(type) {
+			case sdl.QuitEvent: // NOTE: Please use `*sdl.QuitEvent` for `v0.4.x` (current version).
+				println("Quitting..")
+				running = false
+				break
+			case sdl.KeyboardEvent:
+				if t.State == sdl.RELEASED {
+					if t.Keysym.Sym == sdl.K_LEFT {
+						playerX -= 4
+					} else if t.Keysym.Sym == sdl.K_RIGHT {
+						playerX += 4
+					}
+					if t.Keysym.Sym == sdl.K_UP {
+						playerY -= 4
+					} else if t.Keysym.Sym == sdl.K_DOWN {
+						playerY += 4
+					}
+					if playerX < 0 {
+						playerX = WIDTH
+					} else if playerX > WIDTH {
+						playerX = 0
+					}
+					if playerY < 0 {
+						playerY = HEIGHT
+					} else if playerY > HEIGHT {
+						playerY = 0
+					}
+					draw(window, surface)
+				}
+				break
+			}
 		}
 	}
 }
 
 func draw(window *sdl.Window, surface *sdl.Surface) {
-    // Clear surface
+	// Clear surface
 	surface.FillRect(nil, 0)
 
-    // Draw on the surface
+	// Draw on the surface
 	rect := sdl.Rect{playerX, playerY, 4, 4}
 	colour := sdl.Color{R: 255, G: 0, B: 255, A: 255} // purple
 	pixel := sdl.MapRGBA(surface.Format, colour.R, colour.G, colour.B, colour.A)
 	surface.FillRect(&rect, pixel)
 
-    window.UpdateSurface()
+	window.UpdateSurface()
 }
 ```
 
@@ -294,16 +294,16 @@ package main
 import "github.com/veandco/go-sdl2/sdl"
 
 const (
-    TITLE = "README"
-    WIDTH = 800
-    HEIGHT = 600
-    FRAMERATE = 60
+	TITLE     = "README"
+	WIDTH     = 800
+	HEIGHT    = 600
+	FRAMERATE = 60
 )
 
 var (
-    playerX, playerY = int32(WIDTH / 2), int32(HEIGHT / 2)
-    playerVX, playerVY = int32(0), int32(0)
-    running = true
+	playerX, playerY   = int32(WIDTH / 2), int32(HEIGHT / 2)
+	playerVX, playerVY = int32(0), int32(0)
+	running            = true
 )
 
 func main() {
@@ -325,70 +325,70 @@ func main() {
 
 	for running {
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
-            handleEvent(event)
+			handleEvent(event)
 		}
 
-        loopTime := loop(surface)
-        window.UpdateSurface()
+		loopTime := loop(surface)
+		window.UpdateSurface()
 
-        delay := (1000 / FRAMERATE) - loopTime
-        sdl.Delay(delay)
+		delay := (1000 / FRAMERATE) - loopTime
+		sdl.Delay(delay)
 	}
 }
 
 func handleEvent(event sdl.Event) {
-    switch t := event.(type) {
-    case sdl.QuitEvent: // NOTE: Please use `*sdl.QuitEvent` for `v0.4.x` (current version).
-        println("Quitting..")
-        running = false
-        break
-    case sdl.KeyboardEvent:
-        if t.State == sdl.RELEASED {
-            if t.Keysym.Sym == sdl.K_LEFT {
-                playerVX -= 1
-            } else if t.Keysym.Sym == sdl.K_RIGHT {
-                playerVX += 1
-            }
-            if t.Keysym.Sym == sdl.K_UP {
-                playerVY -= 1
-            } else if t.Keysym.Sym == sdl.K_DOWN {
-                playerVY += 1
-            }
-        }
-        break
-    }
+	switch t := event.(type) {
+	case sdl.QuitEvent: // NOTE: Please use `*sdl.QuitEvent` for `v0.4.x` (current version).
+		println("Quitting..")
+		running = false
+		break
+	case sdl.KeyboardEvent:
+		if t.State == sdl.RELEASED {
+			if t.Keysym.Sym == sdl.K_LEFT {
+				playerVX -= 1
+			} else if t.Keysym.Sym == sdl.K_RIGHT {
+				playerVX += 1
+			}
+			if t.Keysym.Sym == sdl.K_UP {
+				playerVY -= 1
+			} else if t.Keysym.Sym == sdl.K_DOWN {
+				playerVY += 1
+			}
+		}
+		break
+	}
 }
 
 func loop(surface *sdl.Surface) (loopTime uint32) {
-    // Get time at the start of the function
-    startTime := sdl.GetTicks()
+	// Get time at the start of the function
+	startTime := sdl.GetTicks()
 
-    // Update player position
-    playerX += playerVX
-    playerY += playerVY
-    if playerX < 0 {
-        playerX = WIDTH
-    } else if playerX > WIDTH {
-        playerX = 0
-    }
-    if playerY < 0 {
-        playerY = HEIGHT
-    } else if playerY > HEIGHT {
-        playerY = 0
-    }
+	// Update player position
+	playerX += playerVX
+	playerY += playerVY
+	if playerX < 0 {
+		playerX = WIDTH
+	} else if playerX > WIDTH {
+		playerX = 0
+	}
+	if playerY < 0 {
+		playerY = HEIGHT
+	} else if playerY > HEIGHT {
+		playerY = 0
+	}
 
-    // Clear surface
+	// Clear surface
 	surface.FillRect(nil, 0)
 
-    // Draw on the surface
+	// Draw on the surface
 	rect := sdl.Rect{playerX, playerY, 4, 4}
 	colour := sdl.Color{R: 255, G: 0, B: 255, A: 255} // purple
 	pixel := sdl.MapRGBA(surface.Format, colour.R, colour.G, colour.B, colour.A)
 	surface.FillRect(&rect, pixel)
 
-    // Calculate time passed since start of the function
-    endTime := sdl.GetTicks()
-    return endTime - startTime
+	// Calculate time passed since start of the function
+	endTime := sdl.GetTicks()
+	return endTime - startTime
 }
 ```
 
