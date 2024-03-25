@@ -213,7 +213,6 @@ const (
 
 var (
 	playerX, playerY = int32(WIDTH / 2), int32(HEIGHT / 2)
-	running          = true
 )
 
 func main() {
@@ -236,39 +235,36 @@ func main() {
 	// Draw initial frame
 	draw(window, surface)
 
-	for running {
-		for event := sdl.WaitEvent(); event != nil; event = sdl.PollEvent() {
-			switch t := event.(type) {
-			case sdl.QuitEvent: // NOTE: Please use `*sdl.QuitEvent` for `v0.4.x` (current version).
-				println("Quitting..")
-				running = false
-				break
-			case sdl.KeyboardEvent:
-				if t.State == sdl.RELEASED {
-					if t.Keysym.Sym == sdl.K_LEFT {
-						playerX -= 4
-					} else if t.Keysym.Sym == sdl.K_RIGHT {
-						playerX += 4
-					}
-					if t.Keysym.Sym == sdl.K_UP {
-						playerY -= 4
-					} else if t.Keysym.Sym == sdl.K_DOWN {
-						playerY += 4
-					}
-					if playerX < 0 {
-						playerX = WIDTH
-					} else if playerX > WIDTH {
-						playerX = 0
-					}
-					if playerY < 0 {
-						playerY = HEIGHT
-					} else if playerY > HEIGHT {
-						playerY = 0
-					}
-					draw(window, surface)
+	for event := sdl.WaitEvent(); event != nil; event = sdl.WaitEvent() {
+		switch t := event.(type) {
+		case sdl.QuitEvent: // NOTE: Please use `*sdl.QuitEvent` for `v0.4.x` (current version).
+			println("Quitting..")
+			return
+		case sdl.KeyboardEvent:
+			if t.State == sdl.RELEASED {
+				if t.Keysym.Sym == sdl.K_LEFT {
+					playerX -= 4
+				} else if t.Keysym.Sym == sdl.K_RIGHT {
+					playerX += 4
 				}
-				break
+				if t.Keysym.Sym == sdl.K_UP {
+					playerY -= 4
+				} else if t.Keysym.Sym == sdl.K_DOWN {
+					playerY += 4
+				}
+				if playerX < 0 {
+					playerX = WIDTH
+				} else if playerX > WIDTH {
+					playerX = 0
+				}
+				if playerY < 0 {
+					playerY = HEIGHT
+				} else if playerY > HEIGHT {
+					playerY = 0
+				}
+				draw(window, surface)
 			}
+			break
 		}
 	}
 }
