@@ -45,7 +45,7 @@ import (
 type Keysym struct {
 	Scancode Scancode // SDL physical key code
 	Sym      Keycode  // SDL virtual key code
-	Mod      uint16   // current key modifiers
+	Mod      Keymod   // current key modifiers
 	unused   uint32   // unused
 }
 

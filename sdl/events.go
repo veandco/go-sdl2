@@ -1161,7 +1161,7 @@ func goEvent(cevent *CEvent) Event {
 			WindowID:  uint32(e.windowID),
 			State:     ButtonState(e.state),
 			Keysym: Keysym{
-				Mod:      uint16(e.keysym.mod),
+				Mod:      Keymod(e.keysym.mod),
 				Sym:      Keycode(e.keysym.sym),
 				Scancode: Scancode(e.keysym.scancode),
 			},
