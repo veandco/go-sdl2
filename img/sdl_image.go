@@ -1,8 +1,23 @@
 // Package img is a simple library to load images of various formats as SDL surfaces.
 package img
 
-//#include <stdlib.h>
-//#include "sdl_image_wrapper.h"
+/*
+#include <stdlib.h>
+#include "sdl_image_wrapper.h"
+
+#if !(SDL_IMAGE_VERSION_ATLEAST(2,6,0))
+
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_LoadSizedSVG_RW is not supported before SDL2_image 2.6.0")
+#endif
+
+static inline SDL_Surface* SDL_LoadSizedSVG_RW(SDL_RWops* src, int width, int height)
+{
+	SDL_Unsupported();
+	return NULL;
+}
+#endif
+*/
 import "C"
 import (
 	"errors"
@@ -411,4 +426,22 @@ func SavePNGRW(surface *sdl.Surface, dst *sdl.RWops, freedst int) error {
 		return GetError()
 	}
 	return nil
+}
+
+// LoadSizedSVGRW loads an SVG image from an SDL data source for use as a surface with specific size.
+func LoadSizedSVGRW(src *sdl.RWops, width, height int) (*sdl.Surface, error) {
+	_src := (*C.SDL_RWops)(unsafe.Pointer(src))
+    _width := C.int(width)
+    _height := C.int(height)
+	_surface := C.IMG_LoadSizedSVG_RW(_src, _width, _height)
+	if _surface == nil {
+		return nil, GetError()
+	}
+	return (*sdl.Surface)(unsafe.Pointer(_surface)), nil
+}
+
+// LoadSizedSVG loads an SVG image from a file for use as a surface with specific size (custom function).
+func LoadSizedSVG(file string, width, height int) (*sdl.Surface, error) {
+    src := sdl.RWFromFile(file, "r")
+	return LoadSizedSVGRW(src, width, height)
 }
