@@ -51,7 +51,7 @@ jobs:
           ./configure --prefix=$HOME/.local
           make install
           cd ..
-          wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-$IMG_VERSION.tar.gz
+          wget https://github.com/libsdl-org/SDL_image/releases/download/release-$IMG_VERSION/SDL2_image-$IMG_VERSION.tar.gz
           tar xf SDL2_image-$IMG_VERSION.tar.gz
           cd SDL2_image-$IMG_VERSION
           ./configure --prefix=$HOME/.local
