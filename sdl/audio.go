@@ -651,7 +651,7 @@ func (stream *AudioStream) Clear() {
 }
 
 // Free frees the audio stream
-// TODO: (https://wiki.libsdl.org/SDL_AudoiStreamFree)
+// TODO: (https://wiki.libsdl.org/SDL_AudioStreamFree)
 func (stream *AudioStream) Free() {
 	C.SDL_FreeAudioStream(stream.cptr())
 }

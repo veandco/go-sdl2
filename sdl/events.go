@@ -381,7 +381,7 @@ type DisplayEvent struct {
 	Type      EventType // the event type
 	Timestamp uint32    // timestamp of the event
 	Display   uint32    // the associated display index
-	Event     uint8     // TODO: (https://wiki.libsdl.org/SDL_DisplayEventID)
+	Event     uint8     // event subtype for display events (https://wiki.libsdl.org/SDL_DisplayEventID)
 	Data1     int32     // event dependent data
 }
 
@@ -775,7 +775,7 @@ func (e ControllerDeviceEvent) GetTimestamp() uint32 {
 }
 
 // ControllerSensorEvent contains data from sensors such as accelerometer and gyroscope
-// (TODO: https://wiki.libsdl.org/SDL_ControllerSensorEvent)
+// (https://wiki.libsdl.org/SDL_ControllerSensorEvent)
 type ControllerSensorEvent struct {
 	Type        EventType  // SDL_CONTROLLERSENSORUPDATE
 	Timestamp   uint32     // In milliseconds, populated using SDL_GetTicks()
