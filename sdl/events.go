@@ -176,7 +176,7 @@ typedef struct DropEvent
 
 #if !SDL_VERSION_ATLEAST(2,24,0)
 #if defined(WARN_OUTDATED)
-#pragma message("SDL_JOYBATTEYUPDATED is not supported before SDL 2.24.0")
+#pragma message("SDL_JOYBATTERYUPDATED is not supported before SDL 2.24.0")
 #endif
 
 #define SDL_JOYBATTERYUPDATED (1543)
