@@ -4,6 +4,14 @@ package sdl
 #include "sdl_wrapper.h"
 #include "hints.h"
 
+#if !(SDL_VERSION_ATLEAST(2,30,0))
+
+#define SDL_HINT_JOYSTICK_IOKIT ""
+#define SDL_HINT_JOYSTICK_MFI ""
+#define SDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE ""
+
+#endif
+
 #if !(SDL_VERSION_ATLEAST(2,28,0))
 
 #define SDL_HINT_ENABLE_SCREEN_KEYBOARD ""
@@ -371,6 +379,11 @@ const (
 
     // 2.28.0
     HINT_ENABLE_SCREEN_KEYBOARD              = C.SDL_HINT_ENABLE_SCREEN_KEYBOARD              // A variable that controls whether the on-screen keyboard should be shown when text input is active
+
+    // 2.30.0
+    HINT_JOYSTICK_IOKIT                        = C.SDL_HINT_JOYSTICK_IOKIT                       // A variable that controls whether the IOKit controller driver should be used
+    HINT_JOYSTICK_MFI                          = C.SDL_HINT_JOYSTICK_MFI                         // A variable that controls whether the GCController controller driver should be used
+    HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE  = C.SDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE // A variable that choose whether high or low power GPU should be used for rendering, in the case where there are multiple GPUs available
 )
 
 // An enumeration of hint priorities.

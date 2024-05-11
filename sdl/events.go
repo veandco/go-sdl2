@@ -203,6 +203,12 @@ typedef struct SDL_JoyBatteryEvent
 } SDL_JoyBatteryEvent;
 
 #endif
+
+#if !SDL_VERSION_ATLEAST(2,30,0)
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_CONTROLLERSTEAMHANDLEUPDATED is not supported before SDL 2.30.0")
+#endif
+#endif
 */
 import "C"
 import (

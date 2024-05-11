@@ -306,6 +306,18 @@ static inline int SDL_GameControllerGetSensorDataWithTimestamp(SDL_GameControlle
     return -1;
 }
 #endif
+
+#if !(SDL_VERSION_ATLEAST(2,30,0))
+#if defined(WARN_OUTDATED)
+#pragma message("SDL_GameControllerGetSteamHandle is not supported before SDL 2.30.0")
+#endif
+
+static inline Uint64 SDL_GameControllerGetSteamHandle(SDL_GameController *gamecontroller)
+{
+	return 0;
+}
+
+#endif
 */
 import "C"
 import (
@@ -529,6 +541,12 @@ func (ctrl *GameController) FirmwareVersion() uint16 {
 // (https://wiki.libsdl.org/SDL_GameControllerGetSerial)
 func (ctrl *GameController) Serial() string {
 	return C.GoString(C.SDL_GameControllerGetSerial(ctrl.cptr()))
+}
+
+// SteamHandle returns the Steam Input handle of an opened controller, if available.
+// (https://wiki.libsdl.org/SDL_GameControllerGetSteamHandle)
+func (ctrl *GameController) SteamHandle() uint64 {
+	return uint64(C.SDL_GameControllerGetSteamHandle(ctrl.cptr()))
 }
 
 // Attached reports whether a controller has been opened and is currently connected.
