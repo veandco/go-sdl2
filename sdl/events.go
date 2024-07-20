@@ -281,10 +281,10 @@ const (
 	CONTROLLERDEVICEADDED    EventType = C.SDL_CONTROLLERDEVICEADDED    // controller connected
 	CONTROLLERDEVICEREMOVED  EventType = C.SDL_CONTROLLERDEVICEREMOVED  // controller disconnected
 	CONTROLLERDEVICEREMAPPED EventType = C.SDL_CONTROLLERDEVICEREMAPPED // controller mapping updated
-    CONTROLLERTOUCHPADDOWN   EventType = C.SDL_CONTROLLERTOUCHPADDOWN   // Game controller touchpad was touched
-    CONTROLLERTOUCHPADMOTION EventType = C.SDL_CONTROLLERTOUCHPADMOTION // Game controller touchpad finger was moved
-    CONTROLLERTOUCHPADUP     EventType = C.SDL_CONTROLLERTOUCHPADUP     // Game controller touchpad finger was lifted
-    CONTROLLERSENSORUPDATE   EventType = C.SDL_CONTROLLERSENSORUPDATE   // Game controller sensor was updated
+	CONTROLLERTOUCHPADDOWN   EventType = C.SDL_CONTROLLERTOUCHPADDOWN   // Game controller touchpad was touched
+	CONTROLLERTOUCHPADMOTION EventType = C.SDL_CONTROLLERTOUCHPADMOTION // Game controller touchpad finger was moved
+	CONTROLLERTOUCHPADUP     EventType = C.SDL_CONTROLLERTOUCHPADUP     // Game controller touchpad finger was lifted
+	CONTROLLERSENSORUPDATE   EventType = C.SDL_CONTROLLERSENSORUPDATE   // Game controller sensor was updated
 
 	// Touch events
 	FINGERDOWN   EventType = C.SDL_FINGERDOWN   // user has touched input device
@@ -780,9 +780,9 @@ type ControllerSensorEvent struct {
 	Type        EventType  // SDL_CONTROLLERSENSORUPDATE
 	Timestamp   uint32     // In milliseconds, populated using SDL_GetTicks()
 	Which       JoystickID // The joystick instance id
-    Sensor      int32      // The type of the sensor, one of the values of SensorType
+	Sensor      int32      // The type of the sensor, one of the values of SensorType
 	Data        [3]float32 // Up to 3 values from the sensor - additional values can be queried using SDL_SensorGetData()
-    TimestampUs uint64     // The timestamp of the sensor reading in microseconds, if the hardware provides this information.
+	TimestampUs uint64     // The timestamp of the sensor reading in microseconds, if the hardware provides this information.
 }
 type cControllerSensorEvent C.ControllerSensorEvent
 
@@ -917,7 +917,7 @@ type SensorEvent struct {
 	Timestamp   uint32     // In milliseconds, populated using SDL_GetTicks()
 	Which       int32      // The instance ID of the sensor
 	Data        [6]float32 // Up to 6 values from the sensor - additional values can be queried using SDL_SensorGetData()
-    TimestampUs uint64     // The timestamp of the sensor reading in microseconds, if the hardware provides this information.
+	TimestampUs uint64     // The timestamp of the sensor reading in microseconds, if the hardware provides this information.
 }
 type cSensorEvent C.SensorEvent
 
@@ -1166,6 +1166,7 @@ func goEvent(cevent *CEvent) Event {
 			Timestamp: uint32(e.timestamp),
 			WindowID:  uint32(e.windowID),
 			State:     ButtonState(e.state),
+			Repeat:    uint8(e.repeat),
 			Keysym: Keysym{
 				Mod:      Keymod(e.keysym.mod),
 				Sym:      Keycode(e.keysym.sym),
@@ -1321,13 +1322,13 @@ func goEvent(cevent *CEvent) Event {
 			Type:      EventType(e._type),
 			Timestamp: uint32(e.timestamp),
 			Which:     JoystickID(e.which),
-            Sensor:    int32(e.sensor),
+			Sensor:    int32(e.sensor),
 			Data: [3]float32{
 				float32(e.data[0]),
 				float32(e.data[1]),
 				float32(e.data[2]),
 			},
-            TimestampUs: uint64(e.timestamp_us),
+			TimestampUs: uint64(e.timestamp_us),
 		}
 	case AUDIODEVICEADDED, AUDIODEVICEREMOVED:
 		e := (*cAudioDeviceEvent)(unsafe.Pointer(cevent))
@@ -1403,7 +1404,7 @@ func goEvent(cevent *CEvent) Event {
 				float32(e.data[4]),
 				float32(e.data[5]),
 			},
-            TimestampUs: uint64(e.timestamp_us),
+			TimestampUs: uint64(e.timestamp_us),
 		}
 	case RENDER_TARGETS_RESET, RENDER_DEVICE_RESET:
 		// This is a CommonEvent as it doesn't currently (sdl-v2.0.22) have any additional fields
