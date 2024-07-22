@@ -8,10 +8,10 @@ package img
 #if !(SDL_IMAGE_VERSION_ATLEAST(2,6,0))
 
 #if defined(WARN_OUTDATED)
-#pragma message("SDL_LoadSizedSVG_RW is not supported before SDL2_image 2.6.0")
+#pragma message("IMG_LoadSizedSVG_RW is not supported before SDL2_image 2.6.0")
 #endif
 
-static inline SDL_Surface* SDL_LoadSizedSVG_RW(SDL_RWops* src, int width, int height)
+static inline SDL_Surface* IMG_LoadSizedSVG_RW(SDL_RWops* src, int width, int height)
 {
 	SDL_Unsupported();
 	return NULL;
