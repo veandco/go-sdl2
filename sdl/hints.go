@@ -8,6 +8,11 @@ package sdl
 
 #define SDL_HINT_JOYSTICK_IOKIT ""
 #define SDL_HINT_JOYSTICK_MFI ""
+
+#endif
+
+#if !(SDL_VERSION_ATLEAST(2,28,3))
+
 #define SDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE ""
 
 #endif
