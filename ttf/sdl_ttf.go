@@ -8,6 +8,82 @@ void Do_TTF_SetError(const char *str) {
     TTF_SetError("%s", str);
 }
 
+#if !SDL_TTF_VERSION_ATLEAST(2,0,20)
+
+typedef enum
+{
+  TTF_DIRECTION_LTR = 0,
+  TTF_DIRECTION_RTL,
+  TTF_DIRECTION_TTB,
+  TTF_DIRECTION_BTT
+} TTF_Direction;
+
+#define TTF_WRAPPED_ALIGN_LEFT      0
+#define TTF_WRAPPED_ALIGN_CENTER    1
+#define TTF_WRAPPED_ALIGN_RIGHT     2
+
+static inline int TTF_GetFontWrappedAlign(const TTF_Font *font)
+{
+    return 0;
+}
+
+static inline void TTF_SetFontWrappedAlign(TTF_Font *font, int align)
+{
+    // do nothing
+}
+
+static inline SDL_Surface * TTF_RenderText_LCD(TTF_Font *font, const char * text, SDL_Color fg, SDL_Color bg)
+{
+    return NULL;
+}
+
+static inline SDL_Surface * TTF_RenderUTF8_LCD(TTF_Font *font, const char * text, SDL_Color fg, SDL_Color bg)
+{
+    return NULL;
+}
+
+static inline SDL_Surface * TTF_RenderUNICODE_LCD(TTF_Font *font, const Uint16 * text, SDL_Color fg, SDL_Color bg)
+{
+    return NULL;
+}
+
+static inline SDL_Surface * TTF_RenderText_LCD_Wrapped(TTF_Font *font, const char * text, SDL_Color fg, SDL_Color bg, Uint32 wrapLength)
+{
+    return NULL;
+}
+
+static inline SDL_Surface * TTF_RenderUTF8_LCD_Wrapped(TTF_Font *font, const char * text, SDL_Color fg, SDL_Color bg, Uint32 wrapLength)
+{
+    return NULL;
+}
+
+static inline SDL_Surface * TTF_RenderUNICODE_LCD_Wrapped(TTF_Font *font, const Uint16 * text, SDL_Color fg, SDL_Color bg, Uint32 wrapLength)
+{
+    return NULL;
+}
+
+static inline SDL_Surface * TTF_RenderGlyph_LCD(TTF_Font *font, Uint16 ch, SDL_Color fg, SDL_Color bg)
+{
+    return NULL;
+}
+
+static inline SDL_Surface * TTF_RenderGlyph32_LCD(TTF_Font *font, Uint32 ch, SDL_Color fg, SDL_Color bg)
+{
+    return NULL;
+}
+
+static inline int TTF_SetFontDirection(TTF_Font *font, TTF_Direction direction)
+{
+    return -1;
+}
+
+static inline int TTF_SetFontScriptName(TTF_Font *font, const char *script)
+{
+    return -1;
+}
+
+#endif
+
 #if SDL_TTF_VERSION_ATLEAST(2,0,18)
 static inline void ByteSwappedUNICODE(int swapped)
 {
@@ -53,6 +129,25 @@ const (
 type Font struct {
 	f *C.TTF_Font
 }
+
+// Font alignment
+type Align int
+
+const (
+	WRAPPED_ALIGN_LEFT   Align = C.TTF_WRAPPED_ALIGN_LEFT
+	WRAPPED_ALIGN_CENTER Align = C.TTF_WRAPPED_ALIGN_CENTER
+	WRAPPED_ALIGN_RIGHT  Align = C.TTF_WRAPPED_ALIGN_RIGHT
+)
+
+// Font direction
+type Direction int
+
+const (
+	DIRECTION_LTR Direction = C.TTF_DIRECTION_LTR
+	DIRECTION_RTL Direction = C.TTF_DIRECTION_RTL
+	DIRECTION_TTB Direction = C.TTF_DIRECTION_TTB
+	DIRECTION_BTT Direction = C.TTF_DIRECTION_BTT
+)
 
 // Init initializes the truetype font API. This must be called before using other functions in this library, except ttf.WasInit(). SDL does not have to be initialized before this call.
 // (https://www.libsdl.org/projects/SDL_ttf/docs/SDL_ttf_8.html)
@@ -352,9 +447,9 @@ func (f *Font) FaceFamilyName() string {
 // FaceStyleName returns the current font face family's style name from the loaded font.
 // (https://wiki.libsdl.org/SDL_ttf/TTF_FontFaceStyleName)
 func (f *Font) FaceStyleName() string {
-        _fname := C.TTF_FontFaceStyleName(f.f)
-        fname := C.GoString(_fname)
-        return fname
+	_fname := C.TTF_FontFaceStyleName(f.f)
+	fname := C.GoString(_fname)
+	return fname
 }
 
 // GlyphMetrics contains glyph-specific rendering metrics.
@@ -374,4 +469,126 @@ func (f *Font) GlyphMetrics(ch rune) (*GlyphMetrics, error) {
 		return &GlyphMetrics{int(minX), int(maxX), int(minY), int(maxY), int(adv)}, nil
 	}
 	return nil, GetError()
+}
+
+func (f *Font) GetWrappedAlign() Align {
+	return Align(C.TTF_GetFontWrappedAlign(f.f))
+}
+
+func (f *Font) SetWrappedAlign(align Align) {
+	C.TTF_SetFontWrappedAlign(f.f, C.int(align))
+}
+
+func (f *Font) RenderTextLCD(text string, fg, bg sdl.Color) (*sdl.Surface, error) {
+	_text := C.CString(text)
+	defer C.free(unsafe.Pointer(_text))
+	_fg := C.SDL_Color{C.Uint8(fg.R), C.Uint8(fg.G), C.Uint8(fg.B), C.Uint8(fg.A)}
+	_bg := C.SDL_Color{C.Uint8(bg.R), C.Uint8(bg.G), C.Uint8(bg.B), C.Uint8(bg.A)}
+	surface := (*sdl.Surface)(unsafe.Pointer(C.TTF_RenderText_LCD(f.f, _text, _fg, _bg)))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
+}
+
+func (f *Font) RenderUTF8LCD(text string, fg, bg sdl.Color) (*sdl.Surface, error) {
+	_text := C.CString(text)
+	defer C.free(unsafe.Pointer(_text))
+	_fg := C.SDL_Color{C.Uint8(fg.R), C.Uint8(fg.G), C.Uint8(fg.B), C.Uint8(fg.A)}
+	_bg := C.SDL_Color{C.Uint8(bg.R), C.Uint8(bg.G), C.Uint8(bg.B), C.Uint8(bg.A)}
+	surface := (*sdl.Surface)(unsafe.Pointer(C.TTF_RenderUTF8_LCD(f.f, _text, _fg, _bg)))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
+}
+
+func (f *Font) RenderUNICODELCD(text []uint16, fg, bg sdl.Color) (*sdl.Surface, error) {
+	_text := (*C.Uint16)(&text[0])
+	_fg := C.SDL_Color{C.Uint8(fg.R), C.Uint8(fg.G), C.Uint8(fg.B), C.Uint8(fg.A)}
+	_bg := C.SDL_Color{C.Uint8(bg.R), C.Uint8(bg.G), C.Uint8(bg.B), C.Uint8(bg.A)}
+	surface := (*sdl.Surface)(unsafe.Pointer(C.TTF_RenderUNICODE_LCD(f.f, _text, _fg, _bg)))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
+}
+
+func (f *Font) RenderTextLCDWrapped(text string, fg, bg sdl.Color, wrapLength uint32) (*sdl.Surface, error) {
+	_text := C.CString(text)
+	defer C.free(unsafe.Pointer(_text))
+	_fg := C.SDL_Color{C.Uint8(fg.R), C.Uint8(fg.G), C.Uint8(fg.B), C.Uint8(fg.A)}
+	_bg := C.SDL_Color{C.Uint8(bg.R), C.Uint8(bg.G), C.Uint8(bg.B), C.Uint8(bg.A)}
+	_wrapLength := C.Uint32(wrapLength)
+	surface := (*sdl.Surface)(unsafe.Pointer(C.TTF_RenderText_LCD_Wrapped(f.f, _text, _fg, _bg, _wrapLength)))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
+}
+
+func (f *Font) RenderUTF8LCDWrapped(text string, fg, bg sdl.Color, wrapLength uint32) (*sdl.Surface, error) {
+	_text := C.CString(text)
+	defer C.free(unsafe.Pointer(_text))
+	_fg := C.SDL_Color{C.Uint8(fg.R), C.Uint8(fg.G), C.Uint8(fg.B), C.Uint8(fg.A)}
+	_bg := C.SDL_Color{C.Uint8(bg.R), C.Uint8(bg.G), C.Uint8(bg.B), C.Uint8(bg.A)}
+	_wrapLength := C.Uint32(wrapLength)
+	surface := (*sdl.Surface)(unsafe.Pointer(C.TTF_RenderUTF8_LCD_Wrapped(f.f, _text, _fg, _bg, _wrapLength)))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
+}
+
+func (f *Font) RenderUNICODELCDWrapped(text []uint16, fg, bg sdl.Color, wrapLength uint32) (*sdl.Surface, error) {
+	_text := (*C.Uint16)(&text[0])
+	_fg := C.SDL_Color{C.Uint8(fg.R), C.Uint8(fg.G), C.Uint8(fg.B), C.Uint8(fg.A)}
+	_bg := C.SDL_Color{C.Uint8(bg.R), C.Uint8(bg.G), C.Uint8(bg.B), C.Uint8(bg.A)}
+	_wrapLength := C.Uint32(wrapLength)
+	surface := (*sdl.Surface)(unsafe.Pointer(C.TTF_RenderUNICODE_LCD_Wrapped(f.f, _text, _fg, _bg, _wrapLength)))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
+}
+
+func (f *Font) RenderGlyphLCD(ch uint16, fg, bg sdl.Color) (*sdl.Surface, error) {
+	_ch := C.Uint16(ch)
+	_fg := C.SDL_Color{C.Uint8(fg.R), C.Uint8(fg.G), C.Uint8(fg.B), C.Uint8(fg.A)}
+	_bg := C.SDL_Color{C.Uint8(bg.R), C.Uint8(bg.G), C.Uint8(bg.B), C.Uint8(bg.A)}
+	surface := (*sdl.Surface)(unsafe.Pointer(C.TTF_RenderGlyph_LCD(f.f, _ch, _fg, _bg)))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
+}
+
+func (f *Font) RenderGlyph32LCD(ch uint32, fg, bg sdl.Color) (*sdl.Surface, error) {
+	_ch := C.Uint32(ch)
+	_fg := C.SDL_Color{C.Uint8(fg.R), C.Uint8(fg.G), C.Uint8(fg.B), C.Uint8(fg.A)}
+	_bg := C.SDL_Color{C.Uint8(bg.R), C.Uint8(bg.G), C.Uint8(bg.B), C.Uint8(bg.A)}
+	surface := (*sdl.Surface)(unsafe.Pointer(C.TTF_RenderGlyph32_LCD(f.f, _ch, _fg, _bg)))
+	if surface == nil {
+		return nil, GetError()
+	}
+	return surface, nil
+}
+
+func (f *Font) SetDirection(direction Direction) error {
+	_direction := C.TTF_Direction(direction)
+	ret := C.TTF_SetFontDirection(f.f, _direction)
+	if ret != 0 {
+		return GetError()
+	}
+	return nil
+}
+
+func (f *Font) SetScriptName(script string) error {
+	_script := C.CString(script)
+	defer C.free(unsafe.Pointer(_script))
+	ret := C.TTF_SetFontScriptName(f.f, _script)
+	if ret != 0 {
+		return GetError()
+	}
+	return nil
 }
