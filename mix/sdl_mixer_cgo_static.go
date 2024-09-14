@@ -12,4 +12,5 @@ package mix
 //#cgo darwin,arm64 LDFLAGS: -lSDL2_mixer_darwin_arm64 -lmpg123_darwin_arm64 -lvorbisfile_darwin_arm64 -lvorbis_darwin_arm64 -logg_darwin_arm64 -lSDL2_darwin_arm64 -lm -liconv -lfreetype_darwin_arm64 -lz -lSDL2_darwin_arm64 -Wl,-framework,CoreAudio -Wl,-framework,AudioToolbox -Wl,-framework,ForceFeedback -lobjc -Wl,-framework,CoreVideo -Wl,-framework,Cocoa -Wl,-framework,Carbon -Wl,-framework,IOKit -Wl,-framework,Metal -Wl,-framework,AudioUnit
 //#cgo android,arm LDFLAGS: -lSDL2_mixer_android_arm -Wl,--no-undefined -lmpg123_android_arm -lvorbisfile_android_arm -lvorbis_android_arm -logg_android_arm -lSDL2_android_arm -lm -ldl -llog -landroid -lGLESv2 -lGLESv1_CM
 //#cgo linux,arm,!android LDFLAGS: -L/opt/vc/lib -L/opt/vc/lib64 -lSDL2_mixer_linux_arm -Wl,--no-undefined -lmpg123_linux_arm -lvorbisfile_linux_arm -lvorbis_linux_arm -logg_linux_arm -lSDL2_linux_arm -lm -ldl -liconv -lbcm_host -lvcos -lvchiq_arm -pthread
+//#cgo linux,arm64 LDFLAGS: -lSDL2_mixer_linux_arm64 -Wl,--no-undefined -lSDL2_linux_arm64 -lm -ldl -pthread
 import "C"

@@ -13,4 +13,5 @@ package ttf
 //#cgo darwin,arm64 LDFLAGS: -lSDL2_ttf_darwin_arm64 -lm -liconv -lz -lpng_darwin_arm64 -lfreetype_darwin_arm64 -lSDL2_darwin_arm64 -Wl,-framework,CoreAudio -Wl,-framework,AudioToolbox -Wl,-framework,ForceFeedback -lobjc -Wl,-framework,CoreVideo -Wl,-framework,Cocoa -Wl,-framework,Carbon -Wl,-framework,IOKit -Wl,-framework,Metal
 //#cgo android,arm LDFLAGS: -lSDL2_ttf_android_arm -Wl,--no-undefined -lfreetype_android_arm -lSDL2_android_arm -lm -ldl -llog -landroid -lGLESv2 -lGLESv1_CM
 //#cgo linux,arm,!android LDFLAGS: -L/opt/vc/lib -L/opt/vc/lib64 -lSDL2_ttf_linux_arm -Wl,--no-undefined -lfreetype_linux_arm -lSDL2_linux_arm -lm -ldl -liconv -lbcm_host -lvcos -lvchiq_arm -pthread
+//#cgo linux,arm64 LDFLAGS: -lSDL2_ttf_linux_arm64 -Wl,--no-undefined -lfreetype_linux_arm64 -lSDL2_linux_arm64 -lm -ldl -pthread
 import "C"

@@ -12,4 +12,5 @@ package img
 //#cgo darwin,arm64 LDFLAGS: -lSDL2_image_darwin_arm64 -lSDL2_darwin_arm64 -lpng_darwin_arm64 -ljpeg_darwin_arm64 -lm -lz -liconv -Wl,-framework,CoreAudio -Wl,-framework,AudioToolbox -Wl,-framework,ForceFeedback -lobjc -Wl,-framework,CoreVideo -Wl,-framework,Cocoa -Wl,-framework,Carbon -Wl,-framework,IOKit -Wl,-framework,Metal
 //#cgo android,arm LDFLAGS: -lSDL2_image_android_arm -Wl,--no-undefined -lpng_android_arm -ljpeg_android_arm -lSDL2_android_arm -lm -ldl -lz -llog -landroid -lGLESv2 -lGLESv1_CM
 //#cgo linux,arm,!android LDFLAGS: -L/opt/vc/lib -L/opt/vc/lib64 -lSDL2_image_linux_arm -Wl,--no-undefined -lpng_linux_arm -ljpeg_linux_arm -lSDL2_linux_arm -lm -ldl -lz -liconv -lbcm_host -lvcos -lvchiq_arm -pthread
+//#cgo linux,arm64 LDFLAGS: -lSDL2_image_linux_arm64 -Wl,--no-undefined -lm -ldl -pthread
 import "C"
