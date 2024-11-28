@@ -36,6 +36,25 @@ package mix
 //	return -1;
 //}
 //#endif
+//
+//#if !(SDL_MIXER_VERSION_ATLEAST(2,6,0))
+//
+//#if defined(WARN_OUTDATED)
+//#pragma message("Mix_MusicDuration is not supported before SDL 2.6.0")
+//#pragma message("Mix_GetMusicLoopLengthTime is not supported before SDL 2.6.0")
+//#endif
+//
+//double Mix_MusicDuration(Mix_Music *music)
+//{
+//	return -1;
+//}
+//
+//double Mix_GetMusicLoopLengthTime(Mix_Music *music)
+//{
+//	return -1;
+//}
+//
+//#endif
 import "C"
 import (
 	"reflect"
@@ -576,6 +595,13 @@ func FadingChannel(which int) Fading {
 	return (Fading)(C.Mix_FadingChannel(_which))
 }
 
+// Get a music object's duration, in seconds or -1.0 on error. If NULL is passed, returns duration of current playing music.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_MusicDuration)
+func MusicDuration(mus *Music) float64 {
+	_mus := (*C.Mix_Music)(mus)
+	return (float64)(C.Mix_MusicDuration(_mus))
+}
+
 // Pause pauses channel, or all playing channels if -1 is passed in. You may still halt a paused channel. Note: Only channels which are actively playing will be paused.
 // (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_32.html)
 func Pause(channel int) {
@@ -701,6 +727,13 @@ func GetNumMusicDecoders() int {
 // (https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_54.html)
 func GetMusicDecoder(index int) string {
 	return C.GoString(C.Mix_GetMusicDecoder(C.int(index)))
+}
+
+// Get the loop time length of music stream, in seconds. Returns -1.0 if this feature is not used for this music or not supported for some codec. f NULL is passed, returns duration of current playing music.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_GetMusicLoopLengthTime)
+func GetMusicLoopLengthTime(mus *Music) float64 {
+	_mus := (*C.Mix_Music)(mus)
+	return (float64)(C.Mix_GetMusicLoopLengthTime(_mus))
 }
 
 //export callPostMixFunction
