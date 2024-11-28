@@ -28,7 +28,14 @@ package mix
 //#if (SDL_MIXER_MAJOR_VERSION == 2) && (SDL_MIXER_MINOR_VERSION == 0) && (SDL_MIXER_PATCHLEVEL < 2)
 //
 //#if defined(WARN_OUTDATED)
+//
+//#endif
+//
+//#if !(SDL_MIXER_VERSION_ATLEAST(2,0,2))
+//
+//#if defined(WARN_OUTDATED)
 //#pragma message("Mix_OpenAudioDevice is not supported before SDL_mixer 2.0.2")
+//#pragma message("Mix_HasChunkDecoder is not supported before SDL_mixer 2.0.2")
 //#endif
 //
 //static inline int Mix_OpenAudioDevice(int frequency, Uint16 format, int channels, int chunksize, const char* device, int allowed_changes)
@@ -37,23 +44,121 @@ package mix
 //}
 //#endif
 //
+//SDL_bool Mix_HasChunkDecoder(const char *name)
+//{
+//	return SDL_FALSE;
+//}
+//
+//#endif
+//
 //#if !(SDL_MIXER_VERSION_ATLEAST(2,6,0))
 //
 //#if defined(WARN_OUTDATED)
-//#pragma message("Mix_MusicDuration is not supported before SDL 2.6.0")
-//#pragma message("Mix_GetMusicLoopLengthTime is not supported before SDL 2.6.0")
+//#pragma message("Mix_GetMusicAlbumTag is not supported before SDL_mixer 2.6.0")
+//#pragma message("Mix_GetMusicArtistTag is not supported before SDL_mixer 2.6.0")
+//#pragma message("Mix_GetMusicCopyrightTag is not supported before SDL_mixer 2.6.0")
+//#pragma message("Mix_MusicDuration is not supported before SDL_mixer 2.6.0")
+//#pragma message("Mix_GetMusicLoopEndTime is not supported before SDL_mixer 2.6.0")
+//#pragma message("Mix_GetMusicLoopLengthTime is not supported before SDL_mixer 2.6.0")
+//#pragma message("Mix_GetMusicLoopStartTime is not supported before SDL_mixer 2.6.0")
+//#pragma message("Mix_GetMusicPosition is not supported before SDL_mixer 2.6.0")
+//#pragma message("Mix_GetMusicTitle is not supported before SDL_mixer 2.6.0")
+//#pragma message("Mix_GetMusicTitleTag is not supported before SDL_mixer 2.6.0")
+//#pragma message("Mix_GetMusicVolume is not supported before SDL_mixer 2.6.0")
+//#pragma message("Mix_HasMusicDecoder is not supported before SDL_mixer 2.6.0")
+//#pragma message("Mix_MasterVolume is not supported before SDL_mixer 2.6.0")
+//#pragma message("Mix_ModMusicJumpToOrder is not supported before SDL_mixer 2.6.0")
 //#endif
+//
+//const char* Mix_GetMusicAlbumTag(const Mix_Music *music)
+//{
+//	return "";
+//}
+//
+//const char* Mix_GetMusicAlbumTag(const Mix_Music *music)
+//{
+//	return "";
+//}
+//
+//const char* Mix_GetMusicCopyrightTag(const Mix_Music *music)
+//{
+//	return "";
+//}
 //
 //double Mix_MusicDuration(Mix_Music *music)
 //{
-//	return -1;
+//	return -1.0;
+//}
+//
+//double Mix_GetMusicLoopEndTime(Mix_Music *music)
+//{
+//	return -1.0;
 //}
 //
 //double Mix_GetMusicLoopLengthTime(Mix_Music *music)
 //{
+//	return -1.0;
+//}
+//
+//double Mix_GetMusicLoopStartTime(Mix_Music *music)
+//{
+//	return -1.0;
+//}
+//
+//double Mix_GetMusicPosition(Mix_Music *music)
+//{
+//	return -1.0;
+//}
+//
+//const char* Mix_GetMusicTitle(Mix_Music *music)
+//{
+//	return "";
+//}
+//
+//const char* Mix_GetMusicTitleTag(Mix_Music *music)
+//{
+//	return "";
+//}
+//
+//int Mix_GetMusicVolume(Mix_Music *music)
+//{
 //	return -1;
 //}
 //
+//SDL_bool Mix_HasMusicDecoder(const char *name)
+//{
+//	return SDL_FALSE;
+//}
+//
+//int Mix_MasterVolume(int volume)
+//{
+//	return -1;
+//}
+//
+//int Mix_ModMusicJumpToOrder(int order)
+//{
+//	return -1;
+//}
+//
+//#endif
+//
+//#if !(SDL_MIXER_VERSION_ATLEAST(2,8,0))
+//
+//#if defined(WARN_OUTDATED)
+//#pragma message("Mix_GetNumTracks is not supported before SDL_mixer 2.8.0")
+//#endif
+//
+//int Mix_GetNumTracks(Mix_Music *music)
+//{
+//	return -1;
+//}
+//
+//void Mix_PauseAudio(int pause_on);
+//
+//int Mix_StartTrack(Mix_Music *music, int track)
+//{
+//	return -1;
+//}
 //#endif
 import "C"
 import (
@@ -138,6 +243,12 @@ func cint(b bool) C.int {
 		return 1
 	}
 	return 0
+}
+
+// Query the version of SDL_mixer that the program is linked against.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_Linked_Version)
+func LinkedVersion() *sdl.Version {
+	return (*sdl.Version)(unsafe.Pointer(C.Mix_Linked_Version()))
 }
 
 // Init loads dynamic libraries and prepares them for use. Flags should be one or more flags from mix.InitFlags OR'd together.
@@ -709,6 +820,14 @@ func CloseAudio() {
 	C.Mix_CloseAudio()
 }
 
+// Check if a chunk decoder is available by name. Returns true if a decoder by that name is available, false otherwise.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_HasChunkDecoder)
+func HasChunkDecoder(name string) bool {
+	_name := C.CString(name)
+	defer C.free(unsafe.Pointer(_name))
+	return C.Mix_HasChunkDecoder(_name) == C.SDL_TRUE
+}
+
 // GetNumChunkDecoders returns the number of sample chunk decoders available from the mix.GetChunkDecoder() function. This number can be different for each run of a program, due to the change in availability of shared libraries that support each format. Returns: The number of sample chunk decoders available.
 // (https://wiki.libsdl.org/SDL2_mixer/Mix_GetNumChunkDecoders)
 func GetNumChunkDecoders() int {
@@ -719,6 +838,14 @@ func GetNumChunkDecoders() int {
 // (https://wiki.libsdl.org/SDL2_mixer/Mix_GetChunkDecoder)
 func GetChunkDecoder(index int) string {
 	return C.GoString(C.Mix_GetChunkDecoder(C.int(index)))
+}
+
+// Check if a music decoder is available by name. Returns true if a decoder by that name is available, false otherwise. This result can change between builds AND runs of the program, if external libraries that add functionality become available. You must successfully call Mix_OpenAudio() or Mix_OpenAudioDevice() before calling this function, as decoders are activated at device open time.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_HasMusicDecoder)
+func HasMusicDecoder(name string) bool {
+	_name := C.CString(name)
+	defer C.free(unsafe.Pointer(_name))
+	return C.Mix_HasMusicDecoder(_name) == C.SDL_TRUE
 }
 
 // GetNumMusicDecoders returns the number of music decoders available from the mix.GetMusicDecoder() function. This number can be different for each run of a program, due to the change in availability of shared libraries that support each format. Returns: The number of music decoders available.
@@ -733,11 +860,106 @@ func GetMusicDecoder(index int) string {
 	return C.GoString(C.Mix_GetMusicDecoder(C.int(index)))
 }
 
+// Returns the music's album name if available, or "". If music is NULL, this will query the currently-playing music.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_GetMusicAlbumTag)
+func GetMusicAlbumTag(mus *Music) string {
+	_mus := (*C.Mix_Music)(mus)
+	return C.GoString(C.Mix_GetMusicAlbumTag(_mus))
+}
+
+// Returns the music's artist name if available, or "". If music is NULL, this will query the currently-playing music.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_GetMusicArtistTag)
+func GetMusicArtistTag(mus *Music) string {
+	_mus := (*C.Mix_Music)(mus)
+	return C.GoString(C.Mix_GetMusicAlbumTag(_mus))
+}
+
+// Returns the music's copyright text if available, or "". If music is NULL, this will query the currently-playing music.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_GetMusicCopyrightTag)
+func GetMusicCopyrightTag(mus *Music) string {
+	_mus := (*C.Mix_Music)(mus)
+	return C.GoString(C.Mix_GetMusicCopyrightTag(_mus))
+}
+
+// Get the loop end time position of music stream, in seconds. Returns -1.0 if this feature is not used for this music or not supported for some codec. If NULL is passed, returns duration of current playing music.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_GetMusicLoopEndTime)
+func GetMusicLoopEndTime(mus *Music) float64 {
+	_mus := (*C.Mix_Music)(mus)
+	return (float64)(C.Mix_GetMusicLoopEndTime(_mus))
+}
+
 // Get the loop time length of music stream, in seconds. Returns -1.0 if this feature is not used for this music or not supported for some codec. f NULL is passed, returns duration of current playing music.
 // (https://wiki.libsdl.org/SDL2_mixer/Mix_GetMusicLoopLengthTime)
 func GetMusicLoopLengthTime(mus *Music) float64 {
 	_mus := (*C.Mix_Music)(mus)
 	return (float64)(C.Mix_GetMusicLoopLengthTime(_mus))
+}
+
+// Get the loop start time position of music stream, in seconds. Returns -1.0 if this feature is not used for this music or not supported for some codec. If NULL is passed, returns duration of current playing music.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_GetMusicLoopStartTime)
+func GetMusicLoopStartTime(mus *Music) float64 {
+	_mus := (*C.Mix_Music)(mus)
+	return (float64)(C.Mix_GetMusicLoopStartTime(_mus))
+}
+
+// Get the time current position of music stream, in seconds. Returns -1.0 if this feature is not supported for some codec.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_GetMusicPosition)
+func GetMusicPosition(mus *Music) float64 {
+	_mus := (*C.Mix_Music)(mus)
+	return (float64)(C.Mix_GetMusicPosition(_mus))
+}
+
+// Get the title for a music object, or its filename. Returns the music's title if available, or the filename if not, or "". If music is NULL, this will query the currently-playing music. If music's title tag is missing or empty, the filename will be returned. If you'd rather have the actual metadata or nothing, use Mix_GetMusicTitleTag() instead. Please note that if the music was loaded from an SDL_RWops instead of a filename, the filename returned will be an empty string ("").
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_GetMusicTitle)
+func GetMusicTitle(mus *Music) string {
+	_mus := (*C.Mix_Music)(mus)
+	return C.GoString(C.Mix_GetMusicTitle(_mus))
+}
+
+// Get the title for a music object. Returns the music's title if available, or "". If music is NULL, this will query the currently-playing music. Unlike this function, Mix_GetMusicTitle() produce a string with the music's filename if a title isn't available, which might be preferable for some applications.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_GetMusicTitleTag)
+func GetMusicTitleTag(mus *Music) string {
+	_mus := (*C.Mix_Music)(mus)
+	return C.GoString(C.Mix_GetMusicTitleTag(_mus))
+}
+
+// Query the current volume value for a music object. Returns the music's current volume, between 0 and MIX_MAX_VOLUME (128).
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_GetMusicVolume)
+func GetMusicVolume(mus *Music) int {
+	_mus := (*C.Mix_Music)(mus)
+	return int(C.Mix_GetMusicVolume(_mus))
+}
+
+// Set the master volume for all channels. The new volume mus be between 0 and MIX_MAX_VOLUME (128), or -1. Returns the previous volume. If the specified volume is -1, this returns the current volume. Note that the master volume does not affect any playing music; it is only applied when mixing chunks.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_MasterVolume)
+func MasterVolume(volume int) int {
+	return int(C.Mix_MasterVolume(C.int(volume)))
+}
+
+// Jump to a given order in mod music. Returns true if successful, or false if failed or isn't implemented. This only applies to MOD music formats.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_ModMusicJumpToOrder)
+func ModMusicJumpToOrder(order int) bool {
+	return int(C.Mix_ModMusicJumpToOrder(C.int(order))) == 0
+}
+
+// Get number of tracks in music object. Returns number of tracks if successful, or -1 if failed or isn't implemented. This only applies to GME music formats.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_GetNumTracks)
+func GetNumTracks(mus *Music) int {
+	_mus := (*C.Mix_Music)(mus)
+	return int(C.Mix_GetNumTracks(_mus))
+}
+
+// Suspend or resume the whole audio output. pause_on: 1 to pause audio output, or 0 to resume.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_PauseAudio)
+func PauseAudio(pause_on int ) {
+	C.Mix_PauseAudio(C.int(pause_on))
+}
+
+// Start a track in music object. Returns true if successful, or false if failed or isn't implemented. This only applies to GME music formats.
+// (https://wiki.libsdl.org/SDL2_mixer/Mix_StartTrack)
+func StartTrack(mus *Music, track int) bool {
+	_mus := (*C.Mix_Music)(mus)
+	return int(C.Mix_StartTrack(_mus, C.int(track))) == 0
 }
 
 //export callPostMixFunction
