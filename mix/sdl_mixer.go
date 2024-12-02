@@ -75,7 +75,7 @@ package mix
 //	return "";
 //}
 //
-//const char* Mix_GetMusicAlbumTag(const Mix_Music *music)
+//const char* Mix_GetMusicArtistTag(const Mix_Music *music)
 //{
 //	return "";
 //}
