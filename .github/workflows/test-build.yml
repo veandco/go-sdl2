@@ -6,7 +6,7 @@ jobs:
     env:
       SDL_VERSION: 2.30.0
       IMG_VERSION: 2.6.0
-      MIX_VERSION: 2.0.4
+      MIX_VERSION: 2.6.0
       TTF_VERSION: 2.0.18
     steps:
       - uses: actions/checkout@v3
