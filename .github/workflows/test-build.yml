@@ -45,7 +45,7 @@ jobs:
 
       - name: Download, build, and install SDL2 packages
         run: |
-          wget https://www.libsdl.org/release/SDL2-$SDL_VERSION.tar.gz
+          wget https://github.com/libsdl-org/SDL/releases/download/release-$SDL_VERSION/SDL2-$SDL_VERSION.tar.gz
           tar xf SDL2-$SDL_VERSION.tar.gz
           cd SDL2-$SDL_VERSION
           ./configure --prefix=$HOME/.local
@@ -57,13 +57,13 @@ jobs:
           ./configure --prefix=$HOME/.local
           make install
           cd ..
-          wget https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-$MIX_VERSION.tar.gz
+          wget https://github.com/libsdl-org/SDL_mixer/releases/download/release-$MIX_VERSION/SDL2_mixer-$MIX_VERSION.tar.gz
           tar xf SDL2_mixer-$MIX_VERSION.tar.gz
           cd SDL2_mixer-$MIX_VERSION
           ./configure --prefix=$HOME/.local
           make install
           cd ..
-          wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-$TTF_VERSION.tar.gz
+          wget https://github.com/libsdl-org/SDL_ttf/releases/download/release-$TTF_VERSION/SDL2_ttf-$TTF_VERSION.tar.gz
           tar xf SDL2_ttf-$TTF_VERSION.tar.gz
           cd SDL2_ttf-$TTF_VERSION
           ./configure --prefix=$HOME/.local
