@@ -87,7 +87,10 @@ On __Windows__,
     * Put mingw-w64 binaries location into system `Path` environment variable (e.g. `C:\mingw64\bin`)
 4. Close and open terminal again so the new `Path` environment variable takes effect. Now we should be able to run `go build` inside the project directory.
 5. Download and install SDL2 runtime libraries from https://github.com/libsdl-org/SDL/releases. Extract and copy the `.dll` file into the project directory. After that, the program should become runnable.
-6. (Optional) You can repeat __Step 2__ for [SDL_image](https://github.com/libsdl-org/SDL_image/releases), [SDL_mixer](https://github.com/libsdl-org/SDL_mixer/releases), [SDL_ttf](https://github.com/libsdl-org/SDL_ttf/releases)
+6. Add compiler flags in your environment variables, so gcc can find SDL headers when compiling:
+   - `CGO_CFLAGS=-IC:\mingw64\include`
+   - `CGO_LDFLAGS=-LC:\mingw64\lib -lSDL2`
+7. (Optional) You can repeat __Step 2__ for [SDL_image](https://github.com/libsdl-org/SDL_image/releases), [SDL_mixer](https://github.com/libsdl-org/SDL_mixer/releases), [SDL_ttf](https://github.com/libsdl-org/SDL_ttf/releases)
 
 
 # Installation
