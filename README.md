@@ -16,7 +16,7 @@ NOTE: For the latest versions of SDL2, please use the `master` branch!
 
 # Documentation
 * [GoDoc documentation for go-sdl2](https://godoc.org/github.com/veandco/go-sdl2)
-* [Original SDL2 wiki](https://wiki.libsdl.org)
+* [Original SDL2 wiki](https://wiki.libsdl.org/SDL2)
 
 # Getting Started
 
