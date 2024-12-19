@@ -90,11 +90,47 @@ static inline void ByteSwappedUNICODE(int swapped)
 	TTF_ByteSwappedUNICODE(swapped ? SDL_TRUE : SDL_FALSE);
 }
 #else
+
+#if defined(WARN_OUTDATED)
+#pragma message("TTF_MeasureText is not supported before SDL_ttf 2.0.18")
+#pragma message("TTF_MeasureUTF8 is not supported before SDL_ttf 2.0.18")
+#pragma message("TTF_MeasureUNICODE is not supported before SDL_ttf 2.0.18")
+#endif
+
 static inline void ByteSwappedUNICODE(int swapped)
 {
 	TTF_ByteSwappedUNICODE(swapped);
 }
+
+static inline int TTF_MeasureText(TTF_Font *font, const char *text, int measure_width, int *extent, int *count)
+{
+    return -1;
+}
+
+static inline int TTF_MeasureUTF8(TTF_Font *font, const char *text, int measure_width, int *extent, int *count)
+{
+    return -1;
+}
+
+static inline int TTF_MeasureUNICODE(TTF_Font *font, const Uint16 *text, int measure_width, int *extent, int *count)
+{
+    return -1;
+}
 #endif
+
+
+#if !SDL_TTF_VERSION_ATLEAST(2,0,12)
+#if defined(WARN_OUTDATED)
+#pragma message("TTF_GlyphIsProvided is not supported before SDL_ttf 2.0.12")
+#endif
+
+static inline int TTF_GlyphIsProvided(TTF_Font *font, Uint16 ch)
+{
+    return 0;
+}
+
+#endif
+
 */
 import "C"
 import (
@@ -591,4 +627,47 @@ func (f *Font) SetScriptName(script string) error {
 		return GetError()
 	}
 	return nil
+}
+
+func (f *Font) GlyphIsProvided(ch uint16) bool {
+    _ch := C.Uint16(ch)
+    return C.TTF_GlyphIsProvided(f.f, _ch) != 0
+}
+
+func (f *Font) MeasureText(text string, measureWidth int) (extent, count int, err error) {
+	_text := C.CString(text)
+	defer C.free(unsafe.Pointer(_text))
+    _measureWidth := C.int(measureWidth)
+    _extend := (*C.int)(unsafe.Pointer(&extent))
+    _count := (*C.int)(unsafe.Pointer(&count))
+    ret := C.TTF_MeasureText(f.f, _text, _measureWidth, _extend, _count)
+    if ret != 0 {
+        err = GetError()
+    }
+    return
+}
+
+func (f *Font) MeasureUTF8(text string, measureWidth int) (extent, count int, err error) {
+	_text := C.CString(text)
+	defer C.free(unsafe.Pointer(_text))
+    _measureWidth := C.int(measureWidth)
+    _extend := (*C.int)(unsafe.Pointer(&extent))
+    _count := (*C.int)(unsafe.Pointer(&count))
+    ret := C.TTF_MeasureUTF8(f.f, _text, _measureWidth, _extend, _count)
+    if ret != 0 {
+        err = GetError()
+    }
+    return
+}
+
+func (f *Font) MeasureUNICODE(text []uint16, measureWidth int) (extent, count int, err error) {
+	_text := (*C.Uint16)(&text[0])
+    _measureWidth := C.int(measureWidth)
+    _extend := (*C.int)(unsafe.Pointer(&extent))
+    _count := (*C.int)(unsafe.Pointer(&count))
+    ret := C.TTF_MeasureUNICODE(f.f, _text, _measureWidth, _extend, _count)
+    if ret != 0 {
+        err = GetError()
+    }
+    return
 }
