@@ -5,9 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SDL_VERSION: 2.30.0
-      IMG_VERSION: 2.6.0
-      MIX_VERSION: 2.6.0
-      TTF_VERSION: 2.0.18
+      IMG_VERSION: 2.8.0
+      MIX_VERSION: 2.8.0
+      TTF_VERSION: 2.22.0
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
