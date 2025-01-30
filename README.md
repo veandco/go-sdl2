@@ -1,3 +1,5 @@
+For SDL3, please check https://github.com/JupiterRider/purego-sdl3 which doesn't require cgo and uses codegen!
+
 # SDL2 binding for Go  [![Build Status](https://github.com/veandco/go-sdl2/actions/workflows/test-build.yml/badge.svg)](https://github.com/veandco/go-sdl2/actions/workflows/test-build.yml) [![Go Report Card](https://goreportcard.com/badge/github.com/veandco/go-sdl2)](https://goreportcard.com/report/github.com/veandco/go-sdl2) [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com) [![Financial Contributors on Open Collective](https://opencollective.com/veandco/all/badge.svg?label=financial+contributors)](https://opencollective.com/veandco)
 
 `go-sdl2` is SDL2 wrapped for Go users. It enables interoperability between Go and the SDL2 library which is written in C. That means the original SDL2 installation is required for this to work. Note that the first build may take several minutes on machines that are not powerful such as Raspberry Pi.
