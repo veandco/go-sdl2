@@ -277,6 +277,7 @@ static inline int RenderCopy(SDL_Renderer *renderer, SDL_Texture *texture, SDL_R
 */
 import "C"
 import (
+	"bytes"
 	"reflect"
 	"unsafe"
 )
@@ -1067,6 +1068,58 @@ func (renderer *Renderer) ReadPixels(rect *Rect, format PixelFormatConstant, pix
 			C.Uint32(format),
 			pixels,
 			C.int(pitch))))
+}
+
+// GetPixels returns the pixel data of the current rendering target.
+// It just wraps ReadPixels in a neater api, as such it has the same implications.
+func (renderer *Renderer) GetPixels(rect *Rect, format uint32) ([]byte, error) {
+	// rect		A pointer to the rectangle to read, or NULL for the entire render target.
+	// format	The desired format of the pixel data, or 0 to use the format of the rendering target
+	// pixels	A pointer to be filled in with the pixel data
+	// pitch	The pitch of the pixels parameter.
+
+	if format == 0 || rect == nil {
+		targetFormat, _, targetWidth, targetHeight, err := renderer.GetRenderTarget().Query()
+		if err != nil {
+			return nil, err
+		}
+
+		if format == 0 {
+			format = targetFormat
+		}
+		if rect == nil {
+			rect = &Rect{
+				W: targetWidth,
+				H: targetHeight,
+			}
+		}
+	}
+
+	bpp := int32(BytesPerPixel(format))
+
+	padding := []byte("overflow detector")
+	paddingLen := int32(len(padding))
+
+	dataLen := rect.W * rect.H * bpp
+	buffer := make([]byte, dataLen+paddingLen)
+
+	for i := int32(0); i < paddingLen; i++ {
+		buffer[dataLen+i] = padding[i]
+	}
+
+	errCode := C.SDL_RenderReadPixels(
+		renderer.cptr(),
+		rect.cptr(),
+		C.Uint32(format),
+		unsafe.Pointer(&buffer[0]),
+		C.int(rect.W*bpp),
+	)
+
+	if !bytes.Equal(buffer[dataLen:], padding) {
+		panic("overflow detected")
+	}
+
+	return buffer[:dataLen], errorFromInt(int(errCode))
 }
 
 // Present updates the screen with any rendering performed since the previous call.
