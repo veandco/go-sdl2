@@ -60,31 +60,31 @@ func (t TouchID) c() C.SDL_TouchID {
 }
 
 // GetNumTouchDevices returns the number of registered touch devices.
-// (https://wiki.libsdl.org/SDL_GetNumTouchDevices)
+// (https://wiki.libsdl.org/SDL2/SDL_GetNumTouchDevices)
 func GetNumTouchDevices() int {
 	return int(C.SDL_GetNumTouchDevices())
 }
 
 // GetTouchDevice returns the touch ID with the given index.
-// (https://wiki.libsdl.org/SDL_GetTouchDevice)
+// (https://wiki.libsdl.org/SDL2/SDL_GetTouchDevice)
 func GetTouchDevice(index int) TouchID {
 	return TouchID(C.SDL_GetTouchDevice(C.int(index)))
 }
 
 // GetTouchDeviceType returns the type of the given touch device.
-// (https://wiki.libsdl.org/SDL_GetTouchDeviceType)
+// (https://wiki.libsdl.org/SDL2/SDL_GetTouchDeviceType)
 func GetTouchDeviceType(id TouchID) TouchDeviceType {
 	return TouchDeviceType(C.SDL_GetTouchDeviceType(C.SDL_TouchID(id)))
 }
 
 // GetNumTouchFingers returns the number of active fingers for a given touch device.
-// (https://wiki.libsdl.org/SDL_GetNumTouchFingers)
+// (https://wiki.libsdl.org/SDL2/SDL_GetNumTouchFingers)
 func GetNumTouchFingers(t TouchID) int {
 	return int(C.SDL_GetNumTouchFingers(t.c()))
 }
 
 // GetTouchFinger returns the finger object for specified touch device ID and finger index.
-// (https://wiki.libsdl.org/SDL_GetTouchFinger)
+// (https://wiki.libsdl.org/SDL2/SDL_GetTouchFinger)
 func GetTouchFinger(t TouchID, index int) *Finger {
 	return (*Finger)(unsafe.Pointer(C.SDL_GetTouchFinger(t.c(), C.int(index))))
 }

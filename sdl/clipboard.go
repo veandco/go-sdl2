@@ -32,7 +32,7 @@ import "C"
 import "unsafe"
 
 // SetClipboardText puts UTF-8 text into the clipboard.
-// (https://wiki.libsdl.org/SDL_SetClipboardText)
+// (https://wiki.libsdl.org/SDL2/SDL_SetClipboardText)
 func SetClipboardText(text string) error {
 	_text := C.CString(text)
 	defer C.free(unsafe.Pointer(_text))
@@ -43,7 +43,7 @@ func SetClipboardText(text string) error {
 }
 
 // GetClipboardText returns UTF-8 text from the clipboard.
-// (https://wiki.libsdl.org/SDL_GetClipboardText)
+// (https://wiki.libsdl.org/SDL2/SDL_GetClipboardText)
 func GetClipboardText() (string, error) {
 	text := C.SDL_GetClipboardText()
 	if text == nil {
@@ -55,13 +55,13 @@ func GetClipboardText() (string, error) {
 }
 
 // HasClipboardText reports whether the clipboard exists and contains a text string that is non-empty.
-// (https://wiki.libsdl.org/SDL_HasClipboardText)
+// (https://wiki.libsdl.org/SDL2/SDL_HasClipboardText)
 func HasClipboardText() bool {
 	return C.SDL_HasClipboardText() > 0
 }
 
 // SetPrimarySelectionText puts UTF-8 text into the primary selection.
-// (https://wiki.libsdl.org/SDL_SetPrimarySelectionText)
+// (https://wiki.libsdl.org/SDL2/SDL_SetPrimarySelectionText)
 func SetPrimarySelectionText(text string) error {
 	_text := C.CString(text)
 	defer C.free(unsafe.Pointer(_text))
@@ -72,7 +72,7 @@ func SetPrimarySelectionText(text string) error {
 }
 
 // GetPrimarySelectionText gets UTF-8 text from the primary selection.
-// (https://wiki.libsdl.org/SDL_GetPrimarySelectionText)
+// (https://wiki.libsdl.org/SDL2/SDL_GetPrimarySelectionText)
 func GetPrimarySelectionText() (string, error) {
 	text := C.SDL_GetPrimarySelectionText()
 	if text == nil {
@@ -84,7 +84,7 @@ func GetPrimarySelectionText() (string, error) {
 }
 
 // HasPrimarySelectionText queries whether the primary selection exists and contains a non-empty text string.
-// (https://wiki.libsdl.org/SDL_HasPrimarySelectionText)
+// (https://wiki.libsdl.org/SDL2/SDL_HasPrimarySelectionText)
 func HasPrimarySelectionText() bool {
 	return C.SDL_HasPrimarySelectionText() == C.SDL_TRUE
 }

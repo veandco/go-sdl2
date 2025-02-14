@@ -390,7 +390,7 @@ import "C"
 import "unsafe"
 
 // Hat positions.
-// (https://wiki.libsdl.org/SDL_JoystickGetHat)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickGetHat)
 type JoystickHat int
 
 const (
@@ -422,7 +422,7 @@ const (
 )
 
 // An enumeration of battery levels of a joystick.
-// (https://wiki.libsdl.org/SDL_JoystickPowerLevel)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickPowerLevel)
 type JoystickPowerLevel C.SDL_JoystickPowerLevel
 
 const (
@@ -457,7 +457,7 @@ func (joyid JoystickID) c() C.SDL_JoystickID {
 }
 
 // GetInfo returns the device information encoded in a JoystickGUID structure.
-// (https://wiki.libsdl.org/SDL_GetJoystickGUIDInfo)
+// (https://wiki.libsdl.org/SDL2/SDL_GetJoystickGUIDInfo)
 func (guid JoystickGUID) GetInfo() (vendor, product, version, crc16 uint16) {
     _vendor := (*C.Uint16)(&vendor)
     _product := (*C.Uint16)(&product)
@@ -468,31 +468,31 @@ func (guid JoystickGUID) GetInfo() (vendor, product, version, crc16 uint16) {
 }
 
 // NumJoysticks returns the number of joysticks attached to the system.
-// (https://wiki.libsdl.org/SDL_NumJoysticks)
+// (https://wiki.libsdl.org/SDL2/SDL_NumJoysticks)
 func NumJoysticks() int {
 	return (int)(C.SDL_NumJoysticks())
 }
 
 // JoystickNameForIndex returns the implementation dependent name of a joystick.
-// (https://wiki.libsdl.org/SDL_JoystickNameForIndex)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickNameForIndex)
 func JoystickNameForIndex(index int) string {
 	return (C.GoString)(C.SDL_JoystickNameForIndex(C.int(index)))
 }
 
 // JoystickPathForIndex returns the implementation dependent path of a joystick.
-// (https://wiki.libsdl.org/SDL_JoystickPathForIndex)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickPathForIndex)
 func JoystickPathForIndex(index int) string {
 	return (C.GoString)(C.SDL_JoystickPathForIndex(C.int(index)))
 }
 
 // JoystickGetDevicePlayerIndex returns the player index of a joystick, or -1 if it's not available
-// (https://wiki.libsdl.org/SDL_JoystickGetDevicePlayerIndex)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickGetDevicePlayerIndex)
 func JoystickGetDevicePlayerIndex(index int) int {
 	return int(C.SDL_JoystickGetDevicePlayerIndex(C.int(index)))
 }
 
 // JoystickGetDeviceGUID returns the implementation dependent GUID for the joystick at a given device index.
-// (https://wiki.libsdl.org/SDL_JoystickGetDeviceGUID)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickGetDeviceGUID)
 func JoystickGetDeviceGUID(index int) JoystickGUID {
 	return (JoystickGUID)(C.SDL_JoystickGetDeviceGUID(C.int(index)))
 }
@@ -523,7 +523,7 @@ func JoystickGetDeviceInstanceID(index int) JoystickID {
 }
 
 // JoystickGetGUIDString returns an ASCII string representation for a given JoystickGUID.
-// (https://wiki.libsdl.org/SDL_JoystickGetGUIDString)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickGetGUIDString)
 func JoystickGetGUIDString(guid JoystickGUID) string {
 	_pszGUID := make([]rune, 1024)
 	pszGUID := C.CString(string(_pszGUID[:]))
@@ -533,7 +533,7 @@ func JoystickGetGUIDString(guid JoystickGUID) string {
 }
 
 // JoystickGetGUIDFromString converts a GUID string into a JoystickGUID structure.
-// (https://wiki.libsdl.org/SDL_JoystickGetGUIDFromString)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickGetGUIDFromString)
 func JoystickGetGUIDFromString(pchGUID string) JoystickGUID {
 	_pchGUID := C.CString(pchGUID)
 	defer C.free(unsafe.Pointer(_pchGUID))
@@ -541,37 +541,37 @@ func JoystickGetGUIDFromString(pchGUID string) JoystickGUID {
 }
 
 // JoystickUpdate updates the current state of the open joysticks.
-// (https://wiki.libsdl.org/SDL_JoystickUpdate)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickUpdate)
 func JoystickUpdate() {
 	C.SDL_JoystickUpdate()
 }
 
 // JoystickEventState enables or disables joystick event polling.
-// (https://wiki.libsdl.org/SDL_JoystickEventState)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickEventState)
 func JoystickEventState(state int) int {
 	return (int)(C.SDL_JoystickEventState(C.int(state)))
 }
 
 // JoystickOpen opens a joystick for use.
-// (https://wiki.libsdl.org/SDL_JoystickOpen)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickOpen)
 func JoystickOpen(index int) *Joystick {
 	return (*Joystick)(C.SDL_JoystickOpen(C.int(index)))
 }
 
 // JoystickFromInstanceID returns the Joystick associated with an instance id.
-// (https://wiki.libsdl.org/SDL_JoystickFromInstanceID)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickFromInstanceID)
 func JoystickFromInstanceID(joyid JoystickID) *Joystick {
 	return (*Joystick)(C.SDL_JoystickFromInstanceID(joyid.c()))
 }
 
 // JoystickFromPlayerIndex returns the Joystick associated with a player index.
-// (https://wiki.libsdl.org/SDL_JoystickFromPlayerIndex)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickFromPlayerIndex)
 func JoystickFromPlayerIndex(playerIndex int) *Joystick {
 	return (*Joystick)(C.SDL_JoystickFromPlayerIndex(C.int(playerIndex)))
 }
 
 // JoystickAttachVirtual attaches a new virtual joystick.
-// (https://wiki.libsdl.org/SDL_JoystickAttachVirtual)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickAttachVirtual)
 func JoystickAttachVirtual(typ JoystickType, naxes, nbuttons, nhats int) (deviceIndex int, err error) {
 	deviceIndex = int(C.SDL_JoystickAttachVirtual(C.SDL_JoystickType(typ), C.int(naxes), C.int(nbuttons), C.int(nhats)))
 	err = errorFromInt(deviceIndex)
@@ -579,7 +579,7 @@ func JoystickAttachVirtual(typ JoystickType, naxes, nbuttons, nhats int) (device
 }
 
 // JoystickAttachVirtualEx attaches a new virtual joystick with extended properties.
-// (https://wiki.libsdl.org/SDL_JoystickAttachVirtualEx)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickAttachVirtualEx)
 func JoystickAttachVirtualEx(desc *C.SDL_VirtualJoystickDesc) (deviceIndex int, err error) {
 	deviceIndex = int(C.SDL_JoystickAttachVirtualEx(desc))
 	err = errorFromInt(deviceIndex)
@@ -587,13 +587,13 @@ func JoystickAttachVirtualEx(desc *C.SDL_VirtualJoystickDesc) (deviceIndex int, 
 }
 
 // JoystickDetachVirtual detaches a virtual joystick.
-// (https://wiki.libsdl.org/SDL_JoystickDetachVirtual)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickDetachVirtual)
 func JoystickDetachVirtual(deviceIndex int) error {
 	return errorFromInt(int(C.SDL_JoystickDetachVirtual(C.int(deviceIndex))))
 }
 
 // JoystickIsVirtual indicates whether or not a virtual-joystick is at a given device index.
-// (https://wiki.libsdl.org/SDL_JoystickIsVirtual)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickIsVirtual)
 func JoystickIsVirtual(deviceIndex int) bool {
 	return C.SDL_JoystickIsVirtual(C.int(deviceIndex)) == C.SDL_TRUE
 }
@@ -604,7 +604,7 @@ func JoystickIsVirtual(deviceIndex int) bool {
 // or can be called indirectly through various other SDL APIS,
 // including, but not limited to the following: SDL_PollEvent,
 // SDL_PumpEvents, SDL_WaitEventTimeout, SDL_WaitEvent..
-// (https://wiki.libsdl.org/SDL_JoystickSetVirtualAxis)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickSetVirtualAxis)
 func (joy *Joystick) SetVirtualAxis(axis int, value int16) error {
 	return errorFromInt(int(C.SDL_JoystickSetVirtualAxis(joy.cptr(), C.int(axis), C.Sint16(value))))
 }
@@ -615,7 +615,7 @@ func (joy *Joystick) SetVirtualAxis(axis int, value int16) error {
 // or can be called indirectly through various other SDL APIS,
 // including, but not limited to the following: SDL_PollEvent,
 // SDL_PumpEvents, SDL_WaitEventTimeout, SDL_WaitEvent..
-// (https://wiki.libsdl.org/SDL_JoystickSetVirtualButton)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickSetVirtualButton)
 func (joy *Joystick) SetVirtualButton(button int, value uint8) error {
 	return errorFromInt(int(C.SDL_JoystickSetVirtualButton(joy.cptr(), C.int(button), C.Uint8(value))))
 }
@@ -626,49 +626,49 @@ func (joy *Joystick) SetVirtualButton(button int, value uint8) error {
 // or can be called indirectly through various other SDL APIS,
 // including, but not limited to the following: SDL_PollEvent,
 // SDL_PumpEvents, SDL_WaitEventTimeout, SDL_WaitEvent..
-// (https://wiki.libsdl.org/SDL_JoystickSetVirtualHat)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickSetVirtualHat)
 func (joy *Joystick) SetVirtualHat(hat int, value uint8) error {
 	return errorFromInt(int(C.SDL_JoystickSetVirtualHat(joy.cptr(), C.int(hat), C.Uint8(value))))
 }
 
 // LockJoysticks locks joysticks for multi-threaded access to the joystick API
-// (https://wiki.libsdl.org/SDL_LockJoysticks)
+// (https://wiki.libsdl.org/SDL2/SDL_LockJoysticks)
 func LockJoysticks() {
 	C.SDL_LockJoysticks()
 }
 
 // UnlockJoysticks unlocks joysticks for multi-threaded access to the joystick API
-// (https://wiki.libsdl.org/SDL_UnlockJoysticks)
+// (https://wiki.libsdl.org/SDL2/SDL_UnlockJoysticks)
 func UnlockJoysticks() {
 	C.SDL_UnlockJoysticks()
 }
 
 // Name returns the implementation dependent name of a joystick.
-// (https://wiki.libsdl.org/SDL_JoystickName)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickName)
 func (joy *Joystick) Name() string {
 	return (C.GoString)(C.SDL_JoystickName(joy.cptr()))
 }
 
 // Path returns the implementation dependent path of a joystick.
-// (https://wiki.libsdl.org/SDL_JoystickPath)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickPath)
 func (joy *Joystick) Path() string {
 	return (C.GoString)(C.SDL_JoystickPath(joy.cptr()))
 }
 
 // PlayerIndex returns the player index of an opened joystick, or -1 if it's not available.
-// (https://wiki.libsdl.org/SDL_JoystickGetPlayerIndex)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickGetPlayerIndex)
 func (joy *Joystick) PlayerIndex() int {
 	return int(C.SDL_JoystickGetPlayerIndex(joy.cptr()))
 }
 
 // SetPlayerIndex returns set the player index of an opened joystick.
-// (https://wiki.libsdl.org/SDL_JoystickSetPlayerIndex)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickSetPlayerIndex)
 func (joy *Joystick) SetPlayerIndex(playerIndex int) {
 	C.SDL_JoystickSetPlayerIndex(joy.cptr(), C.int(playerIndex))
 }
 
 // GUID returns the implementation-dependent GUID for the joystick.
-// (https://wiki.libsdl.org/SDL_JoystickGetGUID)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickGetGUID)
 func (joy *Joystick) GUID() JoystickGUID {
 	return (JoystickGUID)(C.SDL_JoystickGetGUID(joy.cptr()))
 }
@@ -689,13 +689,13 @@ func (joy *Joystick) ProductVersion() int {
 }
 
 // FirmwareVersion returns the firmware version of an opened joystick, if available.
-// (https://wiki.libsdl.org/SDL_JoystickGetFirmwareVersion)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickGetFirmwareVersion)
 func (joy *Joystick) FirmwareVersion() uint16 {
 	return uint16(C.SDL_JoystickGetFirmwareVersion(joy.cptr()))
 }
 
 // Serial returns the serial number of an opened joystick, if available.
-// (https://wiki.libsdl.org/SDL_JoystickGetSerial)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickGetSerial)
 func (joy *Joystick) Serial() string {
 	return C.GoString(C.SDL_JoystickGetSerial(joy.cptr()))
 }
@@ -706,43 +706,43 @@ func (joy *Joystick) Type() JoystickType {
 }
 
 // Attached returns the status of a specified joystick.
-// (https://wiki.libsdl.org/SDL_JoystickGetAttached)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickGetAttached)
 func (joy *Joystick) Attached() bool {
 	return C.SDL_JoystickGetAttached(joy.cptr()) == C.SDL_TRUE
 }
 
 // InstanceID returns the instance ID of an opened joystick.
-// (https://wiki.libsdl.org/SDL_JoystickInstanceID)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickInstanceID)
 func (joy *Joystick) InstanceID() JoystickID {
 	return (JoystickID)(C.SDL_JoystickInstanceID(joy.cptr()))
 }
 
 // NumAxes returns the number of general axis controls on a joystick.
-// (https://wiki.libsdl.org/SDL_JoystickNumAxes)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickNumAxes)
 func (joy *Joystick) NumAxes() int {
 	return (int)(C.SDL_JoystickNumAxes(joy.cptr()))
 }
 
 // NumBalls returns the number of trackballs on a joystick.
-// (https://wiki.libsdl.org/SDL_JoystickNumBalls)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickNumBalls)
 func (joy *Joystick) NumBalls() int {
 	return (int)(C.SDL_JoystickNumBalls(joy.cptr()))
 }
 
 // NumHats returns the number of POV hats on a joystick.
-// (https://wiki.libsdl.org/SDL_JoystickNumHats)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickNumHats)
 func (joy *Joystick) NumHats() int {
 	return (int)(C.SDL_JoystickNumHats(joy.cptr()))
 }
 
 // NumButtons returns the number of buttons on a joystick.
-// (https://wiki.libsdl.org/SDL_JoystickNumButtons)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickNumButtons)
 func (joy *Joystick) NumButtons() int {
 	return (int)(C.SDL_JoystickNumButtons(joy.cptr()))
 }
 
 // Axis returns the current state of an axis control on a joystick.
-// (https://wiki.libsdl.org/SDL_JoystickGetAxis)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickGetAxis)
 func (joy *Joystick) Axis(axis int) int16 {
 	return (int16)(C.SDL_JoystickGetAxis(joy.cptr(), C.int(axis)))
 }
@@ -754,13 +754,13 @@ func (joy *Joystick) AxisInitialState(axis int) (state int16, ok bool) {
 }
 
 // Hat returns the current state of a POV hat on a joystick.
-// (https://wiki.libsdl.org/SDL_JoystickGetHat)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickGetHat)
 func (joy *Joystick) Hat(hat JoystickHat) byte {
 	return (byte)(C.SDL_JoystickGetHat(joy.cptr(), C.int(hat)))
 }
 
 // Ball returns the ball axis change since the last poll.
-// (https://wiki.libsdl.org/SDL_JoystickGetBall)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickGetBall)
 func (joy *Joystick) Ball(ball int, dx, dy *int32) int {
 	_dx := (*C.int)(unsafe.Pointer(dx))
 	_dy := (*C.int)(unsafe.Pointer(dy))
@@ -768,7 +768,7 @@ func (joy *Joystick) Ball(ball int, dx, dy *int32) int {
 }
 
 // Button the current state of a button on a joystick.
-// (https://wiki.libsdl.org/SDL_JoystickGetButton)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickGetButton)
 func (joy *Joystick) Button(button int) byte {
 	return (byte)(C.SDL_JoystickGetButton(joy.cptr(), C.int(button)))
 }
@@ -782,49 +782,49 @@ func (joy *Joystick) Button(button int) byte {
 //
 // Returns error if rumble isn't supported on this joystick.
 //
-// (https://wiki.libsdl.org/SDL_JoystickRumble)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickRumble)
 func (joy *Joystick) Rumble(lowFrequencyRumble, highFrequencyRumble uint16, durationMS uint32) error {
 	return errorFromInt(int(C.SDL_JoystickRumble(joy.cptr(), C.Uint16(lowFrequencyRumble), C.Uint16(highFrequencyRumble), C.Uint32(durationMS))))
 }
 
 // RumbleTriggers starts a rumble effect in the joystick's triggers.
-// (https://wiki.libsdl.org/SDL_JoystickRumbleTriggers)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickRumbleTriggers)
 func (joy *Joystick) RumbleTriggers(leftRumble, rightRumble uint16, durationMS uint32) error {
 	return errorFromInt(int(C.SDL_JoystickRumbleTriggers(joy.cptr(), C.Uint16(leftRumble), C.Uint16(rightRumble), C.Uint32(durationMS))))
 }
 
 // HasLED returns whether a joystick has an LED.
-// (https://wiki.libsdl.org/SDL_JoystickHasLED)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickHasLED)
 func (joy *Joystick) HasLED() bool {
 	return C.SDL_JoystickHasLED(joy.cptr()) == C.SDL_TRUE
 }
 
 // SetLED updates a joystick's LED color.
-// (https://wiki.libsdl.org/SDL_JoystickSetLED)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickSetLED)
 func (joy *Joystick) SetLED(red, green, blue uint8) error {
 	return errorFromInt(int(C.SDL_JoystickSetLED(joy.cptr(), C.Uint8(red), C.Uint8(green), C.Uint8(blue))))
 }
 
 // Close closes a joystick previously opened with JoystickOpen().
-// (https://wiki.libsdl.org/SDL_JoystickClose)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickClose)
 func (joy *Joystick) Close() {
 	C.SDL_JoystickClose(joy.cptr())
 }
 
 // CurrentPowerLevel returns the battery level of a joystick as JoystickPowerLevel.
-// (https://wiki.libsdl.org/SDL_JoystickCurrentPowerLevel)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickCurrentPowerLevel)
 func (joy *Joystick) CurrentPowerLevel() JoystickPowerLevel {
 	return JoystickPowerLevel(C.SDL_JoystickCurrentPowerLevel(joy.cptr()))
 }
 
 // HasRumble queries whether a game controller has rumble support.
-// (https://wiki.libsdl.org/SDL_JoystickHasRumble)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickHasRumble)
 func (ctrl *Joystick) HasRumble() bool {
 	return C.SDL_JoystickHasRumble(ctrl.cptr()) == C.SDL_TRUE
 }
 
 // HasRumbleTriggers queries whether a game controller has rumble support on triggers.
-// (https://wiki.libsdl.org/SDL_JoystickHasRumbleTriggers)
+// (https://wiki.libsdl.org/SDL2/SDL_JoystickHasRumbleTriggers)
 func (ctrl *Joystick) HasRumbleTriggers() bool {
 	return C.SDL_JoystickHasRumbleTriggers(ctrl.cptr()) == C.SDL_TRUE
 }

@@ -30,7 +30,7 @@ const (
 )
 
 // Version contains information about the version of SDL in use.
-// (https://wiki.libsdl.org/SDL_version)
+// (https://wiki.libsdl.org/SDL2/SDL_version)
 type Version struct {
 	Major uint8 // major version
 	Minor uint8 // minor version
@@ -43,7 +43,7 @@ func (v *Version) cptr() *C.SDL_version {
 }
 
 // VERSION fills the selected struct with the version of SDL in use.
-// (https://wiki.libsdl.org/SDL_VERSION)
+// (https://wiki.libsdl.org/SDL2/SDL_VERSION)
 func VERSION(v *Version) {
 	v.Major = MAJOR_VERSION
 	v.Minor = MINOR_VERSION
@@ -51,31 +51,31 @@ func VERSION(v *Version) {
 }
 
 // VERSIONNUM converts separate version components into a single numeric value.
-// (https://wiki.libsdl.org/SDL_VERSIONNUM)
+// (https://wiki.libsdl.org/SDL2/SDL_VERSIONNUM)
 func VERSIONNUM(x, y, z int) int {
 	return (x*1000 + y*100 + z)
 }
 
 // COMPILEDVERSION returns the SDL version number that you compiled against.
-// (https://wiki.libsdl.org/SDL_COMPILEDVERSION)
+// (https://wiki.libsdl.org/SDL2/SDL_COMPILEDVERSION)
 func COMPILEDVERSION() int {
 	return VERSIONNUM(MAJOR_VERSION, MINOR_VERSION, PATCHLEVEL)
 }
 
 // VERSION_ATLEAST reports whether the SDL version compiled against is at least as new as the specified version.
-// (https://wiki.libsdl.org/SDL_VERSION_ATLEAST)
+// (https://wiki.libsdl.org/SDL2/SDL_VERSION_ATLEAST)
 func VERSION_ATLEAST(x, y, z int) bool {
 	return COMPILEDVERSION() >= VERSIONNUM(x, y, z)
 }
 
 // GetVersion returns the version of SDL that is linked against your program.
-// (https://wiki.libsdl.org/SDL_GetVersion)
+// (https://wiki.libsdl.org/SDL2/SDL_GetVersion)
 func GetVersion(v *Version) {
 	C.SDL_GetVersion(v.cptr())
 }
 
 // GetRevision returns the code revision of SDL that is linked against your program.
-// (https://wiki.libsdl.org/SDL_GetRevision)
+// (https://wiki.libsdl.org/SDL2/SDL_GetRevision)
 func GetRevision() string {
 	return (string)(C.GoString(C.SDL_GetRevision()))
 }

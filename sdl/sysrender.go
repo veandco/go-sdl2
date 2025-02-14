@@ -5,11 +5,11 @@ import "C"
 import "unsafe"
 
 // Texture contains an efficient, driver-specific representation of pixel data.
-// (https://wiki.libsdl.org/SDL_Texture)
+// (https://wiki.libsdl.org/SDL2/SDL_Texture)
 type Texture C.SDL_Texture
 
 // Renderer contains a rendering state.
-// (https://wiki.libsdl.org/SDL_Renderer)
+// (https://wiki.libsdl.org/SDL2/SDL_Renderer)
 type Renderer C.SDL_Renderer
 
 func (t *Texture) cptr() *C.SDL_Texture {

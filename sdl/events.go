@@ -226,7 +226,7 @@ var (
 )
 
 // Enumeration of the types of events that can be delivered.
-// (https://wiki.libsdl.org/SDL_EventType)
+// (https://wiki.libsdl.org/SDL2/SDL_EventType)
 type EventType uint32
 
 const (
@@ -322,7 +322,7 @@ const (
 )
 
 // Actions for PeepEvents().
-// (https://wiki.libsdl.org/SDL_PeepEvents)
+// (https://wiki.libsdl.org/SDL2/SDL_PeepEvents)
 type EventAction C.SDL_eventaction
 
 const (
@@ -332,7 +332,7 @@ const (
 )
 
 // Toggles for different event state functions.
-// (https://wiki.libsdl.org/SDL_EventState)
+// (https://wiki.libsdl.org/SDL2/SDL_EventState)
 type EventStateConstant int
 
 const (
@@ -343,21 +343,21 @@ const (
 )
 
 // Event is a union of all event structures used in SDL.
-// (https://wiki.libsdl.org/SDL_Event)
+// (https://wiki.libsdl.org/SDL2/SDL_Event)
 type Event interface {
 	GetType() EventType   // GetType returns the event type
 	GetTimestamp() uint32 // GetTimestamp returns the timestamp of the event
 }
 
 // CEvent is a union of all event structures used in SDL.
-// (https://wiki.libsdl.org/SDL_Event)
+// (https://wiki.libsdl.org/SDL2/SDL_Event)
 type CEvent struct {
 	Type EventType
 	_    [52]byte // padding
 }
 
 // CommonEvent contains common event data.
-// (https://wiki.libsdl.org/SDL_Event)
+// (https://wiki.libsdl.org/SDL2/SDL_Event)
 type CommonEvent struct {
 	Type      EventType // the event type
 	Timestamp uint32    // timestamp of the event
@@ -376,12 +376,12 @@ func (e CommonEvent) GetTimestamp() uint32 {
 }
 
 // DisplayEvent contains common event data.
-// (https://wiki.libsdl.org/SDL_Event)
+// (https://wiki.libsdl.org/SDL2/SDL_Event)
 type DisplayEvent struct {
 	Type      EventType // the event type
 	Timestamp uint32    // timestamp of the event
 	Display   uint32    // the associated display index
-	Event     uint8     // event subtype for display events (https://wiki.libsdl.org/SDL_DisplayEventID)
+	Event     uint8     // event subtype for display events (https://wiki.libsdl.org/SDL2/SDL_DisplayEventID)
 	Data1     int32     // event dependent data
 }
 
@@ -398,12 +398,12 @@ func (e DisplayEvent) GetTimestamp() uint32 {
 }
 
 // WindowEvent contains window state change event data.
-// (https://wiki.libsdl.org/SDL_WindowEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_WindowEvent)
 type WindowEvent struct {
 	Type      EventType     // WINDOWEVENT
 	Timestamp uint32        // timestamp of the event
 	WindowID  uint32        // the associated window
-	Event     WindowEventID // (https://wiki.libsdl.org/SDL_WindowEventID)
+	Event     WindowEventID // (https://wiki.libsdl.org/SDL2/SDL_WindowEventID)
 	Data1     int32         // event dependent data
 	Data2     int32         // event dependent data
 }
@@ -420,7 +420,7 @@ func (e WindowEvent) GetTimestamp() uint32 {
 }
 
 // KeyboardEvent contains keyboard key down event information.
-// (https://wiki.libsdl.org/SDL_KeyboardEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_KeyboardEvent)
 type KeyboardEvent struct {
 	Type      EventType   // KEYDOWN, KEYUP
 	Timestamp uint32      // timestamp of the event
@@ -442,7 +442,7 @@ func (e KeyboardEvent) GetTimestamp() uint32 {
 }
 
 // TextEditingEvent contains keyboard text editing event information.
-// (https://wiki.libsdl.org/SDL_TextEditingEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_TextEditingEvent)
 type TextEditingEvent struct {
 	Type      EventType // TEXTEDITING
 	Timestamp uint32    // timestamp of the event
@@ -469,7 +469,7 @@ func (e TextEditingEvent) GetText() string {
 }
 
 // TextInputEvent contains keyboard text input event information.
-// (https://wiki.libsdl.org/SDL_TextInputEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_TextInputEvent)
 type TextInputEvent struct {
 	Type      EventType // TEXTINPUT
 	Timestamp uint32    // timestamp of the event
@@ -494,7 +494,7 @@ func (e TextInputEvent) GetText() string {
 }
 
 // MouseMotionEvent contains mouse motion event information.
-// (https://wiki.libsdl.org/SDL_MouseMotionEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_MouseMotionEvent)
 type MouseMotionEvent struct {
 	Type      EventType  // MOUSEMOTION
 	Timestamp uint32     // timestamp of the event
@@ -519,7 +519,7 @@ func (e MouseMotionEvent) GetTimestamp() uint32 {
 }
 
 // MouseButtonEvent contains mouse button event information.
-// (https://wiki.libsdl.org/SDL_MouseButtonEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_MouseButtonEvent)
 type MouseButtonEvent struct {
 	Type      EventType   // MOUSEBUTTONDOWN, MOUSEBUTTONUP
 	Timestamp uint32      // timestamp of the event
@@ -544,7 +544,7 @@ func (e MouseButtonEvent) GetTimestamp() uint32 {
 }
 
 // MouseWheelEvent contains mouse wheel event information.
-// (https://wiki.libsdl.org/SDL_MouseWheelEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_MouseWheelEvent)
 type MouseWheelEvent struct {
 	Type      EventType // MOUSEWHEEL
 	Timestamp uint32    // timestamp of the event
@@ -571,7 +571,7 @@ func (e MouseWheelEvent) GetTimestamp() uint32 {
 }
 
 // JoyAxisEvent contains joystick axis motion event information.
-// (https://wiki.libsdl.org/SDL_JoyAxisEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_JoyAxisEvent)
 type JoyAxisEvent struct {
 	Type      EventType  // JOYAXISMOTION
 	Timestamp uint32     // timestamp of the event
@@ -592,7 +592,7 @@ func (e JoyAxisEvent) GetTimestamp() uint32 {
 }
 
 // JoyBallEvent contains joystick trackball motion event information.
-// (https://wiki.libsdl.org/SDL_JoyBallEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_JoyBallEvent)
 type JoyBallEvent struct {
 	Type      EventType  // JOYBALLMOTION
 	Timestamp uint32     // timestamp of the event
@@ -614,7 +614,7 @@ func (e JoyBallEvent) GetTimestamp() uint32 {
 }
 
 // JoyHatEvent contains joystick hat position change event information.
-// (https://wiki.libsdl.org/SDL_JoyHatEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_JoyHatEvent)
 type JoyHatEvent struct {
 	Type      EventType   // JOYHATMOTION
 	Timestamp uint32      // timestamp of the event
@@ -635,7 +635,7 @@ func (e JoyHatEvent) GetTimestamp() uint32 {
 }
 
 // JoyButtonEvent contains joystick button event information.
-// (https://wiki.libsdl.org/SDL_JoyButtonEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_JoyButtonEvent)
 type JoyButtonEvent struct {
 	Type      EventType   // JOYBUTTONDOWN, JOYBUTTONUP
 	Timestamp uint32      // timestamp of the event
@@ -656,7 +656,7 @@ func (e JoyButtonEvent) GetTimestamp() uint32 {
 }
 
 // JoyDeviceAddedEvent contains joystick device event information.
-// (https://wiki.libsdl.org/SDL_JoyDeviceEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_JoyDeviceEvent)
 type JoyDeviceAddedEvent struct {
 	Type      EventType  // JOYDEVICEADDED
 	Timestamp uint32     // the timestamp of the event
@@ -676,7 +676,7 @@ func (e JoyDeviceAddedEvent) GetTimestamp() uint32 {
 }
 
 // JoyDeviceRemovedEvent contains joystick device event information.
-// (https://wiki.libsdl.org/SDL_JoyDeviceEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_JoyDeviceEvent)
 type JoyDeviceRemovedEvent struct {
 	Type      EventType  // JOYDEVICEREMOVED
 	Timestamp uint32     // the timestamp of the event
@@ -694,7 +694,7 @@ func (e JoyDeviceRemovedEvent) GetTimestamp() uint32 {
 }
 
 // JoyBatteryEvent contains joystick button event information.
-// (https://wiki.libsdl.org/SDL_JoyBatteryEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_JoyBatteryEvent)
 type JoyBatteryEvent struct {
 	Type      EventType          // JOYBATTERYUPDATED
 	Timestamp uint32             // timestamp of the event
@@ -714,12 +714,12 @@ func (e JoyBatteryEvent) GetTimestamp() uint32 {
 }
 
 // ControllerAxisEvent contains game controller axis motion event information.
-// (https://wiki.libsdl.org/SDL_ControllerAxisEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_ControllerAxisEvent)
 type ControllerAxisEvent struct {
 	Type      EventType          // CONTROLLERAXISMOTION
 	Timestamp uint32             // the timestamp of the event
 	Which     JoystickID         // the joystick instance id
-	Axis      GameControllerAxis // the controller axis (https://wiki.libsdl.org/SDL_GameControllerAxis)
+	Axis      GameControllerAxis // the controller axis (https://wiki.libsdl.org/SDL2/SDL_GameControllerAxis)
 	Value     int16              // the axis value (range: -32768 to 32767)
 }
 type cControllerAxisEvent C.SDL_ControllerAxisEvent
@@ -735,12 +735,12 @@ func (e ControllerAxisEvent) GetTimestamp() uint32 {
 }
 
 // ControllerButtonEvent contains game controller button event information.
-// (https://wiki.libsdl.org/SDL_ControllerButtonEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_ControllerButtonEvent)
 type ControllerButtonEvent struct {
 	Type      EventType            // CONTROLLERBUTTONDOWN, CONTROLLERBUTTONUP
 	Timestamp uint32               // the timestamp of the event
 	Which     JoystickID           // the joystick instance id
-	Button    GameControllerButton // the controller button (https://wiki.libsdl.org/SDL_GameControllerButton)
+	Button    GameControllerButton // the controller button (https://wiki.libsdl.org/SDL2/SDL_GameControllerButton)
 	State     ButtonState          // PRESSED, RELEASED
 }
 type cControllerButtonEvent C.SDL_ControllerButtonEvent
@@ -756,7 +756,7 @@ func (e ControllerButtonEvent) GetTimestamp() uint32 {
 }
 
 // ControllerDeviceEvent contains controller device event information.
-// (https://wiki.libsdl.org/SDL_ControllerDeviceEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_ControllerDeviceEvent)
 type ControllerDeviceEvent struct {
 	Type      EventType  // CONTROLLERDEVICEADDED, CONTROLLERDEVICEREMOVED, SDL_CONTROLLERDEVICEREMAPPED
 	Timestamp uint32     // the timestamp of the event
@@ -775,7 +775,7 @@ func (e ControllerDeviceEvent) GetTimestamp() uint32 {
 }
 
 // ControllerSensorEvent contains data from sensors such as accelerometer and gyroscope
-// (https://wiki.libsdl.org/SDL_ControllerSensorEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_ControllerSensorEvent)
 type ControllerSensorEvent struct {
 	Type        EventType  // SDL_CONTROLLERSENSORUPDATE
 	Timestamp   uint32     // In milliseconds, populated using SDL_GetTicks()
@@ -797,7 +797,7 @@ func (e ControllerSensorEvent) GetTimestamp() uint32 {
 }
 
 // AudioDeviceEvent contains audio device event information.
-// (https://wiki.libsdl.org/SDL_AudioDeviceEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_AudioDeviceEvent)
 type AudioDeviceEvent struct {
 	Type      EventType // AUDIODEVICEADDED, AUDIODEVICEREMOVED
 	Timestamp uint32    // the timestamp of the event
@@ -817,7 +817,7 @@ func (e AudioDeviceEvent) GetTimestamp() uint32 {
 }
 
 // TouchFingerEvent contains finger touch event information.
-// (https://wiki.libsdl.org/SDL_TouchFingerEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_TouchFingerEvent)
 type TouchFingerEvent struct {
 	Type      EventType // FINGERMOTION, FINGERDOWN, FINGERUP
 	Timestamp uint32    // timestamp of the event
@@ -843,7 +843,7 @@ func (e TouchFingerEvent) GetTimestamp() uint32 {
 }
 
 // MultiGestureEvent contains multiple finger gesture event information.
-// (https://wiki.libsdl.org/SDL_MultiGestureEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_MultiGestureEvent)
 type MultiGestureEvent struct {
 	Type       EventType // MULTIGESTURE
 	Timestamp  uint32    // timestamp of the event
@@ -867,7 +867,7 @@ func (e MultiGestureEvent) GetTimestamp() uint32 {
 }
 
 // DollarGestureEvent contains complex gesture event information.
-// (https://wiki.libsdl.org/SDL_DollarGestureEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_DollarGestureEvent)
 type DollarGestureEvent struct {
 	Type       EventType // DOLLARGESTURE, DOLLARRECORD
 	Timestamp  uint32    // timestamp of the event
@@ -891,7 +891,7 @@ func (e DollarGestureEvent) GetTimestamp() uint32 {
 }
 
 // DropEvent contains an event used to request a file open by the system.
-// (https://wiki.libsdl.org/SDL_DropEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_DropEvent)
 type DropEvent struct {
 	Type      EventType // DROPFILE, DROPTEXT, DROPBEGIN, DROPCOMPLETE
 	Timestamp uint32    // timestamp of the event
@@ -911,7 +911,7 @@ func (e DropEvent) GetTimestamp() uint32 {
 }
 
 // SensorEvent contains data from sensors such as accelerometer and gyroscope
-// (https://wiki.libsdl.org/SDL_SensorEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorEvent)
 type SensorEvent struct {
 	Type        EventType  // SDL_SENSORUPDATE
 	Timestamp   uint32     // In milliseconds, populated using SDL_GetTicks()
@@ -932,7 +932,7 @@ func (e SensorEvent) GetTimestamp() uint32 {
 }
 
 // RenderEvent contains render event information.
-// (https://wiki.libsdl.org/SDL_EventType)
+// (https://wiki.libsdl.org/SDL2/SDL_EventType)
 type RenderEvent struct {
 	Type      EventType // the event type
 	Timestamp uint32    // timestamp of the event
@@ -949,7 +949,7 @@ func (e RenderEvent) GetTimestamp() uint32 {
 }
 
 // QuitEvent contains the "quit requested" event.
-// (https://wiki.libsdl.org/SDL_QuitEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_QuitEvent)
 type QuitEvent struct {
 	Type      EventType // QUIT
 	Timestamp uint32    // timestamp of the event
@@ -982,7 +982,7 @@ func (e OSEvent) GetTimestamp() uint32 {
 }
 
 // ClipboardEvent contains clipboard event information.
-// (https://wiki.libsdl.org/SDL_EventType)
+// (https://wiki.libsdl.org/SDL2/SDL_EventType)
 type ClipboardEvent struct {
 	Type      EventType // CLIPBOARDUPDATE
 	Timestamp uint32    // timestamp of the event
@@ -999,7 +999,7 @@ func (e ClipboardEvent) GetTimestamp() uint32 {
 }
 
 // UserEvent contains an application-defined event type.
-// (https://wiki.libsdl.org/SDL_UserEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_UserEvent)
 type UserEvent struct {
 	Type      EventType      // value obtained from RegisterEvents()
 	Timestamp uint32         // timestamp of the event
@@ -1021,7 +1021,7 @@ func (e UserEvent) GetTimestamp() uint32 {
 }
 
 // SysWMEvent contains a video driver dependent system event.
-// (https://wiki.libsdl.org/SDL_SysWMEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_SysWMEvent)
 type SysWMEvent struct {
 	Type      EventType // SYSWMEVENT
 	Timestamp uint32    // timestamp of the event
@@ -1040,7 +1040,7 @@ func (e SysWMEvent) GetTimestamp() uint32 {
 }
 
 // EventFilter is the function to call when an event happens.
-// (https://wiki.libsdl.org/SDL_SetEventFilter)
+// (https://wiki.libsdl.org/SDL2/SDL_SetEventFilter)
 type EventFilter interface {
 	FilterEvent(e Event, userdata interface{}) bool
 }
@@ -1061,13 +1061,13 @@ func (action EventAction) c() C.SDL_eventaction {
 }
 
 // PumpEvents pumps the event loop, gathering events from the input devices.
-// (https://wiki.libsdl.org/SDL_PumpEvents)
+// (https://wiki.libsdl.org/SDL2/SDL_PumpEvents)
 func PumpEvents() {
 	C.SDL_PumpEvents()
 }
 
 // PeepEvents checks the event queue for messages and optionally return them.
-// (https://wiki.libsdl.org/SDL_PeepEvents)
+// (https://wiki.libsdl.org/SDL2/SDL_PeepEvents)
 func PeepEvents(events []Event, action EventAction, minType, maxType EventType) (storedEvents int, err error) {
 	if events == nil {
 		return 0, nil
@@ -1098,31 +1098,31 @@ func PeepEvents(events []Event, action EventAction, minType, maxType EventType) 
 }
 
 // HasEvent checks for the existence of certain event types in the event queue.
-// (https://wiki.libsdl.org/SDL_HasEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_HasEvent)
 func HasEvent(type_ EventType) bool {
 	return C.SDL_HasEvent(C.Uint32(type_)) != 0
 }
 
 // HasEvents checks for the existence of a range of event types in the event queue.
-// (https://wiki.libsdl.org/SDL_HasEvents)
+// (https://wiki.libsdl.org/SDL2/SDL_HasEvents)
 func HasEvents(minType, maxType EventType) bool {
 	return C.SDL_HasEvents(C.Uint32(minType), C.Uint32(maxType)) != 0
 }
 
 // FlushEvent clears events from the event queue.
-// (https://wiki.libsdl.org/SDL_FlushEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_FlushEvent)
 func FlushEvent(type_ uint32) {
 	C.SDL_FlushEvent(C.Uint32(type_))
 }
 
 // FlushEvents clears events from the event queue.
-// (https://wiki.libsdl.org/SDL_FlushEvents)
+// (https://wiki.libsdl.org/SDL2/SDL_FlushEvents)
 func FlushEvents(minType, maxType EventType) {
 	C.SDL_FlushEvents(C.Uint32(minType), C.Uint32(maxType))
 }
 
 // PollEvent polls for currently pending events.
-// (https://wiki.libsdl.org/SDL_PollEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_PollEvent)
 func PollEvent() Event {
 	ret := C.PollEvent()
 	if ret == 0 {
@@ -1455,7 +1455,7 @@ func cEvent(event Event) *CEvent {
 }
 
 // WaitEventTimeout waits until the specified timeout (in milliseconds) for the next available event.
-// (https://wiki.libsdl.org/SDL_WaitEventTimeout)
+// (https://wiki.libsdl.org/SDL2/SDL_WaitEventTimeout)
 func WaitEventTimeout(timeout int) Event {
 	var cevent CEvent
 	_event := (*C.SDL_Event)(unsafe.Pointer(&cevent))
@@ -1467,7 +1467,7 @@ func WaitEventTimeout(timeout int) Event {
 }
 
 // WaitEvent waits indefinitely for the next available event.
-// (https://wiki.libsdl.org/SDL_WaitEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_WaitEvent)
 func WaitEvent() Event {
 	var cevent CEvent
 	_event := (*C.SDL_Event)(unsafe.Pointer(&cevent))
@@ -1479,7 +1479,7 @@ func WaitEvent() Event {
 }
 
 // PushEvent adds an event to the event queue.
-// (https://wiki.libsdl.org/SDL_PushEvent)
+// (https://wiki.libsdl.org/SDL2/SDL_PushEvent)
 func PushEvent(event Event) (filtered bool, err error) {
 	_event := (*C.SDL_Event)(unsafe.Pointer(cEvent(event)))
 	if ok := int(C.SDL_PushEvent(_event)); ok < 0 {
@@ -1547,7 +1547,7 @@ func wrapEventFilterCallback(filter EventFilter, e *C.SDL_Event, userdata interf
 }
 
 // SetEventFilter sets up a filter to process all events before they change internal state and are posted to the internal event queue.
-// (https://wiki.libsdl.org/SDL_SetEventFilter)
+// (https://wiki.libsdl.org/SDL2/SDL_SetEventFilter)
 func SetEventFilter(filter EventFilter, userdata interface{}) {
 	if eventFilterCache == nil && filter == nil {
 		// nothing to do...
@@ -1568,13 +1568,13 @@ func SetEventFilter(filter EventFilter, userdata interface{}) {
 }
 
 // SetEventFilterFunc sets up a function to process all events before they change internal state and are posted to the internal event queue.
-// (https://wiki.libsdl.org/SDL_SetEventFilter)
+// (https://wiki.libsdl.org/SDL2/SDL_SetEventFilter)
 func SetEventFilterFunc(filterFunc eventFilterFunc, userdata interface{}) {
 	SetEventFilter(filterFunc, userdata)
 }
 
 // GetEventFilter queries the current event filter.
-// (https://wiki.libsdl.org/SDL_GetEventFilter)
+// (https://wiki.libsdl.org/SDL2/SDL_GetEventFilter)
 func GetEventFilter() EventFilter {
 	return eventFilterCache
 }
@@ -1584,20 +1584,20 @@ func isCEventFilterSet() bool {
 }
 
 // FilterEvents run a specific filter function on the current event queue, removing any events for which the filter returns 0.
-// (https://wiki.libsdl.org/SDL_FilterEvents)
+// (https://wiki.libsdl.org/SDL2/SDL_FilterEvents)
 func FilterEvents(filter EventFilter, userdata interface{}) {
 	context := newEventFilterCallbackContext(filter, userdata)
 	C.filterEvents(context.cptr())
 }
 
 // FilterEventsFunc run a specific function on the current event queue, removing any events for which the filter returns 0.
-// (https://wiki.libsdl.org/SDL_FilterEvents)
+// (https://wiki.libsdl.org/SDL2/SDL_FilterEvents)
 func FilterEventsFunc(filter eventFilterFunc, userdata interface{}) {
 	FilterEvents(filter, userdata)
 }
 
 // AddEventWatch adds a callback to be triggered when an event is added to the event queue.
-// (https://wiki.libsdl.org/SDL_AddEventWatch)
+// (https://wiki.libsdl.org/SDL2/SDL_AddEventWatch)
 func AddEventWatch(filter EventFilter, userdata interface{}) EventWatchHandle {
 	context := newEventFilterCallbackContext(filter, userdata)
 	C.addEventWatch(context.cptr())
@@ -1605,13 +1605,13 @@ func AddEventWatch(filter EventFilter, userdata interface{}) EventWatchHandle {
 }
 
 // AddEventWatchFunc adds a callback function to be triggered when an event is added to the event queue.
-// (https://wiki.libsdl.org/SDL_AddEventWatch)
+// (https://wiki.libsdl.org/SDL2/SDL_AddEventWatch)
 func AddEventWatchFunc(filterFunc eventFilterFunc, userdata interface{}) EventWatchHandle {
 	return AddEventWatch(filterFunc, userdata)
 }
 
 // DelEventWatch removes an event watch callback added with AddEventWatch().
-// (https://wiki.libsdl.org/SDL_DelEventWatch)
+// (https://wiki.libsdl.org/SDL2/SDL_DelEventWatch)
 func DelEventWatch(handle EventWatchHandle) {
 	context, ok := eventWatches[handle]
 	if !ok {
@@ -1622,19 +1622,19 @@ func DelEventWatch(handle EventWatchHandle) {
 }
 
 // EventState sets the state of processing events by type.
-// (https://wiki.libsdl.org/SDL_EventState)
+// (https://wiki.libsdl.org/SDL2/SDL_EventState)
 func EventState(type_ EventType, state EventStateConstant) uint8 {
 	return uint8(C.SDL_EventState(C.Uint32(type_), C.int(state)))
 }
 
 // GetEventState returns the current processing state of the specified event
-// (https://wiki.libsdl.org/SDL_EventState)
+// (https://wiki.libsdl.org/SDL2/SDL_EventState)
 func GetEventState(type_ EventType) uint8 {
 	return uint8(C.SDL_EventState(C.Uint32(type_), C.int(QUERY)))
 }
 
 // RegisterEvents allocates a set of user-defined events, and return the beginning event number for that set of events.
-// (https://wiki.libsdl.org/SDL_RegisterEvents)
+// (https://wiki.libsdl.org/SDL2/SDL_RegisterEvents)
 func RegisterEvents(numEvents int) uint32 {
 	return uint32(C.SDL_RegisterEvents(C.int(numEvents)))
 }

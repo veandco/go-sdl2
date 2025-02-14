@@ -198,27 +198,27 @@ func (info *HIDDeviceInfo) Path() string {
 }
 
 // HIDInit initializes the HIDAPI library.
-// (https://wiki.libsdl.org/SDL_hid_init)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_init)
 func HIDInit() (err error) {
 	ret := C.SDL_hid_init()
 	return errorFromInt(int(ret))
 }
 
 // HIDExit finalizes the HIDAPI library.
-// (https://wiki.libsdl.org/SDL_hid_exit)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_exit)
 func HIDExit() (err error) {
 	ret := C.SDL_hid_exit()
 	return errorFromInt(int(ret))
 }
 
 // HIDDeviceChangeCount checks to see if devices may have been added or removed.
-// (https://wiki.libsdl.org/SDL_hid_device_change_count)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_device_change_count)
 func HIDDeviceChangeCount() (n uint32) {
 	return uint32(C.SDL_hid_device_change_count())
 }
 
 // HIDEnumerate enumerates the HID devices.
-// (https://wiki.libsdl.org/SDL_hid_enumerate)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_enumerate)
 func HIDEnumerate(vendorID, productID uint16) (info *HIDDeviceInfo) {
 	_vendorID := C.Uint16(vendorID)
 	_productID := C.Uint16(productID)
@@ -227,14 +227,14 @@ func HIDEnumerate(vendorID, productID uint16) (info *HIDDeviceInfo) {
 }
 
 // HIDFreeEnumeration frees an enumeration Linked List.
-// (https://wiki.libsdl.org/SDL_hid_free_enumeration)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_free_enumeration)
 func HIDFreeEnumeration(info *HIDDeviceInfo) {
 	_info := (*C.SDL_hid_device_info)(unsafe.Pointer(info))
 	C.SDL_hid_free_enumeration(_info)
 }
 
 // HIDOpen opens a HID device using a Vendor ID (VID), Product ID (PID) and optionally a serial number.
-// (https://wiki.libsdl.org/SDL_hid_open)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_open)
 func HIDOpen(vendorID, productID uint16, _serialNumber *C.wchar_t) (device *HIDDevice) {
 	_vendorID := C.Uint16(vendorID)
 	_productID := C.Uint16(productID)
@@ -243,7 +243,7 @@ func HIDOpen(vendorID, productID uint16, _serialNumber *C.wchar_t) (device *HIDD
 }
 
 // HIDOpenPath opens a HID device by its path name.
-// (https://wiki.libsdl.org/SDL_hid_open_path)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_open_path)
 func HIDOpenPath(path string, exclusive bool) (device *HIDDevice) {
 	_path := C.CString(path)
 	defer C.free(unsafe.Pointer(_path))
@@ -256,7 +256,7 @@ func HIDOpenPath(path string, exclusive bool) (device *HIDDevice) {
 }
 
 // Write writes an Output report to a HID device.
-// (https://wiki.libsdl.org/SDL_hid_write)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_write)
 func (device *HIDDevice) Write(data []byte) (n int, err error) {
 	_length := C.size_t(len(data))
 	_data := (*C.uchar)(unsafe.Pointer(&data[0]))
@@ -266,7 +266,7 @@ func (device *HIDDevice) Write(data []byte) (n int, err error) {
 }
 
 // ReadTimeout reads an Input report from a HID device with timeout.
-// (https://wiki.libsdl.org/SDL_hid_read_timeout)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_read_timeout)
 func (device *HIDDevice) ReadTimeout(data []byte, milliseconds int) (n int, err error) {
 	_length := C.size_t(len(data))
 	_data := (*C.uchar)(unsafe.Pointer(&data[0]))
@@ -277,7 +277,7 @@ func (device *HIDDevice) ReadTimeout(data []byte, milliseconds int) (n int, err 
 }
 
 // Read an Input report from a HID device.
-// (https://wiki.libsdl.org/SDL_hid_read)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_read)
 func (device *HIDDevice) Read(data []byte) (n int, err error) {
 	_length := C.size_t(len(data))
 	_data := (*C.uchar)(unsafe.Pointer(&data[0]))
@@ -287,7 +287,7 @@ func (device *HIDDevice) Read(data []byte) (n int, err error) {
 }
 
 // SetNonBlocking sets the device handle to be non-blocking.
-// (https://wiki.libsdl.org/SDL_hid_set_nonblocking)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_set_nonblocking)
 func (device *HIDDevice) SetNonBlocking(nonblock bool) (err error) {
 	_device := (*C.SDL_hid_device)(device)
 	_nonblock := C.int(Btoi(nonblock))
@@ -295,7 +295,7 @@ func (device *HIDDevice) SetNonBlocking(nonblock bool) (err error) {
 }
 
 // SendFeatureReport sends a Feature report to the device.
-// (https://wiki.libsdl.org/SDL_hid_send_feature_report)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_send_feature_report)
 func (device *HIDDevice) SendFeatureReport(data []byte) (n int, err error) {
 	_length := C.size_t(len(data))
 	_data := (*C.uchar)(unsafe.Pointer(&data[0]))
@@ -305,7 +305,7 @@ func (device *HIDDevice) SendFeatureReport(data []byte) (n int, err error) {
 }
 
 // GetFeatureReport gets a feature report from a HID device.
-// (https://wiki.libsdl.org/SDL_hid_get_feature_report)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_get_feature_report)
 func (device *HIDDevice) GetFeatureReport(data []byte) (n int, err error) {
 	_length := C.size_t(len(data))
 	_data := (*C.uchar)(unsafe.Pointer(&data[0]))
@@ -315,35 +315,35 @@ func (device *HIDDevice) GetFeatureReport(data []byte) (n int, err error) {
 }
 
 // Close closes a HID device.
-// (https://wiki.libsdl.org/SDL_hid_close)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_close)
 func (device *HIDDevice) Close() {
 	_device := (*C.SDL_hid_device)(device)
 	C.SDL_hid_close(_device)
 }
 
 // GetManufacturerString gets The Manufacturer String from a HID device.
-// (https://wiki.libsdl.org/SDL_hid_get_manufacturer_string)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_get_manufacturer_string)
 func (device *HIDDevice) GetManufacturerString(_str *C.wchar_t, _maxlen C.size_t) (err error) {
 	_device := (*C.SDL_hid_device)(device)
 	return errorFromInt(int(C.SDL_hid_get_manufacturer_string(_device, _str, _maxlen)))
 }
 
 // GetProductString gets The Product String from a HID device.
-// (https://wiki.libsdl.org/SDL_hid_get_product_string)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_get_product_string)
 func (device *HIDDevice) GetProductString(_str *C.wchar_t, _maxlen C.size_t) (err error) {
 	_device := (*C.SDL_hid_device)(device)
 	return errorFromInt(int(C.SDL_hid_get_product_string(_device, _str, _maxlen)))
 }
 
 // GetSerialNumberString gets The SerialNumber String from a HID device.
-// (https://wiki.libsdl.org/SDL_hid_get_serial_number_string)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_get_serial_number_string)
 func (device *HIDDevice) GetSerialNumberString(_str *C.wchar_t, _maxlen C.size_t) (err error) {
 	_device := (*C.SDL_hid_device)(device)
 	return errorFromInt(int(C.SDL_hid_get_serial_number_string(_device, _str, _maxlen)))
 }
 
 // GetIndexedString gets a string from a HID device, based on its string index.
-// (https://wiki.libsdl.org/SDL_hid_get_indexed_string)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_get_indexed_string)
 func (device *HIDDevice) GetIndexedString(index int, _str *C.wchar_t, _maxlen C.size_t) (err error) {
 	_device := (*C.SDL_hid_device)(device)
 	_index := C.int(index)
@@ -351,7 +351,7 @@ func (device *HIDDevice) GetIndexedString(index int, _str *C.wchar_t, _maxlen C.
 }
 
 // HIDBLEScan starts or stops a BLE scan on iOS and tvOS to pair Steam Controllers.
-// (https://wiki.libsdl.org/SDL_hid_ble_scan)
+// (https://wiki.libsdl.org/SDL2/SDL_hid_ble_scan)
 func (device *HIDDevice) HIDBLEScan(active bool) {
 	_active := C.SDL_bool(Btoi(active))
 	C.SDL_hid_ble_scan(_active)

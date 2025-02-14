@@ -37,7 +37,7 @@ import "C"
 //
 // This uses setpriority() if possible, and RealtimeKit if available.
 //
-// (https://wiki.libsdl.org/SDL_LinuxSetThreadPriority)
+// (https://wiki.libsdl.org/SDL2/SDL_LinuxSetThreadPriority)
 func LinuxSetThreadPriority(threadID int64, priority int) (err error) {
 	_threadID := C.Sint64(threadID)
 	_priority := C.int(priority)
@@ -48,7 +48,7 @@ func LinuxSetThreadPriority(threadID int64, priority int) (err error) {
 //
 // This uses setpriority() if possible, and RealtimeKit if available.
 //
-// (https://wiki.libsdl.org/SDL_LinuxSetThreadPriorityAndPolicy)
+// (https://wiki.libsdl.org/SDL2/SDL_LinuxSetThreadPriorityAndPolicy)
 func LinuxSetThreadPriorityAndPolicy(threadID int64, sdlPriority, schedPolicy int) (err error) {
 	_threadID := C.Sint64(threadID)
 	_sdlPriority := C.int(sdlPriority)

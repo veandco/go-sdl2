@@ -45,7 +45,7 @@ import "C"
 import "unsafe"
 
 // Various supported windowing subsystems.
-// (https://wiki.libsdl.org/SDL_SYSWM_TYPE)
+// (https://wiki.libsdl.org/SDL2/SDL_SYSWM_TYPE)
 type SysWmType C.SDL_SYSWM_TYPE
 
 const (
@@ -63,7 +63,7 @@ const (
 )
 
 // SysWMInfo contains system-dependent information about a window.
-// (https://wiki.libsdl.org/SDL_SysWMinfo)
+// (https://wiki.libsdl.org/SDL2/SDL_SysWMinfo)
 type SysWMInfo struct {
 	Version   Version   // a Version structure that contains the current SDL version
 	Subsystem SysWmType // the windowing system type
@@ -101,7 +101,7 @@ type UIKitInfo struct {
 }
 
 // SysWMmsg contains system-dependent window manager messages.
-// (https://wiki.libsdl.org/SDL_SysWMmsg)
+// (https://wiki.libsdl.org/SDL2/SDL_SysWMmsg)
 type SysWMmsg struct {
 	Version   Version   // a Version structure that contains the current SDL version
 	Subsystem SysWmType // the windowing system type
@@ -113,7 +113,7 @@ func (info *SysWMInfo) cptr() *C.SDL_SysWMinfo {
 }
 
 // GetWMInfo returns driver specific information about a window.
-// (https://wiki.libsdl.org/SDL_GetWindowWMInfo)
+// (https://wiki.libsdl.org/SDL2/SDL_GetWindowWMInfo)
 func (window *Window) GetWMInfo() (*SysWMInfo, error) {
 	var info SysWMInfo
 	VERSION(&info.Version)

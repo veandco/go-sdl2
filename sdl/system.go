@@ -19,7 +19,7 @@ static inline SDL_bool SDL_IsTablet()
 import "C"
 
 // IsTablet returns true if the current device is a tablet
-// (https://wiki.libsdl.org/SDL_IsTablet)
+// (https://wiki.libsdl.org/SDL2/SDL_IsTablet)
 func IsTablet() bool {
 	return C.SDL_IsTablet() == C.SDL_TRUE
 }

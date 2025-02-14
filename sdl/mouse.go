@@ -59,7 +59,7 @@ import "C"
 import "unsafe"
 
 // Cursor types for CreateSystemCursor()
-// (https://wiki.libsdl.org/SDL_SystemCursor)
+// (https://wiki.libsdl.org/SDL2/SDL_SystemCursor)
 type SystemCursor C.SDL_SystemCursor
 
 const (
@@ -126,13 +126,13 @@ func (c SystemCursor) c() C.SDL_SystemCursor {
 }
 
 // GetMouseFocus returns the window which currently has mouse focus.
-// (https://wiki.libsdl.org/SDL_GetMouseFocus)
+// (https://wiki.libsdl.org/SDL2/SDL_GetMouseFocus)
 func GetMouseFocus() *Window {
 	return (*Window)(unsafe.Pointer(C.SDL_GetMouseFocus()))
 }
 
 // GetGlobalMouseState returns the current state of the mouse.
-// (https://wiki.libsdl.org/SDL_GetGlobalMouseState)
+// (https://wiki.libsdl.org/SDL2/SDL_GetGlobalMouseState)
 func GetGlobalMouseState() (x, y int32, state ButtonMask) {
 	var _x, _y C.int
 	_state := ButtonMask(C.SDL_GetGlobalMouseState(&_x, &_y))
@@ -140,7 +140,7 @@ func GetGlobalMouseState() (x, y int32, state ButtonMask) {
 }
 
 // GetMouseState returns the current state of the mouse.
-// (https://wiki.libsdl.org/SDL_GetMouseState)
+// (https://wiki.libsdl.org/SDL2/SDL_GetMouseState)
 func GetMouseState() (x, y int32, state ButtonMask) {
 	var _x, _y C.int
 	_state := ButtonMask(C.SDL_GetMouseState(&_x, &_y))
@@ -148,7 +148,7 @@ func GetMouseState() (x, y int32, state ButtonMask) {
 }
 
 // GetRelativeMouseState returns the relative state of the mouse.
-// (https://wiki.libsdl.org/SDL_GetRelativeMouseState)
+// (https://wiki.libsdl.org/SDL2/SDL_GetRelativeMouseState)
 func GetRelativeMouseState() (x, y int32, state ButtonMask) {
 	var _x, _y C.int
 	_state := ButtonMask(C.SDL_GetRelativeMouseState(&_x, &_y))
@@ -156,25 +156,25 @@ func GetRelativeMouseState() (x, y int32, state ButtonMask) {
 }
 
 // WarpMouseInWindow moves the mouse to the given position within the window.
-// (https://wiki.libsdl.org/SDL_WarpMouseInWindow)
+// (https://wiki.libsdl.org/SDL2/SDL_WarpMouseInWindow)
 func (window *Window) WarpMouseInWindow(x, y int32) {
 	C.SDL_WarpMouseInWindow(window.cptr(), C.int(x), C.int(y))
 }
 
 // SetRelativeMouseMode sets relative mouse mode.
-// (https://wiki.libsdl.org/SDL_SetRelativeMouseMode)
+// (https://wiki.libsdl.org/SDL2/SDL_SetRelativeMouseMode)
 func SetRelativeMouseMode(enabled bool) int {
 	return int(C.SDL_SetRelativeMouseMode(C.SDL_bool(Btoi(enabled))))
 }
 
 // GetRelativeMouseMode reports where relative mouse mode is enabled.
-// (https://wiki.libsdl.org/SDL_GetRelativeMouseMode)
+// (https://wiki.libsdl.org/SDL2/SDL_GetRelativeMouseMode)
 func GetRelativeMouseMode() bool {
 	return C.SDL_GetRelativeMouseMode() > 0
 }
 
 // CreateCursor creates a cursor using the specified bitmap data and mask (in MSB format).
-// (https://wiki.libsdl.org/SDL_CreateCursor)
+// (https://wiki.libsdl.org/SDL2/SDL_CreateCursor)
 func CreateCursor(data, mask *uint8, w, h, hotX, hotY int32) *Cursor {
 	_data := (*C.Uint8)(unsafe.Pointer(data))
 	_mask := (*C.Uint8)(unsafe.Pointer(mask))
@@ -182,50 +182,50 @@ func CreateCursor(data, mask *uint8, w, h, hotX, hotY int32) *Cursor {
 }
 
 // CreateColorCursor creates a color cursor.
-// (https://wiki.libsdl.org/SDL_CreateColorCursor)
+// (https://wiki.libsdl.org/SDL2/SDL_CreateColorCursor)
 func CreateColorCursor(surface *Surface, hotX, hotY int32) *Cursor {
 	return (*Cursor)(C.SDL_CreateColorCursor(surface.cptr(), C.int(hotX), C.int(hotY)))
 }
 
 // CreateSystemCursor creates a system cursor.
-// (https://wiki.libsdl.org/SDL_CreateSystemCursor)
+// (https://wiki.libsdl.org/SDL2/SDL_CreateSystemCursor)
 func CreateSystemCursor(id SystemCursor) *Cursor {
 	return (*Cursor)(C.SDL_CreateSystemCursor(id.c()))
 }
 
 // SetCursor sets the active cursor.
-// (https://wiki.libsdl.org/SDL_SetCursor)
+// (https://wiki.libsdl.org/SDL2/SDL_SetCursor)
 func SetCursor(cursor *Cursor) {
 	C.SDL_SetCursor(cursor.cptr())
 }
 
 // GetCursor returns the active cursor.
-// (https://wiki.libsdl.org/SDL_GetCursor)
+// (https://wiki.libsdl.org/SDL2/SDL_GetCursor)
 func GetCursor() *Cursor {
 	return (*Cursor)(C.SDL_GetCursor())
 }
 
 // GetDefaultCursor returns the default cursor.
-// (https://wiki.libsdl.org/SDL_GetDefaultCursor)
+// (https://wiki.libsdl.org/SDL2/SDL_GetDefaultCursor)
 func GetDefaultCursor() *Cursor {
 	return (*Cursor)(C.SDL_GetDefaultCursor())
 }
 
 // FreeCursor frees a cursor created with CreateCursor(), CreateColorCursor() or CreateSystemCursor().
-// (https://wiki.libsdl.org/SDL_FreeCursor)
+// (https://wiki.libsdl.org/SDL2/SDL_FreeCursor)
 func FreeCursor(cursor *Cursor) {
 	C.SDL_FreeCursor(cursor.cptr())
 }
 
 // ShowCursor toggles whether or not the cursor is shown.
-// (https://wiki.libsdl.org/SDL_ShowCursor)
+// (https://wiki.libsdl.org/SDL2/SDL_ShowCursor)
 func ShowCursor(toggle EventStateConstant) (int, error) {
 	i := int(C.SDL_ShowCursor(C.int(toggle)))
 	return i, errorFromInt(i)
 }
 
 // CaptureMouse captures the mouse and tracks input outside an SDL window.
-// (https://wiki.libsdl.org/SDL_CaptureMouse)
+// (https://wiki.libsdl.org/SDL2/SDL_CaptureMouse)
 func CaptureMouse(toggle bool) error {
 	var ierr C.int
 	if toggle {
@@ -240,7 +240,7 @@ func CaptureMouse(toggle bool) error {
 }
 
 // WarpMouseGlobal moves the mouse to the given position in global screen space.
-// (https://wiki.libsdl.org/SDL_WarpMouseGlobal)
+// (https://wiki.libsdl.org/SDL2/SDL_WarpMouseGlobal)
 func WarpMouseGlobal(x, y int32) error {
 	i := int(C.SDL_WarpMouseGlobal(C.int(x), C.int(y)))
 	return errorFromInt(i)

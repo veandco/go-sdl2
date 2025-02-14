@@ -90,7 +90,7 @@ import (
 )
 
 // VulkanLoadLibrary dynamically loads a Vulkan loader library.
-// (https://wiki.libsdl.org/SDL_Vulkan_LoadLibrary)
+// (https://wiki.libsdl.org/SDL2/SDL_Vulkan_LoadLibrary)
 func VulkanLoadLibrary(path string) error {
 	var ret C.int
 	if path == "" {
@@ -107,19 +107,19 @@ func VulkanLoadLibrary(path string) error {
 }
 
 // VulkanGetVkGetInstanceProcAddr gets the address of the vkGetInstanceProcAddr function.
-// (https://wiki.libsdl.org/SDL_Vulkan_GetVkInstanceProcAddr)
+// (https://wiki.libsdl.org/SDL2/SDL_Vulkan_GetVkInstanceProcAddr)
 func VulkanGetVkGetInstanceProcAddr() unsafe.Pointer {
 	return C.SDL_Vulkan_GetVkGetInstanceProcAddr()
 }
 
 // VulkanUnloadLibrary unloads the Vulkan loader library previously loaded by VulkanLoadLibrary().
-// (https://wiki.libsdl.org/SDL_Vulkan_UnloadLibrary)
+// (https://wiki.libsdl.org/SDL2/SDL_Vulkan_UnloadLibrary)
 func VulkanUnloadLibrary() {
 	C.SDL_Vulkan_UnloadLibrary()
 }
 
 // VulkanGetInstanceExtensions gets the names of the Vulkan instance extensions needed to create a surface with VulkanCreateSurface().
-// (https://wiki.libsdl.org/SDL_Vulkan_GetInstanceExtensions)
+// (https://wiki.libsdl.org/SDL2/SDL_Vulkan_GetInstanceExtensions)
 func (window *Window) VulkanGetInstanceExtensions() []string {
 	var count C.uint
 	C.SDL_Vulkan_GetInstanceExtensions(window.cptr(), &count, nil)
@@ -137,7 +137,7 @@ func (window *Window) VulkanGetInstanceExtensions() []string {
 }
 
 // VulkanCreateSurface creates a Vulkan rendering surface for a window.
-// (https://wiki.libsdl.org/SDL_Vulkan_CreateSurface)
+// (https://wiki.libsdl.org/SDL2/SDL_Vulkan_CreateSurface)
 func (window *Window) VulkanCreateSurface(instance interface{}) (surface unsafe.Pointer, err error) {
 	if instance == nil {
 		return nil, errors.New("vulkan: instance is nil")
@@ -157,7 +157,7 @@ func (window *Window) VulkanCreateSurface(instance interface{}) (surface unsafe.
 }
 
 // VulkanGetDrawableSize gets the size of a window's underlying drawable in pixels (for use with setting viewport, scissor & etc).
-// (https://wiki.libsdl.org/SDL_Vulkan_GetDrawableSize)
+// (https://wiki.libsdl.org/SDL2/SDL_Vulkan_GetDrawableSize)
 func (window *Window) VulkanGetDrawableSize() (w, h int32) {
 	var _w, _h C.int
 	C.SDL_Vulkan_GetDrawableSize(window.cptr(), &_w, &_h)

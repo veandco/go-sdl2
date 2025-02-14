@@ -147,127 +147,127 @@ import "unsafe"
 const CACHELINE_SIZE = C.SDL_CACHELINE_SIZE
 
 // GetCPUCount returns the number of CPU cores available.
-// (https://wiki.libsdl.org/SDL_GetCPUCount)
+// (https://wiki.libsdl.org/SDL2/SDL_GetCPUCount)
 func GetCPUCount() int {
 	return int(C.SDL_GetCPUCount())
 }
 
 // GetCPUCacheLineSize returns the L1 cache line size of the CPU.
-// (https://wiki.libsdl.org/SDL_GetCPUCacheLineSize)
+// (https://wiki.libsdl.org/SDL2/SDL_GetCPUCacheLineSize)
 func GetCPUCacheLineSize() int {
 	return int(C.SDL_GetCPUCacheLineSize())
 }
 
 // HasRDTSC reports whether the CPU has the RDTSC instruction.
-// (https://wiki.libsdl.org/SDL_HasRDTSC)
+// (https://wiki.libsdl.org/SDL2/SDL_HasRDTSC)
 func HasRDTSC() bool {
 	return C.SDL_HasRDTSC() > 0
 }
 
 // HasAltiVec reports whether the CPU has AltiVec features.
-// (https://wiki.libsdl.org/SDL_HasAltiVec)
+// (https://wiki.libsdl.org/SDL2/SDL_HasAltiVec)
 func HasAltiVec() bool {
 	return C.SDL_HasAltiVec() > 0
 }
 
 // HasMMX reports whether the CPU has MMX features.
-// (https://wiki.libsdl.org/SDL_HasMMX)
+// (https://wiki.libsdl.org/SDL2/SDL_HasMMX)
 func HasMMX() bool {
 	return C.SDL_HasMMX() > 0
 }
 
 // Has3DNow reports whether the CPU has 3DNow! features.
-// (https://wiki.libsdl.org/SDL_Has3DNow)
+// (https://wiki.libsdl.org/SDL2/SDL_Has3DNow)
 func Has3DNow() bool {
 	return C.SDL_Has3DNow() > 0
 }
 
 // HasSSE reports whether the CPU has SSE features.
-// (https://wiki.libsdl.org/SDL_HasSSE)
+// (https://wiki.libsdl.org/SDL2/SDL_HasSSE)
 func HasSSE() bool {
 	return C.SDL_HasSSE() > 0
 }
 
 // HasSSE2 reports whether the CPU has SSE2 features.
-// (https://wiki.libsdl.org/SDL_HasSSE2)
+// (https://wiki.libsdl.org/SDL2/SDL_HasSSE2)
 func HasSSE2() bool {
 	return C.SDL_HasSSE2() > 0
 }
 
 // HasSSE3 reports whether the CPU has SSE3 features.
-// (https://wiki.libsdl.org/SDL_HasSSE3)
+// (https://wiki.libsdl.org/SDL2/SDL_HasSSE3)
 func HasSSE3() bool {
 	return C.SDL_HasSSE3() > 0
 }
 
 // HasSSE41 reports whether the CPU has SSE4.1 features.
-// (https://wiki.libsdl.org/SDL_HasSSE41)
+// (https://wiki.libsdl.org/SDL2/SDL_HasSSE41)
 func HasSSE41() bool {
 	return C.SDL_HasSSE41() > 0
 }
 
 // HasSSE42 reports whether the CPU has SSE4.2 features.
-// (https://wiki.libsdl.org/SDL_HasSSE42)
+// (https://wiki.libsdl.org/SDL2/SDL_HasSSE42)
 func HasSSE42() bool {
 	return C.SDL_HasSSE42() > 0
 }
 
 // GetSystemRAM returns the amount of RAM configured in the system.
-// (https://wiki.libsdl.org/SDL_GetSystemRAM)
+// (https://wiki.libsdl.org/SDL2/SDL_GetSystemRAM)
 func GetSystemRAM() int {
 	return int(C.SDL_GetSystemRAM())
 }
 
 // HasAVX reports whether the CPU has AVX features.
-// (https://wiki.libsdl.org/SDL_HasAVX)
+// (https://wiki.libsdl.org/SDL2/SDL_HasAVX)
 func HasAVX() bool {
 	return C.SDL_HasAVX() > 0
 }
 
 // HasAVX512F reports whether the CPU has AVX-512F (foundation) features.
-// (https://wiki.libsdl.org/SDL_HasAVX512F)
+// (https://wiki.libsdl.org/SDL2/SDL_HasAVX512F)
 func HasAVX512F() bool {
 	return C.SDL_HasAVX512F() > 0
 }
 
 // HasAVX2 reports whether the CPU has AVX2 features.
-// (https://wiki.libsdl.org/SDL_HasAVX2)
+// (https://wiki.libsdl.org/SDL2/SDL_HasAVX2)
 func HasAVX2() bool {
 	return C.SDL_HasAVX2() > 0
 }
 
 // HasARMSIMD reports whether the CPU has ARM SIMD (ARMv6) features.
-// (https://wiki.libsdl.org/SDL_HasARMSIMD)
+// (https://wiki.libsdl.org/SDL2/SDL_HasARMSIMD)
 func HasARMSIMD() bool {
 	return C.SDL_HasARMSIMD() > 0
 }
 
 // HasNEON reports whether the CPU has NEON features.
-// (https://wiki.libsdl.org/SDL_HasNEON)
+// (https://wiki.libsdl.org/SDL2/SDL_HasNEON)
 func HasNEON() bool {
 	return C.SDL_HasNEON() > 0
 }
 
 // SIMDGetAlignment reports the alignment this system needs for SIMD allocations.
-// (https://wiki.libsdl.org/SDL_SIMDGetAlignment)
+// (https://wiki.libsdl.org/SDL2/SDL_SIMDGetAlignment)
 func SIMDGetAlignment() int {
 	return int(C.SDL_SIMDGetAlignment())
 }
 
 // SIMDAlloc allocates memory in a SIMD-friendly way.
-// (https://wiki.libsdl.org/SDL_SIMDAlloc)
+// (https://wiki.libsdl.org/SDL2/SDL_SIMDAlloc)
 func SIMDAlloc(_len int) unsafe.Pointer {
 	return C.SDL_SIMDAlloc(C.size_t(_len))
 }
 
 // SIMDRealloc reallocates memory obtained from SDL_SIMDAlloc.
-// (https://wiki.libsdl.org/SDL_SIMDRealloc)
+// (https://wiki.libsdl.org/SDL2/SDL_SIMDRealloc)
 func SIMDRealloc(mem unsafe.Pointer, _len int) unsafe.Pointer {
 	return C.SDL_SIMDRealloc(mem, C.size_t(_len))
 }
 
 // SIMDFree deallocates memory obtained from SDL_SIMDAlloc.
-// (https://wiki.libsdl.org/SDL_SIMDFree)
+// (https://wiki.libsdl.org/SDL2/SDL_SIMDFree)
 func SIMDFree(p unsafe.Pointer) {
 	C.SDL_SIMDFree(p)
 }

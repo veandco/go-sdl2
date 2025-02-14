@@ -41,7 +41,7 @@ import (
 )
 
 // Keysym contains key information used in key events.
-// (https://wiki.libsdl.org/SDL_Keysym)
+// (https://wiki.libsdl.org/SDL2/SDL_Keysym)
 type Keysym struct {
 	Scancode Scancode // SDL physical key code
 	Sym      Keycode  // SDL virtual key code
@@ -50,13 +50,13 @@ type Keysym struct {
 }
 
 // GetKeyboardFocus returns the window which currently has keyboard focus.
-// (https://wiki.libsdl.org/SDL_GetKeyboardFocus)
+// (https://wiki.libsdl.org/SDL2/SDL_GetKeyboardFocus)
 func GetKeyboardFocus() *Window {
 	return (*Window)(unsafe.Pointer(C.SDL_GetKeyboardFocus()))
 }
 
 // GetKeyboardState returns a snapshot of the current state of the keyboard.
-// (https://wiki.libsdl.org/SDL_GetKeyboardState)
+// (https://wiki.libsdl.org/SDL2/SDL_GetKeyboardState)
 func GetKeyboardState() []uint8 {
 	var numkeys C.int
 	start := C.SDL_GetKeyboardState(&numkeys)
@@ -68,37 +68,37 @@ func GetKeyboardState() []uint8 {
 }
 
 // GetModState returns the current key modifier state for the keyboard.
-// (https://wiki.libsdl.org/SDL_GetModState)
+// (https://wiki.libsdl.org/SDL2/SDL_GetModState)
 func GetModState() Keymod {
 	return (Keymod)(C.SDL_GetModState())
 }
 
 // SetModState sets the current key modifier state for the keyboard.
-// (https://wiki.libsdl.org/SDL_SetModState)
+// (https://wiki.libsdl.org/SDL2/SDL_SetModState)
 func SetModState(mod Keymod) {
 	C.SDL_SetModState(mod.c())
 }
 
 // GetKeyFromScancode returns the key code corresponding to the given scancode according to the current keyboard layout.
-// (https://wiki.libsdl.org/SDL_GetKeyFromScancode)
+// (https://wiki.libsdl.org/SDL2/SDL_GetKeyFromScancode)
 func GetKeyFromScancode(code Scancode) Keycode {
 	return (Keycode)(C.SDL_GetKeyFromScancode(code.c()))
 }
 
 // GetScancodeFromKey returns the scancode corresponding to the given key code according to the current keyboard layout.
-// (https://wiki.libsdl.org/SDL_GetScancodeFromKey)
+// (https://wiki.libsdl.org/SDL2/SDL_GetScancodeFromKey)
 func GetScancodeFromKey(code Keycode) Scancode {
 	return (Scancode)(C.SDL_GetScancodeFromKey(code.c()))
 }
 
 // GetScancodeName returns a human-readable name for a scancode
-// (https://wiki.libsdl.org/SDL_GetScancodeName)
+// (https://wiki.libsdl.org/SDL2/SDL_GetScancodeName)
 func GetScancodeName(code Scancode) string {
 	return (C.GoString)(C.SDL_GetScancodeName(code.c()))
 }
 
 // GetScancodeFromName returns a scancode from a human-readable name.
-// (https://wiki.libsdl.org/SDL_GetScancodeFromName)
+// (https://wiki.libsdl.org/SDL2/SDL_GetScancodeFromName)
 func GetScancodeFromName(name string) Scancode {
 	_name := C.CString(name)
 	defer C.free(unsafe.Pointer(_name))
@@ -106,13 +106,13 @@ func GetScancodeFromName(name string) Scancode {
 }
 
 // GetKeyName returns a human-readable name for a key.
-// (https://wiki.libsdl.org/SDL_GetKeyName)
+// (https://wiki.libsdl.org/SDL2/SDL_GetKeyName)
 func GetKeyName(code Keycode) string {
 	return (C.GoString)(C.SDL_GetKeyName(code.c()))
 }
 
 // GetKeyFromName returns a key code from a human-readable name.
-// (https://wiki.libsdl.org/SDL_GetKeyFromName)
+// (https://wiki.libsdl.org/SDL2/SDL_GetKeyFromName)
 func GetKeyFromName(name string) Keycode {
 	_name := C.CString(name)
 	defer C.free(unsafe.Pointer(_name))
@@ -120,49 +120,49 @@ func GetKeyFromName(name string) Keycode {
 }
 
 // StartTextInput starts accepting Unicode text input events.
-// (https://wiki.libsdl.org/SDL_StartTextInput)
+// (https://wiki.libsdl.org/SDL2/SDL_StartTextInput)
 func StartTextInput() {
 	C.SDL_StartTextInput()
 }
 
 // IsTextInputActive checks whether or not Unicode text input events are enabled.
-// (https://wiki.libsdl.org/SDL_IsTextInputActive)
+// (https://wiki.libsdl.org/SDL2/SDL_IsTextInputActive)
 func IsTextInputActive() bool {
 	return C.SDL_IsTextInputActive() > 0
 }
 
 // StopTextInput stops receiving any text input events.
-// (https://wiki.libsdl.org/SDL_StopTextInput)
+// (https://wiki.libsdl.org/SDL2/SDL_StopTextInput)
 func StopTextInput() {
 	C.SDL_StopTextInput()
 }
 
 // SetTextInputRect sets the rectangle used to type Unicode text inputs.
-// (https://wiki.libsdl.org/SDL_SetTextInputRect)
+// (https://wiki.libsdl.org/SDL2/SDL_SetTextInputRect)
 func SetTextInputRect(rect *Rect) {
 	C.SDL_SetTextInputRect(rect.cptr())
 }
 
 // HasScreenKeyboardSupport reports whether the platform has some screen keyboard support.
-// (https://wiki.libsdl.org/SDL_HasScreenKeyboardSupport)
+// (https://wiki.libsdl.org/SDL2/SDL_HasScreenKeyboardSupport)
 func HasScreenKeyboardSupport() bool {
 	return C.SDL_HasScreenKeyboardSupport() > 0
 }
 
 // IsScreenKeyboardShown reports whether the screen keyboard is shown for given window.
-// (https://wiki.libsdl.org/SDL_IsScreenKeyboardShown)
+// (https://wiki.libsdl.org/SDL2/SDL_IsScreenKeyboardShown)
 func IsScreenKeyboardShown(window *Window) bool {
 	return C.SDL_IsScreenKeyboardShown(window.cptr()) > 0
 }
 
 // IsTextInputShown returns if an IME Composite or Candidate window is currently shown.
-// (https://wiki.libsdl.org/SDL_IsTextInputShown)
+// (https://wiki.libsdl.org/SDL2/SDL_IsTextInputShown)
 func IsTextInputShown() bool {
 	return C.SDL_IsTextInputShown() > 0
 }
 
 // ClearComposition dismisses the composition window/IME without disabling the subsystem.
-// (https://wiki.libsdl.org/SDL_ClearComposition)
+// (https://wiki.libsdl.org/SDL2/SDL_ClearComposition)
 func ClearComposition() {
 	C.SDL_ClearComposition()
 }

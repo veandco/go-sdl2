@@ -4,7 +4,7 @@ package sdl
 import "C"
 
 // The SDL keyboard scancode representation.
-// (https://wiki.libsdl.org/SDL_Scancode)
+// (https://wiki.libsdl.org/SDL2/SDL_Scancode)
 // (https://wiki.libsdl.org/SDLScancodeLookup)
 type Scancode uint32
 

@@ -70,19 +70,19 @@ const (
 )
 
 // AndroidGetInternalStoragePath returns the path used for internal storage for this application.
-// (https://wiki.libsdl.org/SDL_AndroidGetInternalStoragePath)
+// (https://wiki.libsdl.org/SDL2/SDL_AndroidGetInternalStoragePath)
 func AndroidGetInternalStoragePath() string {
 	return C.GoString(C.SDL_AndroidGetInternalStoragePath())
 }
 
 // AndroidGetExternalStoragePath returns the path used for external storage for this application.
-// (https://wiki.libsdl.org/SDL_AndroidGetExternalStoragePath)
+// (https://wiki.libsdl.org/SDL2/SDL_AndroidGetExternalStoragePath)
 func AndroidGetExternalStoragePath() string {
 	return C.GoString(C.SDL_AndroidGetExternalStoragePath())
 }
 
 // AndroidRequestPermission requests permissions at runtime.
-// (https://wiki.libsdl.org/SDL_AndroidRequestPermission)
+// (https://wiki.libsdl.org/SDL2/SDL_AndroidRequestPermission)
 func AndroidRequestPermission(permission string) bool {
 	_permission := C.CString(permission)
 	defer C.free(unsafe.Pointer(_permission))
@@ -90,37 +90,37 @@ func AndroidRequestPermission(permission string) bool {
 }
 
 // AndroidGetExternalStorageState returns the current state of external storage.
-// (https://wiki.libsdl.org/SDL_AndroidGetExternalStorageState)
+// (https://wiki.libsdl.org/SDL2/SDL_AndroidGetExternalStorageState)
 func AndroidGetExternalStorageState() int {
 	return int(C.SDL_AndroidGetExternalStorageState())
 }
 
 // AndroidGetJNIEnv returns the Java native interface object (JNIEnv) of the current thread on Android builds.
-// (https://wiki.libsdl.org/SDL_AndroidGetJNIEnv)
+// (https://wiki.libsdl.org/SDL2/SDL_AndroidGetJNIEnv)
 func AndroidGetJNIEnv() unsafe.Pointer {
 	return unsafe.Pointer(C.SDL_AndroidGetJNIEnv())
 }
 
 // AndroidGetActivity returns the Java instance of the activity class in an Android application.
-// (https://wiki.libsdl.org/SDL_AndroidGetActivity)
+// (https://wiki.libsdl.org/SDL2/SDL_AndroidGetActivity)
 func AndroidGetActivity() unsafe.Pointer {
 	return unsafe.Pointer(C.SDL_AndroidGetActivity())
 }
 
 // GetAndroidSDKVersion returns API level of the current device.
-// (https://wiki.libsdl.org/SDL_GetAndroidSDKVersion)
+// (https://wiki.libsdl.org/SDL2/SDL_GetAndroidSDKVersion)
 func GetAndroidSDKVersion() int {
 	return int(C.SDL_GetAndroidSDKVersion())
 }
 
 // IsAndroidTV returns true if the application is running on Android TV
-// (https://wiki.libsdl.org/SDL_IsAndroidTV)
+// (https://wiki.libsdl.org/SDL2/SDL_IsAndroidTV)
 func IsAndroidTV() bool {
 	return C.SDL_IsAndroidTV() >= 0
 }
 
 // AndroidShowToast shows an Android toast notification.
-// (https://wiki.libsdl.org/SDL_AndroidShowToast)
+// (https://wiki.libsdl.org/SDL2/SDL_AndroidShowToast)
 func AndroidShowToast(message string, duration, gravity, xoffset, yoffset int) (err error) {
 	_message := C.CString(message)
 	defer C.free(unsafe.Pointer(_message))

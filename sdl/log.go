@@ -61,7 +61,7 @@ import (
 )
 
 // An enumeration of the predefined log categories.
-// (https://wiki.libsdl.org/SDL_LOG_CATEGORY)
+// (https://wiki.libsdl.org/SDL2/SDL_LOG_CATEGORY)
 type LogCategory C.SDL_LogCategory
 
 const (
@@ -88,7 +88,7 @@ const (
 )
 
 // An enumeration of the predefined log priorities.
-// (https://wiki.libsdl.org/SDL_LogPriority)
+// (https://wiki.libsdl.org/SDL2/SDL_LogPriority)
 type LogPriority C.SDL_LogPriority
 
 const (
@@ -106,31 +106,31 @@ func (p LogPriority) c() C.SDL_LogPriority {
 }
 
 // LogSetAllPriority sets the priority of all log categories.
-// (https://wiki.libsdl.org/SDL_LogSetAllPriority)
+// (https://wiki.libsdl.org/SDL2/SDL_LogSetAllPriority)
 func LogSetAllPriority(p LogPriority) {
 	C.SDL_LogSetAllPriority(p.c())
 }
 
 // LogSetPriority sets the priority of a particular log category.
-// (https://wiki.libsdl.org/SDL_LogSetPriority)
+// (https://wiki.libsdl.org/SDL2/SDL_LogSetPriority)
 func LogSetPriority(category LogCategory, p LogPriority) {
 	C.SDL_LogSetPriority(C.int(category), p.c())
 }
 
 // LogGetPriority returns the priority of a particular log category.
-// (https://wiki.libsdl.org/SDL_LogGetPriority)
+// (https://wiki.libsdl.org/SDL2/SDL_LogGetPriority)
 func LogGetPriority(category LogCategory) LogPriority {
 	return LogPriority(C.SDL_LogGetPriority(C.int(category)))
 }
 
 // LogResetPriorities resets all priorities to default.
-// (https://wiki.libsdl.org/SDL_LogResetPriorities)
+// (https://wiki.libsdl.org/SDL2/SDL_LogResetPriorities)
 func LogResetPriorities() {
 	C.SDL_LogResetPriorities()
 }
 
 // Log logs a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.
-// (https://wiki.libsdl.org/SDL_Log)
+// (https://wiki.libsdl.org/SDL2/SDL_Log)
 func Log(str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -141,7 +141,7 @@ func Log(str string, args ...interface{}) {
 }
 
 // LogVerbose logs a message with LOG_PRIORITY_VERBOSE.
-// (https://wiki.libsdl.org/SDL_LogVerbose)
+// (https://wiki.libsdl.org/SDL2/SDL_LogVerbose)
 func LogVerbose(category LogCategory, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -152,7 +152,7 @@ func LogVerbose(category LogCategory, str string, args ...interface{}) {
 }
 
 // LogDebug logs a message with LOG_PRIORITY_DEBUG.
-// (https://wiki.libsdl.org/SDL_LogDebug)
+// (https://wiki.libsdl.org/SDL2/SDL_LogDebug)
 func LogDebug(category LogCategory, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -163,7 +163,7 @@ func LogDebug(category LogCategory, str string, args ...interface{}) {
 }
 
 // LogInfo logs a message with LOG_PRIORITY_INFO.
-// (https://wiki.libsdl.org/SDL_LogInfo)
+// (https://wiki.libsdl.org/SDL2/SDL_LogInfo)
 func LogInfo(category LogCategory, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -174,7 +174,7 @@ func LogInfo(category LogCategory, str string, args ...interface{}) {
 }
 
 // LogWarn logs a message with LOG_PRIORITY_WARN.
-// (https://wiki.libsdl.org/SDL_LogWarn)
+// (https://wiki.libsdl.org/SDL2/SDL_LogWarn)
 func LogWarn(category LogCategory, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -185,7 +185,7 @@ func LogWarn(category LogCategory, str string, args ...interface{}) {
 }
 
 // LogError logs a message with LOG_PRIORITY_ERROR.
-// (https://wiki.libsdl.org/SDL_LogError)
+// (https://wiki.libsdl.org/SDL2/SDL_LogError)
 func LogError(category LogCategory, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -196,7 +196,7 @@ func LogError(category LogCategory, str string, args ...interface{}) {
 }
 
 // LogCritical logs a message with LOG_PRIORITY_CRITICAL.
-// (https://wiki.libsdl.org/SDL_LogCritical)
+// (https://wiki.libsdl.org/SDL2/SDL_LogCritical)
 func LogCritical(category LogCategory, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -207,7 +207,7 @@ func LogCritical(category LogCategory, str string, args ...interface{}) {
 }
 
 // LogMessage logs a message with the specified category and priority.
-// (https://wiki.libsdl.org/SDL_LogMessage)
+// (https://wiki.libsdl.org/SDL2/SDL_LogMessage)
 func LogMessage(category LogCategory, pri LogPriority, str string, args ...interface{}) {
 	str = fmt.Sprintf(str, args...)
 
@@ -240,13 +240,13 @@ var (
 )
 
 // LogGetOutputFunction returns the current log output function.
-// (https://wiki.libsdl.org/SDL_LogGetOutputFunction)
+// (https://wiki.libsdl.org/SDL2/SDL_LogGetOutputFunction)
 func LogGetOutputFunction() (LogOutputFunction, interface{}) {
 	return logOutputFunctionCache, logOutputDataCache
 }
 
 // LogSetOutputFunction replaces the default log output function with one of your own.
-// (https://wiki.libsdl.org/SDL_LogSetOutputFunction)
+// (https://wiki.libsdl.org/SDL2/SDL_LogSetOutputFunction)
 func LogSetOutputFunction(f LogOutputFunction, data interface{}) {
 	ctx := &logOutputFunctionCtx{
 		f: f,

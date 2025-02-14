@@ -50,25 +50,25 @@ import "unsafe"
 type MetalView C.SDL_MetalView
 
 // Metal_CreateView creates a CAMetalLayer-backed NSView/UIView and attach it to the specified window.
-// (https://wiki.libsdl.org/SDL_Metal_CreateView)
+// (https://wiki.libsdl.org/SDL2/SDL_Metal_CreateView)
 func Metal_CreateView(window *Window) MetalView {
 	return MetalView(C.SDL_Metal_CreateView(window.cptr()))
 }
 
 // Metal_DestroyView Destroy an existing SDL_MetalView object.
-// (https://wiki.libsdl.org/SDL_Metal_DestroyView)
+// (https://wiki.libsdl.org/SDL2/SDL_Metal_DestroyView)
 func Metal_DestroyView(metalView MetalView) {
 	C.SDL_Metal_DestroyView(C.SDL_MetalView(metalView))
 }
 
 // Metal_GetLayer gets a pointer to the backing CAMetalLayer for the given view.
-// (https://wiki.libsdl.org/SDL_Metal_GetLayer)
+// (https://wiki.libsdl.org/SDL2/SDL_Metal_GetLayer)
 func Metal_GetLayer(metalView MetalView) unsafe.Pointer {
 	return C.SDL_Metal_GetLayer(C.SDL_MetalView(metalView))
 }
 
 // Metal_GetDrawableSize Get the size of a window's underlying drawable in pixels (for use with setting viewport, scissor & etc).
-// (https://wiki.libsdl.org/SDL_Metal_GetDrawableSize)
+// (https://wiki.libsdl.org/SDL2/SDL_Metal_GetDrawableSize)
 func Metal_GetDrawableSize(window *Window) (w, h int) {
 	C.SDL_Metal_GetDrawableSize(window.cptr(), (*C.int)(unsafe.Pointer(&w)), (*C.int)(unsafe.Pointer((&h))))
 	return

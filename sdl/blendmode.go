@@ -67,7 +67,7 @@ import "C"
 import "unsafe"
 
 // BlendMode is an enumeration of blend modes used in Render.Copy() and drawing operations.
-// (https://wiki.libsdl.org/SDL_BlendMode)
+// (https://wiki.libsdl.org/SDL2/SDL_BlendMode)
 type BlendMode uint32
 
 const (
@@ -88,7 +88,7 @@ func (bm *BlendMode) cptr() *C.SDL_BlendMode {
 }
 
 // BlendOperation is an enumeration of blend operations used when creating a custom blend mode with ComposeCustomBlendMode().
-// (https://wiki.libsdl.org/SDL_BlendOperation)
+// (https://wiki.libsdl.org/SDL2/SDL_BlendOperation)
 type BlendOperation C.SDL_BlendOperation
 
 const (
@@ -100,7 +100,7 @@ const (
 )
 
 // BlendFactor is an enumeration of blend factors used when creating a custom blend mode with ComposeCustomBlendMode().
-// (https://wiki.libsdl.org/SDL_BlendFactor)
+// (https://wiki.libsdl.org/SDL2/SDL_BlendFactor)
 type BlendFactor C.SDL_BlendFactor
 
 const (
@@ -121,7 +121,7 @@ const (
 //     dstRGB = dstRGB * dstColorFactor colorOperation srcRGB * srcColorFactor
 // and
 //     dstA = dstA * dstAlphaFactor alphaOperation srcA * srcAlphaFactor
-// (https://wiki.libsdl.org/SDL_ComposeCustomBlendMode)
+// (https://wiki.libsdl.org/SDL2/SDL_ComposeCustomBlendMode)
 func ComposeCustomBlendMode(srcColorFactor, dstColorFactor BlendFactor, colorOperation BlendOperation, srcAlphaFactor, dstAlphaFactor BlendFactor, alphaOperation BlendOperation) BlendMode {
 	_srcColorFactor := C.SDL_BlendFactor(srcColorFactor)
 	_dstColorFactor := C.SDL_BlendFactor(dstColorFactor)

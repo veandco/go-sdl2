@@ -393,7 +393,7 @@ const (
 
 // An enumeration of hint priorities.
 // HintPriority is a hint priority used in SetHintWithPriority().
-// (https://wiki.libsdl.org/SDL_HintPriority)
+// (https://wiki.libsdl.org/SDL2/SDL_HintPriority)
 type HintPriority C.SDL_HintPriority
 
 const (
@@ -418,7 +418,7 @@ func (hp HintPriority) c() C.SDL_HintPriority {
 }
 
 // SetHintWithPriority sets a hint with a specific priority.
-// (https://wiki.libsdl.org/SDL_SetHintWithPriority)
+// (https://wiki.libsdl.org/SDL2/SDL_SetHintWithPriority)
 func SetHintWithPriority(name, value string, hp HintPriority) bool {
 	_name := C.CString(name)
 	_value := C.CString(value)
@@ -428,7 +428,7 @@ func SetHintWithPriority(name, value string, hp HintPriority) bool {
 }
 
 // SetHint sets a hint with normal priority.
-// (https://wiki.libsdl.org/SDL_SetHint)
+// (https://wiki.libsdl.org/SDL2/SDL_SetHint)
 func SetHint(name, value string) bool {
 	_name := C.CString(name)
 	_value := C.CString(value)
@@ -438,7 +438,7 @@ func SetHint(name, value string) bool {
 }
 
 // ResetHint resets a hint to the default value.
-// (https://wiki.libsdl.org/SDL_ResetHint)
+// (https://wiki.libsdl.org/SDL2/SDL_ResetHint)
 func ResetHint(name string) bool {
 	_name := C.CString(name)
 	defer C.free(unsafe.Pointer(_name))
@@ -446,13 +446,13 @@ func ResetHint(name string) bool {
 }
 
 // ResetHints resets all hints to the default values.
-// (https://wiki.libsdl.org/SDL_ResetHints)
+// (https://wiki.libsdl.org/SDL2/SDL_ResetHints)
 func ResetHints() {
 	C.SDL_ResetHints()
 }
 
 // GetHint returns the value of a hint.
-// (https://wiki.libsdl.org/SDL_GetHint)
+// (https://wiki.libsdl.org/SDL2/SDL_GetHint)
 func GetHint(name string) string {
 	_name := C.CString(name)
 	defer C.free(unsafe.Pointer(_name))
@@ -460,13 +460,13 @@ func GetHint(name string) string {
 }
 
 // ClearHints clears all hints.
-// (https://wiki.libsdl.org/SDL_ClearHints)
+// (https://wiki.libsdl.org/SDL2/SDL_ClearHints)
 func ClearHints() {
 	C.SDL_ClearHints()
 }
 
 // AddHintCallback adds a function to watch a particular hint.
-// (https://wiki.libsdl.org/SDL_AddHintCallback)
+// (https://wiki.libsdl.org/SDL2/SDL_AddHintCallback)
 func AddHintCallback(name string, fn HintCallback, data interface{}) {
 	_name := C.CString(name)
 	defer C.free(unsafe.Pointer(_name))
@@ -478,7 +478,7 @@ func AddHintCallback(name string, fn HintCallback, data interface{}) {
 }
 
 // DelHintCallback removes a function watching a particular hint.
-// (https://wiki.libsdl.org/SDL_DelHintCallback)
+// (https://wiki.libsdl.org/SDL2/SDL_DelHintCallback)
 func DelHintCallback(name string) {
 	_name := C.CString(name)
 	defer C.free(unsafe.Pointer(_name))

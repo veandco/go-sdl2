@@ -144,7 +144,7 @@ func (wsm *cWindowShapeMode) cptr() *C.SDL_WindowShapeMode {
 }
 
 // CreateShapedWindow creates a window that can be shaped with the specified position, dimensions, and flags
-// (https://wiki.libsdl.org/SDL_CreateShapedWindow)
+// (https://wiki.libsdl.org/SDL2/SDL_CreateShapedWindow)
 func CreateShapedWindow(title string, x, y, w, h uint32, flags uint32) (*Window, error) {
 	_title := C.CString(title)
 	defer C.free(unsafe.Pointer(_title))
@@ -156,13 +156,13 @@ func CreateShapedWindow(title string, x, y, w, h uint32, flags uint32) (*Window,
 }
 
 // IsShapedWindow returns whether the given window is a shaped window.
-// (https://wiki.libsdl.org/SDL_IsShapedWindow)
+// (https://wiki.libsdl.org/SDL2/SDL_IsShapedWindow)
 func (window *Window) IsShaped() bool {
 	return (C.SDL_IsShapedWindow(window.cptr()) & 1) == 1
 }
 
 // SetShape sets the shape and parameters of a shaped window
-// (https://wiki.libsdl.org/SDL_SetWindowShape)
+// (https://wiki.libsdl.org/SDL2/SDL_SetWindowShape)
 func (window *Window) SetShape(shape *Surface, shape_mode WindowShapeMode) int32 {
 	if shape_mode == nil {
 		panic("shape_mode can not be nil")
@@ -173,7 +173,7 @@ func (window *Window) SetShape(shape *Surface, shape_mode WindowShapeMode) int32
 }
 
 // GetShapeMode gets the shape parameters of a shaped window
-// (https://wiki.libsdl.org/SDL_GetShapedWindowMode)
+// (https://wiki.libsdl.org/SDL2/SDL_GetShapedWindowMode)
 func (window *Window) GetShapeMode() (WindowShapeMode, int32) {
 	var _cWSM cWindowShapeMode
 	var _resInt32 = (int32)(C.SDL_GetShapedWindowMode(window.cptr(), _cWSM.cptr()))

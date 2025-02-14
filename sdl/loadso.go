@@ -8,7 +8,7 @@ import "unsafe"
 type SharedObject uintptr
 
 // LoadObject dynamically loads a shared object and returns a pointer to the object handle.
-// (https://wiki.libsdl.org/SDL_LoadObject)
+// (https://wiki.libsdl.org/SDL2/SDL_LoadObject)
 func LoadObject(sofile string) SharedObject {
 	_sofile := C.CString(sofile)
 	defer C.free(unsafe.Pointer(_sofile))
@@ -16,7 +16,7 @@ func LoadObject(sofile string) SharedObject {
 }
 
 // LoadFunction returns a pointer to the named function from the shared object.
-// (https://wiki.libsdl.org/SDL_LoadFunction)
+// (https://wiki.libsdl.org/SDL2/SDL_LoadFunction)
 func (handle SharedObject) LoadFunction(name string) unsafe.Pointer {
 	_name := C.CString(name)
 	defer C.free(unsafe.Pointer(_name))
@@ -24,7 +24,7 @@ func (handle SharedObject) LoadFunction(name string) unsafe.Pointer {
 }
 
 // Unload unloads a shared object from memory.
-// (https://wiki.libsdl.org/SDL_UnloadObject)
+// (https://wiki.libsdl.org/SDL2/SDL_UnloadObject)
 func (handle SharedObject) Unload() {
 	C.SDL_UnloadObject((unsafe.Pointer)(handle))
 }

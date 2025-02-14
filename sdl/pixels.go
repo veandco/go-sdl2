@@ -48,10 +48,10 @@ import (
 )
 
 // PixelFormat contains pixel format information.
-// (https://wiki.libsdl.org/SDL_PixelFormat)
+// (https://wiki.libsdl.org/SDL2/SDL_PixelFormat)
 type PixelFormat struct {
-	Format        PixelFormatConstant // one of the PIXELFORMAT values (https://wiki.libsdl.org/SDL_PixelFormatEnum)
-	Palette       *Palette            // palette structure associated with this pixel format, or nil if the format doesn't have a palette (https://wiki.libsdl.org/SDL_Palette)
+	Format        PixelFormatConstant // one of the PIXELFORMAT values (https://wiki.libsdl.org/SDL2/SDL_PixelFormatEnum)
+	Palette       *Palette            // palette structure associated with this pixel format, or nil if the format doesn't have a palette (https://wiki.libsdl.org/SDL2/SDL_Palette)
 	BitsPerPixel  uint8               // the number of significant bits in a pixel value, eg: 8, 15, 16, 24, 32
 	BytesPerPixel uint8               // the number of bytes required to hold a pixel value, eg: 1, 2, 3, 4
 	_             [2]uint8            // padding
@@ -73,17 +73,17 @@ type PixelFormat struct {
 type cPixelFormat C.SDL_PixelFormat
 
 // Palette contains palette information.
-// (https://wiki.libsdl.org/SDL_Palette)
+// (https://wiki.libsdl.org/SDL2/SDL_Palette)
 type Palette struct {
 	Ncolors  int32  // the number of colors in the palette
-	Colors   *Color // an array of Color structures representing the palette (https://wiki.libsdl.org/SDL_Color)
+	Colors   *Color // an array of Color structures representing the palette (https://wiki.libsdl.org/SDL2/SDL_Color)
 	version  uint32 // incrementally tracks changes to the palette (internal use)
 	refCount int32  // reference count (internal use)
 }
 type cPalette C.SDL_Palette
 
 // Color represents a color. This implements image/color.Color interface.
-// (https://wiki.libsdl.org/SDL_Color)
+// (https://wiki.libsdl.org/SDL2/SDL_Color)
 type Color color.NRGBA
 
 // Uint32 return uint32 representation of RGBA color.
@@ -233,13 +233,13 @@ func (palette *Palette) cptr() *C.SDL_Palette {
  */
 
 // GetPixelFormatName returns the human readable name of a pixel format.
-// (https://wiki.libsdl.org/SDL_GetPixelFormatName)
+// (https://wiki.libsdl.org/SDL2/SDL_GetPixelFormatName)
 func GetPixelFormatName(format uint) string {
 	return C.GoString(C.SDL_GetPixelFormatName(C.Uint32(format)))
 }
 
 // PixelFormatEnumToMasks converts one of the enumerated pixel formats to a bpp value and RGBA masks.
-// (https://wiki.libsdl.org/SDL_PixelFormatEnumToMasks)
+// (https://wiki.libsdl.org/SDL2/SDL_PixelFormatEnumToMasks)
 func PixelFormatEnumToMasks(format uint) (bpp int, rmask, gmask, bmask, amask uint32, err error) {
 	result := C.SDL_PixelFormatEnumToMasks(C.Uint32(format), (*C.int)(unsafe.Pointer(&bpp)),
 		(*C.Uint32)(&rmask), (*C.Uint32)(&gmask), (*C.Uint32)(&bmask),
@@ -251,14 +251,14 @@ func PixelFormatEnumToMasks(format uint) (bpp int, rmask, gmask, bmask, amask ui
 }
 
 // MasksToPixelFormatEnum converts a bpp value and RGBA masks to an enumerated pixel format.
-// (https://wiki.libsdl.org/SDL_MasksToPixelFormatEnum)
+// (https://wiki.libsdl.org/SDL2/SDL_MasksToPixelFormatEnum)
 func MasksToPixelFormatEnum(bpp int, rmask, gmask, bmask, amask uint32) uint {
 	return uint(C.SDL_MasksToPixelFormatEnum(C.int(bpp), C.Uint32(rmask), C.Uint32(gmask),
 		C.Uint32(bmask), C.Uint32(amask)))
 }
 
 // AllocFormat creates a PixelFormat structure corresponding to a pixel format.
-// (https://wiki.libsdl.org/SDL_AllocFormat)
+// (https://wiki.libsdl.org/SDL2/SDL_AllocFormat)
 func AllocFormat(format PixelFormatConstant) (*PixelFormat, error) {
 	r := (*PixelFormat)(unsafe.Pointer(C.SDL_AllocFormat(C.Uint32(format))))
 	if r == nil {
@@ -268,13 +268,13 @@ func AllocFormat(format PixelFormatConstant) (*PixelFormat, error) {
 }
 
 // Free frees the PixelFormat structure allocated by AllocFormat().
-// (https://wiki.libsdl.org/SDL_FreeFormat)
+// (https://wiki.libsdl.org/SDL2/SDL_FreeFormat)
 func (format *PixelFormat) Free() {
 	C.SDL_FreeFormat((*C.SDL_PixelFormat)(unsafe.Pointer(format)))
 }
 
 // AllocPalette creates a palette structure with the specified number of color entries.
-// (https://wiki.libsdl.org/SDL_AllocPalette)
+// (https://wiki.libsdl.org/SDL2/SDL_AllocPalette)
 func AllocPalette(ncolors int) (*Palette, error) {
 	r := (*Palette)(unsafe.Pointer(C.SDL_AllocPalette(C.int(ncolors))))
 	if r == nil {
@@ -284,7 +284,7 @@ func AllocPalette(ncolors int) (*Palette, error) {
 }
 
 // SetPalette sets the palette for the pixel format structure.
-// (https://wiki.libsdl.org/SDL_SetPixelFormatPalette)
+// (https://wiki.libsdl.org/SDL2/SDL_SetPixelFormatPalette)
 func (format *PixelFormat) SetPalette(palette *Palette) error {
 	r := C.SDL_SetPixelFormatPalette((*C.SDL_PixelFormat)(unsafe.Pointer(format)),
 		(*C.SDL_Palette)(unsafe.Pointer(palette)))
@@ -295,7 +295,7 @@ func (format *PixelFormat) SetPalette(palette *Palette) error {
 }
 
 // SetColors sets a range of colors in the palette.
-// (https://wiki.libsdl.org/SDL_SetPaletteColors)
+// (https://wiki.libsdl.org/SDL2/SDL_SetPaletteColors)
 func (palette *Palette) SetColors(colors []Color) error {
 	if colors == nil {
 		return nil
@@ -314,27 +314,27 @@ func (palette *Palette) SetColors(colors []Color) error {
 }
 
 // Free frees the palette created with AllocPalette().
-// (https://wiki.libsdl.org/SDL_FreePalette)
+// (https://wiki.libsdl.org/SDL2/SDL_FreePalette)
 func (palette *Palette) Free() {
 	C.SDL_FreePalette((*C.SDL_Palette)(unsafe.Pointer(palette)))
 }
 
 // MapRGB maps an RGB triple to an opaque pixel value for a given pixel format.
-// (https://wiki.libsdl.org/SDL_MapRGB)
+// (https://wiki.libsdl.org/SDL2/SDL_MapRGB)
 func MapRGB(format *PixelFormat, r, g, b uint8) uint32 {
 	return uint32(C.SDL_MapRGB((*C.SDL_PixelFormat)(unsafe.Pointer(format)),
 		C.Uint8(r), C.Uint8(g), C.Uint8(b)))
 }
 
 // MapRGBA maps an RGBA quadruple to a pixel value for a given pixel format.
-// (https://wiki.libsdl.org/SDL_MapRGBA)
+// (https://wiki.libsdl.org/SDL2/SDL_MapRGBA)
 func MapRGBA(format *PixelFormat, r, g, b, a uint8) uint32 {
 	return uint32(C.SDL_MapRGBA((*C.SDL_PixelFormat)(unsafe.Pointer(format)),
 		C.Uint8(r), C.Uint8(g), C.Uint8(b), C.Uint8(a)))
 }
 
 // GetRGB returns RGB values from a pixel in the specified format.
-// (https://wiki.libsdl.org/SDL_GetRGB)
+// (https://wiki.libsdl.org/SDL2/SDL_GetRGB)
 func GetRGB(pixel uint32, format *PixelFormat) (r, g, b uint8) {
 	C.SDL_GetRGB(C.Uint32(pixel), (*C.SDL_PixelFormat)(unsafe.Pointer(format)),
 		(*C.Uint8)(&r), (*C.Uint8)(&g), (*C.Uint8)(&b))
@@ -342,7 +342,7 @@ func GetRGB(pixel uint32, format *PixelFormat) (r, g, b uint8) {
 }
 
 // GetRGBA returns RGBA values from a pixel in the specified format.
-// (https://wiki.libsdl.org/SDL_GetRGBA)
+// (https://wiki.libsdl.org/SDL2/SDL_GetRGBA)
 func GetRGBA(pixel uint32, format *PixelFormat) (r, g, b, a uint8) {
 	C.SDL_GetRGBA(C.Uint32(pixel), (*C.SDL_PixelFormat)(unsafe.Pointer(format)),
 		(*C.Uint8)(&r), (*C.Uint8)(&g), (*C.Uint8)(&b), (*C.Uint8)(&a))
@@ -350,7 +350,7 @@ func GetRGBA(pixel uint32, format *PixelFormat) (r, g, b, a uint8) {
 }
 
 // CalculateGammaRamp calculates a 256 entry gamma ramp for a gamma value.
-// (https://wiki.libsdl.org/SDL_CalculateGammaRamp)
+// (https://wiki.libsdl.org/SDL2/SDL_CalculateGammaRamp)
 func CalculateGammaRamp(gamma float32, ramp *[256]uint16) {
 	C.SDL_CalculateGammaRamp(C.float(gamma), (*C.Uint16)(unsafe.Pointer(&ramp[0])))
 }

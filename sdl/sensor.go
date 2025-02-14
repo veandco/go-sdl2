@@ -158,19 +158,19 @@ type SensorID int32
 type SensorType int
 
 // LockSensors locks sensors for multi-threaded access to the sensor API
-// (https://wiki.libsdl.org/SDL_LockSensors)
+// (https://wiki.libsdl.org/SDL2/SDL_LockSensors)
 func LockSensors() {
 	C.SDL_LockSensors()
 }
 
 // UnlockSensors unlocks sensors for multi-threaded access to the sensor API
-// (https://wiki.libsdl.org/SDL_UnlockSensors)
+// (https://wiki.libsdl.org/SDL2/SDL_UnlockSensors)
 func UnlockSensors() {
 	C.SDL_UnlockSensors()
 }
 
 // NumSensors counts the number of sensors attached to the system right now
-// (https://wiki.libsdl.org/SDL_NumSensors)
+// (https://wiki.libsdl.org/SDL2/SDL_NumSensors)
 func NumSensors() int {
 	return int(C.SDL_NumSensors())
 }
@@ -180,7 +180,7 @@ func NumSensors() int {
 // This can be called before any sensors are opened.
 //
 // Returns the sensor name, or empty string if deviceIndex is out of range.
-// (https://wiki.libsdl.org/SDL_SensorGetDeviceName)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorGetDeviceName)
 func SensorGetDeviceName(deviceIndex int) (name string) {
 	name = C.GoString(C.SDL_SensorGetDeviceName(C.int(deviceIndex)))
 	return
@@ -191,7 +191,7 @@ func SensorGetDeviceName(deviceIndex int) (name string) {
 //  This can be called before any sensors are opened.
 //
 //  Returns the sensor type, or SDL_SENSOR_INVALID if deviceIndex is out of range.
-// (https://wiki.libsdl.org/SDL_SensorGetDeviceType)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorGetDeviceType)
 func SensorGetDeviceType(deviceIndex int) (typ SensorType) {
 	typ = SensorType(C.SDL_SensorGetDeviceType(C.int(deviceIndex)))
 	return
@@ -202,7 +202,7 @@ func SensorGetDeviceType(deviceIndex int) (typ SensorType) {
 // This can be called before any sensors are opened.
 //
 // Returns the sensor platform dependent type, or -1 if deviceIndex is out of range.
-// (https://wiki.libsdl.org/SDL_SensorGetDeviceNonPortableType)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorGetDeviceNonPortableType)
 func SensorGetDeviceNonPortableType(deviceIndex int) (typ int) {
 	typ = int(C.SDL_SensorGetDeviceNonPortableType(C.int(deviceIndex)))
 	return
@@ -213,7 +213,7 @@ func SensorGetDeviceNonPortableType(deviceIndex int) (typ int) {
 // This can be called before any sensors are opened.
 //
 // Returns the sensor instance ID, or -1 if deviceIndex is out of range.
-// (https://wiki.libsdl.org/SDL_SensorGetDeviceInstanceID)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorGetDeviceInstanceID)
 func SensorGetDeviceInstanceID(deviceIndex int) (id SensorID) {
 	id = SensorID(C.SDL_SensorGetDeviceInstanceID(C.int(deviceIndex)))
 	return
@@ -224,14 +224,14 @@ func SensorGetDeviceInstanceID(deviceIndex int) (id SensorID) {
 // The index passed as an argument refers to the N'th sensor on the system.
 //
 // Returns a sensor identifier, or nil if an error occurred.
-// (https://wiki.libsdl.org/SDL_SensorOpen)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorOpen)
 func SensorOpen(deviceIndex int) (sensor *Sensor) {
 	sensor = (*Sensor)(unsafe.Pointer(C.SDL_SensorOpen(C.int(deviceIndex))))
 	return
 }
 
 // SensorFromInstanceID returns the Sensor associated with an instance id.
-// (https://wiki.libsdl.org/SDL_SensorFromInstanceID)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorFromInstanceID)
 func SensorFromInstanceID(id SensorID) (sensor *Sensor) {
 	sensor = (*Sensor)(unsafe.Pointer(C.SDL_SensorFromInstanceID(C.SDL_SensorID(id))))
 	return
@@ -240,7 +240,7 @@ func SensorFromInstanceID(id SensorID) (sensor *Sensor) {
 // GetName gets the implementation dependent name of a sensor.
 //
 // Returns the sensor name, or empty string if the sensor is nil.
-// (https://wiki.libsdl.org/SDL_SensorGetName)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorGetName)
 func (sensor *Sensor) GetName() (name string) {
 	name = C.GoString(C.SDL_SensorGetName((*C.SDL_Sensor)(sensor)))
 	return
@@ -251,7 +251,7 @@ func (sensor *Sensor) GetName() (name string) {
 // This can be called before any sensors are opened.
 //
 // Returns the sensor type, or SENSOR_INVALID if the sensor is nil.
-// (https://wiki.libsdl.org/SDL_SensorGetType)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorGetType)
 func (sensor *Sensor) GetType() (typ SensorType) {
 	typ = SensorType(C.SDL_SensorGetType((*C.SDL_Sensor)(sensor)))
 	return
@@ -262,7 +262,7 @@ func (sensor *Sensor) GetType() (typ SensorType) {
 // This can be called before any sensors are opened.
 //
 // Returns the sensor platform dependent type, or -1 if the sensor is nil.
-// (https://wiki.libsdl.org/SDL_SensorGetNonPortableType)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorGetNonPortableType)
 func (sensor *Sensor) GetNonPortableType() (typ int) {
 	typ = int(C.SDL_SensorGetNonPortableType((*C.SDL_Sensor)(sensor)))
 	return
@@ -273,7 +273,7 @@ func (sensor *Sensor) GetNonPortableType() (typ int) {
 // This can be called before any sensors are opened.
 //
 // Returns the sensor instance ID, or -1 if the sensor is nil.
-// (https://wiki.libsdl.org/SDL_SensorGetInstanceID)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorGetInstanceID)
 func (sensor *Sensor) GetInstanceID() (id SensorID) {
 	id = SensorID(C.SDL_SensorGetInstanceID((*C.SDL_Sensor)(sensor)))
 	return
@@ -282,7 +282,7 @@ func (sensor *Sensor) GetInstanceID() (id SensorID) {
 // GetData gets the current state of an opened sensor.
 //
 // The number of values and interpretation of the data is sensor dependent.
-// (https://wiki.libsdl.org/SDL_SensorGetData)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorGetData)
 func (sensor *Sensor) GetData(data []float32) (err error) {
 	if data == nil {
 		return nil
@@ -296,7 +296,7 @@ func (sensor *Sensor) GetData(data []float32) (err error) {
 // GetDataWithTimestamp gets the current state of an opened sensor with the timestamp of the last update.
 //
 // The number of values and interpretation of the data is sensor dependent.
-// (https://wiki.libsdl.org/SDL_SensorGetDataWithTimestamp)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorGetDataWithTimestamp)
 func (sensor *Sensor) GetDataWithTimestamp(timestamp *uint64, data []float32) (err error) {
 	if data == nil {
 		return nil
@@ -309,7 +309,7 @@ func (sensor *Sensor) GetDataWithTimestamp(timestamp *uint64, data []float32) (e
 }
 
 // Close closes a sensor previously opened with SensorOpen()
-// (https://wiki.libsdl.org/SDL_SensorClose)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorClose)
 func (sensor *Sensor) Close() {
 	C.SDL_SensorClose((*C.SDL_Sensor)(sensor))
 }
@@ -319,7 +319,7 @@ func (sensor *Sensor) Close() {
 // This is called automatically by the event loop if sensor events are enabled.
 //
 // This needs to be called from the thread that initialized the sensor subsystem.
-// (https://wiki.libsdl.org/SDL_SensorUpdate)
+// (https://wiki.libsdl.org/SDL2/SDL_SensorUpdate)
 func SensorUpdate() {
 	C.SDL_SensorUpdate()
 }

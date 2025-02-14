@@ -49,7 +49,7 @@ func (ec ErrorCode) c() C.SDL_errorcode {
 }
 
 // GetError returns the last error that occurred, or an empty string if there hasn't been an error message set since the last call to ClearError().
-// (https://wiki.libsdl.org/SDL_GetError)
+// (https://wiki.libsdl.org/SDL2/SDL_GetError)
 func GetError() error {
 	if err := C.SDL_GetError(); err != nil {
 		gostr := C.GoString(err)
@@ -62,7 +62,7 @@ func GetError() error {
 }
 
 // GetErrorMsg returns the last error message that was set for the current thread.
-// (https://wiki.libsdl.org/SDL_GetErrorMsg)
+// (https://wiki.libsdl.org/SDL2/SDL_GetErrorMsg)
 func GetErrorMsg(maxlen int) error {
 	_buf := C.SDL_malloc(C.size_t(maxlen))
 	if err := C.SDL_GetErrorMsg((*C.char)(_buf), C.int(maxlen)); err != nil {
@@ -76,7 +76,7 @@ func GetErrorMsg(maxlen int) error {
 }
 
 // SetError set the SDL error message.
-// (https://wiki.libsdl.org/SDL_SetError)
+// (https://wiki.libsdl.org/SDL2/SDL_SetError)
 func SetError(err error) {
 	if err != nil {
 		_err := C.CString(err.Error())
@@ -88,7 +88,7 @@ func SetError(err error) {
 }
 
 // ClearError clears any previous error message.
-// (https://wiki.libsdl.org/SDL_ClearError)
+// (https://wiki.libsdl.org/SDL2/SDL_ClearError)
 func ClearError() {
 	C.SDL_ClearError()
 }

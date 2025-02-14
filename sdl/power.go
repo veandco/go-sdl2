@@ -4,7 +4,7 @@ package sdl
 import "C"
 
 // An enumeration of the basic state of the system's power supply.
-// (https://wiki.libsdl.org/SDL_PowerState)
+// (https://wiki.libsdl.org/SDL2/SDL_PowerState)
 type PowerState C.SDL_PowerState
 
 const (
@@ -16,7 +16,7 @@ const (
 )
 
 // GetPowerInfo returns the current power supply details.
-// (https://wiki.libsdl.org/SDL_GetPowerInfo)
+// (https://wiki.libsdl.org/SDL2/SDL_GetPowerInfo)
 func GetPowerInfo() (PowerState, int, int) {
 	_secs := C.int(0)
 	_percent := C.int(0)

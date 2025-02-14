@@ -6,7 +6,7 @@ import "C"
 const K_SCANCODE_MASK = 1 << 30
 
 // The SDL virtual key representation.
-// (https://wiki.libsdl.org/SDL_Keycode)
+// (https://wiki.libsdl.org/SDL2/SDL_Keycode)
 // (https://wiki.libsdl.org/SDLKeycodeLookup)
 type Keycode C.SDL_Keycode
 
@@ -265,7 +265,7 @@ const (
 )
 
 // An enumeration of key modifier masks.
-// (https://wiki.libsdl.org/SDL_Keymod)
+// (https://wiki.libsdl.org/SDL2/SDL_Keymod)
 type Keymod C.SDL_Keymod
 
 const (

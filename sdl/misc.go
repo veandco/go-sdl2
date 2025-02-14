@@ -20,7 +20,7 @@ import "C"
 import "unsafe"
 
 // OpenURL opens an URL / URI in the browser or other
-// (https://wiki.libsdl.org/SDL_OpenURL)
+// (https://wiki.libsdl.org/SDL2/SDL_OpenURL)
 func OpenURL(url string) error {
 	_url := C.CString(url)
 	defer C.free(unsafe.Pointer(_url))

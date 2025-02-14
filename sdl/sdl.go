@@ -20,7 +20,7 @@ import (
 )
 
 // These are the flags which may be passed to SDL_Init().
-// (https://wiki.libsdl.org/SDL_Init)
+// (https://wiki.libsdl.org/SDL2/SDL_Init)
 const (
 	INIT_TIMER          = C.SDL_INIT_TIMER          // timer subsystem
 	INIT_AUDIO          = C.SDL_INIT_AUDIO          // audio subsystem
@@ -111,7 +111,7 @@ func Do(f func()) {
 }
 
 // Init initialize the SDL library. This must be called before using most other SDL functions.
-// (https://wiki.libsdl.org/SDL_Init)
+// (https://wiki.libsdl.org/SDL2/SDL_Init)
 func Init(flags uint32) error {
 	if C.SDL_Init(C.Uint32(flags)) != 0 {
 		return GetError()
@@ -120,7 +120,7 @@ func Init(flags uint32) error {
 }
 
 // Quit cleans up all initialized subsystems. You should call it upon all exit conditions.
-// (https://wiki.libsdl.org/SDL_Quit)
+// (https://wiki.libsdl.org/SDL2/SDL_Quit)
 func Quit() {
 	C.SDL_Quit()
 
@@ -131,7 +131,7 @@ func Quit() {
 }
 
 // InitSubSystem initializes specific SDL subsystems.
-// (https://wiki.libsdl.org/SDL_InitSubSystem)
+// (https://wiki.libsdl.org/SDL2/SDL_InitSubSystem)
 func InitSubSystem(flags uint32) error {
 	if C.SDL_InitSubSystem(C.Uint32(flags)) != 0 {
 		return GetError()
@@ -140,19 +140,19 @@ func InitSubSystem(flags uint32) error {
 }
 
 // QuitSubSystem shuts down specific SDL subsystems.
-// (https://wiki.libsdl.org/SDL_QuitSubSystem)
+// (https://wiki.libsdl.org/SDL2/SDL_QuitSubSystem)
 func QuitSubSystem(flags uint32) {
 	C.SDL_QuitSubSystem(C.Uint32(flags))
 }
 
 // WasInit returns a mask of the specified subsystems which have previously been initialized.
-// (https://wiki.libsdl.org/SDL_WasInit)
+// (https://wiki.libsdl.org/SDL2/SDL_WasInit)
 func WasInit(flags uint32) uint32 {
 	return uint32(C.SDL_WasInit(C.Uint32(flags)))
 }
 
 // GetPlatform returns the name of the platform.
-// (https://wiki.libsdl.org/SDL_GetPlatform)
+// (https://wiki.libsdl.org/SDL2/SDL_GetPlatform)
 func GetPlatform() string {
 	return string(C.GoString(C.SDL_GetPlatform()))
 }
