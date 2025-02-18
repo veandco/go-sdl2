@@ -131,6 +131,18 @@ static inline int TTF_GlyphIsProvided(TTF_Font *font, Uint16 ch)
 
 #endif
 
+#if !SDL_TTF_VERSION_ATLEAST(2,0,18)
+#if defined(WARN_OUTDATED)
+#pragma message("TTF_GlyphIsProvided32 is not supported before SDL_ttf 2.0.18")
+#endif
+
+static inline int TTF_GlyphIsProvided32(TTF_Font *font, Uint32 ch)
+{
+    return 0;
+}
+
+#endif
+
 */
 import "C"
 import (
@@ -629,45 +641,54 @@ func (f *Font) SetScriptName(script string) error {
 	return nil
 }
 
+// GlyphIsProvided checks whether a glyph is provided by the font for a 16-bit codepoint.
+// Note that this version of the function takes a 16-bit character code, which covers the Basic Multilingual Plane, but is insufficient to cover the entire set of possible Unicode values, including emoji glyphs. You should use GlyphIsProvided32() instead, which offers the same functionality but takes a 32-bit codepoint instead.
 func (f *Font) GlyphIsProvided(ch uint16) bool {
-    _ch := C.Uint16(ch)
-    return C.TTF_GlyphIsProvided(f.f, _ch) != 0
+	_ch := C.Uint16(ch)
+	return C.TTF_GlyphIsProvided(f.f, _ch) != 0
+}
+
+// GlyphIsProvided32 checks whether a glyph is provided by the font for a 32-bit codepoint.
+// Note that this is the same as GlyphIsProvided(), but takes a 32-bit character instead of 16-bit, and thus can query a larger range. There's no reason not to use this function exclusively.
+func (f *Font) GlyphIsProvided32(ch uint32) bool {
+	_ch := C.Uint32(ch)
+	return C.TTF_GlyphIsProvided32(f.f, _ch) != 0
 }
 
 func (f *Font) MeasureText(text string, measureWidth int) (extent, count int, err error) {
 	_text := C.CString(text)
 	defer C.free(unsafe.Pointer(_text))
-    _measureWidth := C.int(measureWidth)
-    _extend := (*C.int)(unsafe.Pointer(&extent))
-    _count := (*C.int)(unsafe.Pointer(&count))
-    ret := C.TTF_MeasureText(f.f, _text, _measureWidth, _extend, _count)
-    if ret != 0 {
-        err = GetError()
-    }
-    return
+	_measureWidth := C.int(measureWidth)
+	_extend := (*C.int)(unsafe.Pointer(&extent))
+	_count := (*C.int)(unsafe.Pointer(&count))
+	ret := C.TTF_MeasureText(f.f, _text, _measureWidth, _extend, _count)
+	if ret != 0 {
+		err = GetError()
+	}
+	return
 }
 
 func (f *Font) MeasureUTF8(text string, measureWidth int) (extent, count int, err error) {
 	_text := C.CString(text)
 	defer C.free(unsafe.Pointer(_text))
-    _measureWidth := C.int(measureWidth)
-    _extend := (*C.int)(unsafe.Pointer(&extent))
-    _count := (*C.int)(unsafe.Pointer(&count))
-    ret := C.TTF_MeasureUTF8(f.f, _text, _measureWidth, _extend, _count)
-    if ret != 0 {
-        err = GetError()
-    }
-    return
+	_measureWidth := C.int(measureWidth)
+	_extend := (*C.int)(unsafe.Pointer(&extent))
+	_count := (*C.int)(unsafe.Pointer(&count))
+	ret := C.TTF_MeasureUTF8(f.f, _text, _measureWidth, _extend, _count)
+	if ret != 0 {
+		err = GetError()
+	}
+	return
 }
 
 func (f *Font) MeasureUNICODE(text []uint16, measureWidth int) (extent, count int, err error) {
 	_text := (*C.Uint16)(&text[0])
-    _measureWidth := C.int(measureWidth)
-    _extend := (*C.int)(unsafe.Pointer(&extent))
-    _count := (*C.int)(unsafe.Pointer(&count))
-    ret := C.TTF_MeasureUNICODE(f.f, _text, _measureWidth, _extend, _count)
-    if ret != 0 {
-        err = GetError()
-    }
-    return
+	_measureWidth := C.int(measureWidth)
+	_extend := (*C.int)(unsafe.Pointer(&extent))
+	_count := (*C.int)(unsafe.Pointer(&count))
+	ret := C.TTF_MeasureUNICODE(f.f, _text, _measureWidth, _extend, _count)
+	if ret != 0 {
+		err = GetError()
+	}
+	return
 }
