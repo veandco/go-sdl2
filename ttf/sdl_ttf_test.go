@@ -51,3 +51,36 @@ func TestTTF(t *testing.T) {
 		t.Errorf("GlyphMetrics got %v - want %v", *gm, expectMetrics)
 	}
 }
+
+func TestGlyphIsProvided(t *testing.T) {
+	var font *Font
+	var err error
+
+	if err := Init(); err != nil {
+		t.Errorf("Failed to initialize TTF: %s\n", err)
+	}
+
+	if font, err = OpenFont("../.go-sdl2-examples/assets/test.ttf", 32); err != nil {
+		t.Errorf("Failed to open font: %s\n", err)
+	}
+
+	asciiRune := 'A'
+
+	if !font.GlyphIsProvided(uint16(asciiRune)) {
+		t.Errorf("GlyphIsProvided(): rune not found in font that includes glyph")
+	}
+
+	if !font.GlyphIsProvided32(uint32(asciiRune)) {
+		t.Errorf("GlyphIsProvided32(): rune not found in font that includes glyph")
+	}
+
+	emojiRune := '🤖'
+
+	if font.GlyphIsProvided(uint16(emojiRune)) {
+		t.Errorf("GlyphIsProvided(): rune found in font that doesn't support emojis")
+	}
+
+	if font.GlyphIsProvided32(uint32(emojiRune)) {
+		t.Errorf("GlyphIsProvided32(): rune found in font that doesn't support emojis")
+	}
+}
