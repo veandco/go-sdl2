@@ -57,6 +57,7 @@ typedef int SDL_LogCategory;
 import "C"
 import (
 	"fmt"
+	"sync"
 	"unsafe"
 )
 
@@ -220,21 +221,19 @@ func LogMessage(category LogCategory, pri LogPriority, str string, args ...inter
 // LogOutputFunction is the function to call instead of the default
 type LogOutputFunction func(data interface{}, category LogCategory, pri LogPriority, message string)
 
-type logOutputFunctionCtx struct {
-	f LogOutputFunction
-	d interface{}
-}
-
 // Yissakhar Z. Beck (DeedleFake)'s implementation
 //
 //export logOutputFunction
 func logOutputFunction(data unsafe.Pointer, category C.int, pri C.SDL_LogPriority, message *C.char) {
-	ctx := (*logOutputFunctionCtx)(data)
+	f, d := LogGetOutputFunction()
 
-	ctx.f(ctx.d, LogCategory(category), LogPriority(pri), C.GoString(message))
+	f(d, LogCategory(category), LogPriority(pri), C.GoString(message))
 }
 
+// The output function and its data are kept on the Go side. SDL is not given
+// a Go pointer as userdata, because C may not keep one after the call returns.
 var (
+	logOutputFunctionMutex sync.RWMutex
 	logOutputFunctionCache LogOutputFunction
 	logOutputDataCache     interface{}
 )
@@ -242,19 +241,19 @@ var (
 // LogGetOutputFunction returns the current log output function.
 // (https://wiki.libsdl.org/SDL2/SDL_LogGetOutputFunction)
 func LogGetOutputFunction() (LogOutputFunction, interface{}) {
+	logOutputFunctionMutex.RLock()
+	defer logOutputFunctionMutex.RUnlock()
+
 	return logOutputFunctionCache, logOutputDataCache
 }
 
 // LogSetOutputFunction replaces the default log output function with one of your own.
 // (https://wiki.libsdl.org/SDL2/SDL_LogSetOutputFunction)
 func LogSetOutputFunction(f LogOutputFunction, data interface{}) {
-	ctx := &logOutputFunctionCtx{
-		f: f,
-		d: data,
-	}
-
-	C.LogSetOutputFunction(unsafe.Pointer(ctx))
-
+	logOutputFunctionMutex.Lock()
 	logOutputFunctionCache = f
 	logOutputDataCache = data
+	logOutputFunctionMutex.Unlock()
+
+	C.LogSetOutputFunction(nil)
 }
